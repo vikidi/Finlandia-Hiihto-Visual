@@ -1,0 +1,6 @@
+*.pro.user
+*.moc
+*~
+build-*
+*.o
+
