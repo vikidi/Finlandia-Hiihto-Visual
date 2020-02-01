@@ -7,10 +7,10 @@
 #include <QHttpMultiPart>
 #include <QNetworkProxy>
 #include <QFile>
-#include <QtWebEngineWidgets>
 #include <string>
 #include <sstream>
 #include <vector>
+#include <QXmlStreamReader>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

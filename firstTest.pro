@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network webengine webenginewidgets
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,10 +28,18 @@ CONFIG += openssl-linked
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    APIs/finlandiaapi.cpp \
+    APIs/localapi.cpp \
+    datahandler.cpp \
+    APIs/ilmatiedeapi.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    APIs/finlandiaapi.h \
+    APIs/localapi.h \
+    datahandler.h \
+    APIs/ilmatiedeapi.h
 
 FORMS += \
         mainwindow.ui
@@ -43,8 +51,3 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource.qrc
-
-unix|win32: LIBS += -L$$PWD/../build-firstTest-Desktop_Qt_5_12_0_MSVC2017_64bit-Debug/tidy/lib/ -ltidy
-
-INCLUDEPATH += $$PWD/../build-firstTest-Desktop_Qt_5_12_0_MSVC2017_64bit-Debug/tidy/include
-DEPENDPATH += $$PWD/../build-firstTest-Desktop_Qt_5_12_0_MSVC2017_64bit-Debug/tidy/include
