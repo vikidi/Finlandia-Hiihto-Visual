@@ -24,7 +24,10 @@ private:
     void escapeBR(std::string&);
     void escapeSpaces(std::string& src);
     void printResults(std::vector<std::vector<std::string>>&) const;
-    void sumSize(std::vector<std::vector<std::string>>);
+    void sumSize(std::vector<std::vector<std::vector<std::string>>>);
+    void doThings(QString year, QString matka);
+
+    std::vector<std::vector<std::vector<std::string>>> m_data;
 
     Ui::MainWindow *ui;
 

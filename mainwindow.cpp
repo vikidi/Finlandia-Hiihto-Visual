@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    auto start = std::chrono::system_clock::now();
+    //auto start = std::chrono::system_clock::now();
 
     ui->setupUi(this);
 
@@ -27,6 +27,53 @@ MainWindow::MainWindow(QWidget *parent) :
     m_manager->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
     QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::NoProxy));
 
+    std::vector<std::string> matkat = {
+        "P50",
+        "V50",
+        "P100",
+        "P32",
+        "V20",
+        "V32",
+        "V20jun",
+        "P42",
+        "V42",
+        "P20",
+        "P30",
+        "P44",
+        "P60",
+        "P62",
+        "P25",
+        "P35",
+        "P45",
+        "P52",
+        "P53",
+        "P75",
+        "V30",
+        "V45",
+        "V53",
+        "V75"
+    };
+
+    for(int i = 1974; i < 2020; ++i) {
+        for(auto m : matkat) {
+            std::cout << i << " " << m << std::endl;
+            doThings(QString::number(i), QString::fromStdString(m));
+        }
+    }
+    std::cout << "done" << std::endl;
+
+    sumSize(m_data);
+
+    //std::cout << "väli time: " << elap.count() << std::endl;
+    //
+    //auto end = std::chrono::system_clock::now();
+    //std::chrono::duration<double> elapsed_seconds = end-start;
+    //std::cout << "elapsed time: " << elapsed_seconds.count() << std::endl;
+    //
+    //sumSize(parsedData);
+}
+
+void MainWindow::doThings(QString year, QString matka) {
     QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
     QHttpPart textPart8;
@@ -76,12 +123,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QHttpPart textPart1;
     textPart1.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"dnn$ctr1025$Etusivu$ddlVuosi2x\""));
-    textPart1.setBody(QString("2017").toLatin1());
+    textPart1.setBody(year.toLatin1());
     multiPart->append(textPart1);
 
     QHttpPart textPart2;
     textPart2.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"dnn$ctr1025$Etusivu$ddlMatka2x\""));
-    textPart2.setBody(QString("P50").toLatin1());
+    textPart2.setBody(matka.toLatin1());
     multiPart->append(textPart2);
 
     QHttpPart textPart3;
@@ -143,8 +190,8 @@ MainWindow::MainWindow(QWidget *parent) :
     std::string data = m_reply->readAll().toStdString();
     m_reply->deleteLater();
 
-    auto vali = std::chrono::system_clock::now();
-    std::chrono::duration<double> elap = vali-start;
+    //auto vali = std::chrono::system_clock::now();
+    //std::chrono::duration<double> elap = vali-start;
 
     std::size_t ind = data.find("id=\"dnn_ctr1025_Etusivu_dgrTulokset_ctl00\"");
     std::size_t startind = data.find(">", ind + 1);
@@ -183,16 +230,9 @@ MainWindow::MainWindow(QWidget *parent) :
         std::cout << reader.errorString().toStdString() << std::endl;
         std::cout << reader.lineNumber() << std::endl;
     } else {
-        printResults(parsedData);
+        //printResults(parsedData);
+        m_data.emplace_back(parsedData);
     }
-
-    std::cout << "väli time: " << elap.count() << std::endl;
-
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    std::cout << "elapsed time: " << elapsed_seconds.count() << std::endl;
-
-    sumSize(parsedData);
 }
 
 void MainWindow::printResults(std::vector<std::vector<std::string>>& src) const {
@@ -210,11 +250,13 @@ void MainWindow::printResults(std::vector<std::vector<std::string>>& src) const 
     std::cout << "----" << std::endl;
 }
 
-void MainWindow::sumSize(std::vector<std::vector<std::string>> data) {
+void MainWindow::sumSize(std::vector<std::vector<std::vector<std::string>>> data) {
     unsigned long long sum = 0;
-    for(std::vector<std::vector<std::string>>::const_iterator it = data.begin(); it != data.end(); ++it) {
+    for(auto it = data.begin(); it != data.end(); ++it) {
         for(auto test : (*it)) {
-            sum += test.size();
+            for(auto t : test) {
+                sum += t.size();
+            }
         }
     }
 
