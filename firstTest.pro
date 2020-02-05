@@ -32,14 +32,16 @@ SOURCES += \
     APIs/finlandiaapi.cpp \
     APIs/localapi.cpp \
     datahandler.cpp \
-    APIs/ilmatiedeapi.cpp
+    APIs/ilmatiedeapi.cpp \
+    APIs/finlandiacaller.cpp
 
 HEADERS += \
         mainwindow.h \
     APIs/finlandiaapi.h \
     APIs/localapi.h \
     datahandler.h \
-    APIs/ilmatiedeapi.h
+    APIs/ilmatiedeapi.h \
+    APIs/finlandiacaller.h
 
 FORMS += \
         mainwindow.ui

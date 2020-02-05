@@ -20,19 +20,8 @@ public:
 public slots:
 
 private:
-    std::string escape(const std::string&);
-    void escapeBR(std::string&);
-    void escapeSpaces(std::string& src);
-    void printResults(std::vector<std::vector<std::string>>&) const;
-    void sumSize(std::vector<std::vector<std::vector<std::string>>>);
-    void doThings(QString year, QString matka);
-
-    std::vector<std::vector<std::vector<std::string>>> m_data;
 
     Ui::MainWindow *ui;
-
-    QNetworkAccessManager *m_manager;
-    QNetworkReply *m_reply;
 };
 
 #endif // MAINWINDOW_H
