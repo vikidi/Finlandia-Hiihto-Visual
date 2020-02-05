@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<QPair<QByteArray,QByteArray>>();
     MainWindow w;
     w.show();
+    w.loadData(); // Load the data
 
     return a.exec();
 }

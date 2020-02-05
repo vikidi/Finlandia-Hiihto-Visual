@@ -22,7 +22,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+}
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::loadData()
+{
+    std::thread t(&MainWindow::loadInThread, this);
+    t.detach();
+}
+
+void MainWindow::loadInThread()
+{
     // CLOCKING
     using namespace std::chrono;
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -42,9 +56,4 @@ MainWindow::MainWindow(QWidget *parent) :
     high_resolution_clock::time_point t3 = high_resolution_clock::now();
     duration<double> time_span2 = duration_cast<duration<double>>(t3 - t2);
     std::cout << "Data save done in " << time_span2.count() << " s" << std::endl;
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }

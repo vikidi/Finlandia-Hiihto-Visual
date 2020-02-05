@@ -17,9 +17,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void loadData();
+
 public slots:
 
 private:
+    void loadInThread();
 
     Ui::MainWindow *ui;
 };
