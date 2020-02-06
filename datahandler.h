@@ -7,10 +7,29 @@
  * it in right format for UI.
  */
 
-class DataHandler
+#include <QObject>
+
+class DataHandler : QObject
 {
+    Q_OBJECT
+
 public:
     DataHandler();
+    ~DataHandler();
+
+    void Initialize();
+
+signals:
+    void progressChanged(const int&);
+
+private:
+    void loadData();
+    void loadInThread();
+
+    bool m_loadOngoing;
+
+    std::map<QString, std::map<QString,
+                std::vector<std::vector<std::string>>>> m_data;
 };
 
 #endif // DATAHANDLER_H

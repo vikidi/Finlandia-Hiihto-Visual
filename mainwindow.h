@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "datahandler.h"
+
 #include <QMainWindow>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 
 namespace Ui {
 class MainWindow;
@@ -17,12 +17,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void loadData();
-
-public slots:
-
 private:
-    void loadInThread();
+
+    DataHandler *m_dataHandler;
 
     Ui::MainWindow *ui;
 };
