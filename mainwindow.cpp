@@ -42,7 +42,7 @@ void MainWindow::loadInThread()
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
     FinlandiaAPI api = FinlandiaAPI();
-    std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > data = api.loadAllData();
+    //std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > data = api.loadAllData();
 
     // CLOCKING
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -50,7 +50,9 @@ void MainWindow::loadInThread()
     std::cout << "Data fetch done in " << time_span.count() << " s" << std::endl;
 
     LocalAPI localAPI = LocalAPI();
-    localAPI.saveData(data);
+    //localAPI.saveData(data);
+
+    std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > data = localAPI.loadData();
 
     // CLOCKING
     high_resolution_clock::time_point t3 = high_resolution_clock::now();
