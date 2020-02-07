@@ -17,10 +17,11 @@
 #include <ratio>
 #include <chrono>
 
-DataHandler::DataHandler()
+DataHandler::DataHandler():
+    m_loadOngoing(false),
+    m_data({})
 {
-    m_data = {};
-    m_loadOngoing = false;
+
 }
 
 DataHandler::~DataHandler()

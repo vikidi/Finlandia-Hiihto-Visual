@@ -11,10 +11,10 @@
 #include <QEventLoop>
 #include <QTimer>
 
-FinlandiaCaller::FinlandiaCaller()
+FinlandiaCaller::FinlandiaCaller():
+    m_manager(new QNetworkAccessManager),
+    m_reply(nullptr)
 {
-    m_manager = new QNetworkAccessManager();
-
     // no proxy
     QNetworkProxyFactory::setUseSystemConfiguration(true);
     m_manager->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));

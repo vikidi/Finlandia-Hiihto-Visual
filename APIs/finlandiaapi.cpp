@@ -4,7 +4,8 @@
 #include <thread>
 #include <QDebug>
 
-FinlandiaAPI::FinlandiaAPI()
+FinlandiaAPI::FinlandiaAPI():
+    ready(0)
 {
 
 }
