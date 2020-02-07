@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <mutex>
+#include <atomic>
 
 class FinlandiaAPI : public QObject
 {
@@ -26,6 +27,7 @@ private:
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> m_data;
 
     int ready;
+    std::atomic_int m_runners;
 };
 
 #endif // FINLANDIAAPI_H

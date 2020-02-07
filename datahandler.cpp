@@ -16,6 +16,7 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <thread>
 
 DataHandler::DataHandler():
     m_loadOngoing(false),

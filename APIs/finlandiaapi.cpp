@@ -5,7 +5,8 @@
 #include <QDebug>
 
 FinlandiaAPI::FinlandiaAPI():
-    ready(0)
+    ready(0),
+    m_runners(0)
 {
 
 }
@@ -47,11 +48,27 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     // REAL DEAL
     //unsigned long long const amount = matkat.size() * 2;
     ready = 0;
-    std::thread threads[1104]; // 46 * 24
+    m_runners = 0;
+    int optimalAmountOfThreads(std::thread::hardware_concurrency());
+    std::cout << optimalAmountOfThreads << " concurrent threads are supported.\n";
+    if(optimalAmountOfThreads < 1)
+    {
+        std::cout << "Number of concurrent threads is not well defined.\n"
+                     "Setting it to 4\n";
+        optimalAmountOfThreads = 4;
+    }
+    std::vector<std::thread> threads;
+    threads.reserve(matkat.size()*(2020-1974));
     int j = 0;
     for(int i = 1974; i < 2020; ++i) {
         for(auto m : matkat) {
-            threads[j] = std::thread(&FinlandiaAPI::loadInThread, this, QString::number(i), QString::fromStdString(m));
+            while (m_runners >= optimalAmountOfThreads)
+            {
+                // Constant polling could be changed to event-based system using std::condition_variable
+                std::this_thread::sleep_for(std::chrono::microseconds(1));
+            }
+            threads.push_back(std::thread(&FinlandiaAPI::loadInThread, this, QString::number(i), QString::fromStdString(m)));
+            m_runners++;
             j++;
         }
     }
@@ -74,6 +91,7 @@ void FinlandiaAPI::loadInThread(QString year, QString distance)
     std::vector<std::vector<std::string> > data = caller.loadAllData(year, distance);
 
     appendData(data, year, distance);
+    m_runners--;
 }
 
 void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data, QString year, QString distance)
