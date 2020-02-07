@@ -151,9 +151,7 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadAllData(QString year
     if(timer.isActive()) {
         timer.stop();
         if(m_reply->error() > 0) { // Error
-            m_mtx.lock();
-            std::cout << "ERROR OCCURRED" << std::endl;
-            m_mtx.unlock();
+            std::cout << "ERROR OCCURRED\n";
             return {};
         }
         else {
@@ -169,9 +167,7 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadAllData(QString year
     } else {
        // timeout
        disconnect(m_reply, SIGNAL(finished()), &loop, SLOT(quit()));
-       m_mtx.lock();
-       std::cout << "TIMED OUT" << std::endl;
-       m_mtx.unlock();
+       std::cout << "TIMED OUT\n";
        m_reply->abort();
        return {};
     }

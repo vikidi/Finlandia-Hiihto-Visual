@@ -39,7 +39,6 @@ private:
     ///
     std::vector<std::vector<std::string>> parseData(const std::string&);
 
-    std::mutex m_mtx;
     QNetworkAccessManager *m_manager;
     QNetworkReply *m_reply;
 };

@@ -79,7 +79,7 @@ void FinlandiaAPI::loadInThread(QString year, QString distance)
 void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data, QString year, QString distance)
 {
     std::map<QString, std::vector<std::vector<std::string>>> innerData = { {distance, data} };
-    m_mtx.lock();
+    std::lock_guard<std::mutex> lock(m_mtx);
 
     if( m_data.find(year) == m_data.end() ) {
         m_data.insert( {year, innerData} );
@@ -92,5 +92,4 @@ void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data, QStrin
     std::cout << ready << ": " << year.toStdString() << " " << distance.toStdString() << std::endl;
     //qDebug() << ready << ": " << year << " " << distance;
 
-    m_mtx.unlock();
 }
