@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-class LocalAPI : QObject
+class LocalAPI : public QObject
 {
     Q_OBJECT
 

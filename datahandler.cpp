@@ -14,11 +14,12 @@
 #include <ratio>
 #include <chrono>
 #include <thread>
+#include <set>
 
 DataHandler::DataHandler():
     m_loadOngoing(false),
-    m_finlandiaAPI(new FinlandiaAPI()),
-    m_localAPI(new LocalAPI()),
+    m_finlandiaAPI(new FinlandiaAPI),
+    m_localAPI(new LocalAPI),
     m_data({})
 {
 
@@ -67,7 +68,22 @@ std::map<QString, std::vector<std::pair<QString, QString> > > DataHandler::compa
 
 std::map<QString, int> DataHandler::amountOfSkiers() const
 {
-    return {};
+    std::map<QString, int> result = {};
+
+    // Go through years
+    for (auto& year : m_data) {
+        int sum = 0;
+        // Go through distances
+        for (auto& distance : year.second) {
+
+            // Should duplicates (same person, many distances) be taken in account?
+            sum += static_cast<int>(distance.second.size());
+        }
+
+        result.insert( { year.first, sum } );
+    }
+
+    return result;
 }
 
 std::map<QString, std::pair<QString, QString> > DataHandler::bestAndWorstTimesForDistance(const QString distance) const

@@ -17,6 +17,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void dataReady();
+
 private:
 
     DataHandler *m_dataHandler;

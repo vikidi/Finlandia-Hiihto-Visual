@@ -14,7 +14,7 @@
 #include "APIs/finlandiaapi.h"
 #include "APIs/localapi.h"
 
-class DataHandler : QObject
+class DataHandler : public QObject
 {
     Q_OBJECT
 
@@ -179,6 +179,7 @@ private:
     FinlandiaAPI *m_finlandiaAPI;
     LocalAPI *m_localAPI;
 
+    // < Year, < Distance, Row< Column< Value > > > >
     std::map<QString, std::map<QString,
                 std::vector<std::vector<std::string>>>> m_data;
 };

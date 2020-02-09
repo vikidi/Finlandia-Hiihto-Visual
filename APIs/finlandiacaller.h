@@ -10,7 +10,7 @@
 
 // TODO: What to do in situations having more than 10 000 results?
 
-class FinlandiaCaller : QObject
+class FinlandiaCaller : public QObject
 {
     Q_OBJECT
 

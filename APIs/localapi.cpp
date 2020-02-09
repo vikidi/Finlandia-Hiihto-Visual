@@ -126,7 +126,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > L
         f.close();
     }
 
-    return {};
+    return data;
 }
 
 bool LocalAPI::needsToBeLoadedFromWeb()
