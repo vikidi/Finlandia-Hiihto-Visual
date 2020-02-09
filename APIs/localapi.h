@@ -41,7 +41,7 @@ private:
     bool isDataCorrupted();
 
     ///
-    /// \brief Checks if there is data to be read.
+    /// \brief Checks if there even is data to be read.
     ///
     bool isDataAvailable();
 };

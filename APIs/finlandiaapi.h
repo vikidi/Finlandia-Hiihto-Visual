@@ -26,7 +26,7 @@ private:
     std::mutex m_mtx;
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> m_data;
 
-    int ready;
+    int m_ready;
     std::atomic_int m_runners;
 };
 

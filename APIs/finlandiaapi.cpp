@@ -5,7 +5,7 @@
 #include <QDebug>
 
 FinlandiaAPI::FinlandiaAPI():
-    ready(0),
+    m_ready(0),
     m_runners(0)
 {
 
@@ -47,18 +47,22 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
 
     // REAL DEAL
     //unsigned long long const amount = matkat.size() * 2;
-    ready = 0;
+    m_ready = 0;
     m_runners = 0;
+
     int optimalAmountOfThreads(std::thread::hardware_concurrency());
     std::cout << optimalAmountOfThreads << " concurrent threads are supported.\n";
+
     if(optimalAmountOfThreads < 1)
     {
         std::cout << "Number of concurrent threads is not well defined.\n"
                      "Setting it to 4\n";
         optimalAmountOfThreads = 4;
     }
+
     std::vector<std::thread> threads;
     threads.reserve(matkat.size()*(2020-1974));
+
     int j = 0;
     for(int i = 1974; i < 2020; ++i) {
         for(auto m : matkat) {
@@ -105,9 +109,9 @@ void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data, QStrin
         m_data[year].insert( {distance, data} );
     }
 
-    ready++;
+    m_ready++;
 
-    std::cout << ready << ": " << year.toStdString() << " " << distance.toStdString() << std::endl;
+    std::cout << m_ready << ": " << year.toStdString() << " " << distance.toStdString() << std::endl;
     //qDebug() << ready << ": " << year << " " << distance;
 
 }

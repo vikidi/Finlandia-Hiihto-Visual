@@ -141,5 +141,9 @@ bool LocalAPI::isDataCorrupted()
 
 bool LocalAPI::isDataAvailable()
 {
-    return true;
+    if(QDir(DATA_ROOT_NAME).exists()) {
+        return true;
+    }
+
+    return false;
 }
