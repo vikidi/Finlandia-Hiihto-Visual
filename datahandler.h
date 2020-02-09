@@ -11,6 +11,9 @@
 
 #include <QObject>
 
+#include "APIs/finlandiaapi.h"
+#include "APIs/localapi.h"
+
 class DataHandler : QObject
 {
     Q_OBJECT
@@ -172,6 +175,9 @@ private:
     void loadInThread();
 
     bool m_loadOngoing;
+
+    FinlandiaAPI *m_finlandiaAPI;
+    LocalAPI *m_localAPI;
 
     std::map<QString, std::map<QString,
                 std::vector<std::vector<std::string>>>> m_data;

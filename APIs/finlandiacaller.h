@@ -8,6 +8,8 @@
 #include <QNetworkReply>
 #include <mutex>
 
+// TODO: What to do in situations having more than 10 000 results?
+
 class FinlandiaCaller : QObject
 {
     Q_OBJECT

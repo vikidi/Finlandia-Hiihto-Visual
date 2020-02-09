@@ -46,7 +46,6 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     };
 
     // REAL DEAL
-    //unsigned long long const amount = matkat.size() * 2;
     m_ready = 0;
     m_runners = 0;
 

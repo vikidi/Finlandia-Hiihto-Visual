@@ -1,8 +1,5 @@
 #include "datahandler.h"
 
-#include "APIs/finlandiaapi.h"
-#include "APIs/localapi.h"
-
 #include <iostream>
 #include <QDebug>
 #include <QUrlQuery>
@@ -20,6 +17,8 @@
 
 DataHandler::DataHandler():
     m_loadOngoing(false),
+    m_finlandiaAPI(new FinlandiaAPI()),
+    m_localAPI(new LocalAPI()),
     m_data({})
 {
 
@@ -27,7 +26,8 @@ DataHandler::DataHandler():
 
 DataHandler::~DataHandler()
 {
-
+    delete m_finlandiaAPI;
+    delete m_localAPI;
 }
 
 void DataHandler::Initialize()
@@ -144,23 +144,22 @@ void DataHandler::loadInThread()
     using namespace std::chrono;
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-    FinlandiaAPI api = FinlandiaAPI();
-    m_data = api.loadAllData();
+    // Load data either from web or local
+    // depending if local data is available
+    if (m_localAPI->needsToBeLoadedFromWeb()) {
+       m_data = m_finlandiaAPI->loadAllData();
+
+       // Save loaded data in local storage for later use
+       m_localAPI->saveData(m_data);
+    } else {
+        m_data = m_localAPI->loadData();
+    }
 
     // CLOCKING
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
     std::cout << "Data fetch done in " << time_span.count() << " s" << std::endl;
 
-    LocalAPI localAPI = LocalAPI();
-    localAPI.saveData(m_data);
-
-    m_data = localAPI.loadData();
-
-    // CLOCKING
-    high_resolution_clock::time_point t3 = high_resolution_clock::now();
-    duration<double> time_span2 = duration_cast<duration<double>>(t3 - t2);
-    std::cout << "Data save done in " << time_span2.count() << " s" << std::endl;
-
     m_loadOngoing = false;
+    emit loadingReady();
 }
