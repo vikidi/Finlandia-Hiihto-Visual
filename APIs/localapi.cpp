@@ -140,6 +140,21 @@ bool LocalAPI::needsToBeLoadedFromWeb()
     return ((!isDataAvailable()) || isDataCorrupted());
 }
 
+std::map<QString, QString> LocalAPI::readMetaDataFile()
+{
+    return {};
+}
+
+std::vector<std::pair<QString, QString> > LocalAPI::readMD5File()
+{
+    return {};
+}
+
+void LocalAPI::createGeneralMetaDataFile()
+{
+
+}
+
 void LocalAPI::createMD5File()
 {
     // Check if MD5 metadata file already exists

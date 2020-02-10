@@ -33,15 +33,37 @@ public:
 
     ///
     /// \brief
-    ///     Creates file having all the MD5 check sum metadatas
+    ///     Reads the general metadata file
+    /// \return
+    ///     < Key/Data identifier, Value >
     ///
-    void createMD5File();
+    std::map<QString, QString> readMetaDataFile();
 
 private:
     const QString DATA_ROOT_NAME = "FinlandiaData";
     const QString DATA_FILE_NAME = "Data.txt";
     const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
     const QString META_DATA_FILE_NAME = "Metadata.txt";
+
+    ///
+    /// \brief
+    ///     Reads the MD5 checksum metadata file
+    /// \return
+    ///     Results< Path, MD5 checksum >
+    ///
+    std::vector<std::pair<QString, QString>> readMD5File();
+
+    ///
+    /// \brief
+    ///     Creates general metadata file for the data load
+    ///
+    void createGeneralMetaDataFile();
+
+    ///
+    /// \brief
+    ///     Creates file having all the MD5 check sum metadatas
+    ///
+    void createMD5File();
 
     ///
     /// \brief
