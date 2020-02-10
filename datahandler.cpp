@@ -22,7 +22,8 @@ DataHandler::DataHandler():
     m_localAPI(new LocalAPI),
     m_data({})
 {
-
+    // For progress
+    connect(m_finlandiaAPI, &FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
 }
 
 DataHandler::~DataHandler()
@@ -146,6 +147,11 @@ std::vector<std::pair<QString, QString> > DataHandler::teamBestTeams(const QStri
     Q_UNUSED(distance);
 
     return {};
+}
+
+void DataHandler::progressChangedInApi(const int progress)
+{
+    emit progressChanged(progress);
 }
 
 void DataHandler::loadData()

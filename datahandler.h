@@ -166,8 +166,16 @@ public:
     ///
     std::vector<std::pair<QString, QString>> teamBestTeams(const QString year, const QString distance) const;
 
+private slots:
+
+    ///
+    /// \brief
+    ///     One thread finished loading, updates progress and sends signal forward
+    ///
+    void progressChangedInApi(const int);
+
 signals:
-    void progressChanged(const int&);
+    void progressChanged(const int);
     void loadingReady();
 
 private:

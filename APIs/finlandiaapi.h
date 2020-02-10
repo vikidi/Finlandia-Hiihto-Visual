@@ -22,6 +22,11 @@ public:
 
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> loadAllData();
 
+signals:
+    void progressChanged(const int);
+
+private slots:
+
 private:
     void loadInThread(QString, QString);
     void appendData(std::vector<std::vector<std::string> >, QString, QString);
@@ -31,6 +36,9 @@ private:
 
     int m_ready;
     std::atomic_int m_runners;
+
+    int m_totalCalls;
+    int m_currentProgress;
 };
 
 #endif // FINLANDIAAPI_H

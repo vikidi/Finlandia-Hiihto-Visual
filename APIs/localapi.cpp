@@ -136,11 +136,15 @@ bool LocalAPI::needsToBeLoadedFromWeb()
 
 bool LocalAPI::isDataCorrupted()
 {
+    // TODO: Implement to metadata file as MD5 checks
+
     return false;
 }
 
 bool LocalAPI::isDataAvailable()
 {
+    // TODO: Maybe more things to check
+
     if(QDir(DATA_ROOT_NAME).exists()) {
         return true;
     }

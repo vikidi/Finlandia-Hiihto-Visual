@@ -4,6 +4,7 @@
 #include "datahandler.h"
 
 #include <QMainWindow>
+#include <QProgressBar>
 
 namespace Ui {
 class MainWindow;
@@ -19,10 +20,12 @@ public:
 
 private slots:
     void dataReady();
+    void progressChanged(const int);
 
 private:
 
     DataHandler *m_dataHandler;
+    QProgressBar *m_progress;
 
     Ui::MainWindow *ui;
 };

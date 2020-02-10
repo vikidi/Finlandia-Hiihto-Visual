@@ -6,7 +6,9 @@
 
 FinlandiaAPI::FinlandiaAPI():
     m_ready(0),
-    m_runners(0)
+    m_runners(0),
+    m_totalCalls(0),
+    m_currentProgress(0)
 {
 
 }
@@ -48,6 +50,9 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     // REAL DEAL
     m_ready = 0;
     m_runners = 0;
+    m_currentProgress = 0;
+
+    emit progressChanged(0);
 
     int optimalAmountOfThreads(std::thread::hardware_concurrency());
     std::cout << optimalAmountOfThreads << " concurrent threads are supported.\n";
@@ -60,6 +65,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     }
 
     std::vector<std::thread> threads;
+    m_totalCalls = static_cast<int>(matkat.size()*(2020-1974));
     threads.reserve(matkat.size()*(2020-1974));
 
     int j = 0;
@@ -80,6 +86,9 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
         th.join();
     }
 
+    // Loading ready
+    emit progressChanged(100);
+
     // TESTING
     //std::thread th(&FinlandiaAPI::loadInThread, this, QString("2017"), QString("P50"));
     //th.join();
@@ -89,7 +98,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
 
 void FinlandiaAPI::loadInThread(QString year, QString distance)
 {
-    FinlandiaCaller caller = FinlandiaCaller();
+    FinlandiaCaller caller;
 
     std::vector<std::vector<std::string> > data = caller.loadAllData(year, distance);
 
@@ -111,6 +120,11 @@ void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data, QStrin
     m_ready++;
 
     std::cout << m_ready << ": " << year.toStdString() << " " << distance.toStdString() << std::endl;
-    //qDebug() << ready << ": " << year << " " << distance;
+    //qDebug() << m_ready << ": " << year << " " << distance;
 
+    // Update progress
+    if (static_cast<int>(((m_ready / static_cast<double>(m_totalCalls)) * 100)) > m_currentProgress) {
+        emit progressChanged(static_cast<int>((m_ready / static_cast<double>(m_totalCalls)) * 100));
+        m_currentProgress = static_cast<int>((m_ready / static_cast<double>(m_totalCalls)) * 100);
+    }
 }
