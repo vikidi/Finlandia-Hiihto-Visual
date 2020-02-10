@@ -131,7 +131,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > L
 
 bool LocalAPI::needsToBeLoadedFromWeb()
 {
-    return (!isDataAvailable() && isDataCorrupted());
+    return ((!isDataAvailable()) || isDataCorrupted());
 }
 
 bool LocalAPI::isDataCorrupted()
