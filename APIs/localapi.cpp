@@ -19,15 +19,16 @@ LocalAPI::~LocalAPI()
 
 void LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
 {
-    QString path = QFileInfo(QCoreApplication::applicationDirPath()).path();
 
     // If old data is there, delete it
     if(QDir(DATA_ROOT_NAME).exists()) {
+        qDebug() << "Poistetaan kansioita";
         QDir(DATA_ROOT_NAME).removeRecursively();
     }
 
     // Create the root folder
     QDir().mkdir(DATA_ROOT_NAME);
+
 
     // Go through years
     for(auto& year : data) {
@@ -44,7 +45,7 @@ void LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<st
             QDir().mkdir(dfolder);
 
             // Create file with the rows
-            QFile file(path + QString("/") + dfolder + QString("/") + DATA_FILE_NAME);
+            QFile file(dfolder + QString("/") + DATA_FILE_NAME);
             if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
             {
                 QTextStream stream( &file );
@@ -70,10 +71,10 @@ void LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<st
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > LocalAPI::loadData()
 {
     std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > data = {};
-    QString path = QFileInfo(QCoreApplication::applicationDirPath()).path();
 
     // Go throug data if it is there
     if(!QDir(DATA_ROOT_NAME).exists()) {
+        qDebug() << "Data-folder was not found";
         return {};
     }
 
