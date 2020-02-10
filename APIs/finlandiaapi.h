@@ -1,9 +1,6 @@
 #ifndef FINLANDIAAPI_H
 #define FINLANDIAAPI_H
 
-// TODO: function to get all static data from site
-// such as post-parameters, years, distances... etc.
-
 #include <QObject>
 #include <map>
 #include <unordered_map>

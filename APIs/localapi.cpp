@@ -5,6 +5,8 @@
 #include <QDir>
 #include <QTextStream>
 #include <QDirIterator>
+#include <QCryptographicHash>
+#include <QTextCodec>
 #include <QDebug>
 
 LocalAPI::LocalAPI()
@@ -52,7 +54,7 @@ void LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<st
                 stream.setCodec("UTF-8");
                 stream.setGenerateByteOrderMark(true);
 
-                // Do throug rows
+                // Do through rows
                 for(auto& row : distance.second) {
                     for(auto& value : row) {
                         stream << QString::fromStdString(value) << ";";
@@ -66,6 +68,9 @@ void LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<st
             file.close();
         }
     }
+
+    // Create MD5 checksum metadata file
+    createMD5File();
 }
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > LocalAPI::loadData()
@@ -135,20 +140,88 @@ bool LocalAPI::needsToBeLoadedFromWeb()
     return ((!isDataAvailable()) || isDataCorrupted());
 }
 
+void LocalAPI::createMD5File()
+{
+    // Check if MD5 metadata file already exists
+    if (QFile::exists(MD5_DATA_FILE_NAME)) {
+
+        // Delete it if exists
+        QFile f(MD5_DATA_FILE_NAME);
+        f.remove();
+    }
+
+    // Create file with the rows
+    QFile file(MD5_DATA_FILE_NAME);
+    if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
+    {
+        QTextStream stream( &file );
+        stream.setCodec("UTF-8");
+        stream.setGenerateByteOrderMark(true);
+
+        // Go throug all files
+        QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+        while (it.hasNext()) {
+            QFile f(it.next());
+
+            QString name = f.fileName();
+
+            QByteArray checkSum = getMD5CheckSum(name);
+
+            QString DataAsString = QString(checkSum.toHex());
+
+            // Add row to MD5 metadata file
+            stream << name << ";" << DataAsString << endl;
+        }
+    }
+}
+
+QByteArray LocalAPI::getMD5CheckSum(const QString &file)
+{
+    QFile f(file);
+    if (f.open(QFile::ReadOnly)) {
+        QCryptographicHash hash(QCryptographicHash::Algorithm::Md5);
+        if (hash.addData(&f)) {
+            return hash.result();
+        }
+    }
+    return QByteArray();
+}
+
 bool LocalAPI::isDataCorrupted()
 {
-    // TODO: Implement to metadata file as MD5 checks
-
     return false;
 }
 
 bool LocalAPI::isDataAvailable()
 {
-    // TODO: Maybe more things to check
-
-    if(QDir(DATA_ROOT_NAME).exists()) {
-        return true;
+    if(!QDir(DATA_ROOT_NAME).exists()) {
+        return false;
     }
 
-    return false;
+    // Iterate year folders
+    QDirIterator it(DATA_ROOT_NAME, QDirIterator::NoIteratorFlags);
+    while (it.hasNext()) {
+        it.next();
+
+        if (it.fileName() == "." || it.fileName() == "..") {
+            continue;
+        }
+
+        // Iterate distance folders
+        QDirIterator it2(it.filePath(), QDirIterator::NoIteratorFlags);
+        while (it2.hasNext()) {
+            it2.next();
+
+            if (it2.fileName() == "." || it2.fileName() == "..") {
+                continue;
+            }
+
+            // Check that data file exists
+            if (!QFile::exists(it2.filePath() + QString("/") + DATA_FILE_NAME)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }

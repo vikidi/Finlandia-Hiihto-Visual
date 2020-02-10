@@ -1,8 +1,6 @@
 #ifndef DATAHANDLER_H
 #define DATAHANDLER_H
 
-// TODO: The format for times?
-
 /*
  * This module is supposed to handle
  * most of the data handling and returning
