@@ -22,6 +22,8 @@ private slots:
     void dataReady();
     void progressChanged(const int);
 
+    void on_haunAloitusNappi_clicked();
+
 private:
 
     DataHandler *m_dataHandler;

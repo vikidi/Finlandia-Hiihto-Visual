@@ -33,7 +33,8 @@ SOURCES += \
     APIs/localapi.cpp \
     datahandler.cpp \
     APIs/ilmatiedeapi.cpp \
-    APIs/finlandiacaller.cpp
+    APIs/finlandiacaller.cpp \
+    UI/finlandia.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,10 +42,12 @@ HEADERS += \
     APIs/localapi.h \
     datahandler.h \
     APIs/ilmatiedeapi.h \
-    APIs/finlandiacaller.h
+    APIs/finlandiacaller.h \
+    UI/finlandia.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    UI/finlandia.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
