@@ -38,26 +38,26 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     }
 
     std::vector<std::thread> threads;
-    m_totalCalls = static_cast<int>(TRIPS.size()*(2020-1974));
 
     auto searchVector = std::make_shared<std::vector<FinlandiaAPI::Parameters>>();
-    searchVector->reserve(2020-1974);
+    searchVector->reserve(150); // Educated guess
 
     threads.reserve(optimalAmountOfThreads);
 
 
-    for(int i = 1974; i < 1985; ++i) {
+    for(int i = 1974; i < 2020; ++i) {
         FinlandiaAPI::Parameters search;
         search.year = QString::number(i);
         searchVector->push_back(search);
     }
+
+    m_totalCalls = static_cast<int>(searchVector->size());
 
     for(int i(0); i < optimalAmountOfThreads; i++)
     {
         m_runners++;
         threads.push_back(std::thread(&FinlandiaAPI::loadInThread, this, searchVector));
     }
-
 
     for (auto& th : threads) {
         th.join();
@@ -74,25 +74,38 @@ void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parame
     qDebug() << "Thread started";
     FinlandiaCaller caller;
 
-    bool thisRunnerIsReady(false);
+    bool thisRunnerIsDone(false);
 
     while (m_runners > 0) {
         std::vector<std::vector<std::string> > data = caller.loadData(searchVector);
         if(Q_LIKELY(data.size() > 0))
         {
-            if(Q_UNLIKELY(thisRunnerIsReady))
+            if(Q_UNLIKELY(thisRunnerIsDone))
             {
                 m_runners++;
-                thisRunnerIsReady = false;
+                thisRunnerIsDone = false;
+            }
+            if(int progress(static_cast<int>(100*(m_totalCalls-searchVector->size())/m_totalCalls)); (progress != m_currentProgress))
+            {
+                if((progress < 0) || (progress > 100))
+                {
+                    // Many new calls were added. Increasing m_totalCalls somewhat compensates it
+                    m_currentProgress = 0;
+                    m_totalCalls++;
+                } else
+                {
+                    m_currentProgress = progress;
+                    emit progressChanged(m_currentProgress);
+                }
             }
             // NOTE: Appending data does not work
             //appendData(data, QString::fromStdString(data.at(0).at(0)),QString::fromStdString(data.at(0).at(1)));
         } else
         {
-            if(!thisRunnerIsReady)
+            if(!thisRunnerIsDone && (searchVector->size() == 0))
             {
                 m_runners--;
-                thisRunnerIsReady = true;
+                thisRunnerIsDone = true;
             }
         }
     }
@@ -114,10 +127,4 @@ void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data, QStrin
 
     std::cout << m_ready << ": " << year.toStdString() << " " << distance.toStdString() << std::endl;
     //qDebug() << m_ready << ": " << year << " " << distance;
-
-    // Update progress
-    if (static_cast<int>(((m_ready / static_cast<double>(m_totalCalls)) * 100)) > m_currentProgress) {
-        emit progressChanged(static_cast<int>((m_ready / static_cast<double>(m_totalCalls)) * 100));
-        m_currentProgress = static_cast<int>((m_ready / static_cast<double>(m_totalCalls)) * 100);
-    }
 }

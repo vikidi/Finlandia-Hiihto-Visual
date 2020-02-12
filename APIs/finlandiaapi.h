@@ -78,8 +78,8 @@ private:
     int m_ready;
     std::atomic_int m_runners;
 
-    int m_totalCalls;
-    int m_currentProgress;
+    std::atomic_int m_totalCalls;
+    std::atomic_int m_currentProgress;
 };
 
 #endif // FINLANDIAAPI_H

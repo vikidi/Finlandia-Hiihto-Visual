@@ -273,6 +273,11 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr
     textPart6.setBody(search.lastName.toLatin1());
     multiPart->append(textPart6);
 
+    QHttpPart textPart14;
+    textPart14.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"dnn$ctr1025$Etusivu$txtHakuPaikkakunta2\""));
+    textPart14.setBody(search.city.toLatin1());
+    multiPart->append(textPart14);
+
     QHttpPart textPart15;
     textPart15.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"dnn$ctr1025$Etusivu$txtHakuJoukkue2\""));
     textPart15.setBody(search.team.toLatin1());
@@ -331,9 +336,11 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr
                 if(isTooMuchData(data))
                 {
                     // Divide data to smaller parts
+                    qDebug() << "Received too much data";
 
                     if(search.trip == "kaikki")
                     {
+                        qDebug() << "Dividing to trips";
                         // Divide years to trips
                         for(std::string trip : TRIPS)
                         {
@@ -343,18 +350,20 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr
                             searchVector->push_back(newSearch);
                         }
 
-                    } else if(search.firstName != "")
+                    } else if(search.firstName == "")
                     {
+                        qDebug() << "Dividing to names";
                         // Divide trips to names
-                        std::string alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+                        QString alphabet("abcdefghijklmnopqrstuvwxyzåäö");
                           for( auto c : alphabet) {
                               auto newSearch = search;
-                              newSearch.firstName = QString(c);
+                              newSearch.firstName = c;
                               std::lock_guard<std::mutex> logk(m_mtx);
                               searchVector->push_back(newSearch);
                           }
                     } else
                     {
+                        qDebug() << "Dividing too much!";
                         // Implement even more accureate searches
                     }
 
@@ -378,7 +387,14 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr
 
 bool FinlandiaCaller::isTooMuchData(const std::string &src)
 {
-    return (src.find("<b>Tuloksia yli 10000 kpl. Tarkenna hakua</b>") != std::string::npos);
+    static int first(4); // This function now returns true for first searches
+    if(first)
+    {
+        first--;
+        return true;
+    }
+
+    return ( src.find("<b>Tuloksia yli 10000 kpl. Tarkenna hakua</b>") != std::string::npos);
 }
 
 std::string FinlandiaCaller::escapeAmp(const std::string &src)
