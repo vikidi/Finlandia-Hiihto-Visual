@@ -1,15 +1,9 @@
 #include "mainwindow.h"
-#include "finlandiamodel.hh"
+#include "finlandiamodel.h"
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQMLContext>
-#include <QQmlComponent>
 
-#include <QQuickView>
-
-#include <QApplication>
-#include <QMetaType>
-#include <iostream>
 
 
 int main(int argc, char *argv[])

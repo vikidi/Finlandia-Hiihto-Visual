@@ -1,4 +1,4 @@
-#include "finlandiamodel.hh"
+#include "finlandiamodel.h"
 #include <QProgressBar>
 #include <QObject>
 #include <QDebug>
@@ -6,7 +6,6 @@
 Finlandiamodel::Finlandiamodel(QObject *parent) :
     QObject(parent),
     m_dataHandler(new DataHandler)
-    //m_progress(new QProgressBar(nullptr))
 
 {
 
@@ -16,13 +15,6 @@ Finlandiamodel::Finlandiamodel(QObject *parent) :
     // For progress
     QObject::connect(m_dataHandler, &DataHandler::progressChanged, this, &Finlandiamodel::progressChanged);
 
-    // Remove toolbar
-    //QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
-    //foreach(QToolBar *tb, allToolBars) {
-    //    this->removeToolBar(tb);
-    //}
-
-    //ui->haunAloitusNappi->setDisabled(true);
 }
 
 Finlandiamodel::~Finlandiamodel()
@@ -36,16 +28,30 @@ int Finlandiamodel::progress()
     return progress_now;
 }
 
+bool Finlandiamodel::dataFin()
+{
+    if (progress_now == 100){
+        qDebug() << "datadone";
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+
 void Finlandiamodel::dataReady()
 {
     std::map<QString, int> test = m_dataHandler->amountOfSkiers();
-    //ui->haunAloitusNappi->setDisabled(false);
+    progress_now = 100;
+    emit progressed();
+    emit dataisReady();
 }
 
 void Finlandiamodel::progressChanged(const int progress)
 {
-   progress_now = progress;
-   emit progressed();
+    progress_now = progress;
+    emit progressed();
 }
 
 
@@ -65,3 +71,4 @@ void Finlandiamodel::setUserName(const QString &userName)
 
     qDebug() << "asdasd";
 }
+

@@ -28,7 +28,7 @@ CONFIG += c++17
 CONFIG += openssl-linked
 
 SOURCES += \
-    finlandiamodel.cc \
+    finlandiamodel.cpp \
         main.cpp \
         mainwindow.cpp \
     APIs/finlandiaapi.cpp \
@@ -38,7 +38,7 @@ SOURCES += \
     APIs/finlandiacaller.cpp \
 
 HEADERS += \
-    finlandiamodel.hh \
+    finlandiamodel.h \
         mainwindow.h \
     APIs/finlandiaapi.h \
     APIs/localapi.h \

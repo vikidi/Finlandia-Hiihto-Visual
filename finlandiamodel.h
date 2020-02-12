@@ -12,12 +12,14 @@ class Finlandiamodel : public QObject
     //Testing
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     Q_PROPERTY(int progress READ progress NOTIFY progressed)
+    Q_PROPERTY(bool dataDone READ dataFin NOTIFY dataisReady)
 
 public:
     explicit Finlandiamodel(QObject *parent = nullptr);
     ~Finlandiamodel();
 
     int progress();
+    bool dataFin();
 
     //Testing
     QString userName();
@@ -32,7 +34,7 @@ private slots:
 signals:
     //TEsting
     void userNameChanged();
-
+    void dataisReady();
     void progressed();
 
 private:
