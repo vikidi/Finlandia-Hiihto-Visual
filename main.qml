@@ -23,7 +23,7 @@ Window {
 
         Rectangle {
 
-            property string title: "Red"
+            property string title: "Data Fetch"
 
             color: "#e3e3e3"
 
@@ -62,9 +62,9 @@ Window {
         }
 
         Rectangle {
-            property string title: "Green"
+            property string title: "Joku valikko"
             anchors.fill: parent
-            color: "#e3e3e3"
+
 
             Rectangle {
                 anchors.fill: parent; anchors.margins: 20
@@ -79,21 +79,10 @@ Window {
             }
         }
 
-        Rectangle {
-            property string title: "Blue"
-            anchors.fill: parent; color: "#e3e3e3"
+        MyItem {
+            property string title: "Valikko"
 
-            Rectangle {
-                anchors.fill: parent; anchors.margins: 20
-                color: "#7f7fff"
-                Text {
-                    width: parent.width - 20
-                    anchors.centerIn: parent; horizontalAlignment: Qt.AlignHCenter
-                    text: "Violets are blue"
-                    font.pixelSize: 20
-                    wrapMode: Text.WordWrap
-                }
-            }
+
         }
 
     }
