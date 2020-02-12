@@ -1,5 +1,11 @@
 #include "mainwindow.h"
-#include "UI/finlandia.h"
+#include "finlandiamodel.hh"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQMLContext>
+#include <QQmlComponent>
+
+#include <QQuickView>
 
 #include <QApplication>
 #include <QMetaType>
@@ -8,14 +14,14 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QGuiApplication app(argc, argv);
     qRegisterMetaType<QPair<QByteArray,QByteArray>>();
 
-    Finlandia f;
-    f.show();
+    qmlRegisterType<Finlandiamodel>("cppbackend", 1, 0, "BackEnd");
 
-    MainWindow w;
-    w.show();
+    QQmlApplicationEngine engine;
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    return a.exec();
+
+    return app.exec();
 }

@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui network
+QT += quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,6 +28,7 @@ CONFIG += c++17
 CONFIG += openssl-linked
 
 SOURCES += \
+    finlandiamodel.cc \
         main.cpp \
         mainwindow.cpp \
     APIs/finlandiaapi.cpp \
@@ -34,20 +36,20 @@ SOURCES += \
     datahandler.cpp \
     APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
-    UI/finlandia.cpp
 
 HEADERS += \
+    finlandiamodel.hh \
         mainwindow.h \
     APIs/finlandiaapi.h \
     APIs/localapi.h \
     datahandler.h \
     APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
-    UI/finlandia.h
+
 
 FORMS += \
         mainwindow.ui \
-    UI/finlandia.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

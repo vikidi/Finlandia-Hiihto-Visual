@@ -1,1 +1,7 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/">
+        <file>Testiqmlui.qml</file>
+        <file>main.qml</file>
+        <file>MyItem.qml</file>
+    </qresource>
+</RCC>
