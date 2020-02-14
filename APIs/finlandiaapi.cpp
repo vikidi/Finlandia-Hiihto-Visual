@@ -40,7 +40,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     std::vector<std::thread> threads;
 
     auto searchVector = std::make_shared<std::vector<FinlandiaAPI::Parameters>>();
-    searchVector->reserve(150); // Educated guess
+    searchVector->reserve(220); // Educated guess
 
     threads.reserve(optimalAmountOfThreads);
 
@@ -93,7 +93,7 @@ void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parame
                 {
                     // Many new calls were added. Increasing m_totalCalls somewhat compensates it
                     m_currentProgress = 0;
-                    m_totalCalls++;
+                    m_totalCalls += 10;
                 } else
                 {
                     m_currentProgress = progress;
