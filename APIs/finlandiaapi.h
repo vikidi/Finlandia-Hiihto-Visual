@@ -70,7 +70,8 @@ private slots:
 
 private:
     void loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>>);
-    void appendData(std::vector<std::vector<std::string> >, QString, QString);
+    void appendData(std::vector<std::vector<std::string>>);
+    void removePlankLines();
 
     std::mutex m_mtx;
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> m_data;
