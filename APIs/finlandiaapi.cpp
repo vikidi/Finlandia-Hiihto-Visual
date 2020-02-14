@@ -20,34 +20,7 @@ FinlandiaAPI::~FinlandiaAPI()
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > FinlandiaAPI::loadAllData()
 {
-    std::vector<std::string> matkat = {
-        "P50",
-        "V50",
-        "P100",
-        "P32",
-        "V20",
-        "V32",
-        "V20jun",
-        "P42",
-        "V42",
-        "P20",
-        "P30",
-        "P44",
-        "P60",
-        "P62",
-        "P25",
-        "P35",
-        "P45",
-        "P52",
-        "P53",
-        "P75",
-        "V30",
-        "V45",
-        "V53",
-        "V75"
-    };
 
-    // REAL DEAL
     m_ready = 0;
     m_runners = 0;
     m_currentProgress = 0;
@@ -65,66 +38,207 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     }
 
     std::vector<std::thread> threads;
-    m_totalCalls = static_cast<int>(matkat.size()*(2020-1974));
-    threads.reserve(matkat.size()*(2020-1974));
 
-    int j = 0;
+    auto searchVector = std::make_shared<std::vector<FinlandiaAPI::Parameters>>();
+    searchVector->reserve(220); // Educated guess
+
+    threads.reserve(optimalAmountOfThreads);
+
+
     for(int i = 1974; i < 2020; ++i) {
-        for(auto m : matkat) {
-            while (m_runners >= optimalAmountOfThreads)
-            {
-                // Constant polling could be changed to event-based system using std::condition_variable
-                std::this_thread::sleep_for(std::chrono::microseconds(1));
-            }
-            threads.push_back(std::thread(&FinlandiaAPI::loadInThread, this, QString::number(i), QString::fromStdString(m)));
-            m_runners++;
-            j++;
-        }
+        FinlandiaAPI::Parameters search;
+        search.year = QString::number(i);
+        searchVector->push_back(search);
+    }
+
+    m_totalCalls = static_cast<int>(searchVector->size());
+
+    for(int i(0); i < optimalAmountOfThreads; i++)
+    {
+        m_runners++;
+        threads.push_back(std::thread(&FinlandiaAPI::loadInThread, this, searchVector));
     }
 
     for (auto& th : threads) {
         th.join();
     }
-
     // Loading ready
-    emit progressChanged(100);
 
-    // TESTING
-    //std::thread th(&FinlandiaAPI::loadInThread, this, QString("2017"), QString("P50"));
-    //th.join();
+    removePlankLines();
+
+    emit progressChanged(100);
 
     return m_data;
 }
 
-void FinlandiaAPI::loadInThread(QString year, QString distance)
+void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>> searchVector)
 {
+    qDebug() << "Thread started";
     FinlandiaCaller caller;
 
-    std::vector<std::vector<std::string> > data = caller.loadAllData(year, distance);
+    bool thisRunnerIsDone(false);
 
-    appendData(data, year, distance);
-    m_runners--;
+    while (m_runners > 0) {
+        std::vector<std::vector<std::string> > data = caller.loadData(searchVector);
+        if(Q_LIKELY(data.size() > 0))
+        {
+            if(Q_UNLIKELY(thisRunnerIsDone))
+            {
+                m_runners++;
+                thisRunnerIsDone = false;
+            }
+            if(int progress(static_cast<int>(100*(m_totalCalls-searchVector->size())/m_totalCalls)); (progress != m_currentProgress))
+            {
+                if((progress < 0) || (progress > 100))
+                {
+                    // Many new calls were added. Increasing m_totalCalls somewhat compensates it
+                    m_currentProgress = 0;
+                    m_totalCalls += 10;
+                } else
+                {
+                    m_currentProgress = progress;
+                    emit progressChanged(m_currentProgress);
+                }
+            }
+            appendData(data);
+        } else
+        {
+            if(!thisRunnerIsDone && (searchVector->size() == 0))
+            {
+                // There's no work to do
+                m_runners--;
+                thisRunnerIsDone = true;
+            }
+        }
+    }
+    qDebug() << "Thread ended";
 }
 
-void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data, QString year, QString distance)
+void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
 {
-    std::map<QString, std::vector<std::vector<std::string>>> innerData = { {distance, data} };
-    std::lock_guard<std::mutex> lock(m_mtx);
 
-    if( m_data.find(year) == m_data.end() ) {
-        m_data.insert( {year, innerData} );
-    } else {
-        m_data[year].insert( {distance, data} );
+    QString year(QString::fromStdString(data.at(0).at(0)));
+
+
+    // Sort the data
+    std::vector<std::vector<std::vector<std::string>>> sortedData;
+    for(std::vector<std::string>& row : data)
+    {
+        if(int ranking(std::stoi(row.at(3))); ranking < 1)
+        {
+            // Someone got better than 1st place
+        } else
+        {
+            int correctTripIndex(0);
+            bool correctTripIndexFound(false);
+            for(int index(0); index < static_cast<int>(sortedData.size()); index++)
+            {
+                if(sortedData.at(index).at(0).at(1) == row.at(1))
+                {
+                    correctTripIndex = index;
+                    correctTripIndexFound = true;
+                    break;
+                }
+            }
+            if(correctTripIndexFound)
+            {
+                // Trip was already in list
+
+                bool addNewRow(true);
+                for(auto oldRow : sortedData.at(correctTripIndex))
+                {
+                    if(oldRow.at(7) == row.at(7))
+                    {
+                        // Duplicate name
+                        if(oldRow == row)
+                        {
+                            // Duplicate
+                            addNewRow = false;
+                        }
+                    }
+                }
+                if(addNewRow)
+                {
+                    sortedData.at(correctTripIndex).push_back(row);
+                }
+            } else
+            {
+                // This is a new trip
+                std::vector<std::vector<std::string>> newRow{row};
+                sortedData.push_back(newRow);
+            }
+        }
     }
 
-    m_ready++;
 
-    std::cout << m_ready << ": " << year.toStdString() << " " << distance.toStdString() << std::endl;
-    //qDebug() << m_ready << ": " << year << " " << distance;
+    std::lock_guard<std::mutex> lock(m_mtx);
 
-    // Update progress
-    if (static_cast<int>(((m_ready / static_cast<double>(m_totalCalls)) * 100)) > m_currentProgress) {
-        emit progressChanged(static_cast<int>((m_ready / static_cast<double>(m_totalCalls)) * 100));
-        m_currentProgress = static_cast<int>((m_ready / static_cast<double>(m_totalCalls)) * 100);
+
+    if(m_data.find(year) == m_data.end())
+    {
+        // No data for that year
+        // Create empty fields to maps
+
+        std::map<QString, std::vector<std::vector<std::string>>> newYear;
+        for(auto trip : TRIPS)
+        {
+            newYear.insert({QString::fromStdString(trip),{}});
+        }
+        m_data.insert({year, newYear});
+
+    }
+
+    for(auto& trip : sortedData)
+    {
+        std::vector<std::vector<std::string>> newTrip(trip.size());
+        newTrip.resize(trip.size());
+        for(auto& row : trip)
+        {
+            while (static_cast<int>(newTrip.size()) < std::stoi(row.at(3)))
+            {
+                // Make sure newTrip is not too small
+                newTrip.push_back({});
+            }
+            auto& oldData = m_data[year][QString::fromStdString(trip.at(0).at(1))];
+            for(auto& oldRow : oldData)
+            {
+                bool duplicatefound(false);
+                for(auto& newRow : newTrip)
+                {
+                    if(newRow == oldRow)
+                    {
+                        duplicatefound = true;
+                        break;
+                    }
+                }
+                if(duplicatefound)
+                {
+                    oldData = {};
+                }
+            }
+            newTrip.at(std::stoi(row.at(3))-1) = row;
+        }
+        m_data[year][QString::fromStdString(trip.at(0).at(1))] = newTrip;
+    }
+
+}
+
+void FinlandiaAPI::removePlankLines()
+{
+    std::lock_guard<std::mutex> lock(m_mtx);
+
+    for(auto& years : m_data)
+    {
+        for(auto& trips : years.second)
+        {
+            for(auto it = trips.second.begin(); it != trips.second.end(); it++)
+            {
+                if(it->size() == 0)
+                {
+                    trips.second.erase(it);
+                    it--;
+                }
+            }
+        }
     }
 }

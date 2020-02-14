@@ -2,11 +2,14 @@
 #define FINLANDIACALLER_H
 
 #include <QObject>
+#include <memory>
 #include <unordered_map>
 #include <map>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <mutex>
+#include "finlandiaapi.h"
+
 
 class FinlandiaCaller : public QObject
 {
@@ -21,6 +24,8 @@ public:
     /// \return All data: < < year, distance >, < rows< row< value > > > >
     ///
     std::vector<std::vector<std::string>> loadAllData(QString, QString);
+
+    std::vector<std::vector<std::string>> loadData(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>>);
 
 signals:
 
@@ -41,6 +46,7 @@ private:
 
     QNetworkAccessManager *m_manager;
     QNetworkReply *m_reply;
+    static std::mutex m_mtx;
 };
 
 #endif // FINLANDIACALLER_H
