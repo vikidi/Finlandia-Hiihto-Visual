@@ -145,6 +145,5 @@ Rectangle{
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         text: "Lisää hakukriteerit"
-
     }
 }

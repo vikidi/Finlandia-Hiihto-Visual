@@ -7,24 +7,11 @@ Rectangle{
     anchors.fill: parent
     color: "#068d9d"
     Grid{
-        Rectangle{
-            color: "#b9d6f2"
-            width: 600; height: 800
-            ListView{
 
-                Text{
-                    id: urheilijaotsikko
-                    text: "Urheilija"
-                    font.pointSize: 24
-                }
-                Valikkorivi{
-                    id: urheilijaosuus
-                    anchors.top: urheilijaotsikko.bottom
-                    filtteritexti: "Joku filtteri jee"
-                }
+            EsitysvalikkoKilpailu{
 
             }
-        }
+
         Rectangle{
             color: "#80ded9"
             width: 600
