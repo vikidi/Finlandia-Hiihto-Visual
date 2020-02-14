@@ -48,7 +48,7 @@ public:
     ~FinlandiaAPI();
 
     struct Parameters {
-        QString year = "";
+        QString year = "kaikki";
         QString trip = "kaikki";
         QString gender = "kaikki";
         QString age = "kaikki";
