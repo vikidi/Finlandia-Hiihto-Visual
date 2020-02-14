@@ -387,14 +387,7 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr
 
 bool FinlandiaCaller::isTooMuchData(const std::string &src)
 {
-    static int first(4); // This function now returns true for first searches
-    if(first)
-    {
-        first--;
-        return true;
-    }
-
-    return ( src.find("<b>Tuloksia yli 10000 kpl. Tarkenna hakua</b>") != std::string::npos);
+    return ( src.find("Tuloksia yli 10000 kpl. Tarkenna hakua") != std::string::npos);
 }
 
 std::string FinlandiaCaller::escapeAmp(const std::string &src)
