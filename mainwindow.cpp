@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+// DEBUG
+#include "interfacefilter.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_dataHandler(new DataHandler),
@@ -30,7 +33,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::dataReady()
 {
-    std::map<QString, int> test = m_dataHandler->amountOfSkiers();
+    std::map<InterfaceFilter::Filters, QString> filter = {
+        {InterfaceFilter::YEAR, "2017"}
+    };
+
+    std::vector<std::vector<std::string>> test = m_dataHandler->getDataWithFilter(filter);
 }
 
 void MainWindow::progressChanged(const int progress)
