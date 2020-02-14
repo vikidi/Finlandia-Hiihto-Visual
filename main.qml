@@ -10,7 +10,7 @@ Window {
     width: 1200
     height: 800
     title: qsTr("Lujamainen Finlandia-hiihto")
-    color: "#809bce"
+    color: "#80ded9"
 
     BackEnd {
         id: backend
