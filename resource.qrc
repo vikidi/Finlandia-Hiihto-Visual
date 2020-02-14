@@ -6,5 +6,7 @@
         <file>Esitysvalikko.qml</file>
         <file>Valikkorivi.qml</file>
         <file>ValikkoriviText.qml</file>
+        <file>ListedResults.qml</file>
+        <file>ListedModel.qml</file>
     </qresource>
 </RCC>
