@@ -148,9 +148,9 @@ bool InterfaceFilter::validateName(QString filterValue)
     std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
         [](unsigned char c){ return std::tolower(c); });
 
-    QString alphabets("abcdefghijklmnopqrstuvwxyzåäö ");
+    QString alphabets("?+-_\\/`´'*.:,;€^¨~|=})]([{&%¤$#£\"@!½§<>");
     for(auto& letter : filterVal) {
-        if(!alphabets.contains(letter)) {
+        if(alphabets.contains(letter)) {
             return false;
         }
     }

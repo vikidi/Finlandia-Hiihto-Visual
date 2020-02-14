@@ -84,7 +84,7 @@ void MainWindow::dataReady()
 
     // EMPTY, not passing filter validation
     filter = {
-        {InterfaceFilter::DISTANCE, "O?."}
+        {InterfaceFilter::NAME, "O?."}
     };
 
     test = m_dataHandler->getDataWithFilter(filter);
