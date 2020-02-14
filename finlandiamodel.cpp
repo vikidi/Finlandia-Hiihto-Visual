@@ -5,7 +5,9 @@
 
 Finlandiamodel::Finlandiamodel(QObject *parent) :
     QObject(parent),
-    m_dataHandler(new DataHandler)
+    m_dataHandler(new DataHandler),
+    listIndex(0),
+    lastOfListTrue(false)
 
 {
 
@@ -37,6 +39,22 @@ bool Finlandiamodel::dataFin()
     else{
         return false;
     }
+}
+
+void Finlandiamodel::updateListIndex()
+{
+    if(!isLastOfList()){
+
+    } else {
+        listIndex = 0;
+        lastOfListTrue = false;
+    }
+}
+
+
+bool Finlandiamodel::isLastOfList()
+{
+    return lastOfListTrue;
 }
 
 

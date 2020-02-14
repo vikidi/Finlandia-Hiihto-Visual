@@ -8,5 +8,7 @@
         <file>ValikkoriviText.qml</file>
         <file>Radionappi.qml</file>
         <file>EsitysvalikkoKilpailu.qml</file>
+        <file>ListedResults.qml</file>
+        <file>ListedModel.qml</file>
     </qresource>
 </RCC>

@@ -9,8 +9,8 @@ Window {
     visible: true
     width: 1200
     height: 800
-    title: qsTr("Hello World")
-    color: "#80ded9"
+    title: qsTr("Lujamainen Finlandia-hiihto")
+    color: "#809bce"
 
     BackEnd {
         id: backend
@@ -21,6 +21,8 @@ Window {
         id: tabs
         width: 1200; height: 800
 
+
+        // DATA FETCHING TAB:
         Rectangle {
 
             property string title: "Data Fetch"
@@ -60,6 +62,7 @@ Window {
             }
         }
 
+        // VALIKKO 1
         Rectangle {
             property string title: "Joku valikko"
             anchors.fill: parent
@@ -78,6 +81,7 @@ Window {
             }
         }
 
+        // KISANHAKU JA -LISÄYS TAB
         Yleishaku{
             property string title: "Yleishaku"
             anchors.left: parent.left
@@ -85,11 +89,22 @@ Window {
             anchors.leftMargin: 250
             anchors.fill: parent
 
-
         }
+
+        // TULOSTEN LISÄSUODATUS
         Esitysvalikko{
             property string title: "Esitysvalinnat"
         }
+
+        // TODO: Hakujen listaus
+
+
+        // TULOKSET TAB
+        ListedResults {
+            property string title: "Tulokset"
+        }
+
+        // TODO: GRAAFINEN ESITYSTAB
 
     }
 }
