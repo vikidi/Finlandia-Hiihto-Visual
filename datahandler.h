@@ -88,6 +88,42 @@ private:
     ///
     void filterByYear(QString filterValue, std::vector<std::vector<std::string>>& prevData);
 
+    std::vector<std::vector<std::string>> filterByYearRange(QString filterValue);
+    void filterByYearRange(QString filterValue, std::vector<std::vector<std::string>>& prevData);
+
+    std::vector<std::vector<std::string>> filterByDistance(QString filterValue);
+    void filterByDistance(QString filterValue, std::vector<std::vector<std::string>>& prevData);
+
+    std::vector<std::vector<std::string>> filterByName(QString filterValue){}
+    void filterByName(QString filterValue, std::vector<std::vector<std::string>>& prevData){}
+
+    std::vector<std::vector<std::string>> filterByTimeRange(QString filterValue) {}
+    void filterByTimeRange(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByPlace(QString filterValue) {}
+    void filterByPlace(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByPlaceMen(QString filterValue) {}
+    void filterByPlaceMen(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByPlaceWomen(QString filterValue) {}
+    void filterByPlaceWomen(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterBySex(QString filterValue) {}
+    void filterBySex(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByCity(QString filterValue) {}
+    void filterByCity(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByNationality(QString filterValue) {}
+    void filterByNationality(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByBirthYear(QString filterValue) {}
+    void filterByBirthYear(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByTeam(QString filterValue) {}
+    void filterByTeam(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
     bool m_loadOngoing;
 
     FinlandiaAPI *m_finlandiaAPI;

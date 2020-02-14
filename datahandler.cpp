@@ -168,7 +168,7 @@ void DataHandler::filterByYear(QString filterValue, std::vector<std::vector<std:
     // Go through all rows and add rows that pass the filter to the
     // temporary data structure
     std::vector<std::vector<std::string> > data = {};
-    for(auto& row : prevData) {
+    for(auto row : prevData) {
 
         // Wrong amount of columns, remove row
         if (row.size() != ROW_SIZE) {
@@ -176,6 +176,125 @@ void DataHandler::filterByYear(QString filterValue, std::vector<std::vector<std:
         }
 
         if (row[IndexInData::YEAR] == filterValue.toStdString()) {
+            data.emplace_back(row);
+        }
+    }
+
+    // Return the filtered data
+    prevData = data;
+    return;
+}
+
+std::vector<std::vector<std::string> > DataHandler::filterByYearRange(QString filterValue)
+{
+    std::vector<std::vector<std::string>> data = {};
+
+    if (filterValue == "") {
+        return {};
+    }
+
+    // Should be in style firstYear;secondYear eg. 2014;2018
+    QStringList years = filterValue.split(";");
+
+    int lower = years[0].toInt();
+    int upper = years[1].toInt();
+
+    // Go through given years
+    for (int i = lower; i <= upper; i++) {
+
+        // Year not found from data
+        if (m_data.find(filterValue) == m_data.end()) {
+            continue;
+        }
+
+        // Go through distances
+        for(auto dist : m_data[filterValue]) {
+            // Add rows to end of data
+            data.insert( data.end(), dist.second.begin(), dist.second.end() );
+        }
+    }
+
+    return data;
+}
+
+void DataHandler::filterByYearRange(QString filterValue, std::vector<std::vector<std::string> > &prevData)
+{
+    if (filterValue == "" || prevData.size() == 0) {
+        return;
+    }
+
+    // Should be in style firstYear;secondYear eg. 2014;2018
+    QStringList years = filterValue.split(";");
+
+    int lower = years[0].toInt();
+    int upper = years[1].toInt();
+
+    // Go through all rows and add rows that pass the filter to the
+    // temporary data structure
+    std::vector<std::vector<std::string> > data = {};
+
+    for(auto row : prevData) {
+
+        // Wrong amount of columns, remove row
+        if (row.size() != ROW_SIZE) {
+            continue;
+        }
+
+        // If year is between given boundaries, add to vector
+        if (   std::stoi(row[IndexInData::YEAR]) >= lower
+            && std::stoi(row[IndexInData::YEAR]) <= upper) {
+
+            data.emplace_back(row);
+        }
+    }
+
+    // Return the filtered data
+    prevData = data;
+    return;
+}
+
+std::vector<std::vector<std::string> > DataHandler::filterByDistance(QString filterValue)
+{
+    std::vector<std::vector<std::string>> data = {};
+
+    if (filterValue == "") {
+        return {};
+    }
+
+    for (auto& year : m_data) {
+
+        // Distance not found from years data
+        if (year.second.find(filterValue) == year.second.end()) {
+            continue;
+        }
+
+        // Get rows
+        std::vector<std::vector<std::string>> rows = year.second[filterValue];
+
+        // Add rows to end of data
+        data.insert( data.end(), rows.begin(), rows.end() );
+    }
+
+    return data;
+}
+
+void DataHandler::filterByDistance(QString filterValue, std::vector<std::vector<std::string> > &prevData)
+{
+    if (filterValue == "" || prevData.size() == 0) {
+        return;
+    }
+
+    // Go through all rows and add rows that pass the filter to the
+    // temporary data structure
+    std::vector<std::vector<std::string> > data = {};
+    for(auto row : prevData) {
+
+        // Wrong amount of columns, remove row
+        if (row.size() != ROW_SIZE) {
+            continue;
+        }
+
+        if (row[IndexInData::DISTANCE] == filterValue.toStdString()) {
             data.emplace_back(row);
         }
     }
