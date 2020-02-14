@@ -15,6 +15,8 @@
 #include <chrono>
 #include <thread>
 #include <set>
+#include <algorithm>
+#include <cctype>
 
 DataHandler::DataHandler():
     m_loadOngoing(false),
@@ -42,6 +44,7 @@ void DataHandler::Initialize()
 
 std::vector<std::vector<std::string> > DataHandler::getDataWithFilter(std::map<InterfaceFilter::Filters, QString> filters)
 {
+    // Check filter validity
     if (!InterfaceFilter::validateFilter(filters)) {
         // TODO What
         return {};
@@ -60,8 +63,21 @@ std::vector<std::vector<std::string> > DataHandler::getDataWithFilter(std::map<I
 
     // Do the first filtering
     switch(firstFilter.first) {
+
         case InterfaceFilter::YEAR:
             data = filterByYear(firstFilter.second);
+            break;
+
+        case InterfaceFilter::YEAR_RANGE:
+            data = filterByYearRange(firstFilter.second);
+            break;
+
+        case InterfaceFilter::DISTANCE:
+            data = filterByDistance(firstFilter.second);
+            break;
+
+        case InterfaceFilter::NAME:
+            data = filterByName(firstFilter.second);
             break;
 
         default:
@@ -79,6 +95,7 @@ std::vector<std::vector<std::string> > DataHandler::getDataWithFilter(std::map<I
 
 void DataHandler::applyFilterToData(std::map<InterfaceFilter::Filters, QString> filters, std::vector<std::vector<std::string> > &data)
 {
+    // Check filter validity
     if (!InterfaceFilter::validateFilter(filters)) {
         // TODO What
         return;
@@ -94,6 +111,18 @@ void DataHandler::applyFilterToData(std::map<InterfaceFilter::Filters, QString> 
 
             case InterfaceFilter::YEAR:
                 filterByYear(filter.second, data);
+                break;
+
+            case InterfaceFilter::YEAR_RANGE:
+                filterByYearRange(filter.second, data);
+                break;
+
+            case InterfaceFilter::DISTANCE:
+                filterByDistance(filter.second, data);
+                break;
+
+            case InterfaceFilter::NAME:
+                filterByName(filter.second, data);
                 break;
 
             default:
@@ -151,7 +180,7 @@ std::vector<std::vector<std::string> > DataHandler::filterByYear(QString filterV
     }
 
     // Go through distances
-    for(auto dist : m_data[filterValue]) {
+    for(auto& dist : m_data[filterValue]) {
         // Add rows to end of data
         data.insert( data.end(), dist.second.begin(), dist.second.end() );
     }
@@ -168,7 +197,7 @@ void DataHandler::filterByYear(QString filterValue, std::vector<std::vector<std:
     // Go through all rows and add rows that pass the filter to the
     // temporary data structure
     std::vector<std::vector<std::string> > data = {};
-    for(auto row : prevData) {
+    for(auto& row : prevData) {
 
         // Wrong amount of columns, remove row
         if (row.size() != ROW_SIZE) {
@@ -196,19 +225,19 @@ std::vector<std::vector<std::string> > DataHandler::filterByYearRange(QString fi
     // Should be in style firstYear;secondYear eg. 2014;2018
     QStringList years = filterValue.split(";");
 
-    int lower = years[0].toInt();
-    int upper = years[1].toInt();
+    QString lower = years[0];
+    QString upper = years[1];
 
     // Go through given years
-    for (int i = lower; i <= upper; i++) {
+    for (int i = lower.toInt(); i <= upper.toInt(); i++) {
 
         // Year not found from data
-        if (m_data.find(filterValue) == m_data.end()) {
+        if (m_data.find(QString::number(i)) == m_data.end()) {
             continue;
         }
 
         // Go through distances
-        for(auto dist : m_data[filterValue]) {
+        for(auto& dist : m_data[QString::number(i)]) {
             // Add rows to end of data
             data.insert( data.end(), dist.second.begin(), dist.second.end() );
         }
@@ -233,7 +262,7 @@ void DataHandler::filterByYearRange(QString filterValue, std::vector<std::vector
     // temporary data structure
     std::vector<std::vector<std::string> > data = {};
 
-    for(auto row : prevData) {
+    for(auto& row : prevData) {
 
         // Wrong amount of columns, remove row
         if (row.size() != ROW_SIZE) {
@@ -287,7 +316,7 @@ void DataHandler::filterByDistance(QString filterValue, std::vector<std::vector<
     // Go through all rows and add rows that pass the filter to the
     // temporary data structure
     std::vector<std::vector<std::string> > data = {};
-    for(auto row : prevData) {
+    for(auto& row : prevData) {
 
         // Wrong amount of columns, remove row
         if (row.size() != ROW_SIZE) {
@@ -295,6 +324,86 @@ void DataHandler::filterByDistance(QString filterValue, std::vector<std::vector<
         }
 
         if (row[IndexInData::DISTANCE] == filterValue.toStdString()) {
+            data.emplace_back(row);
+        }
+    }
+
+    // Return the filtered data
+    prevData = data;
+    return;
+}
+
+std::vector<std::vector<std::string> > DataHandler::filterByName(QString filterValue)
+{
+    std::vector<std::vector<std::string>> data = {};
+
+    if (filterValue == "") {
+        return {};
+    }
+
+    // Filter value to lower case
+    std::string filterVal = filterValue.toStdString();
+    std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    // Go through years
+    for (auto& year : m_data) {
+
+        // go through distances
+        for (auto& distance : year.second) {
+
+            // Go through rows
+            for (auto& row : distance.second) {
+
+                // Wrong amount of columns, remove row
+                if (row.size() != ROW_SIZE) {
+                    continue;
+                }
+
+                // Name to lower case
+                std::string name = row[IndexInData::NAME];
+                std::transform(name.begin(), name.end(), name.begin(),
+                    [](unsigned char c){ return std::tolower(c); });
+
+                // If name matches, add it to data
+                if (name == filterVal) {
+                    data.emplace_back(row);
+                }
+            }
+        }
+    }
+
+    return data;
+}
+
+void DataHandler::filterByName(QString filterValue, std::vector<std::vector<std::string> > &prevData)
+{
+    if (filterValue == "" || prevData.size() == 0) {
+        return;
+    }
+
+    // Filter value to lower case
+    std::string filterVal = filterValue.toStdString();
+    std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    // Go through all rows and add rows that pass the filter to the
+    // temporary data structure
+    std::vector<std::vector<std::string> > data = {};
+    for(auto& row : prevData) {
+
+        // Wrong amount of columns, remove row
+        if (row.size() != ROW_SIZE) {
+            continue;
+        }
+
+        // Name to lower case
+        std::string name = row[IndexInData::NAME];
+        std::transform(name.begin(), name.end(), name.begin(),
+            [](unsigned char c){ return std::tolower(c); });
+
+        // If name matches, add it to data
+        if (name == filterVal) {
             data.emplace_back(row);
         }
     }

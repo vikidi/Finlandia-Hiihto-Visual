@@ -94,8 +94,8 @@ private:
     std::vector<std::vector<std::string>> filterByDistance(QString filterValue);
     void filterByDistance(QString filterValue, std::vector<std::vector<std::string>>& prevData);
 
-    std::vector<std::vector<std::string>> filterByName(QString filterValue){}
-    void filterByName(QString filterValue, std::vector<std::vector<std::string>>& prevData){}
+    std::vector<std::vector<std::string>> filterByName(QString filterValue);
+    void filterByName(QString filterValue, std::vector<std::vector<std::string>>& prevData);
 
     std::vector<std::vector<std::string>> filterByTimeRange(QString filterValue) {}
     void filterByTimeRange(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}

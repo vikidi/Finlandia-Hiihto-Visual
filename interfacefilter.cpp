@@ -1,6 +1,8 @@
 #include "interfacefilter.h"
 
 #include <QStringList>
+#include <algorithm>
+#include <cctype>
 
 bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::Filters, QString> filters)
 {
@@ -141,8 +143,13 @@ bool InterfaceFilter::validateName(QString filterValue)
         return false;
     }
 
-    QString alphabets("abcdefghijklmnopqrstuvwxyzåäö");
-    for(auto& letter : filterValue) {
+    // Filter value to lower case
+    std::string filterVal = filterValue.toStdString();
+    std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    QString alphabets("abcdefghijklmnopqrstuvwxyzåäö ");
+    for(auto& letter : filterVal) {
         if(!alphabets.contains(letter)) {
             return false;
         }
