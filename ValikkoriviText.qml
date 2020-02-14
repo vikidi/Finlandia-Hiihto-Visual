@@ -4,11 +4,12 @@ import QtQuick.Layouts 1.0
 
 Item {
     property string filtteritexti: "hieno homma"
+    property int leveys: 1600
     height: 50
     width: 1600
     RowLayout{
         id: row1
-        Layout.fillWidth: true
+        width: leveys
         Text{
             text:  filtteritexti
             width: 100

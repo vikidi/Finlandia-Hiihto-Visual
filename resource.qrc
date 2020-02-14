@@ -6,5 +6,6 @@
         <file>Esitysvalikko.qml</file>
         <file>Valikkorivi.qml</file>
         <file>ValikkoriviText.qml</file>
+        <file>Radionappi.qml</file>
     </qresource>
 </RCC>

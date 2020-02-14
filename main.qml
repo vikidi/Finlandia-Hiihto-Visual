@@ -10,7 +10,7 @@ Window {
     width: 1200
     height: 800
     title: qsTr("Hello World")
-    color: "#809bce"
+    color: "#80ded9"
 
     BackEnd {
         id: backend
@@ -82,6 +82,7 @@ Window {
             property string title: "Yleishaku"
             anchors.left: parent.left
             anchors.right: parent.right
+            anchors.leftMargin: 250
             anchors.fill: parent
 
 

@@ -26,7 +26,7 @@ Rectangle{
             }
         }
         Rectangle{
-            color: "#068d9d"
+            color: "#80ded9"
             width: 600
             height: 800
             Text{
