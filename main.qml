@@ -1,16 +1,16 @@
 import QtQuick 2.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
-
-
+import QtQuick.Controls.Styles 1.4
 import cppbackend 1.0
 
 Window {
     id: ikkuna
     visible: true
-    width: 640
-    height: 480
+    width: 1200
+    height: 800
     title: qsTr("Hello World")
+    color: "#809bce"
 
     BackEnd {
         id: backend
@@ -19,13 +19,13 @@ Window {
 
     Testiqmlui {
         id: tabs
-        width: 640; height: 480
+        width: 1200; height: 800
 
         Rectangle {
 
             property string title: "Data Fetch"
 
-            color: "#e3e3e3"
+            color: "#0353a4"
 
             ListView{
                 anchors.fill: parent
@@ -50,7 +50,6 @@ Window {
 
                 }
 
-
                 Text{
                     id: textstring
                     anchors.top: bar.bottom
@@ -68,7 +67,7 @@ Window {
 
             Rectangle {
                 anchors.fill: parent; anchors.margins: 20
-                color: "#7fff7f"
+                color: "#80ded9"
                 TextField {
                     text: backend.userName
                     placeholderText: qsTr("User name")
@@ -79,10 +78,16 @@ Window {
             }
         }
 
-        MyItem {
-            property string title: "Valikko"
+        Yleishaku{
+            property string title: "Yleishaku"
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.fill: parent
 
 
+        }
+        Esitysvalikko{
+            property string title: "Esitysvalinnat"
         }
 
     }

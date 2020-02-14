@@ -2,6 +2,9 @@
     <qresource prefix="/">
         <file>Testiqmlui.qml</file>
         <file>main.qml</file>
-        <file>MyItem.qml</file>
+        <file>Yleishaku.qml</file>
+        <file>Esitysvalikko.qml</file>
+        <file>Valikkorivi.qml</file>
+        <file>ValikkoriviText.qml</file>
     </qresource>
 </RCC>

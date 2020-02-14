@@ -31,7 +31,7 @@ Item {
                 Rectangle {
                     width: parent.width; height: 1
                     anchors { bottom: parent.bottom; bottomMargin: 1 }
-                    color: "#acb2c2"
+                    color: "#b9d6f2"
                 }
 
                 Text {
