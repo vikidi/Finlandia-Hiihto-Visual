@@ -15,6 +15,11 @@ public:
     explicit Finlandia(QWidget *parent = 0);
     ~Finlandia();
 
+private slots:
+    void on_pushButtonNollaKaikki_clicked();
+
+    void on_pushButtoLisaaHaku_clicked();
+
 private:
     Ui::Finlandia *ui;
 };
