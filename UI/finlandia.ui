@@ -89,7 +89,7 @@
               <widget class="QComboBox" name="ComboBoxSijoitus">
                <item>
                 <property name="text">
-                 <string>Kaikki</string>
+                 <string/>
                 </property>
                </item>
                <item>
@@ -134,97 +134,122 @@
               <widget class="QComboBox" name="comboBoxMatka">
                <item>
                 <property name="text">
-                 <string>50km perinteinen</string>
+                 <string>P50</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>50km vapaa</string>
+                 <string>V50</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>100km perinteinen</string>
+                 <string>P100</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>32km perinteinen</string>
+                 <string>P32</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>20km vapaa</string>
+                 <string>V20</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>32km vapaa</string>
+                 <string>V32</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>20km vapaa, juniorit alle 16v</string>
+                 <string>V20jun</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>42km perinteinen</string>
+                 <string>P42</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>42km vapaa</string>
+                 <string>V42</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>32km vapaa (2014)</string>
+                 <string>P20</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>20km perinteinen (2014)</string>
+                 <string>P30</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>30km perinteinen (2002-2005)</string>
+                 <string>P44</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>44km  perinteinen (2002)</string>
+                 <string>P60</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>60km perinteinen (2003-2005)</string>
+                 <string>P62</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>62km perinteinen (2006)</string>
+                 <string>P25</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>25km perinteinen</string>
+                 <string>P35</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>32km perinteinen</string>
+                 <string>P45</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>35km perinteinen</string>
+                 <string>P52</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>45km perinteinen</string>
+                 <string>P53</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P75</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V30</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V45</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V53</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V75</string>
                 </property>
                </item>
               </widget>
@@ -241,11 +266,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QPlainTextEdit" name="plainTextEditUrheilija">
+              <widget class="QTextEdit" name="textEditUrheilija">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>30</height>
+                 <height>27</height>
                 </size>
                </property>
               </widget>
@@ -590,7 +615,7 @@
               <widget class="QComboBox" name="sukupuoliCB">
                <item>
                 <property name="text">
-                 <string>Molemmat</string>
+                 <string/>
                 </property>
                </item>
                <item>
@@ -637,11 +662,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QTextEdit" name="textEditKotimaa">
+              <widget class="QTextEdit" name="textEditHome">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>30</height>
+                 <height>27</height>
                 </size>
                </property>
               </widget>
@@ -958,9 +983,9 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="EsitysButtons"/>
   <buttongroup name="HaeButtons"/>
-  <buttongroup name="JarjestaButtons"/>
   <buttongroup name="HaettavaTietoButtons"/>
+  <buttongroup name="EsitysButtons"/>
+  <buttongroup name="JarjestaButtons"/>
  </buttongroups>
 </ui>

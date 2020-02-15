@@ -2,6 +2,9 @@
 #define FINLANDIA_H
 
 #include <QMainWindow>
+#include <vector>
+#include "datahandler.h"
+#include "interfacefilter.h"
 
 namespace Ui {
 class Finlandia;
@@ -22,6 +25,7 @@ private slots:
 
 private:
     Ui::Finlandia *ui;
+    std::vector<InterfaceFilter::Filters> previousSrc;
 };
 
 #endif // FINLANDIA_H
