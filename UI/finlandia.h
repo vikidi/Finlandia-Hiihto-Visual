@@ -23,9 +23,16 @@ private slots:
 
     void on_pushButtoLisaaHaku_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::Finlandia *ui;
     std::vector<InterfaceFilter::Filters> previousSrc;
+
+    DataHandler *m_DataHandler;
+
+
+    std::vector<std::vector<std::vector<std::string>>> allSearches;
 };
 
 #endif // FINLANDIA_H

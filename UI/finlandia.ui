@@ -697,6 +697,13 @@
            <item>
             <widget class="QListWidget" name="listWidgetTehtHaut"/>
            </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>Tee haut</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item row="1" column="2">
@@ -952,7 +959,11 @@
           <height>601</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout"/>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QListWidget" name="listWidgetResults"/>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
