@@ -127,7 +127,8 @@ void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
         if(int ranking(std::stoi(row.at(3))); ranking < 1)
         {
             // Someone got better than 1st place
-        } else
+        }
+        else
         {
             int correctTripIndex(0);
             bool correctTripIndexFound(false);
