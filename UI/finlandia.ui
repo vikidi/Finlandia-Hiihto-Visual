@@ -33,7 +33,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <attribute name="title">
@@ -966,6 +966,21 @@
         </layout>
        </widget>
       </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Graafit</string>
+       </attribute>
+       <widget class="QChartView" name="graafiWiev">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>11</y>
+          <width>1241</width>
+          <height>581</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -976,7 +991,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -991,12 +1006,19 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QGraphicsView</extends>
+   <header>QtCharts</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="HaeButtons"/>
   <buttongroup name="HaettavaTietoButtons"/>
-  <buttongroup name="EsitysButtons"/>
+  <buttongroup name="HaeButtons"/>
   <buttongroup name="JarjestaButtons"/>
+  <buttongroup name="EsitysButtons"/>
  </buttongroups>
 </ui>
