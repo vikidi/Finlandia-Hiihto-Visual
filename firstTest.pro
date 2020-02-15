@@ -34,7 +34,8 @@ SOURCES += \
     datahandler.cpp \
     APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
-    UI/finlandia.cpp
+    UI/finlandia.cpp \
+    interfacefilter.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     datahandler.h \
     APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
-    UI/finlandia.h
+    UI/finlandia.h \
+    interfacefilter.h
 
 FORMS += \
         mainwindow.ui \

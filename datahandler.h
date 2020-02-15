@@ -11,6 +11,7 @@
 
 #include "APIs/finlandiaapi.h"
 #include "APIs/localapi.h"
+#include "interfacefilter.h"
 
 class DataHandler : public QObject
 {
@@ -22,147 +23,14 @@ public:
 
     void Initialize();
 
-    /* PUBLIC FUNCTIONS TO ACCESS DATA */
+    /* PUBLIC INTERFACE */
 
-    ///
-    /// \brief
-    ///     Gives all skiers that were in goal between given times
-    /// \param year
-    ///     Year to examine
-    /// \param lowerBound
-    ///     Lower bound for the time, given in format ???
-    /// \param upperBound
-    ///     Upper bound for the time, given in format ???
-    /// \return
-    ///     < Distance, < Results < Time, Skier > >
-    ///
-    std::map<QString, std::vector<std::pair<QString, QString>>> finishedWithinTimes(const QString year, const QString lowerBound, const QString upperBound) const;
+    std::vector<std::vector<std::string>> getDataWithFilter(std::map<InterfaceFilter::Filters, QString> filters);
 
-    ///
-    /// \brief
-    ///     Gives results from same distance on two different years
-    /// \param distance
-    ///     The distance to get
-    /// \param firstYear
-    ///     The first year to compare
-    /// \param secondYear
-    ///     The second year to compare
-    /// \return
-    ///     < Year, < Results < Time, Skier > > >
-    ///
-    std::map<QString, std::vector<std::pair<QString, QString>>> compareSameDistanceDifferentYears(const QString distance, const QString firstYear, const QString secondYear) const;
+    void applyFilterToData(std::map<InterfaceFilter::Filters, QString> filters,
+                           std::vector<std::vector<std::string>>& data);
 
-    ///
-    /// \brief
-    ///     Gives results from same year on different distances
-    /// \param year
-    ///     The year te get
-    /// \param firstDistance
-    ///     First distance to compare
-    /// \param secondDistance
-    ///     Second distance to compare
-    /// \return
-    ///     < Distance, < Results < Time, Skier > > >
-    ///
-    std::map<QString, std::vector<std::pair<QString, QString>>> compareSameYearDifferentDistances(const QString year, const QString firstDistance, const QString secondDistance) const;
-
-    ///
-    /// \brief
-    ///     Gives the amount of skiers for each year
-    /// \return
-    ///     < Year, Amount >
-    ///
-    std::map<QString, int> amountOfSkiers() const;
-
-    ///
-    /// \brief
-    ///     Gives the best and worst time for a distance from all years
-    /// \param distance
-    ///     The distance to get the results from
-    /// \return
-    ///     < Year, < Best, Worst > >
-    ///
-    std::map<QString, std::pair<QString, QString>> bestAndWorstTimesForDistance(const QString distance) const;
-
-    ///
-    /// \brief
-    ///     Gives average times for a distance for all years
-    /// \param distance
-    ///     The distance to get the results from
-    /// \return
-    ///     < Year, Average >
-    ///
-    std::map<QString, QString> averageTimesForDistance(const QString distance) const;
-
-    ///
-    /// \brief
-    ///     Gives results for one skier in given time period
-    /// \param name
-    ///     Name of the skier
-    /// \return
-    ///     < Distance, < Year, Time > >
-    ///
-    std::map<QString, std::pair<QString, QString>> resultsForOneSkier(const QString name, const QString lowerYear, const QString upperYear) const;
-
-    ///
-    /// \brief
-    ///     Gives average time for given placements between given years
-    /// \param lowerYear
-    ///     Lower bound for year
-    /// \param upperYear
-    ///     Upper bound for year
-    /// \param lowerPlace
-    ///     Lower placement
-    /// \param upperPlace
-    ///     Upper placement
-    /// \return
-    ///     < Distance, < Year, Average > >
-    ///
-    std::map<QString, std::pair<QString, QString>> averageTimeByPlacement(const QString lowerYear, const QString upperYear, const QString lowerPlace, const QString upperPlace) const;
-
-    ///
-    /// \brief
-    ///     Gives the best placement for M/W between given years
-    /// \param lowerYear
-    ///     Lower bound for year
-    /// \param upperYear
-    ///     Upper bound for year
-    /// \param sex
-    ///     Sex, M for men, W for Women (use enum)
-    /// \return
-    ///     < Distance, < Year, Placement > >
-    ///
-    std::map<QString, std::pair<QString, int>> bestPlacementBetweenYears(const QString lowerYear, const QString upperYear, const QString sex) const;
-
-    ///
-    /// \brief
-    ///     Gives results from one year ordered by team name
-    /// \param year
-    ///     The year to get results from
-    /// \return
-    ///     < Distance, Results< Row< Field > > >
-    ///
-    std::map<QString, std::vector<std::vector<QString>>> resultsAlpabeticalByTeam(const QString year) const;
-
-    ///
-    /// \brief
-    ///     Return amount of participants by country
-    /// \return
-    ///     < Year, < Country, Amount > >
-    ///
-    std::map<QString, std::pair<QString, int>> amountOfSkiersByCountry() const;
-
-    ///
-    /// \brief
-    ///     Results for ten best teams for given year and distance
-    /// \param year
-    ///     The year for results
-    /// \param distance
-    ///     The distance for results
-    /// \return
-    ///     < Results< < Team, Total time > > >
-    ///
-    std::vector<std::pair<QString, QString>> teamBestTeams(const QString year, const QString distance) const;
+    /* /PUBLIC INTERFACE */
 
 private slots:
 
@@ -177,8 +45,84 @@ signals:
     void loadingReady();
 
 private:
+
+    // Amount of columns in row
+    const size_t ROW_SIZE = 12;
+    enum IndexInData {
+        YEAR = 0,
+        DISTANCE,
+        TIME,
+        PLACE,
+        PLACE_MEN,
+        PLACE_WOMEN,
+        SEX,
+        NAME,
+        CITY,
+        NATIONALITY,
+        BIRTH_YEAR,
+        TEAM
+    };
+
     void loadData();
     void loadInThread();
+
+    ///
+    /// \brief
+    ///     Filters the whole data by given year
+    /// \param
+    ///     Year to filter by
+    /// \return
+    ///     Data only from given year
+    ///
+    std::vector<std::vector<std::string>> filterByYear(QString filterValue);
+
+    ///
+    /// \brief
+    ///     Filters the given data by the given year
+    /// \param
+    ///     Year to filter by
+    /// \param
+    ///     Data to filter
+    /// \return
+    ///     Filtered data
+    ///
+    void filterByYear(QString filterValue, std::vector<std::vector<std::string>>& prevData);
+
+    std::vector<std::vector<std::string>> filterByYearRange(QString filterValue);
+    void filterByYearRange(QString filterValue, std::vector<std::vector<std::string>>& prevData);
+
+    std::vector<std::vector<std::string>> filterByDistance(QString filterValue);
+    void filterByDistance(QString filterValue, std::vector<std::vector<std::string>>& prevData);
+
+    std::vector<std::vector<std::string>> filterByName(QString filterValue);
+    void filterByName(QString filterValue, std::vector<std::vector<std::string>>& prevData);
+
+    std::vector<std::vector<std::string>> filterByTimeRange(QString filterValue) {}
+    void filterByTimeRange(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByPlace(QString filterValue) {}
+    void filterByPlace(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByPlaceMen(QString filterValue) {}
+    void filterByPlaceMen(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByPlaceWomen(QString filterValue) {}
+    void filterByPlaceWomen(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterBySex(QString filterValue) {}
+    void filterBySex(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByCity(QString filterValue) {}
+    void filterByCity(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByNationality(QString filterValue) {}
+    void filterByNationality(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByBirthYear(QString filterValue) {}
+    void filterByBirthYear(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+
+    std::vector<std::vector<std::string>> filterByTeam(QString filterValue) {}
+    void filterByTeam(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
 
     bool m_loadOngoing;
 
