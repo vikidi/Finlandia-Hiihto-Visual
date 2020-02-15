@@ -47,6 +47,7 @@ std::vector<std::vector<std::string> > DataHandler::getDataWithFilter(std::map<I
     // Check filter validity
     if (!InterfaceFilter::validateFilter(filters)) {
         // TODO What
+        qDebug("filter failed \n");
         return {};
     }
 
@@ -77,6 +78,7 @@ std::vector<std::vector<std::string> > DataHandler::getDataWithFilter(std::map<I
             break;
 
         case InterfaceFilter::NAME:
+            qDebug() << firstFilter.second;
             data = filterByName(firstFilter.second);
             break;
 
