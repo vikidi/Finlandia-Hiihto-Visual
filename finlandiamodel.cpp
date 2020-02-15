@@ -60,7 +60,7 @@ bool Finlandiamodel::isLastOfList()
 
 void Finlandiamodel::dataReady()
 {
-    //std::map<QString, int> test = m_dataHandler->amountOfSkiers();
+
     progress_now = 100;
     emit progressed();
     emit dataisReady();
