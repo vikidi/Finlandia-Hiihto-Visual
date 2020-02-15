@@ -36,9 +36,8 @@ SOURCES += \
     datahandler.cpp \
     APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
-    finlandiacontroller.cpp
-
-    interfacefilter.cpp
+    finlandiacontroller.cpp\
+    interfacefilter.cpp\
 
 
 HEADERS += \
@@ -49,10 +48,9 @@ HEADERS += \
     datahandler.h \
     APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
+    finlandiacontroller.h\
+    interfacefilter.h\
 
-    finlandiacontroller.h
-
-    interfacefilter.h
 
 FORMS += \
         mainwindow.ui \
