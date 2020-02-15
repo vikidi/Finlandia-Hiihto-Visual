@@ -1,6 +1,8 @@
 #include <QWidget>
+#include <QtCharts>
 #include <QPlainTextEdit>
 #include <iostream>
+#include <QDebug>
 #include "finlandia.h"
 #include "UI/finlandia.h"
 #include "ui_finlandia.h"
@@ -9,6 +11,7 @@ Finlandia::Finlandia(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Finlandia),
     m_DataHandler(new DataHandler),
+    m_chart(new QChart()),
     allSearches{}
 {
 
@@ -41,12 +44,6 @@ Finlandia::Finlandia(QWidget *parent) :
     lineseries->append(QPoint(4, 12));
     lineseries->append(QPoint(5, 17));
 
-    QChart *chart = new QChart();
-    chart->addSeries(barseries);
-    chart->addSeries(lineseries);
-    chart->setTitle("Line and barchart example");
-
-    ui->graafiWiev->setChart(chart);
 
 
 }
@@ -90,6 +87,10 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
 void Finlandia::on_pushButton_clicked()
 {
+    //Lineseries for test purposes
+    QLineSeries *lineseries = new QLineSeries();
+    lineseries->setName("Esan urotyöt (Kiitos Esa)");
+
     // Going through all of the added search data:
     for (unsigned int i = 0; i < allSearches.size(); i++){
         // Data added per search:
@@ -99,15 +100,22 @@ void Finlandia::on_pushButton_clicked()
         for (unsigned int j= 0; j < data.size(); j++){
             std::vector<std::string> result = data.at(j);
             QString disp = "";
+
+
+            lineseries->append(QPoint(stoi(result.at(0)),stoi(result.at(2))));
             for (unsigned int k = 0; k < result.size(); k++){
                 // Showcasing a result:
+
                 disp += QString::fromStdString(result.at(k)) + " ";
 
             }
             ui->listWidgetResult->addItem(disp);
         }
         ui->listWidgetResult->addItem(+ "\n");
-
+        //Adding the series to m_chart
+        m_chart->addSeries(lineseries);
+        m_chart->createDefaultAxes();
+        ui->graafiWiev->setChart(m_chart);
     }
 
     // ui->listWidgetResults->

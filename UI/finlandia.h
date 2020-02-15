@@ -1,6 +1,6 @@
 #ifndef FINLANDIA_H
 #define FINLANDIA_H
-
+#include <QtCharts>
 #include <QMainWindow>
 #include <vector>
 #include "datahandler.h"
@@ -31,8 +31,9 @@ private:
 
     DataHandler *m_DataHandler;
 
-
     std::vector<std::vector<std::vector<std::string>>> allSearches;
+
+    QChart *m_chart;
 };
 
 #endif // FINLANDIA_H

@@ -33,8 +33,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <attribute name="title">
@@ -698,13 +697,6 @@
            <item>
             <widget class="QListWidget" name="listWidgetTehtHaut"/>
            </item>
-           <item>
-            <widget class="QPushButton" name="pushButton">
-             <property name="text">
-              <string>Tee haut</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </item>
          <item row="1" column="2">
@@ -847,7 +839,7 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="3" column="1">
+               <item row="4" column="1">
                 <widget class="QRadioButton" name="jarjestaSijoitusRP">
                  <property name="text">
                   <string>Sijoituksen mukaan</string>
@@ -877,7 +869,7 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="3" column="0">
+               <item row="4" column="0">
                 <widget class="QRadioButton" name="jarjestaAinutLRP">
                  <property name="text">
                   <string>Ainutlaatuisten mukaan</string>
@@ -925,6 +917,13 @@
             </spacer>
            </item>
            <item>
+            <widget class="QPushButton" name="pushButtoLisaaHaku">
+             <property name="text">
+              <string>Lisää nykyinen haku</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QPushButton" name="pushButtonNollaKaikki">
@@ -934,9 +933,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButtoLisaaHaku">
+              <widget class="QPushButton" name="pushButton">
                <property name="text">
-                <string>Lisää nykyinen haku</string>
+                <string>Tee haut</string>
                </property>
               </widget>
              </item>
