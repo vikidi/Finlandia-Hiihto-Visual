@@ -14,3 +14,13 @@ Finlandia::~Finlandia()
 {
     delete ui;
 }
+
+void Finlandia::on_pushButtonNollaKaikki_clicked()
+{
+
+}
+
+void Finlandia::on_pushButtoLisaaHaku_clicked()
+{
+
+}
