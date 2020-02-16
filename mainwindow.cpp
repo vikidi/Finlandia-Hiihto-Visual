@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
         this->removeToolBar(tb);
     }
 
-    //ui->haunAloitusNappi->setDisabled(true);
+    ui->haunAloitusNappi->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -35,6 +35,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::dataReady()
 {
+    ui->haunAloitusNappi->setDisabled(false);
+
     // OK
     std::map<InterfaceFilter::Filters, QString> filter = {
         {InterfaceFilter::YEAR, "2017"}
