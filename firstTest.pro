@@ -4,8 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
-
+QT       += core gui network charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = firstTest
@@ -34,8 +33,8 @@ SOURCES += \
     datahandler.cpp \
     APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
-    interfacefilter.cpp\
-    UI/finlandia.cpp
+    UI/finlandia.cpp \
+    interfacefilter.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,8 +43,8 @@ HEADERS += \
     datahandler.h \
     APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
-    interfacefilter.h\
-    UI/finlandia.h
+    UI/finlandia.h \
+    interfacefilter.h
 
 FORMS += \
         mainwindow.ui \

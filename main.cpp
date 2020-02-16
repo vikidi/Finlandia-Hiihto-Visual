@@ -11,9 +11,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     qRegisterMetaType<QPair<QByteArray,QByteArray>>();
 
-    Finlandia f;
+    Finlandia f;    
     f.show();
-
     MainWindow w;
     w.show();
 

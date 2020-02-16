@@ -35,6 +35,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::dataReady()
 {
+ //    std::map<QString, int> test = m_dataHandler->amountOfSkiers();
     ui->haunAloitusNappi->setDisabled(false);
 
     // OK
@@ -109,9 +110,6 @@ void MainWindow::dataReady()
     };
 
     test = m_dataHandler->getDataWithFilter(filter);
-
-    //std::map<QString, int> test = m_dataHandler->amountOfSkiers();
-    //ui->haunAloitusNappi->setDisabled(false);
 }
 
 void MainWindow::progressChanged(const int progress)
