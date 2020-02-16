@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
     foreach(QToolBar *tb, allToolBars) {
         this->removeToolBar(tb);
     }
+
+    //ui->haunAloitusNappi->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -105,9 +107,17 @@ void MainWindow::dataReady()
     };
 
     test = m_dataHandler->getDataWithFilter(filter);
+
+    //std::map<QString, int> test = m_dataHandler->amountOfSkiers();
+    //ui->haunAloitusNappi->setDisabled(false);
 }
 
 void MainWindow::progressChanged(const int progress)
 {
     m_progress->setValue(progress);
+}
+
+void MainWindow::on_haunAloitusNappi_clicked()
+{
+    this->close();
 }
