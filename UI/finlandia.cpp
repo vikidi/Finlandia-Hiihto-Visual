@@ -11,9 +11,9 @@
 Finlandia::Finlandia(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Finlandia),
-    m_DataHandler(new DataHandler),
-    m_chart(new QChart()),
-    allSearches{}
+    m_DataHandler(new InternetExplorers::DataHandler),
+    allSearches{},
+    m_chart(new QChart())
 {
     ui->setupUi(this);
     m_DataHandler->Initialize();
@@ -45,8 +45,8 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
                                     + ui->comboBoxMatka->currentText() + " " +
                                     ui->textEditUrheilija->toPlainText() + "\n");
 
-    std::map<InterfaceFilter::Filters, QString> filter = {
-        {InterfaceFilter::NAME, "Mursu Esa"}
+    std::map<InternetExplorers::InterfaceFilter::Filters, QString> filter = {
+        {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
     };
 
     std::vector<std::vector<std::string>> newData = m_DataHandler->getDataWithFilter(filter);

@@ -10,6 +10,8 @@
 #include <mutex>
 #include "finlandiaapi.h"
 
+namespace InternetExplorers
+{
 
 class FinlandiaCaller : public QObject
 {
@@ -25,7 +27,7 @@ public:
     ///
     std::vector<std::vector<std::string>> loadAllData(QString, QString);
 
-    std::vector<std::vector<std::string>> loadData(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>>);
+    std::vector<std::vector<std::string>> loadData(std::shared_ptr<std::vector<InternetExplorers::FinlandiaAPI::Parameters>>);
 
 signals:
 
@@ -48,5 +50,7 @@ private:
     QNetworkReply *m_reply;
     static std::mutex m_mtx;
 };
+
+}
 
 #endif // FINLANDIACALLER_H

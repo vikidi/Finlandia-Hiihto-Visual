@@ -7,6 +7,9 @@
 #include <iostream>
 #include <vector>
 
+namespace InternetExplorers
+{
+
 class LocalAPI : public QObject
 {
     Q_OBJECT
@@ -85,5 +88,7 @@ private:
     ///
     bool isDataAvailable();
 };
+
+}
 
 #endif // LOCALAPI_H

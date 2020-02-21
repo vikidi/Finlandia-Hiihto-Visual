@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cctype>
 
-bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::Filters, QString> filters)
+bool InternetExplorers::InterfaceFilter::validateFilter(std::map<InterfaceFilter::Filters, QString> filters)
 {
     bool isOK = true;
 
@@ -80,7 +80,7 @@ bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::Filters, QString>
     return true;
 }
 
-bool InterfaceFilter::validateYear(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validateYear(QString filterValue)
 {
     if (filterValue == "") {
         return false;
@@ -93,7 +93,7 @@ bool InterfaceFilter::validateYear(QString filterValue)
     return true;
 }
 
-bool InterfaceFilter::validateYearRange(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
 {
     if (filterValue == "") {
         return false;
@@ -124,7 +124,7 @@ bool InterfaceFilter::validateYearRange(QString filterValue)
     return true;
 }
 
-bool InterfaceFilter::validateDistance(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
 {
     if (filterValue == "") {
         return false;
@@ -137,7 +137,7 @@ bool InterfaceFilter::validateDistance(QString filterValue)
     return true;
 }
 
-bool InterfaceFilter::validateName(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validateName(QString filterValue)
 {
     if (filterValue == "") {
         return false;
@@ -158,7 +158,7 @@ bool InterfaceFilter::validateName(QString filterValue)
     return true;
 }
 
-bool InterfaceFilter::validatePlace(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validatePlace(QString filterValue)
 {
     if (filterValue == "") {
         return false;
@@ -172,17 +172,17 @@ bool InterfaceFilter::validatePlace(QString filterValue)
     return true;
 }
 
-bool InterfaceFilter::validatePlaceMen(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validatePlaceMen(QString filterValue)
 {
     return validatePlace(filterValue);
 }
 
-bool InterfaceFilter::validatePlaceWomen(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validatePlaceWomen(QString filterValue)
 {
     return validatePlace(filterValue);
 }
 
-bool InterfaceFilter::validateSex(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validateSex(QString filterValue)
 {
     if (filterValue == "") {
         return false;
@@ -195,7 +195,7 @@ bool InterfaceFilter::validateSex(QString filterValue)
     return true;
 }
 
-bool InterfaceFilter::validateBirthYear(QString filterValue)
+bool InternetExplorers::InterfaceFilter::validateBirthYear(QString filterValue)
 {
     if (filterValue == "") {
         return false;
