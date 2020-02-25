@@ -69,12 +69,15 @@ private:
     void loadData();
     void loadInThread();
 
+    void setRowsByName();
+
     bool applyAllFiltersToRow(std::map<InterfaceFilter::ValueFilters, QString> filters,
                               std::vector<std::string> row);
 
     std::vector<std::vector<std::string>> getAllByYear(QString year);
     std::vector<std::vector<std::string>> getAllByYearRange(QString range);
     std::vector<std::vector<std::string>> getAllByDistance(QString distance);
+    std::vector<std::vector<std::string>> getAllByName(QString name);
 
     ///
     /// \brief
@@ -107,6 +110,8 @@ private:
     // < Year, < Distance, Row< Column< Value > > > >
     std::map<QString, std::map<QString,
                 std::vector<std::vector<std::string>>>> m_data;
+
+    std::unordered_map<QString, std::vector<std::vector<std::string>>> m_dataDyName;
 };
 
 }

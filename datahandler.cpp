@@ -22,7 +22,8 @@ InternetExplorers::DataHandler::DataHandler():
     m_loadOngoing(false),
     m_finlandiaAPI(new InternetExplorers::FinlandiaAPI),
     m_localAPI(new InternetExplorers::LocalAPI),
-    m_data({})
+    m_data({}),
+    m_dataDyName({})
 {
     // For progress
     connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
@@ -71,7 +72,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
         filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::YEAR);
 
         // Apply rest of filters
-        if (filters.size() != 0) {
+        if (filters.size() != 0 && data.size() != 0) {
             applyFilterToData(filters, data);
         }
         return data;
@@ -85,7 +86,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
         filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE);
 
         // Apply rest of filters
-        if (filters.size() != 0) {
+        if (filters.size() != 0 && data.size() != 0) {
             applyFilterToData(filters, data);
         }
         return data;
@@ -99,7 +100,21 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
         filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE);
 
         // Apply rest of filters
-        if (filters.size() != 0) {
+        if (filters.size() != 0 && data.size() != 0) {
+            applyFilterToData(filters, data);
+        }
+        return data;
+    }
+
+    // If not, filter by name if allowed
+    else if (filters.find(InternetExplorers::InterfaceFilter::ValueFilters::NAME) != filters.end()) {
+        data = getAllByName(filters[InternetExplorers::InterfaceFilter::ValueFilters::NAME]);
+
+        // Remove year filter
+        filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::NAME);
+
+        // Apply rest of filters
+        if (filters.size() != 0 && data.size() != 0) {
             applyFilterToData(filters, data);
         }
         return data;
@@ -182,6 +197,8 @@ void InternetExplorers::DataHandler::loadInThread()
         m_data = m_localAPI->loadData();
     }
 
+    setRowsByName();
+
     // CLOCKING
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
@@ -189,6 +206,24 @@ void InternetExplorers::DataHandler::loadInThread()
 
     m_loadOngoing = false;
     emit loadingReady();
+}
+
+void InternetExplorers::DataHandler::setRowsByName()
+{
+    for(auto& year : m_data) {
+        for(auto& distance : year.second) {
+            for(auto& row : distance.second) {
+
+                // Add names as lower case
+                std::string name = row[IndexInData::NAME];
+                std::transform(name.begin(), name.end(), name.begin(),
+                    [](unsigned char c){ return std::tolower(c); });
+
+                // Add the row
+                m_dataDyName[QString::fromStdString(name)].emplace_back(row);
+            }
+        }
+    }
 }
 
 bool InternetExplorers::DataHandler::applyAllFiltersToRow(std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filters, std::vector<std::string> row)
@@ -303,6 +338,20 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getAllByD
     }
 
     return data;
+}
+
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getAllByName(QString name)
+{
+    // name to lower case
+    name = name.toLower();
+
+    std::unordered_map<QString, std::vector<std::vector<std::string>>>::iterator it = m_dataDyName.find(name);
+    if (it != m_dataDyName.end()) {
+        return it->second;
+    }
+
+    // No name found
+    return {};
 }
 
 bool InternetExplorers::DataHandler::filterByYear(std::vector<std::string> row, QString filterValue)
