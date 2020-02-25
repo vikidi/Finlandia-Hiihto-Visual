@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QString>
 #include <vector>
+#include <QException>
 
 // TODO Fix not to be global!
 const std::vector<std::string> DISTANCES = {
@@ -34,13 +35,29 @@ const std::vector<std::string> DISTANCES = {
     "V75"
 };
 
+class FilterException : public QException
+{
+public:
+    FilterException(QString const& text=" ") noexcept
+        :message(text) {}
+    FilterException(const FilterException &re) {this->message = re.message; }
+    ~FilterException() override {}
+
+    void raise() const override { throw *this; }
+    FilterException *clone() const override { return new FilterException(*this); }
+    const char *what() const noexcept override { return this->message.toStdString().c_str(); }
+
+private:
+    QString message;
+};
+
 class InterfaceFilter
 {
 public:
     InterfaceFilter() {}
     ~InterfaceFilter() {}
 
-    enum Filters {
+    enum ValueFilters {
         YEAR = 0,
         YEAR_RANGE,
         DISTANCE,
@@ -55,7 +72,13 @@ public:
         BIRTH_YEAR,
         TEAM
     };
-    static const Filters filters;
+    static const ValueFilters valueFilters;
+
+    enum OrderFilters {
+        PLACEMENT = 0,
+        AGE
+    };
+    static const OrderFilters OrderFilters;
 
     ///
     /// \brief
@@ -63,7 +86,7 @@ public:
     /// \return
     ///     True if filter is valid.
     ///
-    static bool validateFilter(std::map<Filters, QString>);
+    static bool validateFilter(std::map<ValueFilters, QString>);
 
 private:
     static bool validateYear(QString filterValue);

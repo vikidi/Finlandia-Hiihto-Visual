@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::Finlandia *ui;
-    std::vector<InterfaceFilter::Filters> previousSrc;
+    std::vector<InterfaceFilter::ValueFilters> previousSrc;
 
     DataHandler *m_DataHandler;
 

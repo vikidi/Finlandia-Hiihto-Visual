@@ -4,13 +4,13 @@
 #include <algorithm>
 #include <cctype>
 
-bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::Filters, QString> filters)
+bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
 {
     bool isOK = true;
 
     // Can't have year and year range filters both
-    if (filters.find(InterfaceFilter::YEAR) != filters.end()) {
-        if (filters.find(InterfaceFilter::YEAR_RANGE) != filters.end()) {
+    if (filters.find(InterfaceFilter::ValueFilters::YEAR) != filters.end()) {
+        if (filters.find(InterfaceFilter::ValueFilters::YEAR_RANGE) != filters.end()) {
             return false;
         }
     }
@@ -18,55 +18,55 @@ bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::Filters, QString>
     for(auto& filter : filters) {
         switch(filter.first) {
 
-            case InterfaceFilter::YEAR:
+            case InterfaceFilter::ValueFilters::YEAR:
                 isOK = validateYear(filter.second);
                 break;
 
-            case InterfaceFilter::YEAR_RANGE:
+            case InterfaceFilter::ValueFilters::YEAR_RANGE:
                 isOK = validateYearRange(filter.second);
                 break;
 
-            case InterfaceFilter::DISTANCE:
+            case InterfaceFilter::ValueFilters::DISTANCE:
                 isOK = validateDistance(filter.second);
                 break;
 
-            case InterfaceFilter::SEX:
+            case InterfaceFilter::ValueFilters::SEX:
                 isOK = validateSex(filter.second);
                 break;
 
-            case InterfaceFilter::CITY:
+            case InterfaceFilter::ValueFilters::CITY:
                 isOK = validateCity(filter.second);
                 break;
 
-            case InterfaceFilter::NAME:
+            case InterfaceFilter::ValueFilters::NAME:
                 isOK = validateName(filter.second);
                 break;
 
-            case InterfaceFilter::TEAM:
+            case InterfaceFilter::ValueFilters::TEAM:
                 isOK = validateTeam(filter.second);
                 break;
 
-            case InterfaceFilter::TIME_RANGE:
+            case InterfaceFilter::ValueFilters::TIME_RANGE:
                 isOK = validateTimeRange(filter.second);
                 break;
 
-            case InterfaceFilter::PLACE:
+            case InterfaceFilter::ValueFilters::PLACE:
                 isOK = validatePlace(filter.second);
                 break;
 
-            case InterfaceFilter::PLACE_MEN:
+            case InterfaceFilter::ValueFilters::PLACE_MEN:
                 isOK = validatePlaceMen(filter.second);
                 break;
 
-            case InterfaceFilter::PLACE_WOMEN:
+            case InterfaceFilter::ValueFilters::PLACE_WOMEN:
                 isOK = validatePlaceWomen(filter.second);
                 break;
 
-            case InterfaceFilter::BIRTH_YEAR:
+            case InterfaceFilter::ValueFilters::BIRTH_YEAR:
                 isOK = validateBirthYear(filter.second);
                 break;
 
-            case InterfaceFilter::NATIONALITY:
+            case InterfaceFilter::ValueFilters::NATIONALITY:
                 isOK = validateNationality(filter.second);
                 break;
         }
