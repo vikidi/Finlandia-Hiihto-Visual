@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cctype>
 
+#define yeet throw // :)
+
 bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
 {
     bool isOK = true;
@@ -11,7 +13,7 @@ bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::ValueFilters, QSt
     // Can't have year and year range filters both
     if (filters.find(InterfaceFilter::ValueFilters::YEAR) != filters.end()) {
         if (filters.find(InterfaceFilter::ValueFilters::YEAR_RANGE) != filters.end()) {
-            return false;
+            yeet FilterException("Can not use Year and Year range same time");
         }
     }
 
@@ -83,11 +85,11 @@ bool InterfaceFilter::validateFilter(std::map<InterfaceFilter::ValueFilters, QSt
 bool InterfaceFilter::validateYear(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Year value empty");
     }
 
     if (filterValue.toInt() < 1974 || filterValue.toInt() > 2019) {
-        return false;
+        yeet FilterException("Year value not between 1974-2019");
     }
 
     return true;
@@ -96,14 +98,18 @@ bool InterfaceFilter::validateYear(QString filterValue)
 bool InterfaceFilter::validateYearRange(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Year range value empty");
+    }
+
+    if (!filterValue.contains(';')) {
+        yeet FilterException("Year range value does not have separator ';'");
     }
 
     // Should be in style firstYear;secondYear eg. 2014;2018
     QStringList years = filterValue.split(";");
 
     if (years.length() != 2) {
-        return false;
+        yeet FilterException("Year range value does not have two years");
     }
 
     int lower = years[0].toInt();
@@ -113,12 +119,12 @@ bool InterfaceFilter::validateYearRange(QString filterValue)
         || lower > 2019
         || upper < 1974
         || upper > 2019) {
-        return false;
+        yeet FilterException("Year range value is not between range 1974-2019");
     }
 
     // TODO Which is better > or >=?
     if (lower >= upper) {
-        return false;
+        yeet FilterException("Year range values lower bound is bigger than upper");
     }
 
     return true;
@@ -127,11 +133,11 @@ bool InterfaceFilter::validateYearRange(QString filterValue)
 bool InterfaceFilter::validateDistance(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Distance value is empty");
     }
 
     if (std::find(DISTANCES.begin(), DISTANCES.end(), filterValue.toStdString()) == DISTANCES.end()) {
-        return false;
+        yeet FilterException("Distance value is not valid");
     }
 
     return true;
@@ -140,7 +146,7 @@ bool InterfaceFilter::validateDistance(QString filterValue)
 bool InterfaceFilter::validateName(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Name value is empty");
     }
 
     // Filter value to lower case
@@ -151,7 +157,7 @@ bool InterfaceFilter::validateName(QString filterValue)
     QString alphabets("?+-_\\/`´'*.:,;€^¨~|=})]([{&%¤$#£\"@!½§<>");
     for(auto& letter : filterVal) {
         if(alphabets.contains(letter)) {
-            return false;
+            yeet FilterException("Name value contains unallowed characters");
         }
     }
 
@@ -161,12 +167,12 @@ bool InterfaceFilter::validateName(QString filterValue)
 bool InterfaceFilter::validatePlace(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Placing value is empty");
     }
 
     int place = filterValue.toInt();
     if (place < 1) {
-        return false;
+        yeet FilterException("Placing value is smaller than 1");
     }
 
     return true;
@@ -185,11 +191,11 @@ bool InterfaceFilter::validatePlaceWomen(QString filterValue)
 bool InterfaceFilter::validateSex(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Sex value is empty");
     }
 
     if (filterValue != "M" && filterValue != "N") {
-        return false;
+        yeet FilterException("Sex value is not 'M' or 'N'");
     }
 
     return true;
@@ -198,12 +204,12 @@ bool InterfaceFilter::validateSex(QString filterValue)
 bool InterfaceFilter::validateBirthYear(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Birth year value is empty");
     }
 
     // Should be 2 numbers
     if (filterValue.length() != 2) {
-        return false;
+        yeet FilterException("Birth year value does not have 2 numbers");
     }
 
     return true;

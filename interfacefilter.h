@@ -35,20 +35,15 @@ const std::vector<std::string> DISTANCES = {
     "V75"
 };
 
-class FilterException : public QException
+class FilterException : public std::exception
 {
 public:
-    FilterException(QString const& text=" ") noexcept
-        :message(text) {}
-    FilterException(const FilterException &re) {this->message = re.message; }
-    ~FilterException() override {}
-
-    void raise() const override { throw *this; }
-    FilterException *clone() const override { return new FilterException(*this); }
-    const char *what() const noexcept override { return this->message.toStdString().c_str(); }
+    FilterException(const char* msg = " ") : message(msg) {}
+    ~FilterException() {}
+    const char *what() const noexcept { return message.c_str(); }
 
 private:
-    QString message;
+    std::string message;
 };
 
 class InterfaceFilter

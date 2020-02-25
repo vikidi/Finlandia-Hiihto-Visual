@@ -49,7 +49,12 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
         {InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
     };
 
-    std::vector<std::vector<std::string>> newData = m_DataHandler->getDataWithFilter(filter);
+    std::vector<std::vector<std::string>> newData;
+    try {
+        newData = m_DataHandler->getDataWithFilter(filter);
+    } catch (FilterException &e) {
+        std::cout << e.what() << std::endl;
+    }
 
     unsigned long int size = newData.size();
     std::cout << size << std::endl;
