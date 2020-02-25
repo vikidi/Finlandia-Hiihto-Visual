@@ -60,24 +60,24 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     std::vector<std::vector<std::string>> data = {};
 
     // Get first filter
-    std::pair<InterfaceFilter::Filters, QString> firstFilter = *(filters.begin());
+    std::pair<InterfaceFilter::ValueFilters, QString> firstFilter = *(filters.begin());
 
     // Do the first filtering
     switch(firstFilter.first) {
 
-        case InterfaceFilter::YEAR:
+        case InterfaceFilter::ValueFilters::YEAR:
             data = filterByYear(firstFilter.second);
             break;
 
-        case InterfaceFilter::YEAR_RANGE:
+        case InterfaceFilter::ValueFilters::YEAR_RANGE:
             data = filterByYearRange(firstFilter.second);
             break;
 
-        case InterfaceFilter::DISTANCE:
+        case InterfaceFilter::ValueFilters::DISTANCE:
             data = filterByDistance(firstFilter.second);
             break;
 
-        case InterfaceFilter::NAME:
+        case InterfaceFilter::ValueFilters::NAME:
             qDebug() << firstFilter.second;
             data = filterByName(firstFilter.second);
             break;
@@ -111,19 +111,19 @@ void InternetExplorers::DataHandler::applyFilterToData(std::map<InterfaceFilter:
     for(auto& filter : filters) {
         switch(filter.first) {
 
-            case InterfaceFilter::YEAR:
+            case InterfaceFilter::ValueFilters::YEAR:
                 filterByYear(filter.second, data);
                 break;
 
-            case InterfaceFilter::YEAR_RANGE:
+            case InterfaceFilter::ValueFilters::YEAR_RANGE:
                 filterByYearRange(filter.second, data);
                 break;
 
-            case InterfaceFilter::DISTANCE:
+            case InterfaceFilter::ValueFilters::DISTANCE:
                 filterByDistance(filter.second, data);
                 break;
 
-            case InterfaceFilter::NAME:
+            case InterfaceFilter::ValueFilters::NAME:
                 filterByName(filter.second, data);
                 break;
 

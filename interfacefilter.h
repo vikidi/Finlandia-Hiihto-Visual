@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QString>
 #include <vector>
+#include <QException>
 
 namespace InternetExplorers
 {
@@ -36,13 +37,24 @@ const std::vector<std::string> DISTANCES = {
     "V75"
 };
 
+class FilterException : public std::exception
+{
+public:
+    FilterException(const char* msg = " ") : message(msg) {}
+    ~FilterException() {}
+    const char *what() const noexcept { return message.c_str(); }
+
+private:
+    std::string message;
+};
+
 class InterfaceFilter
 {
 public:
     InterfaceFilter() {}
     ~InterfaceFilter() {}
 
-    enum Filters {
+    enum ValueFilters {
         YEAR = 0,
         YEAR_RANGE,
         DISTANCE,
@@ -57,7 +69,13 @@ public:
         BIRTH_YEAR,
         TEAM
     };
-    static const Filters filters;
+    static const ValueFilters valueFilters;
+
+    enum OrderFilters {
+        PLACEMENT = 0,
+        AGE
+    };
+    static const OrderFilters OrderFilters;
 
     ///
     /// \brief
@@ -65,7 +83,7 @@ public:
     /// \return
     ///     True if filter is valid.
     ///
-    static bool validateFilter(std::map<Filters, QString>);
+    static bool validateFilter(std::map<ValueFilters, QString>);
 
 private:
     static bool validateYear(QString filterValue);

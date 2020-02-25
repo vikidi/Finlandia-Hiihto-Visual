@@ -28,9 +28,9 @@ public:
 
     /* PUBLIC INTERFACE */
 
-    std::vector<std::vector<std::string>> getDataWithFilter(std::map<InterfaceFilter::Filters, QString> filters);
+    std::vector<std::vector<std::string>> getDataWithFilter(std::map<InterfaceFilter::ValueFilters, QString> filters);
 
-    void applyFilterToData(std::map<InterfaceFilter::Filters, QString> filters,
+    void applyFilterToData(std::map<InterfaceFilter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
 
     /* /PUBLIC INTERFACE */

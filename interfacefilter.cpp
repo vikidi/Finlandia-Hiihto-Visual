@@ -9,64 +9,64 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<InterfaceFilter
     bool isOK = true;
 
     // Can't have year and year range filters both
-    if (filters.find(InterfaceFilter::YEAR) != filters.end()) {
-        if (filters.find(InterfaceFilter::YEAR_RANGE) != filters.end()) {
-            return false;
+    if (filters.find(InterfaceFilter::ValueFilters::YEAR) != filters.end()) {
+        if (filters.find(InterfaceFilter::ValueFilters::YEAR_RANGE) != filters.end()) {
+            yeet FilterException("Can not use Year and Year range same time");
         }
     }
 
     for(auto& filter : filters) {
         switch(filter.first) {
 
-            case InterfaceFilter::YEAR:
+            case InterfaceFilter::ValueFilters::YEAR:
                 isOK = validateYear(filter.second);
                 break;
 
-            case InterfaceFilter::YEAR_RANGE:
+            case InterfaceFilter::ValueFilters::YEAR_RANGE:
                 isOK = validateYearRange(filter.second);
                 break;
 
-            case InterfaceFilter::DISTANCE:
+            case InterfaceFilter::ValueFilters::DISTANCE:
                 isOK = validateDistance(filter.second);
                 break;
 
-            case InterfaceFilter::SEX:
+            case InterfaceFilter::ValueFilters::SEX:
                 isOK = validateSex(filter.second);
                 break;
 
-            case InterfaceFilter::CITY:
+            case InterfaceFilter::ValueFilters::CITY:
                 isOK = validateCity(filter.second);
                 break;
 
-            case InterfaceFilter::NAME:
+            case InterfaceFilter::ValueFilters::NAME:
                 isOK = validateName(filter.second);
                 break;
 
-            case InterfaceFilter::TEAM:
+            case InterfaceFilter::ValueFilters::TEAM:
                 isOK = validateTeam(filter.second);
                 break;
 
-            case InterfaceFilter::TIME_RANGE:
+            case InterfaceFilter::ValueFilters::TIME_RANGE:
                 isOK = validateTimeRange(filter.second);
                 break;
 
-            case InterfaceFilter::PLACE:
+            case InterfaceFilter::ValueFilters::PLACE:
                 isOK = validatePlace(filter.second);
                 break;
 
-            case InterfaceFilter::PLACE_MEN:
+            case InterfaceFilter::ValueFilters::PLACE_MEN:
                 isOK = validatePlaceMen(filter.second);
                 break;
 
-            case InterfaceFilter::PLACE_WOMEN:
+            case InterfaceFilter::ValueFilters::PLACE_WOMEN:
                 isOK = validatePlaceWomen(filter.second);
                 break;
 
-            case InterfaceFilter::BIRTH_YEAR:
+            case InterfaceFilter::ValueFilters::BIRTH_YEAR:
                 isOK = validateBirthYear(filter.second);
                 break;
 
-            case InterfaceFilter::NATIONALITY:
+            case InterfaceFilter::ValueFilters::NATIONALITY:
                 isOK = validateNationality(filter.second);
                 break;
         }
@@ -83,11 +83,11 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<InterfaceFilter
 bool InternetExplorers::InterfaceFilter::validateYear(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Year value empty");
     }
 
     if (filterValue.toInt() < 1974 || filterValue.toInt() > 2019) {
-        return false;
+        yeet FilterException("Year value not between 1974-2019");
     }
 
     return true;
@@ -96,14 +96,18 @@ bool InternetExplorers::InterfaceFilter::validateYear(QString filterValue)
 bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Year range value empty");
+    }
+
+    if (!filterValue.contains(';')) {
+        yeet FilterException("Year range value does not have separator ';'");
     }
 
     // Should be in style firstYear;secondYear eg. 2014;2018
     QStringList years = filterValue.split(";");
 
     if (years.length() != 2) {
-        return false;
+        yeet FilterException("Year range value does not have two years");
     }
 
     int lower = years[0].toInt();
@@ -113,12 +117,12 @@ bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
         || lower > 2019
         || upper < 1974
         || upper > 2019) {
-        return false;
+        yeet FilterException("Year range value is not between range 1974-2019");
     }
 
     // TODO Which is better > or >=?
     if (lower >= upper) {
-        return false;
+        yeet FilterException("Year range values lower bound is bigger than upper");
     }
 
     return true;
@@ -127,11 +131,11 @@ bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
 bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Distance value is empty");
     }
 
     if (std::find(DISTANCES.begin(), DISTANCES.end(), filterValue.toStdString()) == DISTANCES.end()) {
-        return false;
+        yeet FilterException("Distance value is not valid");
     }
 
     return true;
@@ -140,7 +144,7 @@ bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
 bool InternetExplorers::InterfaceFilter::validateName(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Name value is empty");
     }
 
     // Filter value to lower case
@@ -151,7 +155,7 @@ bool InternetExplorers::InterfaceFilter::validateName(QString filterValue)
     QString alphabets("?+-_\\/`´'*.:,;€^¨~|=})]([{&%¤$#£\"@!½§<>");
     for(auto& letter : filterVal) {
         if(alphabets.contains(letter)) {
-            return false;
+            yeet FilterException("Name value contains unallowed characters");
         }
     }
 
@@ -161,12 +165,12 @@ bool InternetExplorers::InterfaceFilter::validateName(QString filterValue)
 bool InternetExplorers::InterfaceFilter::validatePlace(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Placing value is empty");
     }
 
     int place = filterValue.toInt();
     if (place < 1) {
-        return false;
+        yeet FilterException("Placing value is smaller than 1");
     }
 
     return true;
@@ -185,11 +189,11 @@ bool InternetExplorers::InterfaceFilter::validatePlaceWomen(QString filterValue)
 bool InternetExplorers::InterfaceFilter::validateSex(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Sex value is empty");
     }
 
     if (filterValue != "M" && filterValue != "N") {
-        return false;
+        yeet FilterException("Sex value is not 'M' or 'N'");
     }
 
     return true;
@@ -198,12 +202,12 @@ bool InternetExplorers::InterfaceFilter::validateSex(QString filterValue)
 bool InternetExplorers::InterfaceFilter::validateBirthYear(QString filterValue)
 {
     if (filterValue == "") {
-        return false;
+        yeet FilterException("Birth year value is empty");
     }
 
     // Should be 2 numbers
     if (filterValue.length() != 2) {
-        return false;
+        yeet FilterException("Birth year value does not have 2 numbers");
     }
 
     return true;
