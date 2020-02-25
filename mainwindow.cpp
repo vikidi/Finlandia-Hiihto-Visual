@@ -47,16 +47,28 @@ void MainWindow::dataReady()
         {InternetExplorers::InterfaceFilter::YEAR, "2017"}
     };
 
+    // CLOCKING
+    using namespace std::chrono;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
     try {
-        m_dataHandler->getDataWithFilter(filter);
+       test = m_dataHandler->getDataWithFilter(filter);
     } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
-    // EMPTY, not passing filter validation
+    // CLOCKING
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "Success, YEAR " << time_span.count() << " s" << std::endl;
+
+    // OK
     filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2030"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
     };
+
+    // CLOCKING
+    t1 = high_resolution_clock::now();
 
     try {
         test = m_dataHandler->getDataWithFilter(filter);
@@ -64,71 +76,48 @@ void MainWindow::dataReady()
         std::cout << e.what() << std::endl;
     }
 
-    // OK
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
-    };
-
-    try {
-        m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // EMPTY, not passing filter validation
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2013"}
-    };
-
-    try {
-        m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
+    // CLOCKING
+    t2 = high_resolution_clock::now();
+    time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "Success, YEAR_RANGE " << time_span.count() << " s" << std::endl;
 
     // OK
     filter = {
         {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "V20jun"}
     };
 
+    // CLOCKING
+    t1 = high_resolution_clock::now();
+
     try {
-        m_dataHandler->getDataWithFilter(filter);
+        test = m_dataHandler->getDataWithFilter(filter);
     } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
-    // EMPTY, not passing filter validation
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "P200"}
-    };
-
-    try {
-        m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
+    // CLOCKING
+    t2 = high_resolution_clock::now();
+    time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "Success, DISTANCE " << time_span.count() << " s" << std::endl;
 
     // OK
     filter = {
         {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
     };
 
+    // CLOCKING
+    t1 = high_resolution_clock::now();
+
     try {
-        m_dataHandler->getDataWithFilter(filter);
+        test = m_dataHandler->getDataWithFilter(filter);
     } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
-    // EMPTY, not passing filter validation
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "O?."}
-    };
-
-    try {
-        m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
+    // CLOCKING
+    t2 = high_resolution_clock::now();
+    time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "Success, NAME " << time_span.count() << " s" << std::endl;
 
     // OK, Mursu vaan painaa
     filter = {
@@ -137,23 +126,19 @@ void MainWindow::dataReady()
         {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
     };
 
+    // CLOCKING
+    t1 = high_resolution_clock::now();
+
     try {
-        m_dataHandler->getDataWithFilter(filter);
+        test = m_dataHandler->getDataWithFilter(filter);
     } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
-    // EMPTY, not passing filter validation
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2017"},
-        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
-    };
-
-    try {
-        m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
+    // CLOCKING
+    t2 = high_resolution_clock::now();
+    time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "Success, YEAR, DISTANCE, NAME " << time_span.count() << " s" << std::endl;
 }
 
 void MainWindow::progressChanged(const int progress)
