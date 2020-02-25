@@ -26,7 +26,7 @@ private slots:
 
 private:
 
-    DataHandler *m_dataHandler;
+    InternetExplorers::DataHandler *m_dataHandler;
     QProgressBar *m_progress;
 
     Ui::MainWindow *ui;

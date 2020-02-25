@@ -4,7 +4,7 @@
 #include <thread>
 #include <QDebug>
 
-FinlandiaAPI::FinlandiaAPI():
+InternetExplorers::FinlandiaAPI::FinlandiaAPI():
     m_ready(0),
     m_runners(0),
     m_totalCalls(0),
@@ -13,12 +13,12 @@ FinlandiaAPI::FinlandiaAPI():
 
 }
 
-FinlandiaAPI::~FinlandiaAPI()
+InternetExplorers::FinlandiaAPI::~FinlandiaAPI()
 {
 
 }
 
-std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > FinlandiaAPI::loadAllData()
+std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::FinlandiaAPI::loadAllData()
 {
 
     m_ready = 0;
@@ -71,7 +71,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
     return m_data;
 }
 
-void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>> searchVector)
+void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>> searchVector)
 {
     qDebug() << "Thread started";
     FinlandiaCaller caller;
@@ -114,7 +114,7 @@ void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parame
     qDebug() << "Thread ended";
 }
 
-void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
+void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
 {
 
     QString year(QString::fromStdString(data.at(0).at(0)));
@@ -223,7 +223,7 @@ void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
 
 }
 
-void FinlandiaAPI::removePlankLines()
+void InternetExplorers::FinlandiaAPI::removePlankLines()
 {
     std::lock_guard<std::mutex> lock(m_mtx);
 

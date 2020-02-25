@@ -9,17 +9,17 @@
 #include <QTextCodec>
 #include <QDebug>
 
-LocalAPI::LocalAPI()
+InternetExplorers::LocalAPI::LocalAPI()
 {
 
 }
 
-LocalAPI::~LocalAPI()
+InternetExplorers::LocalAPI::~LocalAPI()
 {
 
 }
 
-void LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
+void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
 {
 
     // If old data is there, delete it
@@ -73,7 +73,7 @@ void LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<st
     createMD5File();
 }
 
-std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > LocalAPI::loadData()
+std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::LocalAPI::loadData()
 {
     std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > data = {};
 
@@ -135,27 +135,27 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > L
     return data;
 }
 
-bool LocalAPI::needsToBeLoadedFromWeb()
+bool InternetExplorers::LocalAPI::needsToBeLoadedFromWeb()
 {
     return ((!isDataAvailable()) || isDataCorrupted());
 }
 
-std::map<QString, QString> LocalAPI::readMetaDataFile()
+std::map<QString, QString> InternetExplorers::LocalAPI::readMetaDataFile()
 {
     return {};
 }
 
-std::vector<std::pair<QString, QString> > LocalAPI::readMD5File()
+std::vector<std::pair<QString, QString> > InternetExplorers::LocalAPI::readMD5File()
 {
     return {};
 }
 
-void LocalAPI::createGeneralMetaDataFile()
+void InternetExplorers::LocalAPI::createGeneralMetaDataFile()
 {
 
 }
 
-void LocalAPI::createMD5File()
+void InternetExplorers::LocalAPI::createMD5File()
 {
     // Check if MD5 metadata file already exists
     if (QFile::exists(MD5_DATA_FILE_NAME)) {
@@ -190,7 +190,7 @@ void LocalAPI::createMD5File()
     }
 }
 
-QByteArray LocalAPI::getMD5CheckSum(const QString &file)
+QByteArray InternetExplorers::LocalAPI::getMD5CheckSum(const QString &file)
 {
     QFile f(file);
     if (f.open(QFile::ReadOnly)) {
@@ -202,12 +202,12 @@ QByteArray LocalAPI::getMD5CheckSum(const QString &file)
     return QByteArray();
 }
 
-bool LocalAPI::isDataCorrupted()
+bool InternetExplorers::LocalAPI::isDataCorrupted()
 {
     return false;
 }
 
-bool LocalAPI::isDataAvailable()
+bool InternetExplorers::LocalAPI::isDataAvailable()
 {
     if(!QDir(DATA_ROOT_NAME).exists()) {
         return false;

@@ -1,6 +1,6 @@
 #include "ilmatiedeapi.h"
 
-IlmatiedeAPI::IlmatiedeAPI()
+InternetExplorers::IlmatiedeAPI::IlmatiedeAPI()
 {
 
 }

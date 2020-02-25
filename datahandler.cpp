@@ -18,23 +18,23 @@
 #include <algorithm>
 #include <cctype>
 
-DataHandler::DataHandler():
+InternetExplorers::DataHandler::DataHandler():
     m_loadOngoing(false),
-    m_finlandiaAPI(new FinlandiaAPI),
-    m_localAPI(new LocalAPI),
+    m_finlandiaAPI(new InternetExplorers::FinlandiaAPI),
+    m_localAPI(new InternetExplorers::LocalAPI),
     m_data({})
 {
     // For progress
-    connect(m_finlandiaAPI, &FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
+    connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
 }
 
-DataHandler::~DataHandler()
+InternetExplorers::DataHandler::~DataHandler()
 {
     delete m_finlandiaAPI;
     delete m_localAPI;
 }
 
-void DataHandler::Initialize()
+void InternetExplorers::DataHandler::Initialize()
 {
     if (!m_loadOngoing) {
         m_loadOngoing = true;
@@ -42,7 +42,7 @@ void DataHandler::Initialize()
     }
 }
 
-std::vector<std::vector<std::string> > DataHandler::getDataWithFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<InterfaceFilter::Filters, QString> filters)
 {
     // Check filter validity
     if (!InterfaceFilter::validateFilter(filters)) {
@@ -95,7 +95,7 @@ std::vector<std::vector<std::string> > DataHandler::getDataWithFilter(std::map<I
     return data;
 }
 
-void DataHandler::applyFilterToData(std::map<InterfaceFilter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
+void InternetExplorers::DataHandler::applyFilterToData(std::map<InterfaceFilter::Filters, QString> filters, std::vector<std::vector<std::string> > &data)
 {
     // Check filter validity
     if (!InterfaceFilter::validateFilter(filters)) {
@@ -135,18 +135,18 @@ void DataHandler::applyFilterToData(std::map<InterfaceFilter::ValueFilters, QStr
     return;
 }
 
-void DataHandler::progressChangedInApi(const int progress)
+void InternetExplorers::DataHandler::progressChangedInApi(const int progress)
 {
     emit progressChanged(progress);
 }
 
-void DataHandler::loadData()
+void InternetExplorers::DataHandler::loadData()
 {
     std::thread t(&DataHandler::loadInThread, this);
     t.detach();
 }
 
-void DataHandler::loadInThread()
+void InternetExplorers::DataHandler::loadInThread()
 {
     // CLOCKING
     using namespace std::chrono;
@@ -172,7 +172,7 @@ void DataHandler::loadInThread()
     emit loadingReady();
 }
 
-std::vector<std::vector<std::string> > DataHandler::filterByYear(QString filterValue)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::filterByYear(QString filterValue)
 {
     std::vector<std::vector<std::string>> data = {};
 
@@ -190,7 +190,7 @@ std::vector<std::vector<std::string> > DataHandler::filterByYear(QString filterV
     return data;
 }
 
-void DataHandler::filterByYear(QString filterValue, std::vector<std::vector<std::string> > &prevData)
+void InternetExplorers::DataHandler::filterByYear(QString filterValue, std::vector<std::vector<std::string> > &prevData)
 {
     if (filterValue == "" || prevData.size() == 0) {
         return;
@@ -216,7 +216,7 @@ void DataHandler::filterByYear(QString filterValue, std::vector<std::vector<std:
     return;
 }
 
-std::vector<std::vector<std::string> > DataHandler::filterByYearRange(QString filterValue)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::filterByYearRange(QString filterValue)
 {
     std::vector<std::vector<std::string>> data = {};
 
@@ -248,7 +248,7 @@ std::vector<std::vector<std::string> > DataHandler::filterByYearRange(QString fi
     return data;
 }
 
-void DataHandler::filterByYearRange(QString filterValue, std::vector<std::vector<std::string> > &prevData)
+void InternetExplorers::DataHandler::filterByYearRange(QString filterValue, std::vector<std::vector<std::string> > &prevData)
 {
     if (filterValue == "" || prevData.size() == 0) {
         return;
@@ -284,7 +284,7 @@ void DataHandler::filterByYearRange(QString filterValue, std::vector<std::vector
     return;
 }
 
-std::vector<std::vector<std::string> > DataHandler::filterByDistance(QString filterValue)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::filterByDistance(QString filterValue)
 {
     std::vector<std::vector<std::string>> data = {};
 
@@ -309,7 +309,7 @@ std::vector<std::vector<std::string> > DataHandler::filterByDistance(QString fil
     return data;
 }
 
-void DataHandler::filterByDistance(QString filterValue, std::vector<std::vector<std::string> > &prevData)
+void InternetExplorers::DataHandler::filterByDistance(QString filterValue, std::vector<std::vector<std::string> > &prevData)
 {
     if (filterValue == "" || prevData.size() == 0) {
         return;
@@ -335,7 +335,7 @@ void DataHandler::filterByDistance(QString filterValue, std::vector<std::vector<
     return;
 }
 
-std::vector<std::vector<std::string> > DataHandler::filterByName(QString filterValue)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::filterByName(QString filterValue)
 {
     std::vector<std::vector<std::string>> data = {};
 
@@ -378,7 +378,7 @@ std::vector<std::vector<std::string> > DataHandler::filterByName(QString filterV
     return data;
 }
 
-void DataHandler::filterByName(QString filterValue, std::vector<std::vector<std::string> > &prevData)
+void InternetExplorers::DataHandler::filterByName(QString filterValue, std::vector<std::vector<std::string> > &prevData)
 {
     if (filterValue == "" || prevData.size() == 0) {
         return;

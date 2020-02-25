@@ -8,17 +8,17 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    m_dataHandler(new DataHandler),
+    m_dataHandler(new InternetExplorers::DataHandler),
     m_progress(new QProgressBar(this)),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    connect(m_dataHandler, &DataHandler::loadingReady, this, &MainWindow::dataReady);
+    connect(m_dataHandler, &InternetExplorers::DataHandler::loadingReady, this, &MainWindow::dataReady);
     m_dataHandler->Initialize();
 
     // For progress
-    connect(m_dataHandler, &DataHandler::progressChanged, this, &MainWindow::progressChanged);
+    connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged, this, &MainWindow::progressChanged);
 
     // Remove toolbar
     QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
@@ -43,8 +43,8 @@ void MainWindow::dataReady()
     std::vector<std::vector<std::string>> test;
 
     // OK
-    std::map<InterfaceFilter::ValueFilters, QString> filter = {
-        {InterfaceFilter::ValueFilters::YEAR, "2017"}
+    std::map<InternetExplorers::InterfaceFilter::Filters, QString> filter = {
+        {InternetExplorers::InterfaceFilter::YEAR, "2017"}
     };
 
     try {
@@ -55,7 +55,7 @@ void MainWindow::dataReady()
 
     // EMPTY, not passing filter validation
     filter = {
-        {InterfaceFilter::ValueFilters::YEAR, "2030"}
+        {InternetExplorers::InterfaceFilter::YEAR, "2030"}
     };
 
     try {
@@ -66,7 +66,7 @@ void MainWindow::dataReady()
 
     // OK
     filter = {
-        {InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
+        {InternetExplorers::InterfaceFilter::YEAR_RANGE, "2015;2017"}
     };
 
     try {
@@ -77,7 +77,7 @@ void MainWindow::dataReady()
 
     // EMPTY, not passing filter validation
     filter = {
-        {InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2013"}
+        {InternetExplorers::InterfaceFilter::YEAR_RANGE, "2015;2013"}
     };
 
     try {
@@ -88,7 +88,7 @@ void MainWindow::dataReady()
 
     // OK
     filter = {
-        {InterfaceFilter::ValueFilters::DISTANCE, "V20jun"}
+        {InternetExplorers::InterfaceFilter::DISTANCE, "V20jun"}
     };
 
     try {
@@ -99,7 +99,7 @@ void MainWindow::dataReady()
 
     // EMPTY, not passing filter validation
     filter = {
-        {InterfaceFilter::ValueFilters::DISTANCE, "P200"}
+        {InternetExplorers::InterfaceFilter::DISTANCE, "P200"}
     };
 
     try {
@@ -110,7 +110,7 @@ void MainWindow::dataReady()
 
     // OK
     filter = {
-        {InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
+        {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
     };
 
     try {
@@ -121,7 +121,7 @@ void MainWindow::dataReady()
 
     // EMPTY, not passing filter validation
     filter = {
-        {InterfaceFilter::ValueFilters::NAME, "O?."}
+        {InternetExplorers::InterfaceFilter::NAME, "O?."}
     };
 
     try {
@@ -132,9 +132,9 @@ void MainWindow::dataReady()
 
     // OK, Mursu vaan painaa
     filter = {
-        {InterfaceFilter::ValueFilters::YEAR, "2017"},
-        {InterfaceFilter::ValueFilters::DISTANCE, "P100"},
-        {InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
+        {InternetExplorers::InterfaceFilter::YEAR, "2017"},
+        {InternetExplorers::InterfaceFilter::DISTANCE, "P100"},
+        {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
     };
 
     try {
@@ -145,8 +145,8 @@ void MainWindow::dataReady()
 
     // EMPTY, not passing filter validation
     filter = {
-        {InterfaceFilter::ValueFilters::YEAR, "2017"},
-        {InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
+        {InternetExplorers::InterfaceFilter::YEAR, "2017"},
+        {InternetExplorers::InterfaceFilter::YEAR_RANGE, "2015;2017"}
     };
 
     try {

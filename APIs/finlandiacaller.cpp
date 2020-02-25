@@ -11,9 +11,9 @@
 #include <QEventLoop>
 #include <QTimer>
 
-std::mutex FinlandiaCaller::m_mtx;
+std::mutex InternetExplorers::FinlandiaCaller::m_mtx;
 
-FinlandiaCaller::FinlandiaCaller():
+InternetExplorers::FinlandiaCaller::FinlandiaCaller():
     m_manager(new QNetworkAccessManager),
     m_reply(nullptr)
 {
@@ -23,12 +23,12 @@ FinlandiaCaller::FinlandiaCaller():
     QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::NoProxy));
 }
 
-FinlandiaCaller::~FinlandiaCaller()
+InternetExplorers::FinlandiaCaller::~FinlandiaCaller()
 {
     delete m_manager;
 }
 
-std::vector<std::vector<std::string> > FinlandiaCaller::loadAllData(QString year, QString distance)
+std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadAllData(QString year, QString distance)
 {
     QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
@@ -177,10 +177,10 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadAllData(QString year
     return {};
 }
 
-std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr<std::vector<FinlandiaAPI::Parameters> > searchVector)
+std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadData(std::shared_ptr<std::vector<InternetExplorers::FinlandiaAPI::Parameters> > searchVector)
 {
 
-    FinlandiaAPI::Parameters search;
+    InternetExplorers::FinlandiaAPI::Parameters search;
 
     {
         // Copy last value from searchVector and remove it
@@ -342,7 +342,7 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr
                     {
                         qDebug() << "Dividing to trips";
                         // Divide years to trips
-                        for(std::string trip : TRIPS)
+                        for(std::string trip : InternetExplorers::TRIPS)
                         {
                             auto newSearch = search;
                             newSearch.trip = QString::fromStdString(trip);
@@ -385,12 +385,12 @@ std::vector<std::vector<std::string> > FinlandiaCaller::loadData(std::shared_ptr
     return {};
 }
 
-bool FinlandiaCaller::isTooMuchData(const std::string &src)
+bool InternetExplorers::FinlandiaCaller::isTooMuchData(const std::string &src)
 {
     return ( src.find("Tuloksia yli 10000 kpl. Tarkenna hakua") != std::string::npos);
 }
 
-std::string FinlandiaCaller::escapeAmp(const std::string &src)
+std::string InternetExplorers::FinlandiaCaller::escapeAmp(const std::string &src)
 {
     std::stringstream dst;
     for (char ch : src) {
@@ -402,7 +402,7 @@ std::string FinlandiaCaller::escapeAmp(const std::string &src)
     return dst.str();
 }
 
-void FinlandiaCaller::escapeBR(std::string &src)
+void InternetExplorers::FinlandiaCaller::escapeBR(std::string &src)
 {
     std::size_t found = src.find("<br>");
     while(found != std::string::npos) {
@@ -411,7 +411,7 @@ void FinlandiaCaller::escapeBR(std::string &src)
     }
 }
 
-void FinlandiaCaller::escapeSpace(std::string &src)
+void InternetExplorers::FinlandiaCaller::escapeSpace(std::string &src)
 {
     std::size_t found = src.find("&amp;nbsp;");
     while(found != std::string::npos) {
@@ -420,7 +420,7 @@ void FinlandiaCaller::escapeSpace(std::string &src)
     }
 }
 
-std::vector<std::vector<std::string> > FinlandiaCaller::parseData(const std::string &src)
+std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::parseData(const std::string &src)
 {
     if (src == "") {
         return {};

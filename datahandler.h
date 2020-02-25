@@ -13,6 +13,9 @@
 #include "APIs/localapi.h"
 #include "interfacefilter.h"
 
+namespace InternetExplorers
+{
+
 class DataHandler : public QObject
 {
     Q_OBJECT
@@ -126,12 +129,14 @@ private:
 
     bool m_loadOngoing;
 
-    FinlandiaAPI *m_finlandiaAPI;
-    LocalAPI *m_localAPI;
+    InternetExplorers::FinlandiaAPI *m_finlandiaAPI;
+    InternetExplorers::LocalAPI *m_localAPI;
 
     // < Year, < Distance, Row< Column< Value > > > >
     std::map<QString, std::map<QString,
                 std::vector<std::vector<std::string>>>> m_data;
 };
+
+}
 
 #endif // DATAHANDLER_H

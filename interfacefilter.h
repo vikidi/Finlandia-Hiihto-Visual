@@ -7,7 +7,9 @@
 #include <vector>
 #include <QException>
 
-// TODO Fix not to be global!
+namespace InternetExplorers
+{
+
 const std::vector<std::string> DISTANCES = {
     "P50",
     "V50",
@@ -98,5 +100,7 @@ private:
     static bool validateBirthYear(QString filterValue);
     static bool validateTeam(QString filterValue) { return true; }
 };
+
+}
 
 #endif // INTERFACEFILTER_H
