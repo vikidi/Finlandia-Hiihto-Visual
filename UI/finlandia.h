@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::Finlandia *ui;
-    std::vector<InternetExplorers::InterfaceFilter::Filters> previousSrc;
+    std::vector<InternetExplorers::InterfaceFilter::ValueFilters> previousSrc;
 
     InternetExplorers::DataHandler *m_DataHandler;
 

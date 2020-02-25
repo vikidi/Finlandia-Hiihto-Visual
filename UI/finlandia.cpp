@@ -45,14 +45,14 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
                                     + ui->comboBoxMatka->currentText() + " " +
                                     ui->textEditUrheilija->toPlainText() + "\n");
 
-    std::map<InternetExplorers::InterfaceFilter::Filters, QString> filter = {
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
         {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
     };
 
     std::vector<std::vector<std::string>> newData;
     try {
         newData = m_DataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 

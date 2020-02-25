@@ -42,7 +42,7 @@ void InternetExplorers::DataHandler::Initialize()
     }
 }
 
-std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<InterfaceFilter::Filters, QString> filters)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
 {
     // Check filter validity
     if (!InterfaceFilter::validateFilter(filters)) {
@@ -95,7 +95,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     return data;
 }
 
-void InternetExplorers::DataHandler::applyFilterToData(std::map<InterfaceFilter::Filters, QString> filters, std::vector<std::vector<std::string> > &data)
+void InternetExplorers::DataHandler::applyFilterToData(std::map<InterfaceFilter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
 {
     // Check filter validity
     if (!InterfaceFilter::validateFilter(filters)) {

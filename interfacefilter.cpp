@@ -4,7 +4,9 @@
 #include <algorithm>
 #include <cctype>
 
-bool InternetExplorers::InterfaceFilter::validateFilter(std::map<InterfaceFilter::Filters, QString> filters)
+#define yeet throw // :)
+
+bool InternetExplorers::InterfaceFilter::validateFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
 {
     bool isOK = true;
 

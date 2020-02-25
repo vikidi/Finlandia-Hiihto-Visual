@@ -43,115 +43,115 @@ void MainWindow::dataReady()
     std::vector<std::vector<std::string>> test;
 
     // OK
-    std::map<InternetExplorers::InterfaceFilter::Filters, QString> filter = {
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
         {InternetExplorers::InterfaceFilter::YEAR, "2017"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // EMPTY, not passing filter validation
     filter = {
-        {InternetExplorers::InterfaceFilter::YEAR, "2030"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2030"}
     };
 
     try {
         test = m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // OK
     filter = {
-        {InternetExplorers::InterfaceFilter::YEAR_RANGE, "2015;2017"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // EMPTY, not passing filter validation
     filter = {
-        {InternetExplorers::InterfaceFilter::YEAR_RANGE, "2015;2013"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2013"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // OK
     filter = {
-        {InternetExplorers::InterfaceFilter::DISTANCE, "V20jun"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "V20jun"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // EMPTY, not passing filter validation
     filter = {
-        {InternetExplorers::InterfaceFilter::DISTANCE, "P200"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "P200"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // OK
     filter = {
-        {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // EMPTY, not passing filter validation
     filter = {
-        {InternetExplorers::InterfaceFilter::NAME, "O?."}
+        {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "O?."}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // OK, Mursu vaan painaa
     filter = {
-        {InternetExplorers::InterfaceFilter::YEAR, "2017"},
-        {InternetExplorers::InterfaceFilter::DISTANCE, "P100"},
-        {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2017"},
+        {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "P100"},
+        {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 
     // EMPTY, not passing filter validation
     filter = {
-        {InternetExplorers::InterfaceFilter::YEAR, "2017"},
-        {InternetExplorers::InterfaceFilter::YEAR_RANGE, "2015;2017"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2017"},
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
     };
 
     try {
         m_dataHandler->getDataWithFilter(filter);
-    } catch (FilterException &e) {
+    } catch (InternetExplorers::FilterException &e) {
         std::cout << e.what() << std::endl;
     }
 }
