@@ -16,7 +16,7 @@ Finlandia::Finlandia(QWidget *parent) :
     m_chart(new QChart())
 {
     ui->setupUi(this);
-    m_DataHandler->Initialize();
+    //m_DataHandler->Initialize();
 
 }
 

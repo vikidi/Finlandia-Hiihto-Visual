@@ -6,9 +6,7 @@
 #include <QHttpMultiPart>
 #include <QNetworkProxy>
 #include <QFile>
-#include <string>
 #include <sstream>
-#include <vector>
 #include <QXmlStreamReader>
 #include <ctime>
 #include <ratio>
@@ -23,7 +21,7 @@ InternetExplorers::DataHandler::DataHandler():
     m_finlandiaAPI(new InternetExplorers::FinlandiaAPI),
     m_localAPI(new InternetExplorers::LocalAPI),
     m_data({}),
-    m_dataDyName({})
+    m_dataByName({})
 {
     // For progress
     connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
@@ -220,7 +218,7 @@ void InternetExplorers::DataHandler::setRowsByName()
                     [](unsigned char c){ return std::tolower(c); });
 
                 // Add the row
-                m_dataDyName[QString::fromStdString(name)].emplace_back(row);
+                m_dataByName[QString::fromStdString(name)].emplace_back(row);
             }
         }
     }
@@ -345,8 +343,8 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getAllByN
     // name to lower case
     name = name.toLower();
 
-    std::unordered_map<QString, std::vector<std::vector<std::string>>>::iterator it = m_dataDyName.find(name);
-    if (it != m_dataDyName.end()) {
+    std::unordered_map<QString, std::vector<std::vector<std::string>>>::iterator it = m_dataByName.find(name);
+    if (it != m_dataByName.end()) {
         return it->second;
     }
 

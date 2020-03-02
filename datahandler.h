@@ -12,9 +12,24 @@
 #include "APIs/finlandiaapi.h"
 #include "APIs/localapi.h"
 #include "interfacefilter.h"
+#include <unordered_map>
+#include <QString>
+#include <QHash>
+#include <vector>
+#include <string>
+#include <functional>
+
 
 namespace InternetExplorers
 {
+
+// Hash function for QString
+struct QStringKeyHash {
+ std::size_t operator()(const QString& key) const
+ {
+     return qHash(key);
+ }
+};
 
 class DataHandler : public QObject
 {
@@ -111,7 +126,7 @@ private:
     std::map<QString, std::map<QString,
                 std::vector<std::vector<std::string>>>> m_data;
 
-    std::unordered_map<QString, std::vector<std::vector<std::string>>> m_dataDyName;
+    std::unordered_map<QString, std::vector<std::vector<std::string>>, QStringKeyHash> m_dataByName;
 };
 
 }
