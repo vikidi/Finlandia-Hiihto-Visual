@@ -35,7 +35,7 @@ SOURCES += \
     APIs/finlandiacaller.cpp \
     UI/finlandia.cpp \
     interfacefilter.cpp \
-    simplecrypt.cpp
+    libraries/simplecrypt.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +46,7 @@ HEADERS += \
     APIs/finlandiacaller.h \
     UI/finlandia.h \
     interfacefilter.h \
-    simplecrypt.h
+    libraries/simplecrypt.h
 
 FORMS += \
         mainwindow.ui \
