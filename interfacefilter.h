@@ -82,7 +82,7 @@ public:
         PLACEMENT = 0,
         AGE
     };
-    static const OrderFilters OrderFilters;
+    static const OrderFilters orderFilters;
 
     ///
     /// \brief
