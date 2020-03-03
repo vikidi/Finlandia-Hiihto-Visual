@@ -37,7 +37,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::dataReady()
 {
- //    std::map<QString, int> test = m_dataHandler->amountOfSkiers();
     ui->haunAloitusNappi->setDisabled(false);
 
     std::vector<std::vector<std::string>> test;
@@ -62,63 +61,6 @@ void MainWindow::dataReady()
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
     std::cout << "Success, YEAR " << time_span.count() << " s" << std::endl;
 
-    // OK
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE, "2015;2017"}
-    };
-
-    // CLOCKING
-    t1 = high_resolution_clock::now();
-
-    try {
-        test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    t2 = high_resolution_clock::now();
-    time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, YEAR_RANGE " << time_span.count() << " s" << std::endl;
-
-    // OK
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "V20jun"}
-    };
-
-    // CLOCKING
-    t1 = high_resolution_clock::now();
-
-    try {
-        test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    t2 = high_resolution_clock::now();
-    time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, DISTANCE " << time_span.count() << " s" << std::endl;
-
-    // OK
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
-    };
-
-    // CLOCKING
-    t1 = high_resolution_clock::now();
-
-    try {
-        test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    t2 = high_resolution_clock::now();
-    time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, NAME " << time_span.count() << " s" << std::endl;
-
     // OK, Mursu vaan painaa
     filter = {
         {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2017"},
@@ -139,25 +81,6 @@ void MainWindow::dataReady()
     t2 = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(t2 - t1);
     std::cout << "Success, YEAR, DISTANCE, NAME " << time_span.count() << " s" << std::endl;
-
-    // OK
-    filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::TIME_RANGE, "2:30:10;13:40:20"}
-    };
-
-    // CLOCKING
-    t1 = high_resolution_clock::now();
-
-    try {
-        test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    t2 = high_resolution_clock::now();
-    time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, TIME_RANGE " << time_span.count() << " s" << std::endl;
 }
 
 void MainWindow::progressChanged(const int progress)

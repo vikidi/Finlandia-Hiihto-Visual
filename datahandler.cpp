@@ -15,6 +15,7 @@
 #include <set>
 #include <algorithm>
 #include <cctype>
+#include <QTime>
 
 InternetExplorers::DataHandler::DataHandler():
     m_loadOngoing(false),
@@ -408,45 +409,108 @@ bool InternetExplorers::DataHandler::filterByName(std::vector<std::string> row, 
 
 bool InternetExplorers::DataHandler::filterByTimeRange(std::vector<std::string> row, QString filterValue)
 {
-    return true;
+    QStringList times = filterValue.split(";");
+
+    QTime lower = QTime::fromString(times[0], "h:mm:ss");
+    QTime upper = QTime::fromString(times[1], "h:mm:ss");
+
+    QTime rowValue = QTime::fromString(QString::fromStdString(row[IndexInData::TIME]), "h:mm:ss");
+
+    if (rowValue >= lower && rowValue <= upper) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterByPlace(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    if (row[IndexInData::PLACE] == filterValue.toStdString()) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterByPlaceMen(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    if (row[IndexInData::PLACE_MEN] == filterValue.toStdString()) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterByPlaceWomen(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    if (row[IndexInData::PLACE_WOMEN] == filterValue.toStdString()) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterBySex(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    if (row[IndexInData::SEX] == filterValue.toStdString()) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterByCity(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    // Filter value to lower case
+    std::string filterVal = filterValue.toStdString();
+    std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    std::string city = row[IndexInData::CITY];
+    std::transform(city.begin(), city.end(), city.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    // ATM needs to be exact
+    if (city == filterVal) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterByNationality(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    if (row[IndexInData::NATIONALITY] == filterValue.toStdString()) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterByBirthYear(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    if (row[IndexInData::BIRTH_YEAR] == filterValue.toStdString()) {
+        return true;
+    }
+
+    return false;
 }
 
 bool InternetExplorers::DataHandler::filterByTeam(std::vector<std::string> row, QString filterValue)
 {
-return true;
+    // Filter value to lower case
+    std::string filterVal = filterValue.toStdString();
+    std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    std::string team = row[IndexInData::TEAM];
+    std::transform(team.begin(), team.end(), team.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    // ATM needs to be exact
+    if (team == filterVal) {
+        return true;
+    }
+
+    return false;
 }
