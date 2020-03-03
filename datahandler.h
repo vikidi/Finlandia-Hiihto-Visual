@@ -107,15 +107,15 @@ private:
     bool filterByYearRange(std::vector<std::string> row, QString filterValue);
     bool filterByDistance(std::vector<std::string> row, QString filterValue);
     bool filterByName(std::vector<std::string> row, QString filterValue);
-    bool filterByTimeRange(std::vector<std::string> row, QString filterValue) {}
-    bool filterByPlace(std::vector<std::string> row, QString filterValue) {}
-    bool filterByPlaceMen(std::vector<std::string> row, QString filterValue) {}
-    bool filterByPlaceWomen(std::vector<std::string> row, QString filterValue) {}
-    bool filterBySex(std::vector<std::string> row, QString filterValue) {}
-    bool filterByCity(std::vector<std::string> row, QString filterValue) {}
-    bool filterByNationality(std::vector<std::string> row, QString filterValue) {}
-    bool filterByBirthYear(std::vector<std::string> row, QString filterValue) {}
-    bool filterByTeam(std::vector<std::string> row, QString filterValue) {}
+    bool filterByTimeRange(std::vector<std::string> row, QString filterValue);
+    bool filterByPlace(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceMen(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceWomen(std::vector<std::string> row, QString filterValue);
+    bool filterBySex(std::vector<std::string> row, QString filterValue);
+    bool filterByCity(std::vector<std::string> row, QString filterValue);
+    bool filterByNationality(std::vector<std::string> row, QString filterValue);
+    bool filterByBirthYear(std::vector<std::string> row, QString filterValue);
+    bool filterByTeam(std::vector<std::string> row, QString filterValue);
 
     bool m_loadOngoing;
 

@@ -405,3 +405,48 @@ bool InternetExplorers::DataHandler::filterByName(std::vector<std::string> row, 
 
     return false;
 }
+
+bool InternetExplorers::DataHandler::filterByTimeRange(std::vector<std::string> row, QString filterValue)
+{
+    return true;
+}
+
+bool InternetExplorers::DataHandler::filterByPlace(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
+
+bool InternetExplorers::DataHandler::filterByPlaceMen(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
+
+bool InternetExplorers::DataHandler::filterByPlaceWomen(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
+
+bool InternetExplorers::DataHandler::filterBySex(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
+
+bool InternetExplorers::DataHandler::filterByCity(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
+
+bool InternetExplorers::DataHandler::filterByNationality(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
+
+bool InternetExplorers::DataHandler::filterByBirthYear(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
+
+bool InternetExplorers::DataHandler::filterByTeam(std::vector<std::string> row, QString filterValue)
+{
+return true;
+}
