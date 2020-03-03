@@ -64,6 +64,8 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> Inte
         }
 
         f.close();
+
+        emit progressChanged();
     }
 
     return m_data;

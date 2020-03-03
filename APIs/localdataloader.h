@@ -13,6 +13,9 @@ public:
     LocalDataLoader();
     std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > loadData(std::shared_ptr<std::vector<std::string> > years);
 
+signals:
+    void progressChanged();
+
 private:
     const QString DATA_ROOT_NAME = "FinlandiaData";
     const QString DATA_FILE_NAME = "Data.txt";

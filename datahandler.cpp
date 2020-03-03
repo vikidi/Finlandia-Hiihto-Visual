@@ -26,6 +26,7 @@ InternetExplorers::DataHandler::DataHandler():
 {
     // For progress
     connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
+    connect(m_localAPI, &InternetExplorers::LocalAPI::progressChanged, this, &DataHandler::progressChangedInApi);
 }
 
 InternetExplorers::DataHandler::~DataHandler()

@@ -13,6 +13,9 @@
 #include "APIs/localdataloader.h"
 
 InternetExplorers::LocalAPI::LocalAPI() :
+    m_fileCount(0),
+    m_currentProgress(0),
+    m_maxProgress(getAmountOfFiles()),
     m_data({})
 {
 
@@ -142,9 +145,33 @@ std::map<QString, QString> InternetExplorers::LocalAPI::readMetaDataFile()
     return {};
 }
 
+void InternetExplorers::LocalAPI::updateProgress()
+{
+    m_fileCount++;
+
+    int progress = static_cast<int>(100 * (m_fileCount/static_cast<double>(m_maxProgress)));
+
+    if (progress > m_currentProgress) {
+        m_currentProgress = progress;
+        emit progressChanged(progress);
+    }
+}
+
+int InternetExplorers::LocalAPI::getAmountOfFiles()
+{
+    QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+    int count = 0;
+    while (it.hasNext()){
+        it.next();
+        count++;
+    }
+    return count;
+}
+
 void InternetExplorers::LocalAPI::loadDataInThread(std::shared_ptr<std::vector<std::string> > years)
 {
     LocalDataLoader loader;
+    connect(&loader, &LocalDataLoader::progressChanged, this, &LocalAPI::updateProgress);
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> data = loader.loadData(years);
     appendData(data);
 }
