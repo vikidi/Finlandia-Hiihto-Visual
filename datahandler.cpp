@@ -50,7 +50,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
         if (!InterfaceFilter::validateFilter(filters)) {
             return {};
         }
-    } catch (InternetExplorers::FilterException) {
+    } catch (InternetExplorers::FilterException& e) {
         return {};
     }
 
@@ -145,7 +145,7 @@ void InternetExplorers::DataHandler::applyFilterToData(std::map<InterfaceFilter:
         if (!InterfaceFilter::validateFilter(filters)) {
             return;
         }
-    } catch (InternetExplorers::FilterException) {
+    } catch (InternetExplorers::FilterException& e) {
         return;
     }
 
