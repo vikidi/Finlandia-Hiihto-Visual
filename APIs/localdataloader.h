@@ -2,6 +2,7 @@
 #define LOCALDATALOADER_H
 
 #include <QObject>
+#include <memory>
 
 namespace InternetExplorers
 {
