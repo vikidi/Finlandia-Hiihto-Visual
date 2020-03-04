@@ -57,25 +57,25 @@ QString InternetExplorers::Logger::getSeverity(InternetExplorers::Logger::Severi
     return "";
 }
 
-InternetExplorers::Logger *InternetExplorers::Logger::getInstance()
+InternetExplorers::Logger &InternetExplorers::Logger::getInstance()
 {
     static Logger loggerInstance;
-    return &loggerInstance;
+    return loggerInstance;
 }
 
 void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Logger::Severity severity)
 {
-    QString str = getTime();
-    str += getSeverity(severity);
+    QString str = getInstance().getTime();
+    str += getInstance().getSeverity(severity);
     str += ": " + msg + "\n";
-    write(str);
+    getInstance().write(str);
 }
 
 void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Logger::Severity severity, QString &sender)
 {
-    QString str = getTime();
+    QString str = getInstance().getTime();
     str += sender + " - ";
-    str += getSeverity(severity);
+    str += getInstance().getSeverity(severity);
     str += ": " + msg + "\n";
-    write(str);
+    getInstance().write(str);
 }

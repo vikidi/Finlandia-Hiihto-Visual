@@ -17,17 +17,20 @@ public:
         CRITICAL
     };
 
-    static Logger* getInstance();
+    // Copy constructors are not allowed
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
+
+    static Logger& getInstance();
     static void log(QString& msg, Severity severity);
     static void log(QString& msg, Severity severity, QString& sender);
 
 private:
-    static Logger *loggerInstance;
     Logger();
 
-    static void write(QString& msg);
-    static QString getTime();
-    static QString getSeverity(Severity);
+    void write(QString& msg);
+    QString getTime();
+    QString getSeverity(Severity);
 
     inline static const QString LOG_FOLDER_NAME = "logs";
     inline static const QString LOG_FILE_NAME = "log.txt";
