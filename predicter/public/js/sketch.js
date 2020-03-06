@@ -46,18 +46,37 @@ function getResult() {
     $('#warning').text('');
     $('#info').text('');
 
-    var place = parseInt($('#place').val());
-    var rain = parseFloat($('#rain').val());
-    var snow = parseInt($('#snow').val());
-    var temp = parseFloat($('#temp').val());
+    var place = $('#place').val();
+    var rain = $('#rain').val();
+    var snow = $('#snow').val();
+    var temp = $('#temp').val();
 
-    if (!(place && rain && snow && temp)) {
+    if (!((place.length > 0) && (rain.length > 0) && (snow.length > 0) && (temp.length > 0))) {
         $('#warning').text('Fill all 4 inputs!');
         return;
     }
 
+    place = parseInt(place);
+    rain = parseFloat(rain);
+    snow = parseInt(snow);
+    temp = parseFloat(temp);
+
+    if (isNaN(place) || isNaN(rain) || isNaN(snow) || isNaN(temp)) {
+        $('#warning').text('Check that inputs are valid!');
+        return;
+    }
+
+    if (place < 1) {
+        $('#warning').text('Place needs to be >= 1!');
+        return;
+    }
+
+    if (snow < 0) {
+        $('#warning').text('Snow needs to be >= 0!');
+        return;
+    }
+
     neuralNetwork.classify([place, rain, snow, temp], (err, results) => {
-        console.log(results);
 
         var text = `
         <table class="table table-hover table-sm" style="margin-bottom: 0;">
