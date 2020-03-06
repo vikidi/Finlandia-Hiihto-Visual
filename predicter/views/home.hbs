@@ -2,17 +2,22 @@
     // Set button disabled at first
     $( document ).ready(function() {
         $('#button').prop('disabled', true);
+        $('#place').prop('disabled', true);
+        $('#rain').prop('disabled', true);
+        $('#snow').prop('disabled', true);
+        $('#temp').prop('disabled', true);
+
+        $('#contentRow').css('min-height', $(document).height() * 0.8);
     });
 </script>
 
-<div class="container text-center">
+<div class="container text-center" style="max-width: 90%;">
 
     <!--Grid row-->
     <div class="row justify-content-center" style="padding: 1vw;">
 
         <div>
 
-            <h4>Internet Explorers</h4>
             <h2>Finlandia-hiihto Predicter</h2>
 
         </div>
@@ -20,25 +25,25 @@
     </div>
 
     <!--Grid row-->
-    <div class="row">
+    <div class="row" id="contentRow">
 
         <div class="col border_div">
 
             <h4>How to use:</h4>
 
             <p style="text-align: justify;">
-            Press the ""Choose file"-button to choose files.
+            Press the "Choose file"-button to choose files.
             Navigate to the install/clone folder
             and from there to > predictor-models > "wanted distance" > choose all 3 files,
             model.json, model_meta.json and model.weights.bin. <br><br>
-            If loading succeeded the "Predict"-button will be pressable
+            If loading succeeded the "Predict"-button and input fields will be enabled
             and there will be no error message. <br><br>
             Then give values to inputs.
-            Place and snow are whole numbers
-            Rain and temperature are decimal numbers, with dot (.) as decimal point. <br><br>
+            Place and snow are whole numbers,
+            rain and temperature are decimal numbers, with dot (.) as decimal point. <br><br>
             After that press "Predict"-button and enjoy results! <br><br>
             If you want to change the distance, just load those 3 files again
-            from the new distance folder that you want. No need to reload page!
+            from the new distance folder that you want. No need to reload the page!
             </p>
 
         </div>
@@ -49,9 +54,9 @@
 
             <div class="input-group mb-3">
                 <div class="custom-file" style="text-align: left;">
-                    <input class="custom-file-input" type="file" id="input" multiple 
+                    <input class="custom-file-input" type="file" id="fileInput" multiple 
                         onchange="trainModel(this.files)" accept=".json, .bin">
-                    <label class="custom-file-label" for="input">Choose file</label>
+                    <label class="custom-file-label" for="fileInput" id="fileLabel">Choose file</label>
                 </div>
             </div>
 
@@ -79,15 +84,16 @@
             <div class="input-group mb-3">
                 <input class="form-control" type="text" placeholder="Temperature" name="temp" id="temp" />
                 <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon1" style="width: 4vw;">degC</span>
+                    <span class="input-group-text" id="basic-addon1" style="width: 4vw;">&deg;C</span>
                 </div>
             </div>
 
             <div class="input-group mb-3">
-                <input class="btn btn-outline-secondary form-control" type="button" onclick="getResult();" value="Predict" id="button" name="button" />
+                <input class="btn btn-outline-secondary form-control" type="button" onclick="getResult();" 
+                    value="Predict" id="button" name="button" />
             </div>
 
-            <p id="results"></p>
+            <div id="results"></div>
 
         </div>
 
@@ -97,18 +103,23 @@
 
             <p style="text-align: justify;">
             This prediction model uses ml5.js library that is 
-            a machine learning library built on tensoflow.js. <br><br>
+            a machine learning library built on tensorflow.js. <br><br>
             It takes best 100 skiers from each year from years 2009-2019
-            and uses placing and name data from those.
-            For each year it also takes the exact dates weather data:
-            amount of rain (mm), amount of snow (cm) and air temperature (degC)
-            from "Ilmatieteenlaitos" history data.
-            Then it combines all of that data and creates a predictive model.
+            (in Finlandia-hiihto, in that distance) and uses placing and name data from those.
+            For each year it also takes the exact date's weather data 
+            from "Ilmatieteenlaitos" history data:
+            amount of rain (mm), amount of snow (cm) and air temperature (&deg;C).
+            Then it combines all of that data and creates a predictive model. <br><br>
+            This tool is part of groups "Internet Explorers" project work 
+            on course "Ohjelmistojen suunnittelu" in Tampere University. <br><br>
+            Tool was created in spring 2020.
             </p>
 
         </div>
 
     </div>
+
+    <p style="color: lightgrey; padding: 1vw;">Tool by: <i>Internet Explorers</i></p>
 
 </div>
 
