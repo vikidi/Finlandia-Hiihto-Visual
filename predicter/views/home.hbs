@@ -1,0 +1,115 @@
+<script>
+    // Set button disabled at first
+    $( document ).ready(function() {
+        $('#button').prop('disabled', true);
+    });
+</script>
+
+<div class="container text-center">
+
+    <!--Grid row-->
+    <div class="row justify-content-center" style="padding: 1vw;">
+
+        <div>
+
+            <h4>Internet Explorers</h4>
+            <h2>Finlandia-hiihto Predicter</h2>
+
+        </div>
+
+    </div>
+
+    <!--Grid row-->
+    <div class="row">
+
+        <div class="col border_div">
+
+            <h4>How to use:</h4>
+
+            <p style="text-align: justify;">
+            Press the ""Choose file"-button to choose files.
+            Navigate to the install/clone folder
+            and from there to > predictor-models > "wanted distance" > choose all 3 files,
+            model.json, model_meta.json and model.weights.bin. <br><br>
+            If loading succeeded the "Predict"-button will be pressable
+            and there will be no error message. <br><br>
+            Then give values to inputs.
+            Place and snow are whole numbers
+            Rain and temperature are decimal numbers, with dot (.) as decimal point. <br><br>
+            After that press "Predict"-button and enjoy results! <br><br>
+            If you want to change the distance, just load those 3 files again
+            from the new distance folder that you want. No need to reload page!
+            </p>
+
+        </div>
+
+        <div class="col border_div">
+
+            <br>
+
+            <div class="input-group mb-3">
+                <div class="custom-file" style="text-align: left;">
+                    <input class="custom-file-input" type="file" id="input" multiple 
+                        onchange="trainModel(this.files)" accept=".json, .bin">
+                    <label class="custom-file-label" for="input">Choose file</label>
+                </div>
+            </div>
+
+            <p id="info"></p>
+            <p style="color: red;" id="warning"></p>
+
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" placeholder="Place" name="place" id="place" />
+            </div>
+
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" placeholder="Rain" name="rain" id="rain" />
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon1" style="width: 4vw;">mm</span>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" placeholder="Snow" name="snow" id="snow" />
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon1" style="width: 4vw;">cm</span>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" placeholder="Temperature" name="temp" id="temp" />
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon1" style="width: 4vw;">degC</span>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <input class="btn btn-outline-secondary form-control" type="button" onclick="getResult();" value="Predict" id="button" name="button" />
+            </div>
+
+            <p id="results"></p>
+
+        </div>
+
+        <div class="col border_div">
+
+            <h4>Info about the tool:</h4>
+
+            <p style="text-align: justify;">
+            This prediction model uses ml5.js library that is 
+            a machine learning library built on tensoflow.js. <br><br>
+            It takes best 100 skiers from each year from years 2009-2019
+            and uses placing and name data from those.
+            For each year it also takes the exact dates weather data:
+            amount of rain (mm), amount of snow (cm) and air temperature (degC)
+            from "Ilmatieteenlaitos" history data.
+            Then it combines all of that data and creates a predictive model.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="js/sketch.js"></script>
