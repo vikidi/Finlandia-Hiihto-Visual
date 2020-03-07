@@ -33,7 +33,6 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete m_dataHandler;
 }
 
 void MainWindow::dataReady()
