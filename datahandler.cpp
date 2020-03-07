@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cctype>
 #include <QTime>
+#include "logger.h"
 
 InternetExplorers::DataHandler::DataHandler():
     m_loadOngoing(false),
@@ -27,10 +28,18 @@ InternetExplorers::DataHandler::DataHandler():
     // For progress
     connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
     connect(m_localAPI, &InternetExplorers::LocalAPI::progressChanged, this, &DataHandler::progressChangedInApi);
+
+    auto msg(QString("Constructor ready"));
+    auto msgSender(QString("DataHandler"));
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
 }
 
 InternetExplorers::DataHandler::~DataHandler()
 {
+    auto msg(QString("Destructor called"));
+    auto msgSender(QString("DataHandler"));
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+
     delete m_finlandiaAPI;
     delete m_localAPI;
 }
@@ -45,6 +54,8 @@ void InternetExplorers::DataHandler::Initialize()
 
 std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
 {
+    std::vector<std::vector<std::string>> data = {};
+
     // Check filter validity
     try {
         if (!InterfaceFilter::validateFilter(filters)) {
@@ -55,12 +66,25 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     }
 
     if (filters.size() == 0) {
-        // TODO Really return everything??
-        return {};
+
+        auto msg(QString("Filtering values with no filter"));
+        auto msgSender(QString("DataHandler"));
+        InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::WARNING, msgSender);
+
+        for(auto yearMap : m_data)
+        {
+            for(auto tripMap : yearMap.second)
+            {
+                for(auto row : tripMap.second)
+                {
+                    data.push_back(row);
+                }
+            }
+        }
+        return data;
     }
 
     // Do the filtering
-    std::vector<std::vector<std::string>> data = {};
 
     // Try to do first filterin with fast filters
 

@@ -12,9 +12,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     qRegisterMetaType<QPair<QByteArray,QByteArray>>();
 
-    // Init logger
-    InternetExplorers::Logger::getInstance();
-
     Finlandia f;    
     f.show();
     MainWindow w;

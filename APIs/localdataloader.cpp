@@ -69,7 +69,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> Inte
         f.close();
 
         QString msg = year + QString(" ") + distance + QString(" loaded");
-        logger::log(msg, InternetExplorers::Logger::Severity::INFO);
+        logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO);
 
         emit progressChanged();
     }

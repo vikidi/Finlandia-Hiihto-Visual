@@ -22,8 +22,8 @@ public:
     Logger& operator=(const Logger&) = delete;
 
     static Logger& getInstance();
-    static void log(QString& msg, Severity severity);
-    static void log(QString& msg, Severity severity, QString& sender);
+    void log(QString& msg, Severity severity);
+    void log(QString& msg, Severity severity, QString& sender);
 
 private:
     Logger();

@@ -1,5 +1,6 @@
 #include "finlandiaapi.h"
 #include "finlandiacaller.h"
+#include "logger.h"
 
 #include <thread>
 #include <QDebug>
@@ -10,12 +11,16 @@ InternetExplorers::FinlandiaAPI::FinlandiaAPI():
     m_totalCalls(0),
     m_currentProgress(0)
 {
-
+    auto msg(QString("Constructor ready"));
+    auto msgSender(QString("FinlandiaAPI"));
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
 }
 
 InternetExplorers::FinlandiaAPI::~FinlandiaAPI()
 {
-
+    auto msg(QString("Destructor called"));
+    auto msgSender(QString("FinlandiaAPI"));
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
 }
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::FinlandiaAPI::loadAllData()
