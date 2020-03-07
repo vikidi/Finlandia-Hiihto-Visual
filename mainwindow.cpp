@@ -6,9 +6,10 @@
 
 #include "interfacefilter.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* dh, QWidget *parent) :
     QMainWindow(parent),
-    m_dataHandler(new InternetExplorers::DataHandler),
+    m_finlandiaUI(finlandiaUI),
+    m_dataHandler(dh),
     m_progress(new QProgressBar(this)),
     ui(new Ui::MainWindow)
 {
@@ -90,5 +91,6 @@ void MainWindow::progressChanged(const int progress)
 
 void MainWindow::on_haunAloitusNappi_clicked()
 {
+    m_finlandiaUI->show();
     this->close();
 }

@@ -16,7 +16,8 @@ class Finlandia : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Finlandia(QWidget *parent = 0);
+    explicit Finlandia(InternetExplorers::DataHandler* dh,
+                       QWidget *parent = 0);
     ~Finlandia();
 
 private slots:
