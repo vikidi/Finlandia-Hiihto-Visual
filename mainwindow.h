@@ -3,9 +3,11 @@
 
 #include "datahandler.h"
 #include "UI/finlandia.h"
+#include "UI/gamescene.h"
 
 #include <QMainWindow>
 #include <QProgressBar>
+#include <QGraphicsView>
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +33,8 @@ private:
     Finlandia* m_finlandiaUI;
     InternetExplorers::DataHandler *m_dataHandler;
     QProgressBar *m_progress;
+    QGraphicsView* m_view;
+    InternetExplorers::GameScene* m_scene;
 
     Ui::MainWindow *ui;
 };

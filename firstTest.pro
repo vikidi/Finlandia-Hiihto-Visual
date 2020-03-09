@@ -26,6 +26,7 @@ CONFIG += c++17
 CONFIG += openssl-linked
 
 SOURCES += \
+    UI/gamescene.cpp \
         main.cpp \
         mainwindow.cpp \
     APIs/finlandiaapi.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
     logger.cpp
 
 HEADERS += \
+    UI/gamescene.h \
         mainwindow.h \
     APIs/finlandiaapi.h \
     APIs/localapi.h \

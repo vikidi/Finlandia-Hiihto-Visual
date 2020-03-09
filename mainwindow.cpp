@@ -11,6 +11,8 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     m_finlandiaUI(finlandiaUI),
     m_dataHandler(dh),
     m_progress(new QProgressBar(this)),
+    m_view(new QGraphicsView),
+    m_scene(new InternetExplorers::GameScene),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -20,6 +22,8 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
 
     // For progress
     connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged, this, &MainWindow::progressChanged);
+    connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged,
+            m_scene, &InternetExplorers::GameScene::updateProgress);
 
     // Remove toolbar
     QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
@@ -28,10 +32,18 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     }
 
     ui->haunAloitusNappi->setDisabled(true);
+
+    m_view->setScene(m_scene);
+    ui->gridLayout->addWidget(m_view);
+    m_view->verticalScrollBar()->setVisible(false);
+    m_view->horizontalScrollBar()->setVisible(false);
+    m_view->setFixedSize(m_scene->width()+30,m_scene->height()+30);
 }
 
 MainWindow::~MainWindow()
 {
+    delete m_scene;
+    delete m_view;
     delete ui;
 }
 
