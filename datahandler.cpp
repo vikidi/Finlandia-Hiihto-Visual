@@ -369,7 +369,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getAllByN
     // name to lower case
     name = name.toLower();
 
-    std::unordered_map<QString, std::vector<std::vector<std::string>>>::iterator it = m_dataByName.find(name);
+    std::unordered_map<QString, std::vector<std::vector<std::string>>, QStringKeyHash>::iterator it = m_dataByName.find(name);
     if (it != m_dataByName.end()) {
         return it->second;
     }

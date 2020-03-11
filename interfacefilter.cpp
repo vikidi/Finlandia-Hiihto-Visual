@@ -273,9 +273,9 @@ bool InternetExplorers::InterfaceFilter::validateNationality(QString filterValue
         throw FilterException("Nationality length is not 2 chars", "NATIONALITY", filterValue.toStdString().c_str());
     }
 
-    if (filterValue.isUpper()) {
-        throw FilterException("Nationality is not all upper case", "NATIONALITY", filterValue.toStdString().c_str());
-    }
+//    if (filterValue.isUpper()) {
+//        throw FilterException("Nationality is not all upper case", "NATIONALITY", filterValue.toStdString().c_str());
+//    }
 
     try {
         success = validateName(filterValue);
