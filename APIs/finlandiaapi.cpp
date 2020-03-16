@@ -9,6 +9,7 @@ InternetExplorers::FinlandiaAPI::FinlandiaAPI():
     m_ready(0),
     m_runners(0),
     m_totalCalls(0),
+    m_finishedCalls(0),
     m_currentProgress(0)
 {
     auto msg(QString("Constructor ready"));
@@ -28,7 +29,9 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
 
     m_ready = 0;
     m_runners = 0;
+    m_finishedCalls = 0;
     m_currentProgress = 0;
+    m_totalCalls = 229; // Precalculated value
 
     emit progressChanged(0);
 
@@ -56,8 +59,6 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
         searchVector->push_back(search);
     }
 
-    m_totalCalls = static_cast<int>(searchVector->size());
-
     for(int i(0); i < optimalAmountOfThreads; i++)
     {
         m_runners++;
@@ -71,6 +72,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
 
     removePlankLines();
 
+    // Make sure 100% is reached
     emit progressChanged(100);
 
     return m_data;
@@ -92,13 +94,17 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
                 m_runners++;
                 thisRunnerIsDone = false;
             }
-            if(int progress(static_cast<int>(100*(m_totalCalls-searchVector->size())/m_totalCalls)); (progress != m_currentProgress))
+            m_finishedCalls++;
+            if(int progress(static_cast<int>(100*m_finishedCalls/m_totalCalls)); (progress != m_currentProgress))
             {
                 if((progress < 0) || (progress > 100))
                 {
-                    // Many new calls were added. Increasing m_totalCalls somewhat compensates it
+                    // More calls than expected were added. Increasing m_totalCalls somewhat compensates it
+                    auto msg(QString("Precalculated m_totalCalls might be incorrect"));
+                    auto msgSender(QString("FinlandiaAPI"));
+                    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::WARNING, msgSender);
                     m_currentProgress = 0;
-                    m_totalCalls += 10;
+                    m_totalCalls += 24;
                 } else
                 {
                     m_currentProgress = progress;

@@ -82,6 +82,7 @@ private:
     std::atomic_int m_runners;
 
     std::atomic_int m_totalCalls;
+    std::atomic_int m_finishedCalls;
     std::atomic_int m_currentProgress;
 };
 
