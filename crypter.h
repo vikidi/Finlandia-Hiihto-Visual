@@ -25,7 +25,19 @@ public:
      * \param algorithm what hash algorithm to use
      */
     void hashLocalNames(QCryptographicHash::Algorithm algorithm = QCryptographicHash::Algorithm::Md5);
-
+    /*!
+     * \brief encryptLocalNames converts skier names in disk to their encrypted version
+     */
+    void encryptLocalNames();
+    /*!
+     * \brief decryptLocalNames converts encrypted skier names in disk to their original version
+     */
+    void decryptLocalNames();
+    /*!
+     * \brief decryptNames converts encrypted skier names to their original version
+     * \param data what to decrypt
+     */
+    void decryptNames(std::vector<std::vector<std::string>>& data);
 private:
     enum IndexInData {
         YEAR = 0,
