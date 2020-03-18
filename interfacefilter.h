@@ -37,62 +37,133 @@ const std::vector<std::string> DISTANCES = {
     "V75"
 };
 
+/*!
+ * \brief
+ * Custom exception that is used in filtering errors.
+ */
 class FilterException : public std::exception
 {
 public:
-    FilterException(const char* msg = " ", const char* filterName = " ", const char* filterValue = " ") :
+
+    /*!
+     * \brief
+     * Default constructor
+     * \param
+     * Message for the exception
+     * \param
+     * The filter parameter where error occurred
+     * \param
+     * The filter parameters value that caused the error
+     */
+    FilterException(const char* msg = "", const char* filterName = "", const char* filterValue = "") :
         message(msg),
         filterName(filterName),
         filterValue(filterValue) {}
+
     ~FilterException() {}
+
+    /*!
+     * \brief
+     * Gets the message of the error
+     * \return
+     * Message text of the error
+     */
     const char *what() const noexcept { return message.c_str(); }
+
+    /*!
+     * \brief
+     * Gets the filter parameters name
+     * \return
+     * The filters name
+     */
     const char *getFilterName() const noexcept { return filterName.c_str(); }
+
+    /*!
+     * \brief
+     * Gets the filters value
+     * \return
+     * Filter parameters value
+     */
     const char *getFilterValue() const noexcept { return filterValue.c_str(); }
 
 private:
-    std::string message;
-    std::string filterName;
-    std::string filterValue;
+    std::string message;        // Message text
+    std::string filterName;     // Filters name
+    std::string filterValue;    // Filters value
 };
 
+/*!
+ * \brief
+ * Handles the interfaces filter
+ * \details
+ * This class is a declaration of the backend interface parameters.<br>
+ * It handles the possible filter parameters<br>
+ * and the validation of the values given to them.
+ */
 class InterfaceFilter
 {
 public:
     InterfaceFilter() {}
     ~InterfaceFilter() {}
 
+    /*!
+     * \brief
+     * All of the value related filter options
+     */
     enum ValueFilters {
-        YEAR = 0,
-        YEAR_RANGE,
-        DISTANCE,
-        NAME,
-        TIME_RANGE,
-        PLACE,
-        PLACE_MEN,
-        PLACE_WOMEN,
-        SEX,
-        CITY,
-        NATIONALITY,
-        BIRTH_YEAR,
-        TEAM
+        YEAR = 0,       /*!< Year of the race */
+        YEAR_RANGE,     /*!< Year range for the races */
+        DISTANCE,       /*!< Distance/trip of the race */
+        NAME,           /*!< Name of the skier */
+        TIME_RANGE,     /*!< Result times range */
+        PLACE,          /*!< Placing of the skier in general */
+        PLACE_MEN,      /*!< Placing of the skier considering only men */
+        PLACE_WOMEN,    /*!< Placing of the skier considering only women */
+        SEX,            /*!< Sex of the skier */
+        CITY,           /*!< Home city of the skier */
+        NATIONALITY,    /*!< Nationality of the skier */
+        BIRTH_YEAR,     /*!< Birth year of the skier */
+        TEAM            /*!< Team name of the skier */
     };
-    static const ValueFilters valueFilters;
 
+    /*!
+     * \brief
+     * All of the sorting/ordering related filter options
+     * \todo
+     * These sorting options are not implemented yet
+     */
     enum OrderFilters {
-        PLACEMENT = 0,
-        AGE
+        PLACEMENT = 0,      /*!< Sort by placement */
+        PLACEMENT_MEN,      /*!< Sort by placement within men */
+        PLACEMENT_WOMEN,    /*!< Sort by placement within women */
+        AGE,                /*!< Sort by age of the skier */
+        ALPH_NATIONALITY,   /*!< Sort alphabetically by nationality */
+        ALPH_NAME,          /*!< Sort alphabetically by name */
+        ALPH_TEAM,          /*!< Sort alphabetically by team */
+        ALPH_CITY,          /*!< Sort alphabetically by city */
+        TIME                /*!< Sort by result time*/
     };
-    static const OrderFilters orderFilters;
 
-    ///
-    /// \brief
-    ///     Checks that the given filters and values are valid
-    /// \return
-    ///     True if filter is valid.
-    ///
-    static bool validateFilter(std::map<ValueFilters, QString>);
+    /*!
+     * \brief
+     * Validates the filter and its values.
+     * \details
+     * Checks that the given filter and its values<br>
+     * are correct and contain values within wanted boudaries.<br>
+     * This function should be called every time
+     * \param
+     * The filter to be validated
+     * \return
+     * True if the filter is valid.
+     * \todo
+     * Write all value boundaries eg. cases when exception is thrown
+     * \exception FilterException
+     * is thrown, if filter or its value is incorrect
+     */
+    static bool validateFilter(std::map<ValueFilters, QString> filters);
 
 private:
+    // TODO: should these be public?
     static bool validateYear(QString filterValue);
     static bool validateYearRange(QString filterValue);
     static bool validateDistance(QString filterValue);

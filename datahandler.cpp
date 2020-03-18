@@ -270,22 +270,31 @@ bool InternetExplorers::DataHandler::applyAllFiltersToRow(std::map<InternetExplo
             passes = filterByName(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::TIME_RANGE:
+            passes = filterByTimeRange(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::PLACE:
+            passes = filterByPlace(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::PLACE_MEN:
+            passes = filterByPlaceMen(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::PLACE_WOMEN:
+            passes = filterByPlaceWomen(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::SEX:
+            passes = filterBySex(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::CITY:
+            passes = filterByCity(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::NATIONALITY:
+            passes = filterByNationality(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::BIRTH_YEAR:
+            passes = filterByBirthYear(row, filter.second);
             break;
         case InternetExplorers::InterfaceFilter::ValueFilters::TEAM:
+            passes = filterByTeam(row, filter.second);
             break;
         }
 

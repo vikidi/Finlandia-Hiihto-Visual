@@ -21,13 +21,27 @@ public:
     FinlandiaCaller();
     ~FinlandiaCaller();
 
-    ///
-    /// \brief Gets all data.
-    /// \return All data: < < year, distance >, < rows< row< value > > > >
-    ///
-    std::vector<std::vector<std::string>> loadAllData(QString, QString);
+    /*!
+     * \brief
+     * Loads all data from finlandia hiihto website from given year and distance
+     * \param
+     * The year to load from
+     * \param
+     * The distance to load from
+     * \return
+     * The loaded data in rows
+     */
+    std::vector<std::vector<std::string>> loadAllData(QString year, QString distance);
 
-    std::vector<std::vector<std::string>> loadData(std::shared_ptr<std::vector<InternetExplorers::FinlandiaAPI::Parameters>>);
+    /*!
+     * \brief
+     * Loads data from finlandia hiihto website with given parameters.
+     * \param
+     * Parameters to use in the data loading
+     * \return
+     * The loaded data in rows
+     */
+    std::vector<std::vector<std::string>> loadData(std::shared_ptr<std::vector<InternetExplorers::FinlandiaAPI::Parameters>> parameters);
 
 signals:
 
@@ -39,12 +53,15 @@ private:
     void escapeBR(std::string&);
     void escapeSpace(std::string&);
 
-    ///
-    /// \brief Parses the data from response with QXmlStreamReader.
-    /// \param Formatted response data.
-    /// \return Rows of data in vector.
-    ///
-    std::vector<std::vector<std::string>> parseData(const std::string&);
+    /*!
+     * \brief
+     * Parses the data from response with QXmlStreamReader.
+     * \param
+     * Formatted response data.
+     * \return
+     * Rows of data in vector.
+     */
+    std::vector<std::vector<std::string>> parseData(const std::string& data);
 
     QNetworkAccessManager *m_manager;
     QNetworkReply *m_reply;

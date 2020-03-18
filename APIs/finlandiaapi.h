@@ -40,7 +40,10 @@ const std::vector<std::string> TRIPS = {
     "V75"
 };
 
-
+/*!
+ * \brief
+ * This class is the public interface to the finlandia web data
+ */
 class FinlandiaAPI : public QObject
 {
     Q_OBJECT
@@ -49,6 +52,10 @@ public:
     FinlandiaAPI();
     ~FinlandiaAPI();
 
+    /*!
+     * \brief
+     * Parameters for the data queries from the server
+     */
     struct Parameters {
         QString year = "kaikki";
         QString trip = "kaikki";
@@ -61,12 +68,24 @@ public:
         QString team = "";
     };
 
-
+    /*!
+     * \brief
+     * Function to load all data from the finlandia hiihto website
+     * \return
+     * Loaded data in format < Year, Distance, < Row > > >
+     */
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> loadAllData();
 
 
 signals:
-    void progressChanged(const int);
+
+    /*!
+     * \brief
+     * Progress has changed in loading
+     * \param
+     * The current progress
+     */
+    void progressChanged(const int progress);
 
 private slots:
 
