@@ -50,12 +50,6 @@ MainWindow::~MainWindow()
 void MainWindow::dataReady()
 {
 
-
-    // OK
-    std::map<InterfaceFilter::Filters, QString> filter = {
-        {InterfaceFilter::YEAR, "2017"}
-    };
-
     ui->haunAloitusNappi->setDisabled(false);
 
 
