@@ -29,7 +29,7 @@ public:
     /*!
      * \brief
      * Overrides and saves data in folder/txt structure in working directory.
-     * \param
+     * \param data
      * Data to be saved locally in format < Year, < Distance, < Rows > > >
      */
     void saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>>& data);
@@ -63,7 +63,7 @@ signals:
     /*!
      * \brief
      * Signals that the progress in loading has changed
-     * \param
+     * \param progress
      * Current progress
      */
     void progressChanged(const int progress);
@@ -93,7 +93,7 @@ private:
     /*!
      * \brief
      * Loads data from disk in thread from given years.
-     * \param
+     * \param years
      * Years from to read the data.
      */
     void loadDataInThread(std::shared_ptr<std::vector<std::string>> years);
@@ -101,7 +101,7 @@ private:
     /*!
      * \brief
      * Appends data to the common data structure
-     * \param
+     * \param data
      * Data to append
      * \attention
      * Method is thread safe.
@@ -112,9 +112,9 @@ private:
     /*!
      * \brief
      * Splits a vector to multiple same size vectors
-     * \param
+     * \param vec
      * The original vector to spilt
-     * \param
+     * \param n
      * Amount of new vectors after splitting
      * \return
      * Splitted vectors in vector
@@ -144,7 +144,7 @@ private:
     /*!
      * \brief
      * Gets the MD5 checksum for the given file
-     * \param
+     * \param file
      * Path to the file
      * \return
      * MD5 check sum for the file, empty QByteArray if failure

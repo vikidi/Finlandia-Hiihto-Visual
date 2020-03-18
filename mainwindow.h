@@ -32,9 +32,9 @@ public:
     /*!
      * \brief
      * Default constructor
-     * \param
+     * \param finlandiaUI
      * Finlandia UI main window
-     * \param
+     * \param dh
      * Backend data handler
      */
     explicit MainWindow(Finlandia* finlandiaUI,
@@ -53,7 +53,7 @@ private slots:
     /*!
      * \brief
      * Loading progress has been changed in backend. Connects to progress bar.
-     * * \param
+     * * \param progress
      * The current progress of the loading
      */
     void progressChanged(const int progress);

@@ -25,9 +25,9 @@ public:
     /*!
      * \brief
      * Converts skier names in given data to their short hash version
-     * \param
+     * \param data
      * What to hash
-     * \param
+     * \param algorithm
      * What hash algorithm to use
      */
     void hashNames(std::vector<std::vector<std::string>>& data,
@@ -36,7 +36,7 @@ public:
     /*!
      * \brief
      * Converts skier names in data in disk to their short hash version
-     * \param
+     * \param algorithm
      * Algorithm what hash algorithm to use
      */
     void hashLocalNames(QCryptographicHash::Algorithm algorithm = QCryptographicHash::Algorithm::Md5);
@@ -56,7 +56,7 @@ public:
     /*!
      * \brief
      * Converts encrypted skier names to their original version
-     * \param
+     * \param data
      * What to decrypt
      */
     void decryptNames(std::vector<std::vector<std::string>>& data);

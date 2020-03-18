@@ -66,9 +66,9 @@ public:
      * Creates the string from given parameters.<br>
      * Adds timestamp to the log.<br>
      * This method is thread safe.
-     * \param
+     * \param msg
      * Message to be written
-     * \param
+     * \param severity
      * Severity of the message
      */
     void log(QString& msg, Severity severity);
@@ -80,11 +80,11 @@ public:
      * Creates the string from given parameters.<br>
      * Adds timestamp to the log.<br>
      * This method is thread safe.
-     * \param
+     * \param msg
      * Message to be written
-     * \param
+     * \param severity
      * Severity of the message
-     * \param
+     * \param sender
      * Sender of the message
      */
     void log(QString& msg, Severity severity, QString& sender);
@@ -100,7 +100,7 @@ private:
     /*!
      * \brief
      * Writes the message to the log files end.
-     * \param
+     * \param msg
      * Message that contains everything for the row.
      */
     void write(QString& msg);
@@ -116,7 +116,7 @@ private:
     /*!
      * \brief
      * Handles the severity parameter
-     * \param
+     * \param severity
      * The severity as enum value
      * \return
      * Severity as string

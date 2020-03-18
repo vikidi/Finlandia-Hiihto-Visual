@@ -48,11 +48,11 @@ public:
     /*!
      * \brief
      * Default constructor
-     * \param
+     * \param msg
      * Message for the exception
-     * \param
+     * \param filterName
      * The filter parameter where error occurred
-     * \param
+     * \param filterValue
      * The filter parameters value that caused the error
      */
     FilterException(const char* msg = "", const char* filterName = "", const char* filterValue = "") :
@@ -151,14 +151,14 @@ public:
      * Checks that the given filter and its values<br>
      * are correct and contain values within wanted boudaries.<br>
      * This function should be called every time
-     * \param
+     * \param filters
      * The filter to be validated
      * \return
      * True if the filter is valid.
      * \todo
      * Write all value boundaries eg. cases when exception is thrown
      * \exception FilterException
-     * is thrown, if filter or its value is incorrect
+     * is thrown if filter or its value is incorrect
      */
     static bool validateFilter(std::map<ValueFilters, QString> filters);
 

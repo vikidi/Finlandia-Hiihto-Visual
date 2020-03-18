@@ -29,9 +29,9 @@ public:
     /*!
      * \brief
      * Loads all data from finlandia hiihto website from given year and distance
-     * \param
+     * \param year
      * The year to load from
-     * \param
+     * \param distance
      * The distance to load from
      * \return
      * The loaded data in rows
@@ -41,7 +41,7 @@ public:
     /*!
      * \brief
      * Loads data from finlandia hiihto website with given parameters.
-     * \param
+     * \param parameters
      * Parameters to use in the data loading
      * \return
      * The loaded data in rows
@@ -61,7 +61,7 @@ private:
     /*!
      * \brief
      * Parses the data from response with QXmlStreamReader.
-     * \param
+     * \param data
      * Formatted response data.
      * \return
      * Rows of data in vector.

@@ -58,7 +58,7 @@ public:
     /*!
      * \brief
      * Get data from the whole database with filter.
-     * \param
+     * \param filters
      * Filter to be applied
      * \attention
      * The filter must be validated with InterfaceFilter before calling
@@ -70,9 +70,9 @@ public:
     /*!
      * \brief
      * Apply filter to data. The data itself will be filtered.
-     * \param
+     * \param filters
      * Filter to be applied
-     * \param
+     * \param data
      * Data where the filter will be applied
      * \attention
      * The filter must be validated with InterfaceFilter before calling
@@ -87,14 +87,16 @@ private slots:
     /*!
      * \brief
      * One thread finished loading, updates progress and sends signal forward
+     * \param progress
+     * The current progress
      */
-    void progressChangedInApi(const int);
+    void progressChangedInApi(const int progress);
 
 signals:
     /*!
      * \brief
      * Loading progress has been changed
-     * \param
+     * \param progress
      * The current progress
      */
     void progressChanged(const int progress);
@@ -150,9 +152,9 @@ private:
     /*!
      * \brief
      * Uses filters to one row
-     * \param
+     * \param filters
      * Filters and values to use
-     * \param
+     * \param row
      * One row of data
      * \return
      * True if row passes the filter
@@ -163,7 +165,7 @@ private:
     /*!
      * \brief
      * Gets all rows that are from given year
-     * \param
+     * \param year
      * The year from to get rows
      * \return
      * The rows from the year
@@ -173,7 +175,7 @@ private:
     /*!
      * \brief
      * Gets all rows that are from given year range
-     * \param
+     * \param range
      * The year range from to get rows
      * \return
      * The rows from the year range
@@ -183,7 +185,7 @@ private:
     /*!
      * \brief
      * Gets all rows that are from given distance
-     * \param
+     * \param distance
      * The distance from to get rows
      * \return
      * The rows from the distance
@@ -193,7 +195,7 @@ private:
     /*!
      * \brief
      * Gets all rows that have given name
-     * \param
+     * \param name
      * The name to get rows
      * \return
      * The rows with the name

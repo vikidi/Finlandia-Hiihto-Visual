@@ -82,7 +82,7 @@ signals:
     /*!
      * \brief
      * Progress has changed in loading
-     * \param
+     * \param progress
      * The current progress
      */
     void progressChanged(const int progress);
