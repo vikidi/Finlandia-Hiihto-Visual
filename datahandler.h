@@ -13,7 +13,6 @@
 #include <string>
 #include <functional>
 
-
 namespace InternetExplorers
 {
 

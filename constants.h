@@ -4,30 +4,52 @@
 #include <QString>
 #include <vector>
 
+/*!
+ * \brief
+ * Namespace that contains all constants used in the program.
+ */
 namespace InternetExplorers::Constants {
 
-// Local data folders name on disk
+/*!
+ * \brief
+ * The root folder for data
+ */
 const QString DATA_ROOT_NAME = "FinlandiaData";
 
-// Local data files name on disk
+/*!
+ * \brief
+ * Local data files name on disk
+ */
 const QString DATA_FILE_NAME = "Data.txt";
 
-// Local meta data folders name on disk
+/*!
+ * \brief
+ * Local meta data folders name on disk
+ */
 const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
 
-// Local meta data files name on disk
+/*!
+ * \brief
+ * Local meta data files name on disk
+ */
 const QString META_DATA_FILE_NAME = "Metadata.txt";
 
 /*!
- * \brief Name for the log folder
+ * \brief
+ * Name for the log folder
  */
 const QString LOG_FOLDER_NAME = "logs";
 
 /*!
- * \brief Name for the log file
+ * \brief
+ * Name for the log file
  */
 const QString LOG_FILE_NAME = "log.txt";
 
+/*!
+ * \brief
+ * All possible distances
+ */
 const std::vector<std::string> DISTANCES = {
     "P50",
     "V50",
@@ -55,8 +77,16 @@ const std::vector<std::string> DISTANCES = {
     "V75"
 };
 
+/*!
+ * \brief
+ * Namespace for logger constants
+ */
 namespace Logger {
 
+/*!
+ * \brief
+ * Holds possible values for log's severity
+ */
 enum Severity {
     INFO = 0,   /*!< Basic info logging */
     WARNING,    /*!< Unwanted behavior, possibly dangerous */
@@ -65,6 +95,10 @@ enum Severity {
 
 }
 
+/*!
+ * \brief
+ * Namespace for interface filter constants
+ */
 namespace Filter {
 
 /*!
@@ -107,9 +141,16 @@ enum OrderFilters {
 
 }
 
+/*!
+ * \brief
+ * Namespace for constant indexes in data
+ */
 namespace DataIndex {
 
-// Amount of columns in row
+/*!
+ * \brief
+ * The amount of columns in data row
+ */
 const size_t ROW_SIZE = 12;
 
 /*!
@@ -117,19 +158,21 @@ const size_t ROW_SIZE = 12;
  * Tells the index for parameters in the data
  */
 enum IndexInData {
-    YEAR = 0,
-    DISTANCE,
-    TIME,
-    PLACE,
-    PLACE_MEN,
-    PLACE_WOMEN,
-    SEX,
-    NAME,
-    CITY,
-    NATIONALITY,
-    BIRTH_YEAR,
-    TEAM
+    YEAR = 0,       /*!< Index of year */
+    DISTANCE,       /*!< Index of distance */
+    TIME,           /*!< Index of time */
+    PLACE,          /*!< Index of overall placing */
+    PLACE_MEN,      /*!< Index of placing in men */
+    PLACE_WOMEN,    /*!< Index of placing in women */
+    SEX,            /*!< Index of sex */
+    NAME,           /*!< Index of name */
+    CITY,           /*!< Index of city */
+    NATIONALITY,    /*!< Index of nationality */
+    BIRTH_YEAR,     /*!< Index of birth year */
+    TEAM            /*!< Index of team name */
 };
+
+}
 
 }
 
