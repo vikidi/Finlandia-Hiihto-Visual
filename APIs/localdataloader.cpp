@@ -2,7 +2,6 @@
 
 #include <QDirIterator>
 #include <QTextStream>
-#include "logger.h"
 
 InternetExplorers::LocalDataLoader::LocalDataLoader() :
     m_data({})
@@ -12,7 +11,6 @@ InternetExplorers::LocalDataLoader::LocalDataLoader() :
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> InternetExplorers::LocalDataLoader::loadData(std::shared_ptr<std::vector<std::string> > years)
 {
-    using logger = InternetExplorers::Logger;
 
     QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
     while (it.hasNext()) {
@@ -67,9 +65,6 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> Inte
         }
 
         f.close();
-
-        QString msg = year + QString(" ") + distance + QString(" loaded");
-        logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO);
 
         emit progressChanged();
     }

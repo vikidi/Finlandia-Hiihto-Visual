@@ -7,6 +7,9 @@
 namespace InternetExplorers
 {
 
+/*!
+ * \brief Appends log info to log file
+ */
 class Logger
 {
 
@@ -18,6 +21,10 @@ public:
     };
 
     // Copy constructors are not allowed
+
+    /*!
+     * \brief Creator not allowed
+     */
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
 
@@ -32,9 +39,19 @@ private:
     QString getTime();
     QString getSeverity(Severity);
 
+    /*!
+     * \brief Name for the log folder
+     */
     inline static const QString LOG_FOLDER_NAME = "logs";
+
+    /*!
+     * \brief Name for the log file
+     */
     inline static const QString LOG_FILE_NAME = "log.txt";
 
+    /*!
+     * \brief Mutex for the file
+     */
     static std::mutex m_mtx;
 };
 
