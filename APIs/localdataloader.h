@@ -37,10 +37,6 @@ signals:
     void progressChanged();
 
 private:
-    const QString DATA_ROOT_NAME = "FinlandiaData";
-    const QString DATA_FILE_NAME = "Data.txt";
-    const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
-    const QString META_DATA_FILE_NAME = "Metadata.txt";
 
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> m_data;
 };

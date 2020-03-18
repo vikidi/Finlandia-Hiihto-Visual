@@ -7,35 +7,10 @@
 #include <vector>
 #include <QException>
 
+#include "constants.h"
+
 namespace InternetExplorers
 {
-
-const std::vector<std::string> DISTANCES = {
-    "P50",
-    "V50",
-    "P100",
-    "P32",
-    "V20",
-    "V32",
-    "V20jun",
-    "P42",
-    "V42",
-    "P20",
-    "P30",
-    "P44",
-    "P60",
-    "P62",
-    "P25",
-    "P35",
-    "P45",
-    "P52",
-    "P53",
-    "P75",
-    "V30",
-    "V45",
-    "V53",
-    "V75"
-};
 
 /*!
  * \brief
@@ -108,44 +83,6 @@ public:
 
     /*!
      * \brief
-     * All of the value related filter options
-     */
-    enum ValueFilters {
-        YEAR = 0,       /*!< Year of the race */
-        YEAR_RANGE,     /*!< Year range for the races */
-        DISTANCE,       /*!< Distance/trip of the race */
-        NAME,           /*!< Name of the skier */
-        TIME_RANGE,     /*!< Result times range */
-        PLACE,          /*!< Placing of the skier in general */
-        PLACE_MEN,      /*!< Placing of the skier considering only men */
-        PLACE_WOMEN,    /*!< Placing of the skier considering only women */
-        SEX,            /*!< Sex of the skier */
-        CITY,           /*!< Home city of the skier */
-        NATIONALITY,    /*!< Nationality of the skier */
-        BIRTH_YEAR,     /*!< Birth year of the skier */
-        TEAM            /*!< Team name of the skier */
-    };
-
-    /*!
-     * \brief
-     * All of the sorting/ordering related filter options
-     * \todo
-     * These sorting options are not implemented yet
-     */
-    enum OrderFilters {
-        PLACEMENT = 0,      /*!< Sort by placement */
-        PLACEMENT_MEN,      /*!< Sort by placement within men */
-        PLACEMENT_WOMEN,    /*!< Sort by placement within women */
-        AGE,                /*!< Sort by age of the skier */
-        ALPH_NATIONALITY,   /*!< Sort alphabetically by nationality */
-        ALPH_NAME,          /*!< Sort alphabetically by name */
-        ALPH_TEAM,          /*!< Sort alphabetically by team */
-        ALPH_CITY,          /*!< Sort alphabetically by city */
-        TIME                /*!< Sort by result time*/
-    };
-
-    /*!
-     * \brief
      * Validates the filter and its values.
      * \details
      * Checks that the given filter and its values<br>
@@ -160,7 +97,7 @@ public:
      * \exception FilterException
      * is thrown if filter or its value is incorrect
      */
-    static bool validateFilter(std::map<ValueFilters, QString> filters);
+    static bool validateFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
 private:
     // TODO: should these be public?

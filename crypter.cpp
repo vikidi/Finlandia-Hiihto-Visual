@@ -6,18 +6,20 @@
 #include <QDirIterator>
 #include "libraries/simplecrypt.h"
 
+#include "constants.h"
+
 InternetExplorers::Crypter::Crypter()
 {
     auto msg(QString("Constructor ready"));
     auto msgSender(QString("Crypter"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 InternetExplorers::Crypter::~Crypter()
 {
     auto msg(QString("Destructor called"));
     auto msgSender(QString("Crypter"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 void InternetExplorers::Crypter::hashNames(std::vector<std::vector<std::string>>& data,
@@ -25,42 +27,42 @@ void InternetExplorers::Crypter::hashNames(std::vector<std::vector<std::string>>
 {
     auto msg(QString("Started function hashNames()"));
     auto msgSender(QString("Crypter"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 
     for(auto& row : data)
     {
         QCryptographicHash hash(algorithm);
-        hash.addData(row[InternetExplorers::Crypter::IndexInData::NAME].c_str(),
-                row[InternetExplorers::Crypter::IndexInData::NAME].length());
+        hash.addData(row[Constants::DataIndex::IndexInData::NAME].c_str(),
+                row[Constants::DataIndex::IndexInData::NAME].length());
         QString result(hash.result().toHex());
         result.truncate(6);
-        row[InternetExplorers::Crypter::IndexInData::NAME]
+        row[Constants::DataIndex::IndexInData::NAME]
                 = result.toStdString();
     }
 
     msg = QString("Done function hashNames()");
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 void InternetExplorers::Crypter::hashLocalNames(QCryptographicHash::Algorithm algorithm)
 {
     auto msg(QString("Started hashing local data"));
     auto msgSender(QString("Crypter"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
-    QDirIterator iterator(DATA_ROOT_NAME, QStringList() << DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+    QDirIterator iterator(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
     while (iterator.hasNext()) {
         iterator.next();
         hashLocalNamesInFile(iterator.filePath(), algorithm);
     }
     msg = QString("Done hashing local data");
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 void InternetExplorers::Crypter::encryptLocalNames()
 {
     SimpleCrypt crypt(4); // Chosen by fair dice roll. Guaranteed to be random
 
-    QDirIterator iterator(DATA_ROOT_NAME, QStringList() << DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
+    QDirIterator iterator(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
     while (iterator.hasNext()) {
         iterator.next();
         QFile file(iterator.filePath());
@@ -68,7 +70,7 @@ void InternetExplorers::Crypter::encryptLocalNames()
         {
             auto msg(QString("No local data found"));
             auto msgSender(QString("Crypter"));
-            InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::CRITICAL, msgSender);
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
             return;
         }
 
@@ -77,8 +79,8 @@ void InternetExplorers::Crypter::encryptLocalNames()
         while (!file.atEnd()) {
             QByteArray line = file.readLine();
             QList<QByteArray> splitRow(line.split(';'));
-            splitRow[InternetExplorers::Crypter::IndexInData::NAME]
-                    = crypt.encryptToString(QString(splitRow[InternetExplorers::Crypter::IndexInData::NAME])).toUtf8();
+            splitRow[Constants::DataIndex::IndexInData::NAME]
+                    = crypt.encryptToString(QString(splitRow[Constants::DataIndex::IndexInData::NAME])).toUtf8();
             result.append(splitRow.join(';'));
         }
 
@@ -87,7 +89,7 @@ void InternetExplorers::Crypter::encryptLocalNames()
         {
             auto msg(QString("Local file write failed"));
             auto msgSender(QString("Crypter"));
-            InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::CRITICAL, msgSender);
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
             return;
         }
 
@@ -103,7 +105,7 @@ void InternetExplorers::Crypter::decryptLocalNames()
 {
     SimpleCrypt crypt(4); // Chosen by fair dice roll. Guaranteed to be random
 
-    QDirIterator iterator(DATA_ROOT_NAME, QStringList() << DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
+    QDirIterator iterator(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
     while (iterator.hasNext()) {
         iterator.next();
         QFile file(iterator.filePath());
@@ -111,7 +113,7 @@ void InternetExplorers::Crypter::decryptLocalNames()
         {
             auto msg(QString("No local data found"));
             auto msgSender(QString("Crypter"));
-            InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::CRITICAL, msgSender);
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
             return;
         }
 
@@ -120,8 +122,8 @@ void InternetExplorers::Crypter::decryptLocalNames()
         while (!file.atEnd()) {
             QByteArray line = file.readLine();
             QList<QByteArray> splitRow(line.split(';'));
-            splitRow[InternetExplorers::Crypter::IndexInData::NAME]
-                    = crypt.decryptToString(QString(splitRow[InternetExplorers::Crypter::IndexInData::NAME])).toUtf8();
+            splitRow[Constants::DataIndex::IndexInData::NAME]
+                    = crypt.decryptToString(QString(splitRow[Constants::DataIndex::IndexInData::NAME])).toUtf8();
             result.append(splitRow.join(';'));
         }
 
@@ -130,7 +132,7 @@ void InternetExplorers::Crypter::decryptLocalNames()
         {
             auto msg(QString("Local file write failed"));
             auto msgSender(QString("Crypter"));
-            InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::CRITICAL, msgSender);
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
             return;
         }
 
@@ -147,8 +149,8 @@ void InternetExplorers::Crypter::decryptNames(std::vector<std::vector<std::strin
 
     for(auto& row : data)
     {
-        row[InternetExplorers::Crypter::IndexInData::NAME]
-                = crypt.decryptToString(QString::fromStdString(row[InternetExplorers::Crypter::IndexInData::NAME])).toStdString();
+        row[Constants::DataIndex::IndexInData::NAME]
+                = crypt.decryptToString(QString::fromStdString(row[Constants::DataIndex::IndexInData::NAME])).toStdString();
     }
 }
 
@@ -159,7 +161,7 @@ void InternetExplorers::Crypter::hashLocalNamesInFile(QString filename, QCryptog
     {
         auto msg(QString("No local data found"));
         auto msgSender(QString("Crypter"));
-        InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::CRITICAL, msgSender);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
         return;
     }
 
@@ -170,10 +172,10 @@ void InternetExplorers::Crypter::hashLocalNamesInFile(QString filename, QCryptog
         QList<QByteArray> splitRow(line.split(';'));
 
         QCryptographicHash hash(algorithm);
-        hash.addData(splitRow.at(InternetExplorers::Crypter::IndexInData::NAME).toHex());
-        splitRow[InternetExplorers::Crypter::IndexInData::NAME]
+        hash.addData(splitRow.at(Constants::DataIndex::IndexInData::NAME).toHex());
+        splitRow[Constants::DataIndex::IndexInData::NAME]
                 = hash.result().toHex();
-        splitRow[InternetExplorers::Crypter::IndexInData::NAME].truncate(6);
+        splitRow[Constants::DataIndex::IndexInData::NAME].truncate(6);
         result.append(splitRow.join(';'));
     }
 
@@ -182,7 +184,7 @@ void InternetExplorers::Crypter::hashLocalNamesInFile(QString filename, QCryptog
     {
         auto msg(QString("Local file write failed"));
         auto msgSender(QString("Crypter"));
-        InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::CRITICAL, msgSender);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
         return;
     }
 

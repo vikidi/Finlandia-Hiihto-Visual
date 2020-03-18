@@ -3,6 +3,8 @@
 #include <QDirIterator>
 #include <QTextStream>
 
+#include "../constants.h"
+
 InternetExplorers::LocalDataLoader::LocalDataLoader() :
     m_data({})
 {
@@ -12,7 +14,7 @@ InternetExplorers::LocalDataLoader::LocalDataLoader() :
 std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> InternetExplorers::LocalDataLoader::loadData(std::shared_ptr<std::vector<std::string> > years)
 {
 
-    QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+    QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
     while (it.hasNext()) {
 
         QFile f(it.next());

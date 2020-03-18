@@ -4,6 +4,8 @@
 #include <QString>
 #include <mutex>
 
+#include "constants.h"
+
 namespace InternetExplorers
 {
 
@@ -29,11 +31,6 @@ public:
      * \brief
      * Severity levels for logged messages.
      */
-    enum Severity {
-        INFO = 0,   /*!< Basic info logging */
-        WARNING,    /*!< Unwanted behavior, possibly dangerous */
-        CRITICAL    /*!< Critical error in program */
-    };
 
     /*!
      * \brief
@@ -71,7 +68,7 @@ public:
      * \param severity
      * Severity of the message
      */
-    void log(QString& msg, Severity severity);
+    void log(QString& msg, Constants::Logger::Severity severity);
 
     /*!
      * \brief
@@ -87,7 +84,7 @@ public:
      * \param sender
      * Sender of the message
      */
-    void log(QString& msg, Severity severity, QString& sender);
+    void log(QString& msg, Constants::Logger::Severity severity, QString& sender);
 
 private:
     /*!
@@ -121,17 +118,7 @@ private:
      * \return
      * Severity as string
      */
-    QString getSeverity(Severity severity);
-
-    /*!
-     * \brief Name for the log folder
-     */
-    inline static const QString LOG_FOLDER_NAME = "logs";
-
-    /*!
-     * \brief Name for the log file
-     */
-    inline static const QString LOG_FILE_NAME = "log.txt";
+    QString getSeverity(Constants::Logger::Severity severity);
 
     /*!
      * \brief Mutex for the file

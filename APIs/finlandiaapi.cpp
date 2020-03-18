@@ -14,14 +14,14 @@ InternetExplorers::FinlandiaAPI::FinlandiaAPI():
 {
     auto msg(QString("Constructor ready"));
     auto msgSender(QString("FinlandiaAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 InternetExplorers::FinlandiaAPI::~FinlandiaAPI()
 {
     auto msg(QString("Destructor called"));
     auto msgSender(QString("FinlandiaAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::FinlandiaAPI::loadAllData()
@@ -102,7 +102,7 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
                     // More calls than expected were added. Increasing m_totalCalls somewhat compensates it
                     auto msg(QString("Precalculated m_totalCalls might be incorrect"));
                     auto msgSender(QString("FinlandiaAPI"));
-                    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::WARNING, msgSender);
+                    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
                     m_currentProgress = 0;
                     m_totalCalls += 24;
                 } else
@@ -191,7 +191,7 @@ void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::st
         // Create empty fields to maps
 
         std::map<QString, std::vector<std::vector<std::string>>> newYear;
-        for(auto trip : TRIPS)
+        for(auto trip : Constants::DISTANCES)
         {
             newYear.insert({QString::fromStdString(trip),{}});
         }

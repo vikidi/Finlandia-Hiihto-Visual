@@ -65,7 +65,7 @@ public:
      * \return
      * Data that passed the given filter. Outer vector consists of data rows
      */
-    std::vector<std::vector<std::string>> getDataWithFilter(std::map<InterfaceFilter::ValueFilters, QString> filters);
+    std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
     /*!
      * \brief
@@ -77,7 +77,7 @@ public:
      * \attention
      * The filter must be validated with InterfaceFilter before calling
      */
-    void applyFilterToData(std::map<InterfaceFilter::ValueFilters, QString> filters,
+    void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
 
     /* /PUBLIC INTERFACE */
@@ -109,28 +109,6 @@ signals:
 
 private:
 
-    // Amount of columns in row
-    const size_t ROW_SIZE = 12;
-
-    /*!
-     * \brief
-     * Tells the index for parameters in the data
-     */
-    enum IndexInData {
-        YEAR = 0,
-        DISTANCE,
-        TIME,
-        PLACE,
-        PLACE_MEN,
-        PLACE_WOMEN,
-        SEX,
-        NAME,
-        CITY,
-        NATIONALITY,
-        BIRTH_YEAR,
-        TEAM
-    };
-
     /*!
      * \brief
      * Loads the data.
@@ -159,7 +137,7 @@ private:
      * \return
      * True if row passes the filter
      */
-    bool applyAllFiltersToRow(std::map<InterfaceFilter::ValueFilters, QString> filters,
+    bool applyAllFiltersToRow(std::map<Constants::Filter::ValueFilters, QString> filters,
                               std::vector<std::string> row);
 
     /*!

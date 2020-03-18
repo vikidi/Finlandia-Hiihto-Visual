@@ -6,6 +6,7 @@
 #include <vector>
 #include "datahandler.h"
 #include "interfacefilter.h"
+#include "constants.h"
 
 namespace Ui {
 class Finlandia;
@@ -29,7 +30,7 @@ private slots:
 
 private:
     Ui::Finlandia *ui;
-    std::vector<InternetExplorers::InterfaceFilter::ValueFilters> previousSrc;
+    std::vector<InternetExplorers::Constants::Filter::ValueFilters> previousSrc;
 
     InternetExplorers::DataHandler *m_DataHandler;
 

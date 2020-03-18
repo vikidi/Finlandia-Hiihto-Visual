@@ -10,11 +10,11 @@ std::mutex InternetExplorers::Logger::m_mtx;
 InternetExplorers::Logger::Logger()
 {
     // Create root folder if not exists
-    if(!QDir(LOG_FOLDER_NAME).exists()) {
-        QDir().mkdir(LOG_FOLDER_NAME);
+    if(!QDir(Constants::LOG_FOLDER_NAME).exists()) {
+        QDir().mkdir(Constants::LOG_FOLDER_NAME);
     }
 
-    std::string path = LOG_FOLDER_NAME.toStdString() + "/" + LOG_FILE_NAME.toStdString();
+    std::string path = Constants::LOG_FOLDER_NAME.toStdString() + "/" + Constants::LOG_FILE_NAME.toStdString();
     if (QFile::exists(QString::fromStdString(path))) {
         // Empty the file
         QFile file(QString::fromStdString(path));
@@ -31,7 +31,7 @@ InternetExplorers::Logger::Logger()
 void InternetExplorers::Logger::write(QString &msg)
 {
     std::lock_guard<std::mutex> lock(m_mtx);
-    QFile f(LOG_FOLDER_NAME + "/" + LOG_FILE_NAME);
+    QFile f(Constants::LOG_FOLDER_NAME + "/" + Constants::LOG_FILE_NAME);
     if (f.open(QIODevice::WriteOnly | QIODevice::Append)) {
         f.write(msg.toStdString().c_str());
     }
@@ -43,14 +43,14 @@ QString InternetExplorers::Logger::getTime()
     return now.toString("dd.MM.yyyy") + " " + now.toString("hh:mm:ss.zzz") + "\t- ";
 }
 
-QString InternetExplorers::Logger::getSeverity(InternetExplorers::Logger::Severity severity)
+QString InternetExplorers::Logger::getSeverity(Constants::Logger::Severity severity)
 {
     switch (severity) {
-        case InternetExplorers::Logger::Severity::INFO:
+        case Constants::Logger::Severity::INFO:
             return "INFO";
-        case InternetExplorers::Logger::Severity::WARNING:
+        case Constants::Logger::Severity::WARNING:
             return "WARNING";
-        case InternetExplorers::Logger::Severity::CRITICAL:
+        case Constants::Logger::Severity::CRITICAL:
             return "WARNING";
     }
 
@@ -63,7 +63,7 @@ InternetExplorers::Logger &InternetExplorers::Logger::getInstance()
     return loggerInstance;
 }
 
-void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Logger::Severity severity)
+void InternetExplorers::Logger::log(QString &msg, Constants::Logger::Severity severity)
 {
     QString str = getInstance().getTime();
     str += getInstance().getSeverity(severity);
@@ -71,7 +71,7 @@ void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Logger::Sev
     getInstance().write(str);
 }
 
-void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Logger::Severity severity, QString &sender)
+void InternetExplorers::Logger::log(QString &msg, Constants::Logger::Severity severity, QString &sender)
 {
     QString str = getInstance().getTime();
     str += sender + " - ";

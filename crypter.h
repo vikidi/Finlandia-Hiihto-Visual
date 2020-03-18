@@ -62,24 +62,6 @@ public:
     void decryptNames(std::vector<std::vector<std::string>>& data);
 
 private:
-    enum IndexInData {
-        YEAR = 0,
-        DISTANCE,
-        TIME,
-        PLACE,
-        PLACE_MEN,
-        PLACE_WOMEN,
-        SEX,
-        NAME,
-        CITY,
-        NATIONALITY,
-        BIRTH_YEAR,
-        TEAM
-    };
-    const QString DATA_ROOT_NAME = "FinlandiaData";
-    const QString DATA_FILE_NAME = "Data.txt";
-    const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
-    const QString META_DATA_FILE_NAME = "Metadata.txt";
 
     void hashLocalNamesInFile(QString filename, QCryptographicHash::Algorithm algorithm);
 };

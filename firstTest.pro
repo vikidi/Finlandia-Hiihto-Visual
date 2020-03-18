@@ -54,7 +54,8 @@ HEADERS += \
     interfacefilter.h \
     libraries/simplecrypt.h \
     APIs/localdataloader.h \
-    logger.h
+    logger.h \
+    constants.h
 
 FORMS += \
         mainwindow.ui \

@@ -21,14 +21,14 @@ InternetExplorers::LocalAPI::LocalAPI() :
 {
     auto msg(QString("Constructor ready"));
     auto msgSender(QString("LocalAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 InternetExplorers::LocalAPI::~LocalAPI()
 {
     auto msg(QString("Destructor called"));
     auto msgSender(QString("LocalAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)

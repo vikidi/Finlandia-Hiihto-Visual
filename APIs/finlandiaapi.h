@@ -13,33 +13,6 @@
 namespace InternetExplorers
 {
 
-const std::vector<std::string> TRIPS = {
-    "P50",
-    "V50",
-    "P100",
-    "P32",
-    "V20",
-    "V32",
-    "V20jun",
-    "P42",
-    "V42",
-    "P20",
-    "P30",
-    "P44",
-    "P60",
-    "P62",
-    "P25",
-    "P35",
-    "P45",
-    "P52",
-    "P53",
-    "P75",
-    "V30",
-    "V45",
-    "V53",
-    "V75"
-};
-
 /*!
  * \brief
  * This class is the public interface to the finlandia web data
