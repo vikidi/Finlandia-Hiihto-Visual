@@ -41,8 +41,7 @@ SOURCES += \
     datahandler.cpp \
     APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
-    finlandiacontroller.cpp\
-    UI/finlandia.cpp \
+        UI/finlandia.cpp \
     interfacefilter.cpp \
     libraries/simplecrypt.cpp \
     APIs/localdataloader.cpp \
@@ -57,7 +56,6 @@ HEADERS += \
     datahandler.h \
     APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
-    finlandiacontroller.h\
     interfacefilter.h\
     UI/finlandia.h \
     libraries/simplecrypt.h \
