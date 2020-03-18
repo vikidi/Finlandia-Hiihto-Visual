@@ -4,8 +4,12 @@
 #
 #-------------------------------------------------
 
+
 QT += core gui network
 QT += quick
+
+
+QT += core gui network charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,6 +33,8 @@ CONFIG += openssl-linked
 
 SOURCES += \
     finlandiamodel.cpp \
+    UI/gamescene.cpp \
+    crypter.cpp \
         main.cpp \
         mainwindow.cpp \
     APIs/finlandiaapi.cpp \
@@ -42,6 +48,15 @@ SOURCES += \
 
 HEADERS += \
     finlandiamodel.h \
+    UI/finlandia.cpp \
+    interfacefilter.cpp \
+    libraries/simplecrypt.cpp \
+    APIs/localdataloader.cpp \
+    logger.cpp
+
+HEADERS += \
+    UI/gamescene.h \
+    crypter.h \
         mainwindow.h \
     APIs/finlandiaapi.h \
     APIs/localapi.h \
@@ -50,8 +65,12 @@ HEADERS += \
     APIs/finlandiacaller.h \
     finlandiacontroller.h\
     interfacefilter.h\
-
-
+    UI/finlandia.h \
+    interfacefilter.h \
+    libraries/simplecrypt.h \
+    APIs/localdataloader.h \
+    logger.h
+	
 FORMS += \
         mainwindow.ui \
 

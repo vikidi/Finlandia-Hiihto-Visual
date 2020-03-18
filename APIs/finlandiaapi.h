@@ -10,6 +10,8 @@
 #include <mutex>
 #include <atomic>
 
+namespace InternetExplorers
+{
 
 const std::vector<std::string> TRIPS = {
     "P50",
@@ -80,7 +82,10 @@ private:
     std::atomic_int m_runners;
 
     std::atomic_int m_totalCalls;
+    std::atomic_int m_finishedCalls;
     std::atomic_int m_currentProgress;
 };
+
+}
 
 #endif // FINLANDIAAPI_H

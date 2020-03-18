@@ -12,6 +12,24 @@
 #include "APIs/finlandiaapi.h"
 #include "APIs/localapi.h"
 #include "interfacefilter.h"
+#include <unordered_map>
+#include <QString>
+#include <QHash>
+#include <vector>
+#include <string>
+#include <functional>
+
+
+namespace InternetExplorers
+{
+
+// Hash function for QString
+struct QStringKeyHash {
+ std::size_t operator()(const QString& key) const
+ {
+     return qHash(key);
+ }
+};
 
 class DataHandler : public QObject
 {
@@ -25,9 +43,9 @@ public:
 
     /* PUBLIC INTERFACE */
 
-    std::vector<std::vector<std::string>> getDataWithFilter(std::map<InterfaceFilter::Filters, QString> filters);
+    std::vector<std::vector<std::string>> getDataWithFilter(std::map<InterfaceFilter::ValueFilters, QString> filters);
 
-    void applyFilterToData(std::map<InterfaceFilter::Filters, QString> filters,
+    void applyFilterToData(std::map<InterfaceFilter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
 
     /* /PUBLIC INTERFACE */
@@ -66,6 +84,16 @@ private:
     void loadData();
     void loadInThread();
 
+    void setRowsByName();
+
+    bool applyAllFiltersToRow(std::map<InterfaceFilter::ValueFilters, QString> filters,
+                              std::vector<std::string> row);
+
+    std::vector<std::vector<std::string>> getAllByYear(QString year);
+    std::vector<std::vector<std::string>> getAllByYearRange(QString range);
+    std::vector<std::vector<std::string>> getAllByDistance(QString distance);
+    std::vector<std::vector<std::string>> getAllByName(QString name);
+
     ///
     /// \brief
     ///     Filters the whole data by given year
@@ -74,64 +102,33 @@ private:
     /// \return
     ///     Data only from given year
     ///
-    std::vector<std::vector<std::string>> filterByYear(QString filterValue);
+    bool filterByYear(std::vector<std::string> row, QString filterValue);
 
-    ///
-    /// \brief
-    ///     Filters the given data by the given year
-    /// \param
-    ///     Year to filter by
-    /// \param
-    ///     Data to filter
-    /// \return
-    ///     Filtered data
-    ///
-    void filterByYear(QString filterValue, std::vector<std::vector<std::string>>& prevData);
-
-    std::vector<std::vector<std::string>> filterByYearRange(QString filterValue);
-    void filterByYearRange(QString filterValue, std::vector<std::vector<std::string>>& prevData);
-
-    std::vector<std::vector<std::string>> filterByDistance(QString filterValue);
-    void filterByDistance(QString filterValue, std::vector<std::vector<std::string>>& prevData);
-
-    std::vector<std::vector<std::string>> filterByName(QString filterValue);
-    void filterByName(QString filterValue, std::vector<std::vector<std::string>>& prevData);
-
-    std::vector<std::vector<std::string>> filterByTimeRange(QString filterValue) {}
-    void filterByTimeRange(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterByPlace(QString filterValue) {}
-    void filterByPlace(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterByPlaceMen(QString filterValue) {}
-    void filterByPlaceMen(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterByPlaceWomen(QString filterValue) {}
-    void filterByPlaceWomen(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterBySex(QString filterValue) {}
-    void filterBySex(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterByCity(QString filterValue) {}
-    void filterByCity(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterByNationality(QString filterValue) {}
-    void filterByNationality(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterByBirthYear(QString filterValue) {}
-    void filterByBirthYear(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
-
-    std::vector<std::vector<std::string>> filterByTeam(QString filterValue) {}
-    void filterByTeam(QString filterValue, std::vector<std::vector<std::string>>& prevData) {}
+    bool filterByYearRange(std::vector<std::string> row, QString filterValue);
+    bool filterByDistance(std::vector<std::string> row, QString filterValue);
+    bool filterByName(std::vector<std::string> row, QString filterValue);
+    bool filterByTimeRange(std::vector<std::string> row, QString filterValue);
+    bool filterByPlace(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceMen(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceWomen(std::vector<std::string> row, QString filterValue);
+    bool filterBySex(std::vector<std::string> row, QString filterValue);
+    bool filterByCity(std::vector<std::string> row, QString filterValue);
+    bool filterByNationality(std::vector<std::string> row, QString filterValue);
+    bool filterByBirthYear(std::vector<std::string> row, QString filterValue);
+    bool filterByTeam(std::vector<std::string> row, QString filterValue);
 
     bool m_loadOngoing;
 
-    FinlandiaAPI *m_finlandiaAPI;
-    LocalAPI *m_localAPI;
+    InternetExplorers::FinlandiaAPI *m_finlandiaAPI;
+    InternetExplorers::LocalAPI *m_localAPI;
 
     // < Year, < Distance, Row< Column< Value > > > >
     std::map<QString, std::map<QString,
                 std::vector<std::vector<std::string>>>> m_data;
+
+    std::unordered_map<QString, std::vector<std::vector<std::string>>, QStringKeyHash> m_dataByName;
 };
+
+}
 
 #endif // DATAHANDLER_H

@@ -1,0 +1,7 @@
+.border_div {
+    border: 1px solid grey;
+    border-radius: 8px;
+    padding: 1vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+  }

@@ -5,8 +5,11 @@
 #include <iostream>
 #include <QString>
 #include <vector>
+#include <QException>
 
-// TODO Fix not to be global!
+namespace InternetExplorers
+{
+
 const std::vector<std::string> DISTANCES = {
     "P50",
     "V50",
@@ -34,13 +37,31 @@ const std::vector<std::string> DISTANCES = {
     "V75"
 };
 
+class FilterException : public std::exception
+{
+public:
+    FilterException(const char* msg = " ", const char* filterName = " ", const char* filterValue = " ") :
+        message(msg),
+        filterName(filterName),
+        filterValue(filterValue) {}
+    ~FilterException() {}
+    const char *what() const noexcept { return message.c_str(); }
+    const char *getFilterName() const noexcept { return filterName.c_str(); }
+    const char *getFilterValue() const noexcept { return filterValue.c_str(); }
+
+private:
+    std::string message;
+    std::string filterName;
+    std::string filterValue;
+};
+
 class InterfaceFilter
 {
 public:
     InterfaceFilter() {}
     ~InterfaceFilter() {}
 
-    enum Filters {
+    enum ValueFilters {
         YEAR = 0,
         YEAR_RANGE,
         DISTANCE,
@@ -55,7 +76,13 @@ public:
         BIRTH_YEAR,
         TEAM
     };
-    static const Filters filters;
+    static const ValueFilters valueFilters;
+
+    enum OrderFilters {
+        PLACEMENT = 0,
+        AGE
+    };
+    static const OrderFilters orderFilters;
 
     ///
     /// \brief
@@ -63,22 +90,24 @@ public:
     /// \return
     ///     True if filter is valid.
     ///
-    static bool validateFilter(std::map<Filters, QString>);
+    static bool validateFilter(std::map<ValueFilters, QString>);
 
 private:
     static bool validateYear(QString filterValue);
     static bool validateYearRange(QString filterValue);
     static bool validateDistance(QString filterValue);
     static bool validateName(QString filterValue);
-    static bool validateTimeRange(QString filterValue) { return true; }
+    static bool validateTimeRange(QString filterValue);
     static bool validatePlace(QString filterValue);
     static bool validatePlaceMen(QString filterValue);
     static bool validatePlaceWomen(QString filterValue);
     static bool validateSex(QString filterValue);
-    static bool validateCity(QString filterValue) { return true; }
-    static bool validateNationality(QString filterValue) { return true; }
+    static bool validateCity(QString filterValue);
+    static bool validateNationality(QString filterValue);
     static bool validateBirthYear(QString filterValue);
-    static bool validateTeam(QString filterValue) { return true; }
+    static bool validateTeam(QString filterValue);
 };
+
+}
 
 #endif // INTERFACEFILTER_H

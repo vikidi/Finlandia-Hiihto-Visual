@@ -6,6 +6,12 @@
 #include <QString>
 #include <iostream>
 #include <vector>
+#include <mutex>
+#include <atomic>
+#include <memory>
+
+namespace InternetExplorers
+{
 
 class LocalAPI : public QObject
 {
@@ -39,11 +45,26 @@ public:
     ///
     std::map<QString, QString> readMetaDataFile();
 
+signals:
+    void progressChanged(const int);
+
+public slots:
+    void updateProgress();
+
 private:
     const QString DATA_ROOT_NAME = "FinlandiaData";
     const QString DATA_FILE_NAME = "Data.txt";
     const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
     const QString META_DATA_FILE_NAME = "Metadata.txt";
+
+    int getAmountOfFiles();
+
+    void loadDataInThread(std::shared_ptr<std::vector<std::string>>);
+
+    void appendData(std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>>& data);
+
+    template<typename T>
+    std::vector<std::shared_ptr<std::vector<T>>> SplitVector(const std::vector<T>& vec, size_t n);
 
     ///
     /// \brief
@@ -84,6 +105,15 @@ private:
     /// \brief Checks if there even is data to be read.
     ///
     bool isDataAvailable();
+
+    int m_fileCount;
+    int m_currentProgress;
+    int m_maxProgress; // aka amount of files
+
+    std::mutex m_mtx;
+    std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > m_data;
 };
+
+}
 
 #endif // LOCALAPI_H

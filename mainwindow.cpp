@@ -2,21 +2,28 @@
 #include "ui_mainwindow.h"
 
 // DEBUG
+#include <QDebug>
+
 #include "interfacefilter.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* dh, QWidget *parent) :
     QMainWindow(parent),
-    m_dataHandler(new DataHandler),
+    m_finlandiaUI(finlandiaUI),
+    m_dataHandler(dh),
     m_progress(new QProgressBar(this)),
+    m_view(new QGraphicsView),
+    m_scene(new InternetExplorers::GameScene),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    connect(m_dataHandler, &DataHandler::loadingReady, this, &MainWindow::dataReady);
+    connect(m_dataHandler, &InternetExplorers::DataHandler::loadingReady, this, &MainWindow::dataReady);
     m_dataHandler->Initialize();
 
     // For progress
-    connect(m_dataHandler, &DataHandler::progressChanged, this, &MainWindow::progressChanged);
+    connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged, this, &MainWindow::progressChanged);
+    connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged,
+            m_scene, &InternetExplorers::GameScene::updateProgress);
 
     // Remove toolbar
     QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
@@ -25,89 +32,77 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     ui->haunAloitusNappi->setDisabled(true);
+
+    m_view->setScene(m_scene);
+    ui->gridLayout->addWidget(m_view);
+    m_view->verticalScrollBar()->setVisible(false);
+    m_view->horizontalScrollBar()->setVisible(false);
+    m_view->setFixedSize(m_scene->width()+30,m_scene->height()+30);
 }
 
 MainWindow::~MainWindow()
 {
+    delete m_scene;
+    delete m_view;
     delete ui;
-    delete m_dataHandler;
 }
 
 void MainWindow::dataReady()
 {
+
 
     // OK
     std::map<InterfaceFilter::Filters, QString> filter = {
         {InterfaceFilter::YEAR, "2017"}
     };
 
-    std::vector<std::vector<std::string>> test = m_dataHandler->getDataWithFilter(filter);
+    ui->haunAloitusNappi->setDisabled(false);
 
-    // EMPTY, not passing filter validation
-    filter = {
-        {InterfaceFilter::YEAR, "2030"}
-    };
 
-    test = m_dataHandler->getDataWithFilter(filter);
+    std::vector<std::vector<std::string>> test;
 
     // OK
-    filter = {
-        {InterfaceFilter::YEAR_RANGE, "2015;2017"}
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
+        {InternetExplorers::InterfaceFilter::YEAR, "2017"}
     };
 
-    test = m_dataHandler->getDataWithFilter(filter);
+    // CLOCKING
+    using namespace std::chrono;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-    // EMPTY, not passing filter validation
-    filter = {
-        {InterfaceFilter::YEAR_RANGE, "2015;2013"}
-    };
+    try {
+       test = m_dataHandler->getDataWithFilter(filter);
+    } catch (InternetExplorers::FilterException &e) {
+        std::cout << e.what() << std::endl;
+    }
 
-    test = m_dataHandler->getDataWithFilter(filter);
-
-    // OK
-    filter = {
-        {InterfaceFilter::DISTANCE, "V20jun"}
-    };
-
-    test = m_dataHandler->getDataWithFilter(filter);
-
-    // EMPTY, not passing filter validation
-    filter = {
-        {InterfaceFilter::DISTANCE, "P200"}
-    };
-
-    test = m_dataHandler->getDataWithFilter(filter);
-
-    // OK
-    filter = {
-        {InterfaceFilter::NAME, "Mursu Esa"}
-    };
-
-    test = m_dataHandler->getDataWithFilter(filter);
-
-    // EMPTY, not passing filter validation
-    filter = {
-        {InterfaceFilter::NAME, "O?."}
-    };
-
-    test = m_dataHandler->getDataWithFilter(filter);
+    // CLOCKING
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "Success, YEAR " << time_span.count() << " s" << std::endl;
 
     // OK, Mursu vaan painaa
     filter = {
-        {InterfaceFilter::YEAR, "2017"},
-        {InterfaceFilter::DISTANCE, "P100"},
-        {InterfaceFilter::NAME, "Mursu Esa"}
+        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2017"},
+        {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "P100"},
+        {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
     };
+
+    // CLOCKING
+    t1 = high_resolution_clock::now();
+
+    try {
+        test = m_dataHandler->getDataWithFilter(filter);
+    } catch (InternetExplorers::FilterException &e) {
+        std::cout << e.what() << std::endl;
+    }
 
     test = m_dataHandler->getDataWithFilter(filter);
 
-    // EMPTY, not passing filter validation
-    filter = {
-        {InterfaceFilter::YEAR, "2017"},
-        {InterfaceFilter::YEAR_RANGE, "2015;2017"}
-    };
-
-    test = m_dataHandler->getDataWithFilter(filter);
+    // CLOCKING
+    t2 = high_resolution_clock::now();
+    time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "Success, YEAR, DISTANCE, NAME " << time_span.count() << " s" << std::endl;
 
 }
 
@@ -118,5 +113,6 @@ void MainWindow::progressChanged(const int progress)
 
 void MainWindow::on_haunAloitusNappi_clicked()
 {
+    m_finlandiaUI->show();
     this->close();
 }

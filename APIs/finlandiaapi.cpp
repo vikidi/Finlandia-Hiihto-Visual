@@ -1,29 +1,37 @@
 #include "finlandiaapi.h"
 #include "finlandiacaller.h"
+#include "logger.h"
 
 #include <thread>
 #include <QDebug>
 
-FinlandiaAPI::FinlandiaAPI():
+InternetExplorers::FinlandiaAPI::FinlandiaAPI():
     m_ready(0),
     m_runners(0),
     m_totalCalls(0),
+    m_finishedCalls(0),
     m_currentProgress(0)
 {
-
+    auto msg(QString("Constructor ready"));
+    auto msgSender(QString("FinlandiaAPI"));
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
 }
 
-FinlandiaAPI::~FinlandiaAPI()
+InternetExplorers::FinlandiaAPI::~FinlandiaAPI()
 {
-
+    auto msg(QString("Destructor called"));
+    auto msgSender(QString("FinlandiaAPI"));
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
 }
 
-std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > FinlandiaAPI::loadAllData()
+std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::FinlandiaAPI::loadAllData()
 {
 
     m_ready = 0;
     m_runners = 0;
+    m_finishedCalls = 0;
     m_currentProgress = 0;
+    m_totalCalls = 229; // Precalculated value
 
     emit progressChanged(0);
 
@@ -51,8 +59,6 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
         searchVector->push_back(search);
     }
 
-    m_totalCalls = static_cast<int>(searchVector->size());
-
     for(int i(0); i < optimalAmountOfThreads; i++)
     {
         m_runners++;
@@ -66,12 +72,13 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > F
 
     removePlankLines();
 
+    // Make sure 100% is reached
     emit progressChanged(100);
 
     return m_data;
 }
 
-void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>> searchVector)
+void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>> searchVector)
 {
     qDebug() << "Thread started";
     FinlandiaCaller caller;
@@ -87,13 +94,17 @@ void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parame
                 m_runners++;
                 thisRunnerIsDone = false;
             }
-            if(int progress(static_cast<int>(100*(m_totalCalls-searchVector->size())/m_totalCalls)); (progress != m_currentProgress))
+            m_finishedCalls++;
+            if(int progress(static_cast<int>(100*m_finishedCalls/m_totalCalls)); (progress != m_currentProgress))
             {
                 if((progress < 0) || (progress > 100))
                 {
-                    // Many new calls were added. Increasing m_totalCalls somewhat compensates it
+                    // More calls than expected were added. Increasing m_totalCalls somewhat compensates it
+                    auto msg(QString("Precalculated m_totalCalls might be incorrect"));
+                    auto msgSender(QString("FinlandiaAPI"));
+                    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::WARNING, msgSender);
                     m_currentProgress = 0;
-                    m_totalCalls += 10;
+                    m_totalCalls += 24;
                 } else
                 {
                     m_currentProgress = progress;
@@ -114,7 +125,7 @@ void FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parame
     qDebug() << "Thread ended";
 }
 
-void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
+void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
 {
 
     QString year(QString::fromStdString(data.at(0).at(0)));
@@ -224,7 +235,7 @@ void FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
 
 }
 
-void FinlandiaAPI::removePlankLines()
+void InternetExplorers::FinlandiaAPI::removePlankLines()
 {
     std::lock_guard<std::mutex> lock(m_mtx);
 
