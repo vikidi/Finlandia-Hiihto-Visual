@@ -59,6 +59,9 @@ Window {
                     text: backend.progress + "% of data ready"
 
                 }
+                Rectangle {
+
+                }
             }
         }
 
