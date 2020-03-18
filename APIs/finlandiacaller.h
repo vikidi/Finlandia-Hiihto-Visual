@@ -13,6 +13,11 @@
 namespace InternetExplorers
 {
 
+/*!
+ * \brief
+ * Worker class that handles data loading and screen scraping from
+ * finlandia hiihto website.
+ */
 class FinlandiaCaller : public QObject
 {
     Q_OBJECT
