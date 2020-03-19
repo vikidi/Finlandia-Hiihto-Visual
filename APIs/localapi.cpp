@@ -165,7 +165,7 @@ void InternetExplorers::LocalAPI::updateProgress()
 
 int InternetExplorers::LocalAPI::getAmountOfFiles()
 {
-    QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+    QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
     int count = 0;
     while (it.hasNext()){
         it.next();
@@ -189,9 +189,25 @@ void InternetExplorers::LocalAPI::appendData(std::map<QString, std::map<QString,
     m_data.insert(data.begin(), data.end());
 }
 
-std::vector<std::pair<QString, QString> > InternetExplorers::LocalAPI::readMD5File()
+std::map<QString, QString> InternetExplorers::LocalAPI::readMD5File()
 {
-    return {};
+    std::map<QString, QString> sums = {};
+
+    QFile file(Constants::MD5_DATA_FILE_NAME);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return {};
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+
+        QStringList parts = line.split(";");
+
+        sums.insert({parts[0], parts[1]});
+    }
+
+    return sums;
 }
 
 void InternetExplorers::LocalAPI::createGeneralMetaDataFile()
@@ -218,7 +234,7 @@ void InternetExplorers::LocalAPI::createMD5File()
         stream.setGenerateByteOrderMark(true);
 
         // Go throug all files
-        QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+        QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
         while (it.hasNext()) {
             QFile f(it.next());
 
@@ -248,6 +264,50 @@ QByteArray InternetExplorers::LocalAPI::getMD5CheckSum(const QString &file)
 
 bool InternetExplorers::LocalAPI::isDataCorrupted()
 {
+    // Check that MD5 metadata file exists
+    if (!QFile::exists(Constants::MD5_DATA_FILE_NAME)) {
+        return true;
+    }
+
+    // Check that it has as many rows as there is files
+    // in FinlandiaData
+    int amount = 0;
+    QFile file(Constants::MD5_DATA_FILE_NAME);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return true;
+    }
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (line.trimmed() != "") {
+            amount++;
+        }
+    }
+
+    if (amount != m_maxProgress) {
+        return true;
+    }
+
+    // Check that the sums match
+    std::map<QString, QString> sums = readMD5File();
+
+    // Go throug all files and check that the hash is same
+    QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        QFile f(it.next());
+
+        QString name = f.fileName();
+
+        QByteArray checkSum = getMD5CheckSum(name);
+
+        QString DataAsString = QString(checkSum.toHex());
+
+        if (sums.at(name) != DataAsString) {
+            return true;
+        }
+    }
+
+    // Data is not corrupted
     return false;
 }
 
