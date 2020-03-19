@@ -14,6 +14,10 @@ You add searches to your searched list. The search engine does the requested sea
 
 You can deduct searches from your searched list.
 
+**Doxygen documentation**
+
+Doxygen documentation can be found from [here](./html/index.html).
+
 **Contact information**
 
 ilkka.kallioniemi@tuni.fi
