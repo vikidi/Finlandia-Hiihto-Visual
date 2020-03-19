@@ -91,8 +91,6 @@ void MainWindow::dataReady()
         std::cout << e.what() << std::endl;
     }
 
-    test = m_dataHandler->getDataWithFilter(filter);
-
     // CLOCKING
     t2 = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(t2 - t1);

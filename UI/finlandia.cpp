@@ -28,26 +28,47 @@ Finlandia::~Finlandia()
 
 void Finlandia::on_pushButtonNollaKaikki_clicked()
 {
-
+    m_chart -> removeAllSeries();
+    ui->listWidgetTehtHaut->clear();
 }
 
 void Finlandia::on_pushButtoLisaaHaku_clicked()
 {
-    /*
-    std::map<InterfaceFilter::Filters, QString> filter = {
-        {InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText()},
-        {InterfaceFilter::DISTANCE, ui->comboBoxMatka->currentText()},
-        {InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText()}
-    };
-    */
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter;
+
+    if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet"){
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> year_pair(
+                InternetExplorers::InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText());
+        filter.insert(year_pair);
+    }
+
+    if(ui->textEditUrheilija->toPlainText() != ""){
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> name_pair(
+                InternetExplorers::InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText());
+        filter.insert(name_pair);
+    }
+
+    if(ui->comboBoxMatka->currentText() != "Kaikki Matkat"){
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> distance_pair(
+                InternetExplorers::InterfaceFilter::DISTANCE, ui->comboBoxMatka->currentText());
+        filter.insert(distance_pair);
+    }
+    /*std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
+        {InternetExplorers::InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText()},
+        {InternetExplorers::InterfaceFilter::DISTANCE, ui->comboBoxMatka->currentText()},
+        {InternetExplorers::InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText()}
+    };*/
+
 
     ui->listWidgetTehtHaut->addItem(ui->comboBoxVuosi->currentText() + " "
                                     + ui->comboBoxMatka->currentText() + " " +
                                     ui->textEditUrheilija->toPlainText() + "\n");
 
+    /*
     std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
         {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
     };
+    */
 
     std::vector<std::vector<std::string>> newData;
     try {

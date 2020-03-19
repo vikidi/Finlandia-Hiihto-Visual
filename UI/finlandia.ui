@@ -63,65 +63,7 @@
            <property name="spacing">
             <number>0</number>
            </property>
-           <item row="16" column="0">
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>400</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="7" column="0">
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QLabel" name="labelSijoitus">
-               <property name="text">
-                <string>Sijoitus</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="ComboBoxSijoitus">
-               <item>
-                <property name="text">
-                 <string/>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>3.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>4.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>5.</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0">
+           <item row="1" column="3">
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
               <widget class="QLabel" name="labelMatka">
@@ -132,6 +74,11 @@
              </item>
              <item>
               <widget class="QComboBox" name="comboBoxMatka">
+               <item>
+                <property name="text">
+                 <string>Kaikki Matkat</string>
+                </property>
+               </item>
                <item>
                 <property name="text">
                  <string>P50</string>
@@ -256,28 +203,23 @@
              </item>
             </layout>
            </item>
-           <item row="5" column="0">
-            <layout class="QHBoxLayout" name="athleteLayout">
-             <item>
-              <widget class="QLabel" name="labelUrheilija">
-               <property name="text">
-                <string>Urheilija</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QTextEdit" name="textEditUrheilija">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>27</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
+           <item row="19" column="3">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>400</height>
+              </size>
+             </property>
+            </spacer>
            </item>
-           <item row="14" column="0">
+           <item row="7" column="3">
+            <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+           </item>
+           <item row="14" column="3">
             <layout class="QHBoxLayout" name="horizontalLayout_21">
              <item>
               <layout class="QGridLayout" name="gridLayout_4">
@@ -291,10 +233,61 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="4" column="1">
-                <widget class="QRadioButton" name="haeKaikkiRP">
+               <item row="5" column="0">
+                <widget class="QLabel" name="labelSijoitus">
                  <property name="text">
-                  <string>Kaikki tulokset</string>
+                  <string>Sijoitus</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QRadioButton" name="haeHitainRP">
+                 <property name="text">
+                  <string>Hitain</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">HaeButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="5" column="1">
+                <widget class="QComboBox" name="ComboBoxSijoitus">
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>1.</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>2.</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>3.</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>4.</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>5.</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="haeOsalMaarRP">
+                 <property name="text">
+                  <string>Osallistujen lukumäärä</string>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
@@ -311,20 +304,10 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="1" column="0">
-                <widget class="QRadioButton" name="haeOsalMaarRP">
+               <item row="3" column="1">
+                <widget class="QRadioButton" name="haeKaikkiRP">
                  <property name="text">
-                  <string>Osallistujen lukumäärä</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="0">
-                <widget class="QRadioButton" name="haeHitainRP">
-                 <property name="text">
-                  <string>Hitain</string>
+                  <string>Kaikki tulokset</string>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
@@ -345,14 +328,51 @@
              </item>
             </layout>
            </item>
-           <item row="13" column="0">
+           <item row="11" column="3">
+            <layout class="QHBoxLayout" name="homecountryLayout" stretch="0,0">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetMaximumSize</enum>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelKotimaa">
+               <property name="text">
+                <string>Kotimaa</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTextEdit" name="textEditHome">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>27</height>
+                </size>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="3" column="3">
+            <layout class="QHBoxLayout" name="horizontalLayout_9"/>
+           </item>
+           <item row="13" column="3">
             <widget class="QLabel" name="labelHae">
              <property name="text">
               <string>Hae:</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="12" column="3">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
               <widget class="QLabel" name="labelVuosi">
@@ -602,7 +622,7 @@
              </item>
             </layout>
            </item>
-           <item row="9" column="0">
+           <item row="9" column="3">
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
               <widget class="QLabel" name="labelSukupuoli">
@@ -632,8 +652,35 @@
              </item>
             </layout>
            </item>
-           <item row="3" column="0">
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item row="5" column="3">
+            <layout class="QHBoxLayout" name="athleteLayout">
+             <item>
+              <widget class="QLabel" name="labelUrheilija">
+               <property name="text">
+                <string>Urheilija</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTextEdit" name="textEditUrheilija">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>27</height>
+                </size>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="verticalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="18" column="3">
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
               <widget class="QLabel" name="labelSuoritusaika">
                <property name="text">
@@ -642,43 +689,26 @@
               </widget>
              </item>
              <item>
-              <widget class="QTimeEdit" name="timeEditLower"/>
-             </item>
-             <item>
-              <widget class="QTimeEdit" name="timeEditUpper"/>
-             </item>
-            </layout>
-           </item>
-           <item row="11" column="0">
-            <layout class="QHBoxLayout" name="homecountryLayout" stretch="0,0">
-             <property name="sizeConstraint">
-              <enum>QLayout::SetMaximumSize</enum>
-             </property>
-             <item>
-              <widget class="QLabel" name="labelKotimaa">
-               <property name="text">
-                <string>Kotimaa</string>
+              <widget class="QTimeEdit" name="timeEditUpper">
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QTextEdit" name="textEditHome">
+              <widget class="QTimeEdit" name="timeEditLower">
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
-                 <height>27</height>
+                 <width>100</width>
+                 <height>16777215</height>
                 </size>
                </property>
               </widget>
              </item>
             </layout>
-           </item>
-           <item row="12" column="0">
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
            </item>
           </layout>
          </item>
@@ -991,7 +1021,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -1016,9 +1046,9 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="HaettavaTietoButtons"/>
-  <buttongroup name="HaeButtons"/>
   <buttongroup name="JarjestaButtons"/>
   <buttongroup name="EsitysButtons"/>
+  <buttongroup name="HaettavaTietoButtons"/>
+  <buttongroup name="HaeButtons"/>
  </buttongroups>
 </ui>
