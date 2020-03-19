@@ -8,10 +8,11 @@
 #include "ui_finlandia.h"
 #include <QtCharts>
 
-Finlandia::Finlandia(QWidget *parent) :
+Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
+                     QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Finlandia),
-    m_DataHandler(new InternetExplorers::DataHandler),
+    m_DataHandler(dh),
     allSearches{},
     m_chart(new QChart())
 {
@@ -23,7 +24,6 @@ Finlandia::Finlandia(QWidget *parent) :
 Finlandia::~Finlandia()
 {
     delete ui;
-    delete m_DataHandler;
 }
 
 void Finlandia::on_pushButtonNollaKaikki_clicked()
@@ -45,8 +45,8 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
                                     + ui->comboBoxMatka->currentText() + " " +
                                     ui->textEditUrheilija->toPlainText() + "\n");
 
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
-        {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
+    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filter = {
+        {InternetExplorers::Constants::Filter::NAME, "Mursu Esa"}
     };
 
     std::vector<std::vector<std::string>> newData;

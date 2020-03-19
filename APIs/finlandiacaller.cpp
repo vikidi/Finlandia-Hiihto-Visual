@@ -11,6 +11,8 @@
 #include <QEventLoop>
 #include <QTimer>
 
+#include "constants.h"
+
 std::mutex InternetExplorers::FinlandiaCaller::m_mtx;
 
 InternetExplorers::FinlandiaCaller::FinlandiaCaller():
@@ -342,7 +344,7 @@ std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadD
                     {
                         qDebug() << "Dividing to trips";
                         // Divide years to trips
-                        for(std::string trip : InternetExplorers::TRIPS)
+                        for(std::string trip : Constants::DISTANCES)
                         {
                             auto newSearch = search;
                             newSearch.trip = QString::fromStdString(trip);

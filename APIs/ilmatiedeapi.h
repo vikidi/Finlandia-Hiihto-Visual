@@ -4,6 +4,10 @@
 namespace InternetExplorers
 {
 
+/*!
+ * \brief
+ * Provides a public interface to the ilmatiede weather data
+ */
 class IlmatiedeAPI
 {
 public:

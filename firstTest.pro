@@ -26,6 +26,8 @@ CONFIG += c++17
 CONFIG += openssl-linked
 
 SOURCES += \
+    UI/gamescene.cpp \
+    crypter.cpp \
         main.cpp \
         mainwindow.cpp \
     APIs/finlandiaapi.cpp \
@@ -35,9 +37,13 @@ SOURCES += \
     APIs/finlandiacaller.cpp \
     UI/finlandia.cpp \
     interfacefilter.cpp \
-    simplecrypt.cpp
+    libraries/simplecrypt.cpp \
+    APIs/localdataloader.cpp \
+    logger.cpp
 
 HEADERS += \
+    UI/gamescene.h \
+    crypter.h \
         mainwindow.h \
     APIs/finlandiaapi.h \
     APIs/localapi.h \
@@ -46,7 +52,10 @@ HEADERS += \
     APIs/finlandiacaller.h \
     UI/finlandia.h \
     interfacefilter.h \
-    simplecrypt.h
+    libraries/simplecrypt.h \
+    APIs/localdataloader.h \
+    logger.h \
+    constants.h
 
 FORMS += \
         mainwindow.ui \

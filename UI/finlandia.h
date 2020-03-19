@@ -6,6 +6,7 @@
 #include <vector>
 #include "datahandler.h"
 #include "interfacefilter.h"
+#include "constants.h"
 
 namespace Ui {
 class Finlandia;
@@ -16,7 +17,8 @@ class Finlandia : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Finlandia(QWidget *parent = 0);
+    explicit Finlandia(InternetExplorers::DataHandler* dh,
+                       QWidget *parent = 0);
     ~Finlandia();
 
 private slots:
@@ -28,7 +30,7 @@ private slots:
 
 private:
     Ui::Finlandia *ui;
-    std::vector<InternetExplorers::InterfaceFilter::ValueFilters> previousSrc;
+    std::vector<InternetExplorers::Constants::Filter::ValueFilters> previousSrc;
 
     InternetExplorers::DataHandler *m_DataHandler;
 

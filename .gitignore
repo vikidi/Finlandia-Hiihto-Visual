@@ -3,4 +3,6 @@
 *~
 build-*
 *.o
-
+node_modules
+*.autosave
+latex

@@ -8,20 +8,31 @@
 #include <QCryptographicHash>
 #include <QTextCodec>
 #include <QDebug>
+#include <thread>
 
-InternetExplorers::LocalAPI::LocalAPI()
+#include "APIs/localdataloader.h"
+#include "logger.h"
+
+InternetExplorers::LocalAPI::LocalAPI() :
+    m_fileCount(0),
+    m_currentProgress(0),
+    m_maxProgress(getAmountOfFiles()),
+    m_data({})
 {
-
+    auto msg(QString("Constructor ready"));
+    auto msgSender(QString("LocalAPI"));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 InternetExplorers::LocalAPI::~LocalAPI()
 {
-
+    auto msg(QString("Destructor called"));
+    auto msgSender(QString("LocalAPI"));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
 {
-
     // If old data is there, delete it
     if(QDir(DATA_ROOT_NAME).exists()) {
         qDebug() << "Poistetaan kansioita";
@@ -75,64 +86,58 @@ void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QStr
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::LocalAPI::loadData()
 {
-    std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > data = {};
-
     // Go throug data if it is there
     if(!QDir(DATA_ROOT_NAME).exists()) {
         qDebug() << "Data-folder was not found";
         return {};
     }
 
-    QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
-    while (it.hasNext()) {
+    size_t optimalAmountOfThreads(std::thread::hardware_concurrency());
 
-        QFile f(it.next());
+    // Create year vectors
+    auto years = std::vector<std::string>();
+    for (int i = 1974; i < 2020; i++) {
+        years.emplace_back(std::to_string(i));
+    }
+    std::vector<std::shared_ptr<std::vector<std::string>>> yearVectors = SplitVector(years, optimalAmountOfThreads);
 
-        f.open(QIODevice::ReadOnly);
-
-        std::string name = f.fileName().toStdString();
-
-        // Parse year and distance
-        std::size_t first = name.find("/");
-        std::size_t second = name.find("/", first + 1);
-        std::size_t last = name.find("/", second + 1);
-
-        QString year = QString::fromStdString(name.substr (first + 1, second - first - 1));
-        QString distance = QString::fromStdString(name.substr (second + 1, last - second - 1));
-
-        // Check that year exists
-        if( data.find(year) == data.end() ) {
-            data.insert( {year, {  }} );
-        }
-
-        // Check that distance exists
-        if( data[year].find(distance) == data[year].end() ) {
-            data[year].insert( {distance, {  }} );
-        }
-
-        // Read lines
-        QTextStream in(&f);
-        while (!in.atEnd())
-        {
-            QString line = in.readLine();
-            QStringList parts = line.split(";");
-
-            // Go through columns
-            std::vector<std::string> row = {};
-            for(auto& col : parts) {
-                row.emplace_back(col.toStdString());
-            }
-
-            // Last is extra because of split
-            row.pop_back();
-
-            data[year][distance].emplace_back(row);
-        }
-
-        f.close();
+    std::vector<std::thread> threads;
+    threads.reserve(optimalAmountOfThreads);
+    for(size_t i = 0; i < optimalAmountOfThreads; i++)
+    {
+        threads.push_back(std::thread(&LocalAPI::loadDataInThread, this, yearVectors[i]));
     }
 
-    return data;
+    for (auto& th : threads) {
+        th.join();
+    }
+
+    return m_data;
+}
+
+template<typename T>
+std::vector<std::shared_ptr<std::vector<T>>> InternetExplorers::LocalAPI::SplitVector(const std::vector<T>& vec, size_t n)
+{
+    std::vector<std::shared_ptr<std::vector<T>>> outVec;
+
+    size_t length = vec.size() / n;
+    size_t remain = vec.size() % n;
+
+    size_t begin = 0;
+    size_t end = 0;
+
+    for (size_t i = 0; i < std::min(n, vec.size()); ++i)
+    {
+        end += (remain > 0) ? (length + !!(remain--)) : length;
+
+        std::vector<T> vector = std::vector<T>(vec.begin() + begin, vec.begin() + end);
+
+        outVec.push_back(std::make_shared<std::vector<T>>(vector));
+
+        begin = end;
+    }
+
+    return outVec;
 }
 
 bool InternetExplorers::LocalAPI::needsToBeLoadedFromWeb()
@@ -143,6 +148,44 @@ bool InternetExplorers::LocalAPI::needsToBeLoadedFromWeb()
 std::map<QString, QString> InternetExplorers::LocalAPI::readMetaDataFile()
 {
     return {};
+}
+
+void InternetExplorers::LocalAPI::updateProgress()
+{
+    m_fileCount++;
+
+    int progress = static_cast<int>(100 * (m_fileCount/static_cast<double>(m_maxProgress)));
+
+    if (progress > m_currentProgress) {
+        m_currentProgress = progress;
+        emit progressChanged(progress);
+    }
+}
+
+int InternetExplorers::LocalAPI::getAmountOfFiles()
+{
+    QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+    int count = 0;
+    while (it.hasNext()){
+        it.next();
+        count++;
+    }
+    return count;
+}
+
+void InternetExplorers::LocalAPI::loadDataInThread(std::shared_ptr<std::vector<std::string> > years)
+{
+    LocalDataLoader loader;
+    connect(&loader, &LocalDataLoader::progressChanged, this, &LocalAPI::updateProgress);
+    std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> data = loader.loadData(years);
+    appendData(data);
+}
+
+void InternetExplorers::LocalAPI::appendData(std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
+{
+    std::lock_guard<std::mutex> lock(m_mtx);
+
+    m_data.insert(data.begin(), data.end());
 }
 
 std::vector<std::pair<QString, QString> > InternetExplorers::LocalAPI::readMD5File()
