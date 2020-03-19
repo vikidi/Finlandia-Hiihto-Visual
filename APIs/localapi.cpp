@@ -11,6 +11,7 @@
 #include <thread>
 
 #include "APIs/localdataloader.h"
+#include "../constants.h"
 #include "logger.h"
 
 InternetExplorers::LocalAPI::LocalAPI() :
@@ -34,20 +35,20 @@ InternetExplorers::LocalAPI::~LocalAPI()
 void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
 {
     // If old data is there, delete it
-    if(QDir(DATA_ROOT_NAME).exists()) {
+    if(QDir(Constants::DATA_ROOT_NAME).exists()) {
         qDebug() << "Poistetaan kansioita";
-        QDir(DATA_ROOT_NAME).removeRecursively();
+        QDir(Constants::DATA_ROOT_NAME).removeRecursively();
     }
 
     // Create the root folder
-    QDir().mkdir(DATA_ROOT_NAME);
+    QDir().mkdir(Constants::DATA_ROOT_NAME);
 
 
     // Go through years
     for(auto& year : data) {
 
         // Create the year folder
-        QString yfolder = DATA_ROOT_NAME + QString("/") + year.first;
+        QString yfolder = Constants::DATA_ROOT_NAME + QString("/") + year.first;
         QDir().mkdir(yfolder);
 
         //Go through distances
@@ -58,7 +59,7 @@ void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QStr
             QDir().mkdir(dfolder);
 
             // Create file with the rows
-            QFile file(dfolder + QString("/") + DATA_FILE_NAME);
+            QFile file(dfolder + QString("/") + Constants::DATA_FILE_NAME);
             if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
             {
                 QTextStream stream( &file );
@@ -87,7 +88,7 @@ void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QStr
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::LocalAPI::loadData()
 {
     // Go throug data if it is there
-    if(!QDir(DATA_ROOT_NAME).exists()) {
+    if(!QDir(Constants::DATA_ROOT_NAME).exists()) {
         qDebug() << "Data-folder was not found";
         return {};
     }
@@ -164,7 +165,7 @@ void InternetExplorers::LocalAPI::updateProgress()
 
 int InternetExplorers::LocalAPI::getAmountOfFiles()
 {
-    QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+    QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
     int count = 0;
     while (it.hasNext()){
         it.next();
@@ -201,15 +202,15 @@ void InternetExplorers::LocalAPI::createGeneralMetaDataFile()
 void InternetExplorers::LocalAPI::createMD5File()
 {
     // Check if MD5 metadata file already exists
-    if (QFile::exists(MD5_DATA_FILE_NAME)) {
+    if (QFile::exists(Constants::MD5_DATA_FILE_NAME)) {
 
         // Delete it if exists
-        QFile f(MD5_DATA_FILE_NAME);
+        QFile f(Constants::MD5_DATA_FILE_NAME);
         f.remove();
     }
 
     // Create file with the rows
-    QFile file(MD5_DATA_FILE_NAME);
+    QFile file(Constants::MD5_DATA_FILE_NAME);
     if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
     {
         QTextStream stream( &file );
@@ -217,7 +218,7 @@ void InternetExplorers::LocalAPI::createMD5File()
         stream.setGenerateByteOrderMark(true);
 
         // Go throug all files
-        QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+        QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
         while (it.hasNext()) {
             QFile f(it.next());
 
@@ -252,12 +253,12 @@ bool InternetExplorers::LocalAPI::isDataCorrupted()
 
 bool InternetExplorers::LocalAPI::isDataAvailable()
 {
-    if(!QDir(DATA_ROOT_NAME).exists()) {
+    if(!QDir(Constants::DATA_ROOT_NAME).exists()) {
         return false;
     }
 
     // Iterate year folders
-    QDirIterator it(DATA_ROOT_NAME, QDirIterator::NoIteratorFlags);
+    QDirIterator it(Constants::DATA_ROOT_NAME, QDirIterator::NoIteratorFlags);
     while (it.hasNext()) {
         it.next();
 
@@ -275,7 +276,7 @@ bool InternetExplorers::LocalAPI::isDataAvailable()
             }
 
             // Check that data file exists
-            if (!QFile::exists(it2.filePath() + QString("/") + DATA_FILE_NAME)) {
+            if (!QFile::exists(it2.filePath() + QString("/") + Constants::DATA_FILE_NAME)) {
                 return false;
             }
         }

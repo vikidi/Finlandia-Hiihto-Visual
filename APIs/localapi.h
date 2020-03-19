@@ -73,14 +73,12 @@ public slots:
     /*!
      * \brief
      * Updates the current progress
+     * \todo
+     * Make this thread safe
      */
     void updateProgress();
 
 private:
-    const QString DATA_ROOT_NAME = "FinlandiaData";
-    const QString DATA_FILE_NAME = "Data.txt";
-    const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
-    const QString META_DATA_FILE_NAME = "Metadata.txt";
 
     /*!
      * \brief
