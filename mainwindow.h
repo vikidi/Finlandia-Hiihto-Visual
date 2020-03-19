@@ -36,6 +36,8 @@ public:
      * Finlandia UI main window
      * \param dh
      * Backend data handler
+     * \param parent
+     * Parent widget for the window
      */
     explicit MainWindow(Finlandia* finlandiaUI,
                         InternetExplorers::DataHandler* dh,

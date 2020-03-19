@@ -202,13 +202,19 @@ public:
       */
     QByteArray decryptToByteArray(QByteArray cypher) ;
 
-    //enum to describe options that have been used for the encryption. Currently only one, but
-    //that only leaves room for future extensions like adding a cryptographic hash...
-    enum CryptoFlag{CryptoFlagNone = 0,
-                    CryptoFlagCompression = 0x01,
-                    CryptoFlagChecksum = 0x02,
-                    CryptoFlagHash = 0x04
+    /**
+      Enum to describe options that have been used for the encryption. Currently only one, but
+      that only leaves room for future extensions like adding a cryptographic hash...
+     */
+    enum CryptoFlag{CryptoFlagNone = 0,             /*!<  */
+                    CryptoFlagCompression = 0x01,   /*!<  */
+                    CryptoFlagChecksum = 0x02,      /*!<  */
+                    CryptoFlagHash = 0x04           /*!<  */
                    };
+
+    /**
+      Declares flags
+     */
     Q_DECLARE_FLAGS(CryptoFlags, CryptoFlag);
 private:
 

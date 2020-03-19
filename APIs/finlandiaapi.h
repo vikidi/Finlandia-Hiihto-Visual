@@ -30,15 +30,15 @@ public:
      * Parameters for the data queries from the server
      */
     struct Parameters {
-        QString year = "kaikki";
-        QString trip = "kaikki";
-        QString gender = "kaikki";
-        QString age = "kaikki";
-        QString firstName = "";
-        QString lastName = "";
-        QString city = "";
-        QString nationality = "0";
-        QString team = "";
+        QString year = "kaikki";    /*!< Year parameter */
+        QString trip = "kaikki";    /*!< Distance/trip parameter */
+        QString gender = "kaikki";  /*!< Gender/sex paramenter */
+        QString age = "kaikki";     /*!< Age parameter */
+        QString firstName = "";     /*!< First name of skier paramenter */
+        QString lastName = "";      /*!< Last name of skier paramenter */
+        QString city = "";          /*!< City of skier parameter */
+        QString nationality = "0";  /*!< Nationality of skier parameter */
+        QString team = "";          /*!< Team of skier parameter */
     };
 
     /*!

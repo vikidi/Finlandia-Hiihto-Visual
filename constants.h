@@ -101,24 +101,207 @@ enum Severity {
  */
 namespace Filter {
 
+/* ValueFilter Documentation */
+
+/*!
+ * \var ValueFilters::YEAR
+ * \brief
+ * Single year for the races
+ * \details
+ * Value can not be empty.<br>
+ * Value must be between [1974, 2019].<br>
+ * Value is parsed with QString::toInt(), which has it's special functionality.
+ * \attention
+ * This can not be used with YEAR_RANGE filter.
+ * \note Example:
+ * 2017
+ */
+
+/*!
+ * \var ValueFilters::YEAR_RANGE
+ * \brief
+ * Year range for the races
+ * \details
+ * Value can not be empty.<br>
+ * Value must contain ";" as separator between start and end year.<br>
+ * Start year is the first one before ";", end year is after that.<br>
+ * Both years will be included in the results -> range is [start, end].<br>
+ * Value must contain exactly two years defined.<br>
+ * Both years must be between [1974, 2019].<br>
+ * Start year must be smaller (<) than end year.
+ * \attention
+ * This can not be used with YEAR filter.
+ * \note Example:
+ * 1980;1985
+ */
+
+/*!
+ * \var ValueFilters::DISTANCE
+ * \brief
+ * Distance/trip of the race
+ * \details
+ * Value can not be empty.<br>
+ * Value must be exactly one that is in InternetExplorers::Constants::DISTANCES.
+ * \note Example:
+ * V50
+ */
+
+/*!
+ * \var ValueFilters::NAME
+ * \brief
+ * Name of the skier
+ * \details
+ * Value can not be empty.<br>
+ * Search does not mind about upper and lower case.<br>
+ * Search only finds results with exactly same name
+ * (turns both first to lower case).<br>
+ * Value may not contain any special characters.
+ * \note Example:
+ * Mursu Esa
+ */
+
+/*!
+ * \var ValueFilters::TIME_RANGE
+ * \brief
+ * Result time's range.
+ * \details
+ * Value can not be empty.<br>
+ * Value must contain ";" as separator between start and end time.<br>
+ * Start time is the first one before ";", end time is after that.<br>
+ * Both times will be included in the results -> range is [start, end].<br>
+ * Value must contain exactly two times defined.
+ * Time must be in format h:mm:ss.<br>
+ * Time can have more than 9 hours.<br>
+ * Both times must be in the valid format described above.<br>
+ * Start time must be smaller (<) than end time.<br>
+ * Hours must be greater or equal (>=) to 0.<br>
+ * Minutes must be between [0, 59].<br>
+ * Seconds must be between [0, 59].
+ * \note Example:
+ * 5:10:27;12:05:15
+ */
+
+/*!
+ * \var ValueFilters::PLACE
+ * \brief
+ * Placing of the skier in general
+ * \details
+ * Value can not be empty.<br>
+ * Value must be greater or equal (>=) to 1.
+ * \note Example:
+ * 5
+ */
+
+/*!
+ * \var ValueFilters::PLACE_MEN
+ * \brief
+ * Placing of the skier considering only men
+ * \details
+ * Value can not be empty.<br>
+ * Value must be greater or equal (>=) to 1.
+ * \note Example:
+ * 4
+ */
+
+/*!
+ * \var ValueFilters::PLACE_WOMEN
+ * \brief
+ * Placing of the skier considering only women
+ * \details
+ * Value can not be empty.<br>
+ * Value must be greater or equal (>=) to 1.
+ * \note Example:
+ * 2
+ */
+
+/*!
+ * \var ValueFilters::SEX
+ * \brief
+ * Sex/gender of the skier
+ * \details
+ * Value can not be empty.<br>
+ * Value must be either "M" or "N".
+ * \note Example:
+ * M
+ */
+
+/*!
+ * \var ValueFilters::CITY
+ * \brief
+ * Home city of the skier.
+ * \details
+ * Value can not be empty.<br>
+ * Search does not mind about upper and lower case.<br>
+ * Search only finds results with exactly same city
+ * (turns both first to lower case).<br>
+ * Value may not contain any special characters.
+ * \note Example:
+ * Raisio
+ */
+
+/*!
+ * \var ValueFilters::NATIONALITY
+ * \brief
+ * Nationality of the skier
+ * \details
+ * Value can not be empty.<br>
+ * Search only finds results with exactly same nationality.<br>
+ * Value may not contain any special characters.
+ * Value must have exactly two characters.
+ * \note Example:
+ * FI
+ */
+
+/*!
+ * \var ValueFilters::BIRTH_YEAR
+ * \brief
+ * Birth year of the skier
+ * \details
+ * Value can not be empty.<br>
+ * Value must be exactly two numbers that describe the birth year.
+ * \note Example:
+ * 89
+ */
+
+/*!
+ * \var ValueFilters::TEAM
+ * \brief
+ * Team name of the skier
+ * \details
+ * Value can not be empty.<br>
+ * Search does not mind about upper and lower case.<br>
+ * Search only finds results with exactly same team name
+ * (turns both first to lower case).<br>
+ * Value may not contain any special characters.
+ * \note Example:
+ * Vantaan Hiihtoseura
+ */
+
+/* /ValueFilter Documentation */
+
 /*!
  * \brief
  * All of the value related filter options in interface filter
+ * \details
+ * These filters are used to filter in searches the wanted data.<br>
+ * User can define with these parameters the conditions for result data.
+ * \attention
+ * YEAR and YEAR_RANGE filters can not be used together
  */
 enum ValueFilters {
-    YEAR = 0,       /*!< Year of the race */
-    YEAR_RANGE,     /*!< Year range for the races */
-    DISTANCE,       /*!< Distance/trip of the race */
-    NAME,           /*!< Name of the skier */
-    TIME_RANGE,     /*!< Result times range */
-    PLACE,          /*!< Placing of the skier in general */
-    PLACE_MEN,      /*!< Placing of the skier considering only men */
-    PLACE_WOMEN,    /*!< Placing of the skier considering only women */
-    SEX,            /*!< Sex of the skier */
-    CITY,           /*!< Home city of the skier */
-    NATIONALITY,    /*!< Nationality of the skier */
-    BIRTH_YEAR,     /*!< Birth year of the skier */
-    TEAM            /*!< Team name of the skier */
+    YEAR = 0,
+    YEAR_RANGE,
+    DISTANCE,
+    NAME,
+    TIME_RANGE,
+    PLACE,
+    PLACE_MEN,
+    PLACE_WOMEN,
+    SEX,
+    CITY,
+    NATIONALITY,
+    BIRTH_YEAR,
+    TEAM
 };
 
 /*!

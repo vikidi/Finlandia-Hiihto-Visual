@@ -56,7 +56,7 @@ void MainWindow::dataReady()
 
     // OK
     std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filter = {
-        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "2017"}
+        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "Kaikki vuodet"}
     };
 
     // CLOCKING

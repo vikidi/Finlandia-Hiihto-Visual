@@ -24,7 +24,7 @@ struct QStringKeyHash {
     /*!
      * \brief
      * Hashes QString. Used when QString is key in map.
-     * \param
+     * \param key
      * The Qstring to hash
      * \return
      * The hash value
@@ -66,6 +66,11 @@ public:
     /*!
      * \brief
      * Get data from the whole database with filter.
+     * \details
+     * If a filter parameter is left unused
+     * (not included in the filters map parameter)
+     * that will not restrict the results
+     * eg. everything considering that filter is returned.
      * \param filters
      * Filter to be applied
      * \attention
@@ -78,6 +83,11 @@ public:
     /*!
      * \brief
      * Apply filter to data. The data itself will be filtered.
+     * \details
+     * If a filter parameter is left unused
+     * (not included in the filters map parameter)
+     * that will not restrict the results
+     * eg. everything considering that filter is returned.
      * \param filters
      * Filter to be applied
      * \param data

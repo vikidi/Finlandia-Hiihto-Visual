@@ -85,9 +85,9 @@ public:
      * \brief
      * Validates the filter and its values.
      * \details
-     * Checks that the given filter and its values<br>
+     * Checks that the given filter and its values
      * are correct and contain values within wanted boudaries.<br>
-     * This function should be called every time
+     * This function should be called every time fetching data.
      * \param filters
      * The filter to be validated
      * \return
@@ -95,7 +95,8 @@ public:
      * \todo
      * Write all value boundaries eg. cases when exception is thrown
      * \exception FilterException
-     * is thrown if filter or its value is incorrect
+     * is thrown if filter or its value is incorrect.
+     * Details for these can be found from Contants namespace in ValueFilter enum.
      */
     static bool validateFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
