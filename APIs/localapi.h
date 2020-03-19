@@ -165,9 +165,9 @@ private:
      */
     bool isDataAvailable();
 
-    int m_fileCount;
-    int m_currentProgress;
-    int m_maxProgress; // aka amount of files
+    std::atomic_int m_fileCount;
+    std::atomic_int m_currentProgress;
+    std::atomic_int m_maxProgress; // aka amount of files
 
     std::mutex m_mtx;
     std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > m_data;
