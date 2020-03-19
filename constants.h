@@ -176,6 +176,4 @@ enum IndexInData {
 
 }
 
-}
-
 #endif // CONSTANTS_H
