@@ -16,7 +16,7 @@ You can deduct searches from your searched list.
 
 **Doxygen documentation**
 
-Doxygen documentation can be found from [here](./html/index.html).
+Doxygen documentation can be read by opening html/index.html in browser.
 
 **Contact information**
 
