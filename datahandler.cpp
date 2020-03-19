@@ -47,8 +47,16 @@ InternetExplorers::DataHandler::~DataHandler()
 void InternetExplorers::DataHandler::Initialize()
 {
     if (!m_loadOngoing) {
+        auto msg(QString("Loading data"));
+        auto msgSender(QString("DataHandler"));
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+
         m_loadOngoing = true;
         loadData();
+
+        msg = QString("Loading finished");
+        msgSender = QString("DataHandler");
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
     }
 }
 
@@ -59,9 +67,17 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     // Check filter validity
     try {
         if (!InterfaceFilter::validateFilter(filters)) {
+            auto msg(QString("Filter did not pass validation"));
+            auto msgSender(QString("DataHandler"));
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
+
             return {};
         }
     } catch (InternetExplorers::FilterException& e) {
+        auto msg(QString(e.what()));
+        auto msgSender(QString("DataHandler"));
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
+
         return {};
     }
 
@@ -167,9 +183,15 @@ void InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filte
     // Check filter validity
     try {
         if (!InterfaceFilter::validateFilter(filters)) {
+            auto msg(QString("Filter did not pass validation"));
+            auto msgSender(QString("DataHandler"));
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
             return;
         }
     } catch (InternetExplorers::FilterException& e) {
+        auto msg(QString(e.what()));
+        auto msgSender(QString("DataHandler"));
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
         return;
     }
 

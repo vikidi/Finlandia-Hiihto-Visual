@@ -20,10 +20,19 @@ namespace InternetExplorers
  *  \brief Hash function for QString
  */
 struct QStringKeyHash {
- std::size_t operator()(const QString& key) const
- {
-     return qHash(key);
- }
+
+    /*!
+     * \brief
+     * Hashes QString. Used when QString is key in map.
+     * \param
+     * The Qstring to hash
+     * \return
+     * The hash value
+     */
+    std::size_t operator()(const QString& key) const
+    {
+        return qHash(key);
+    }
 };
 
 /*!
