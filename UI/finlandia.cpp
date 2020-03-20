@@ -30,45 +30,169 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
 {
     m_chart -> removeAllSeries();
     ui->listWidgetTehtHaut->clear();
+    curr_series_title = "";
+
+    ui->comboBoxVuosi->setCurrentIndex(0);
+    ui->vuosivaliBox->setCurrentIndex(0);
+    ui->textEditUrheilija->setText("");
+    ui->comboBoxMatka->setCurrentIndex(0);
+    ui->textEditUrheilija->setText("");
+    ui->timeEditLower->setTime(QTime(0,0,0));
+    ui->timeEditUpper->setTime(QTime(0,0,0));
+    ui->ComboBoxSijoitus->setCurrentIndex(0);
+    ui->sukupuoliCB->setCurrentIndex(0);
+    ui->textEditHome->setText("");
 }
 
-void Finlandia::on_pushButtoLisaaHaku_clicked()
-{
+std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::makefilter(){
     std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter;
+    QString title;
 
-    if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet"){
+    //Only one year is selected
+    if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" and
+            ui->vuosivaliBox->currentText() == "Vuosiväli"){
+
+        title = ui->comboBoxVuosi->currentText();
+
         std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> year_pair(
-                InternetExplorers::InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText());
+                    InternetExplorers::InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText());
         filter.insert(year_pair);
+    }
+    else if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" and
+            ui->vuosivaliBox->currentText() != "Vuosiväli"){
+
+        if (title.length()>0){
+            title = title + ":" + ui->comboBoxVuosi->currentText() +
+                    "-" +ui->vuosivaliBox->currentText();
+        }
+        else{
+            title = ui->comboBoxVuosi->currentText() + "-" +ui->vuosivaliBox->currentText();
+        }
+
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> yearRange_pair(
+                    InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE,
+                    ui->comboBoxVuosi->currentText() + ";" + ui->vuosivaliBox->currentText());
+        filter.insert(yearRange_pair);
     }
 
     if(ui->textEditUrheilija->toPlainText() != ""){
+        if (title.length()>0){
+            title = ui->textEditUrheilija->toPlainText();
+        }
+        else{
+            title = title + ":" + ui->textEditUrheilija->toPlainText();
+        }
         std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> name_pair(
-                InternetExplorers::InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText());
+                    InternetExplorers::InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText());
         filter.insert(name_pair);
     }
 
     if(ui->comboBoxMatka->currentText() != "Kaikki Matkat"){
+
+        if(title.length() > 0){
+            title = title + ":" + ui->comboBoxMatka->currentText();
+        }
+        else{
+            title = ui->comboBoxMatka->currentText();
+        }
+
         std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> distance_pair(
-                InternetExplorers::InterfaceFilter::DISTANCE, ui->comboBoxMatka->currentText());
+                    InternetExplorers::InterfaceFilter::DISTANCE, ui->comboBoxMatka->currentText());
         filter.insert(distance_pair);
     }
-    /*std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
-        {InternetExplorers::InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText()},
-        {InternetExplorers::InterfaceFilter::DISTANCE, ui->comboBoxMatka->currentText()},
-        {InternetExplorers::InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText()}
-    };*/
 
+    if(ui->timeEditLower->time().toString() != "00:00:00" and
+            ui->timeEditUpper->time().toString() != "00:00:00"){
 
-    ui->listWidgetTehtHaut->addItem(ui->comboBoxVuosi->currentText() + " "
-                                    + ui->comboBoxMatka->currentText() + " " +
-                                    ui->textEditUrheilija->toPlainText() + "\n");
+        if(title.length() > 0){
+            title = ui->timeEditLower->time().toString()
+                    + "-" + ui->timeEditUpper->time().toString();
+        }
+        else{
+            title = title + ":" + ui->timeEditLower->time().toString()
+                    + "-" + ui->timeEditUpper->time().toString();
+        }
+
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> timeRange_pair(
+                    InternetExplorers::InterfaceFilter::ValueFilters::TIME_RANGE,
+                    ui->timeEditLower->time().toString() + ";" +
+                    ui->timeEditUpper->time().toString());
+        filter.insert(timeRange_pair);
+    }
+
+    if(ui->ComboBoxSijoitus->currentText() != "" and
+            ui->sukupuoliCB->currentText() == ""){
+
+        if (title.length() > 0 ){
+            title = title + ":" + ui->ComboBoxSijoitus->currentText();
+        }
+        else{
+            title = ui->ComboBoxSijoitus->currentText();
+        }
+
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> place_pair(
+                    InternetExplorers::InterfaceFilter::PLACE, ui->ComboBoxSijoitus->currentText());
+        filter.insert(place_pair);
+    }else if(ui->sukupuoliCB->currentText() == "M"){
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> place_pair(
+                    InternetExplorers::InterfaceFilter::PLACE_MEN, ui->ComboBoxSijoitus->currentText());
+        filter.insert(place_pair);
+    }else if(ui->sukupuoliCB->currentText() == "N"){
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> place_pair(
+                    InternetExplorers::InterfaceFilter::PLACE_WOMEN, ui->ComboBoxSijoitus->currentText());
+        filter.insert(place_pair);
+    }
+
+    if(ui->sukupuoliCB->currentText() != ""){
+
+        if(title.length()>0){
+            title = title + ":" + ui->sukupuoliCB->currentText();
+        }
+        else{
+            title = ui->sukupuoliCB->currentText();
+        }
+
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> sex_pair(
+                    InternetExplorers::InterfaceFilter::SEX, ui->sukupuoliCB->currentText());
+        filter.insert(sex_pair);
+    }
+
+    if(ui->textEditHome->toPlainText() != ""){
+
+        if(title.length() > 0){
+            title = title + ":" + ui->textEditHome->toPlainText();
+        }
+        else{
+            title = ui->textEditHome->toPlainText();
+        }
+
+        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> national_pair(
+                    InternetExplorers::InterfaceFilter::NATIONALITY, ui->textEditHome->toPlainText());
+        filter.insert(national_pair);
+    }
 
     /*
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
-        {InternetExplorers::InterfaceFilter::NAME, "Mursu Esa"}
-    };
-    */
+
+        case InternetExplorers::InterfaceFilter::ValueFilters::CITY:
+            break;
+        case InternetExplorers::InterfaceFilter::ValueFilters::BIRTH_YEAR:
+            break;
+        case InternetExplorers::InterfaceFilter::ValueFilters::TEAM:
+            break;
+        };*/
+
+    curr_series_title = title;
+    return filter;
+}
+
+void Finlandia::on_pushButtoLisaaHaku_clicked()
+{
+    curr_series_title = "";
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter;
+
+    filter = makefilter();
+
+    ui->listWidgetTehtHaut->addItem(curr_series_title);
 
     std::vector<std::vector<std::string>> newData;
     try {
@@ -81,13 +205,14 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
     std::cout << size << std::endl;
 
     allSearches.push_back(newData);
+
 }
 
 void Finlandia::on_pushButton_clicked()
 {
     //Lineseries for test purposes
     QLineSeries *lineseries = new QLineSeries();
-    lineseries->setName("Esan urotyöt (Kiitos Esa)");
+    lineseries->setName(curr_series_title);
 
     // Going through all of the added search data:
     for (unsigned int i = 0; i < allSearches.size(); i++){

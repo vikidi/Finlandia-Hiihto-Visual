@@ -20,6 +20,8 @@ public:
                        QWidget *parent = 0);
     ~Finlandia();
 
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> makefilter();
+
 private slots:
     void on_pushButtonNollaKaikki_clicked();
 
@@ -36,6 +38,7 @@ private:
     std::vector<std::vector<std::vector<std::string>>> allSearches;
 
     QChart *m_chart;
+    QString curr_series_title;
 };
 
 #endif // FINLANDIA_H
