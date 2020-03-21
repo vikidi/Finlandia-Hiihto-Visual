@@ -206,6 +206,7 @@ private:
     bool filterByName(std::vector<std::string> row, QString filterValue);
     bool filterByTimeRange(std::vector<std::string> row, QString filterValue);
     bool filterByPlace(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceRange(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceMen(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceWomen(std::vector<std::string> row, QString filterValue);
     bool filterBySex(std::vector<std::string> row, QString filterValue);

@@ -6,3 +6,4 @@ build-*
 node_modules
 *.autosave
 latex
+html

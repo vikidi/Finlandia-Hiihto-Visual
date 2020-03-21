@@ -92,8 +92,6 @@ public:
      * The filter to be validated
      * \return
      * True if the filter is valid.
-     * \todo
-     * Write all value boundaries eg. cases when exception is thrown
      * \exception FilterException
      * is thrown if filter or its value is incorrect.
      * Details for these can be found from Contants namespace in ValueFilter enum.
@@ -108,6 +106,7 @@ private:
     static bool validateName(QString filterValue);
     static bool validateTimeRange(QString filterValue);
     static bool validatePlace(QString filterValue);
+    static bool validatePlaceRange(QString filterValue);
     static bool validatePlaceMen(QString filterValue);
     static bool validatePlaceWomen(QString filterValue);
     static bool validateSex(QString filterValue);
