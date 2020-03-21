@@ -192,21 +192,25 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
 
 void Finlandia::make_listview()
 {
+    std::vector<int>attr_vect = select_attributes();
 
     // Going through all of the added search data:
     for (unsigned int i = 0; i < allSearches.size(); i++){
         // Data added per search:
         std::vector<std::vector<std::string>> data = allSearches.at(i);
 
+
         // Going through individual results in a search:
         for (unsigned int j= 0; j < data.size(); j++){
             std::vector<std::string> result = data.at(j);
             QString disp = "";
 
-            for (unsigned int k = 0; k < result.size(); k++){
+            //for (unsigned int k = 0; k < result.size(); k++)
+            for(int k : attr_vect){
                 // Showcasing a result:
 
                 disp += QString::fromStdString(result.at(k)) + " ";
+                qDebug() << QString::number(k) + ", "  + QString::fromStdString(result.at(k));
 
             }
             ui->listWidgetResult->addItem(disp);
@@ -263,6 +267,36 @@ void Finlandia::make_listviweLabel()
 
     ui->ListViewesityslabel->setText(label.mid(0, label.length()-1));
 
+}
+
+std::vector<int> Finlandia::select_attributes()
+{
+    std::vector<int>atr_vec;
+
+    enum Atributes { year, distance, time, place, something1, something2,
+                   something3, name, town, nationality, something4, team};
+
+    if(ui->haeHitainRP->isChecked()){
+
+    }
+    if(ui->haeKaikkiRP->isChecked()){
+        atr_vec = {Atributes::year, distance, time, place, something1, something2,
+                   something3, name, town, nationality, something4, team};
+    }
+    if(ui->haeNopeinRP->isChecked()){
+
+    }
+    if(ui->haeOsalMaarRP->isChecked()){
+
+    }
+    if(ui->KotimaaRP->isChecked()){
+        atr_vec.push_back(nationality);
+    }
+    if(ui->haeJoukkueRP->isChecked()){
+        atr_vec.push_back(team);
+    }
+
+    return atr_vec;
 }
 
 void Finlandia::on_pushButtoLisaaHaku_clicked()

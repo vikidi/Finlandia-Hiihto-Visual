@@ -28,6 +28,13 @@ public:
 
     void make_listviweLabel();
 
+    /**
+     * @brief select_attributes
+     * @return vector on integers pointin out what
+     * attributes the listView should show
+     */
+    std::vector<int> select_attributes();
+
 private slots:
     void on_pushButtonNollaKaikki_clicked();
 
