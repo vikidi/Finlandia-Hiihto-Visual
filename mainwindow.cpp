@@ -50,7 +50,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::dataReady()
 {
+
     ui->haunAloitusNappi->setDisabled(false);
+
 
     std::vector<std::vector<std::string>> test;
 
@@ -94,6 +96,7 @@ void MainWindow::dataReady()
     t2 = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(t2 - t1);
     std::cout << "Success, YEAR, DISTANCE, NAME " << time_span.count() << " s" << std::endl;
+
 }
 
 void MainWindow::progressChanged(const int progress)

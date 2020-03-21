@@ -21,6 +21,21 @@ public:
                        QWidget *parent = 0);
     ~Finlandia();
 
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> makefilter();
+
+    void make_listview();
+
+    void make_chart();
+
+    void make_listviweLabel();
+
+    /**
+     * @brief select_attributes
+     * @return vector on integers pointin out what
+     * attributes the listView should show
+     */
+    std::vector<int> select_attributes();
+
 private slots:
     void on_pushButtonNollaKaikki_clicked();
 
@@ -37,6 +52,7 @@ private:
     std::vector<std::vector<std::vector<std::string>>> allSearches;
 
     QChart *m_chart;
+    QString curr_series_title;
 };
 
 #endif // FINLANDIA_H

@@ -4,7 +4,13 @@
 #
 #-------------------------------------------------
 
+
+QT += core gui network
+QT += quick
+
+
 QT += core gui network charts
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = firstTest
@@ -35,7 +41,7 @@ SOURCES += \
     datahandler.cpp \
     APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
-    UI/finlandia.cpp \
+        UI/finlandia.cpp \
     interfacefilter.cpp \
     libraries/simplecrypt.cpp \
     APIs/localdataloader.cpp \
@@ -50,8 +56,8 @@ HEADERS += \
     datahandler.h \
     APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
+    interfacefilter.h\
     UI/finlandia.h \
-    interfacefilter.h \
     libraries/simplecrypt.h \
     APIs/localdataloader.h \
     logger.h \
@@ -59,7 +65,8 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui \
-    UI/finlandia.ui
+	UI/finlandia.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
