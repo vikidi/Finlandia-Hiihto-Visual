@@ -13,7 +13,7 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     QMainWindow(parent),
     ui(new Ui::Finlandia),
     m_DataHandler(dh),
-    allSearches{},
+    allSearches({}),
     m_chart(new QChart())
 {
     ui->setupUi(this);
@@ -44,6 +44,8 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->textEditHome->setText("");
     ui->esitysListanaRP->setChecked(false);
     ui->esitysGraafinenRP->setChecked(false);
+
+    allSearches.clear();
 }
 
 std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> Finlandia::makefilter(){
@@ -233,12 +235,27 @@ void Finlandia::make_chart()
         // Going through individual results in a search:
         for (unsigned int j= 0; j < data.size(); j++){
             std::vector<std::string> result = data.at(j);
-            lineseries->append(QPoint(stoi(result.at(0)),stoi(result.at(2))));
+
+            // TEMPORARY TRY CATCH
+            try {
+                lineseries->append(QPoint(stoi(result.at(0)),stoi(result.at(2))));
+            } catch (std::exception) {
+                std::cout << "ERROR adding graph points" << std::endl;
+                QMessageBox msgBox;
+                msgBox.setText("Kyseisestä hausta ei voida tehdä graafia.");
+                msgBox.exec();
+            }
         }
         //Adding the series to m_chart
-        m_chart->addSeries(lineseries);
-        m_chart->createDefaultAxes();
-        ui->graafiWiev->setChart(m_chart);
+
+        // TEMPORARY TRY CATCH
+        try {
+            m_chart->addSeries(lineseries);
+            m_chart->createDefaultAxes();
+            ui->graafiWiev->setChart(m_chart);
+        } catch (std::exception) {
+            std::cout << "ERROR creating graph" << std::endl;
+        }
     }
 }
 
@@ -327,9 +344,6 @@ void Finlandia::on_pushButton_clicked()
     if(ui->esitysListanaRP->isChecked()){
         make_listview();
         make_listviweLabel();
-        if(ui->esitysGraafinenRP->isChecked()){
-            make_chart();
-        }
     }else if(ui->esitysGraafinenRP->isChecked()){
         make_chart();
     }else{
