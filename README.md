@@ -16,17 +16,18 @@ You add searches to your searched list. The search engine does the requested sea
 
 You can deduct searches from your searched list.
 
-<<<<<<< HEAD
+
 **Environment**
 
-The program requires the same packages and QT version as the remote desktop QT.
+The program requires the same packages and QT version as the remote desktop QT. This means Qt >= 5.9.6
 
 The program requires a screen with a resolution greater than 1280 * 720. 
-=======
+
+
 **Doxygen documentation**
 
 Doxygen documentation can be read by opening html/index.html in browser.
->>>>>>> 64f52d2846c5ddb30c9df482ddf9b5b355f2d0d3
+
 
 **Contact information**
 
