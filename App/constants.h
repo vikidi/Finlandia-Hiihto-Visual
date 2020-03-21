@@ -93,6 +93,12 @@ enum Severity {
     CRITICAL    /*!< Critical error in program */
 };
 
+/*!
+ * \brief
+ * Amount of messages that gets written at once to the disk
+ */
+const size_t WRITE_BUFFER_MAX_SIZE = 100;
+
 }
 
 /*!
