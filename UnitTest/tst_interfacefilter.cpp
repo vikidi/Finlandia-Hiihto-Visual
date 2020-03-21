@@ -3,11 +3,19 @@
 
 #include "interfacefilter.h"
 
+// Typedef so that Qt macros understand it
 typedef std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filtermap;
 Q_DECLARE_METATYPE(filtermap)
 
+// Just to make code more readable
 using InternetExplorers::Constants::Filter::ValueFilters;
 
+namespace InternetExplorersTests {
+
+/*!
+ * \todo
+ * Missing still tests for PLACE_RANGE, CITY, NATIONALITY, BIRTH_YEAR, TEAM
+ */
 class InterfaceFilter : public QObject
 {
     Q_OBJECT
@@ -118,29 +126,31 @@ private:
     InternetExplorers::InterfaceFilter* m_filter;
 };
 
-InterfaceFilter::InterfaceFilter():
+}
+
+InternetExplorersTests::InterfaceFilter::InterfaceFilter():
     m_filter(nullptr)
 {
 
 }
 
-InterfaceFilter::~InterfaceFilter()
+InternetExplorersTests::InterfaceFilter::~InterfaceFilter()
 {
 
 }
 
-void InterfaceFilter::initTestCase()
+void InternetExplorersTests::InterfaceFilter::initTestCase()
 {
     m_filter = new InternetExplorers::InterfaceFilter();
     QVERIFY(m_filter != nullptr);
 }
 
-void InterfaceFilter::cleanupTestCase()
+void InternetExplorersTests::InterfaceFilter::cleanupTestCase()
 {
     delete m_filter;
 }
 
-void InterfaceFilter::testOverallFilter()
+void InternetExplorersTests::InterfaceFilter::testOverallFilter()
 {
     filtermap filter = filtermap({{ValueFilters::YEAR, "1996"},
                                {ValueFilters::YEAR_RANGE, "1996;2000"}});
@@ -150,7 +160,7 @@ void InterfaceFilter::testOverallFilter()
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::testYearFilter_data()
+void InternetExplorersTests::InterfaceFilter::testYearFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -162,13 +172,13 @@ void InterfaceFilter::testYearFilter_data()
             {{ValueFilters::YEAR, "1996"}});
 }
 
-void InterfaceFilter::testYearFilter()
+void InternetExplorersTests::InterfaceFilter::testYearFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkYearFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkYearFilter()
 {
     filtermap fil = filtermap({{ValueFilters::YEAR, "1996"}});
     QBENCHMARK{
@@ -176,7 +186,7 @@ void InterfaceFilter::bencmarkYearFilter()
     }
 }
 
-void InterfaceFilter::testYearFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testYearFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -194,13 +204,13 @@ void InterfaceFilter::testYearFilterFail_data()
             {{ValueFilters::YEAR, "2420"}});
 }
 
-void InterfaceFilter::testYearFilterFail()
+void InternetExplorersTests::InterfaceFilter::testYearFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkYearFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkYearFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::YEAR, "2420"}});
     QBENCHMARK{
@@ -212,7 +222,7 @@ void InterfaceFilter::bencmarkYearFilterFail()
     }
 }
 
-void InterfaceFilter::testYearRangeFilter_data()
+void InternetExplorersTests::InterfaceFilter::testYearRangeFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -228,13 +238,13 @@ void InterfaceFilter::testYearRangeFilter_data()
             {{ValueFilters::YEAR_RANGE, "1980;1981"}});
 }
 
-void InterfaceFilter::testYearRangeFilter()
+void InternetExplorersTests::InterfaceFilter::testYearRangeFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkYearRangeFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkYearRangeFilter()
 {
     filtermap fil = filtermap({{ValueFilters::YEAR_RANGE, "1996;2002"}});
     QBENCHMARK{
@@ -242,7 +252,7 @@ void InterfaceFilter::bencmarkYearRangeFilter()
     }
 }
 
-void InterfaceFilter::testYearRangeFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testYearRangeFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -270,13 +280,13 @@ void InterfaceFilter::testYearRangeFilterFail_data()
             {{ValueFilters::YEAR_RANGE, "1990;1980"}});
 }
 
-void InterfaceFilter::testYearRangeFilterFail()
+void InternetExplorersTests::InterfaceFilter::testYearRangeFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkYearRangeFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkYearRangeFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::YEAR_RANGE, "1990;1980"}});
     QBENCHMARK{
@@ -288,7 +298,7 @@ void InterfaceFilter::bencmarkYearRangeFilterFail()
     }
 }
 
-void InterfaceFilter::testDistanceFilter_data()
+void InternetExplorersTests::InterfaceFilter::testDistanceFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -298,13 +308,13 @@ void InterfaceFilter::testDistanceFilter_data()
             {{ValueFilters::DISTANCE, "V50"}});
 }
 
-void InterfaceFilter::testDistanceFilter()
+void InternetExplorersTests::InterfaceFilter::testDistanceFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkDistanceFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkDistanceFilter()
 {
     filtermap fil = filtermap({{ValueFilters::DISTANCE, "P50"}});
     QBENCHMARK{
@@ -312,7 +322,7 @@ void InterfaceFilter::bencmarkDistanceFilter()
     }
 }
 
-void InterfaceFilter::testDistanceFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testDistanceFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -324,13 +334,13 @@ void InterfaceFilter::testDistanceFilterFail_data()
             {{ValueFilters::DISTANCE, "V200"}});
 }
 
-void InterfaceFilter::testDistanceFilterFail()
+void InternetExplorersTests::InterfaceFilter::testDistanceFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkDistanceFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkDistanceFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::DISTANCE, "V200"}});
     QBENCHMARK{
@@ -342,7 +352,7 @@ void InterfaceFilter::bencmarkDistanceFilterFail()
     }
 }
 
-void InterfaceFilter::testNameFilter_data()
+void InternetExplorersTests::InterfaceFilter::testNameFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -356,13 +366,13 @@ void InterfaceFilter::testNameFilter_data()
             {{ValueFilters::NAME, "Mursu"}});
 }
 
-void InterfaceFilter::testNameFilter()
+void InternetExplorersTests::InterfaceFilter::testNameFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkNameFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkNameFilter()
 {
     filtermap fil = filtermap({{ValueFilters::NAME, "Mursu Esa"}});
     QBENCHMARK{
@@ -370,7 +380,7 @@ void InterfaceFilter::bencmarkNameFilter()
     }
 }
 
-void InterfaceFilter::testNameFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testNameFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -382,13 +392,13 @@ void InterfaceFilter::testNameFilterFail_data()
             {{ValueFilters::NAME, "Mursu.; Esa"}});
 }
 
-void InterfaceFilter::testNameFilterFail()
+void InternetExplorersTests::InterfaceFilter::testNameFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkNameFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkNameFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::NAME, "Mursu.; Esa"}});
     QBENCHMARK{
@@ -400,7 +410,7 @@ void InterfaceFilter::bencmarkNameFilterFail()
     }
 }
 
-void InterfaceFilter::testTimeRangeFilter_data()
+void InternetExplorersTests::InterfaceFilter::testTimeRangeFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -424,13 +434,13 @@ void InterfaceFilter::testTimeRangeFilter_data()
             {{ValueFilters::TIME_RANGE, "1:50:30;7:59:59"}});
 }
 
-void InterfaceFilter::testTimeRangeFilter()
+void InternetExplorersTests::InterfaceFilter::testTimeRangeFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkTimeRangeFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkTimeRangeFilter()
 {
     filtermap fil = filtermap({{ValueFilters::TIME_RANGE, "1:50:30;7:59:59"}});
     QBENCHMARK{
@@ -438,7 +448,7 @@ void InterfaceFilter::bencmarkTimeRangeFilter()
     }
 }
 
-void InterfaceFilter::testTimeRangeFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testTimeRangeFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -470,13 +480,13 @@ void InterfaceFilter::testTimeRangeFilterFail_data()
             {{ValueFilters::TIME_RANGE, "5:10:20.4;6:10:20.5"}});
 }
 
-void InterfaceFilter::testTimeRangeFilterFail()
+void InternetExplorersTests::InterfaceFilter::testTimeRangeFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkTimeRangeFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkTimeRangeFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::TIME_RANGE, "5:10:20;4:10:20"}});
     QBENCHMARK{
@@ -488,7 +498,7 @@ void InterfaceFilter::bencmarkTimeRangeFilterFail()
     }
 }
 
-void InterfaceFilter::testPlaceFilter_data()
+void InternetExplorersTests::InterfaceFilter::testPlaceFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -500,13 +510,13 @@ void InterfaceFilter::testPlaceFilter_data()
             {{ValueFilters::PLACE, "15000"}});
 }
 
-void InterfaceFilter::testPlaceFilter()
+void InternetExplorersTests::InterfaceFilter::testPlaceFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkPlaceFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkPlaceFilter()
 {
     filtermap fil = filtermap({{ValueFilters::PLACE, "5"}});
     QBENCHMARK{
@@ -514,7 +524,7 @@ void InterfaceFilter::bencmarkPlaceFilter()
     }
 }
 
-void InterfaceFilter::testPlaceFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testPlaceFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -530,13 +540,13 @@ void InterfaceFilter::testPlaceFilterFail_data()
             {{ValueFilters::PLACE, "Justtesting"}});
 }
 
-void InterfaceFilter::testPlaceFilterFail()
+void InternetExplorersTests::InterfaceFilter::testPlaceFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkPlaceFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkPlaceFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::PLACE, "-5"}});
     QBENCHMARK{
@@ -548,7 +558,7 @@ void InterfaceFilter::bencmarkPlaceFilterFail()
     }
 }
 
-void InterfaceFilter::testPlaceMenFilter_data()
+void InternetExplorersTests::InterfaceFilter::testPlaceMenFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -560,13 +570,13 @@ void InterfaceFilter::testPlaceMenFilter_data()
             {{ValueFilters::PLACE_MEN, "15000"}});
 }
 
-void InterfaceFilter::testPlaceMenFilter()
+void InternetExplorersTests::InterfaceFilter::testPlaceMenFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkPlaceMenFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkPlaceMenFilter()
 {
     filtermap fil = filtermap({{ValueFilters::PLACE_MEN, "5"}});
     QBENCHMARK{
@@ -574,7 +584,7 @@ void InterfaceFilter::bencmarkPlaceMenFilter()
     }
 }
 
-void InterfaceFilter::testPlaceMenFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testPlaceMenFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -590,13 +600,13 @@ void InterfaceFilter::testPlaceMenFilterFail_data()
             {{ValueFilters::PLACE_MEN, "Justtesting"}});
 }
 
-void InterfaceFilter::testPlaceMenFilterFail()
+void InternetExplorersTests::InterfaceFilter::testPlaceMenFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkPlaceMenFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkPlaceMenFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::PLACE_MEN, "-5"}});
     QBENCHMARK{
@@ -608,7 +618,7 @@ void InterfaceFilter::bencmarkPlaceMenFilterFail()
     }
 }
 
-void InterfaceFilter::testPlaceWomenFilter_data()
+void InternetExplorersTests::InterfaceFilter::testPlaceWomenFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -620,13 +630,13 @@ void InterfaceFilter::testPlaceWomenFilter_data()
             {{ValueFilters::PLACE_WOMEN, "15000"}});
 }
 
-void InterfaceFilter::testPlaceWomenFilter()
+void InternetExplorersTests::InterfaceFilter::testPlaceWomenFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkPlaceWomenFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkPlaceWomenFilter()
 {
     filtermap fil = filtermap({{ValueFilters::PLACE_WOMEN, "5"}});
     QBENCHMARK{
@@ -634,7 +644,7 @@ void InterfaceFilter::bencmarkPlaceWomenFilter()
     }
 }
 
-void InterfaceFilter::testPlaceWomenFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testPlaceWomenFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -650,13 +660,13 @@ void InterfaceFilter::testPlaceWomenFilterFail_data()
             {{ValueFilters::PLACE_WOMEN, "Justtesting"}});
 }
 
-void InterfaceFilter::testPlaceWomenFilterFail()
+void InternetExplorersTests::InterfaceFilter::testPlaceWomenFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkPlaceWomenFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkPlaceWomenFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::PLACE_WOMEN, "-5"}});
     QBENCHMARK{
@@ -668,7 +678,7 @@ void InterfaceFilter::bencmarkPlaceWomenFilterFail()
     }
 }
 
-void InterfaceFilter::testSexFilter_data()
+void InternetExplorersTests::InterfaceFilter::testSexFilter_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -678,13 +688,13 @@ void InterfaceFilter::testSexFilter_data()
             {{ValueFilters::SEX, "N"}});
 }
 
-void InterfaceFilter::testSexFilter()
+void InternetExplorersTests::InterfaceFilter::testSexFilter()
 {
     QFETCH(filtermap, filter);
     QCOMPARE(m_filter->validateFilter(filter), true);
 }
 
-void InterfaceFilter::bencmarkSexFilter()
+void InternetExplorersTests::InterfaceFilter::bencmarkSexFilter()
 {
     filtermap fil = filtermap({{ValueFilters::SEX, "N"}});
     QBENCHMARK{
@@ -692,7 +702,7 @@ void InterfaceFilter::bencmarkSexFilter()
     }
 }
 
-void InterfaceFilter::testSexFilterFail_data()
+void InternetExplorersTests::InterfaceFilter::testSexFilterFail_data()
 {
     QTest::addColumn<std::map<ValueFilters, QString>>("filter");
 
@@ -706,13 +716,13 @@ void InterfaceFilter::testSexFilterFail_data()
             {{ValueFilters::SEX, "5"}});
 }
 
-void InterfaceFilter::testSexFilterFail()
+void InternetExplorersTests::InterfaceFilter::testSexFilterFail()
 {
     QFETCH(filtermap, filter);
     QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
 }
 
-void InterfaceFilter::bencmarkSexFilterFail()
+void InternetExplorersTests::InterfaceFilter::bencmarkSexFilterFail()
 {
     filtermap fil = filtermap({{ValueFilters::SEX, "5"}});
     QBENCHMARK{
@@ -724,6 +734,6 @@ void InterfaceFilter::bencmarkSexFilterFail()
     }
 }
 
-QTEST_APPLESS_MAIN(InterfaceFilter)
+QTEST_APPLESS_MAIN(InternetExplorersTests::InterfaceFilter)
 
 #include "tst_interfacefilter.moc"

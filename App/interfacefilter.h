@@ -92,8 +92,6 @@ public:
      * The filter to be validated
      * \return
      * True if the filter is valid.
-     * \todo
-     * Write all value boundaries eg. cases when exception is thrown
      * \exception FilterException
      * is thrown if filter or its value is incorrect.
      * Details for these can be found from Contants namespace in ValueFilter enum.
