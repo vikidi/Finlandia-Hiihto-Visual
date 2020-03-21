@@ -12,6 +12,10 @@ TEMPLATE = app
 
 SOURCES += \
     tst_interfacefilter.cpp \
+    ../App/interfacefilter.cpp \
+
+HEADERS += \
+    ../App/interfacefilter.h
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
