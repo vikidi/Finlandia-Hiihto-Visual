@@ -22,6 +22,8 @@ public:
 
     std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> makefilter();
 
+    void make_listview();
+
 private slots:
     void on_pushButtonNollaKaikki_clicked();
 

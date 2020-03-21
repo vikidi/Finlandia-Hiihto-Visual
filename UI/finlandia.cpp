@@ -51,9 +51,12 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
     //Only one year is selected
     if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" and
             ui->vuosivaliBox->currentText() == "Vuosiväli"){
-
-        title = ui->comboBoxVuosi->currentText();
-
+        if (title.length()>0){
+            title = title + ":" + ui->comboBoxVuosi->currentText();
+        }
+        else{
+            title = ui->comboBoxVuosi->currentText();
+        }
         std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> year_pair(
                     InternetExplorers::InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText());
         filter.insert(year_pair);
@@ -101,15 +104,15 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
         filter.insert(distance_pair);
     }
 
-    if(ui->timeEditLower->time().toString() != "00:00:00" and
+    if(ui->timeEditLower->time().toString() != "00:00:00" or
             ui->timeEditUpper->time().toString() != "00:00:00"){
 
         if(title.length() > 0){
-            title = ui->timeEditLower->time().toString()
+            title = title + ":" + ui->timeEditLower->time().toString()
                     + "-" + ui->timeEditUpper->time().toString();
         }
         else{
-            title = title + ":" + ui->timeEditLower->time().toString()
+            title = ui->timeEditLower->time().toString()
                     + "-" + ui->timeEditUpper->time().toString();
         }
 
@@ -185,30 +188,7 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
     return filter;
 }
 
-void Finlandia::on_pushButtoLisaaHaku_clicked()
-{
-    curr_series_title = "";
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter;
-
-    filter = makefilter();
-
-    ui->listWidgetTehtHaut->addItem(curr_series_title);
-
-    std::vector<std::vector<std::string>> newData;
-    try {
-        newData = m_DataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    unsigned long int size = newData.size();
-    std::cout << size << std::endl;
-
-    allSearches.push_back(newData);
-
-}
-
-void Finlandia::on_pushButton_clicked()
+void Finlandia::make_listview()
 {
     //Lineseries for test purposes
     QLineSeries *lineseries = new QLineSeries();
@@ -243,3 +223,32 @@ void Finlandia::on_pushButton_clicked()
 
     // ui->listWidgetResults->
 }
+
+void Finlandia::on_pushButtoLisaaHaku_clicked()
+{
+    curr_series_title = "";
+    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter;
+
+    filter = makefilter();
+
+    ui->listWidgetTehtHaut->addItem(curr_series_title);
+
+    std::vector<std::vector<std::string>> newData;
+    try {
+        newData = m_DataHandler->getDataWithFilter(filter);
+    } catch (InternetExplorers::FilterException &e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    unsigned long int size = newData.size();
+    std::cout << size << std::endl;
+
+    allSearches.push_back(newData);
+
+}
+
+void Finlandia::on_pushButton_clicked()
+{
+    make_listview();
+}
+

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>720</height>
+    <height>815</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>1280</width>
-    <height>720</height>
+    <height>1000</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -55,243 +55,6 @@
          <property name="horizontalSpacing">
           <number>0</number>
          </property>
-         <item row="1" column="3">
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QLabel" name="labelEsitys">
-             <property name="text">
-              <string>Esitys:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QRadioButton" name="esitysGraafinenRP">
-               <property name="text">
-                <string>Graafisesti </string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">EsitysButtons</string>
-               </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="esitysListanaRP">
-               <property name="text">
-                <string>Listana</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">EsitysButtons</string>
-               </attribute>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelHaettavaTieto">
-             <property name="text">
-              <string>Haettava tieto:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
-             <item>
-              <widget class="QRadioButton" name="aikaRP">
-               <property name="text">
-                <string>Aika</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="hiihtajanNimiRP">
-               <property name="text">
-                <string>Hiihtäjän nimi</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="QRadioButton" name="keskinopeusRP">
-               <property name="text">
-                <string>Keskinopeus</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="tietoKaikkiRP">
-               <property name="text">
-                <string>Kaikki tiedot</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelJarjesta">
-             <property name="text">
-              <string>Järjestä:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_14">
-             <item>
-              <layout class="QGridLayout" name="gridLayout_3">
-               <item row="0" column="0">
-                <widget class="QRadioButton" name="jarjestaVuosiRP">
-                 <property name="text">
-                  <string>Vuoden mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QRadioButton" name="jarjestaSeuranNimiRP">
-                 <property name="text">
-                  <string>Seuran nimen mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QRadioButton" name="jarjestaSijoitusRP">
-                 <property name="text">
-                  <string>Sijoituksen mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QRadioButton" name="jarjestaMatkaRP">
-                 <property name="text">
-                  <string>Matkan mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QRadioButton" name="jarjestaVainParasRP">
-                 <property name="text">
-                  <string>Näytä vain paras</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="0">
-                <widget class="QRadioButton" name="jarjestaAinutLRP">
-                 <property name="text">
-                  <string>Ainutlaatuisten mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QRadioButton" name="jarjestaKotimaaRP">
-                 <property name="text">
-                  <string>Kotimaan mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QRadioButton" name="jarjestaAakkosRP">
-                 <property name="text">
-                  <string>Aakkosjärjestykseen</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButtoLisaaHaku">
-             <property name="text">
-              <string>Lisää nykyinen haku</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QPushButton" name="pushButtonNollaKaikki">
-               <property name="text">
-                <string>Nollaa kaikki haut</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton">
-               <property name="text">
-                <string>Tee haut</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
          <item row="1" column="4">
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <property name="sizeConstraint">
@@ -299,6 +62,12 @@
            </property>
            <item>
             <widget class="QLabel" name="labelTehtavatHaut">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
               <string>Tehtävät haut:</string>
              </property>
@@ -357,6 +126,12 @@
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_5">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
               <string>Urheilija:</string>
              </property>
@@ -375,6 +150,12 @@
                </item>
                <item>
                 <widget class="QTextEdit" name="textEditHome">
+                 <property name="minimumSize">
+                  <size>
+                   <width>275</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
                    <width>200</width>
@@ -397,6 +178,12 @@
             <layout class="QGridLayout" name="gridLayout_5">
              <item row="4" column="3">
               <widget class="QComboBox" name="ComboBoxSijoitus">
+               <property name="maximumSize">
+                <size>
+                 <width>125</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <item>
                 <property name="text">
                  <string/>
@@ -440,14 +227,23 @@
               <widget class="QTimeEdit" name="timeEditUpper">
                <property name="maximumSize">
                 <size>
-                 <width>100</width>
+                 <width>125</width>
                  <height>16777215</height>
                 </size>
+               </property>
+               <property name="displayFormat">
+                <string>HH:mm:ss</string>
                </property>
               </widget>
              </item>
              <item row="2" column="3">
               <widget class="QComboBox" name="vuosivaliBox">
+               <property name="maximumSize">
+                <size>
+                 <width>125</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <item>
                 <property name="text">
                  <string>Vuosiväli</string>
@@ -692,6 +488,12 @@
              </item>
              <item row="2" column="1">
               <widget class="QComboBox" name="comboBoxVuosi">
+               <property name="maximumSize">
+                <size>
+                 <width>130</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <item>
                 <property name="text">
                  <string>Kaikki Vuodet</string>
@@ -932,7 +734,7 @@
              <item row="2" column="2">
               <widget class="QLabel" name="label">
                <property name="text">
-                <string>- </string>
+                <string>-</string>
                </property>
               </widget>
              </item>
@@ -945,6 +747,12 @@
              </item>
              <item row="1" column="3">
               <widget class="QComboBox" name="comboBoxMatka">
+               <property name="maximumSize">
+                <size>
+                 <width>125</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <item>
                 <property name="text">
                  <string>Kaikki Matkat</string>
@@ -1076,9 +884,12 @@
               <widget class="QTimeEdit" name="timeEditLower">
                <property name="maximumSize">
                 <size>
-                 <width>100</width>
+                 <width>130</width>
                  <height>16777215</height>
                 </size>
+               </property>
+               <property name="displayFormat">
+                <string>HH:mm:ss</string>
                </property>
               </widget>
              </item>
@@ -1105,6 +916,12 @@
              </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="text">
                 <string>Kilpailu:</string>
                </property>
@@ -1194,6 +1011,12 @@
              </item>
              <item>
               <widget class="QComboBox" name="sukupuoliCB">
+               <property name="minimumSize">
+                <size>
+                 <width>275</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>200</width>
@@ -1221,6 +1044,12 @@
            </item>
            <item row="18" column="3">
             <widget class="QLabel" name="labelHae">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
               <string>Hae:</string>
              </property>
@@ -1237,6 +1066,12 @@
              </item>
              <item>
               <widget class="QTextEdit" name="textEditUrheilija">
+               <property name="minimumSize">
+                <size>
+                 <width>275</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>200</width>
@@ -1254,6 +1089,274 @@
             </layout>
            </item>
           </layout>
+         </item>
+         <item row="1" column="3">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="labelEsitys">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Esitys:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QRadioButton" name="esitysGraafinenRP">
+               <property name="text">
+                <string>Graafisesti </string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">EsitysButtons</string>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="esitysListanaRP">
+               <property name="text">
+                <string>Listana</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">EsitysButtons</string>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="Line" name="line_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelHaettavaTieto">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Haettava tieto:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_11">
+             <item>
+              <widget class="QRadioButton" name="aikaRP">
+               <property name="text">
+                <string>Aika</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">HaettavaTietoButtons</string>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="hiihtajanNimiRP">
+               <property name="text">
+                <string>Hiihtäjän nimi</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">HaettavaTietoButtons</string>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QRadioButton" name="keskinopeusRP">
+               <property name="text">
+                <string>Keskinopeus</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">HaettavaTietoButtons</string>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="tietoKaikkiRP">
+               <property name="text">
+                <string>Kaikki tiedot</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">HaettavaTietoButtons</string>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelJarjesta">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Järjestä:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <item>
+              <layout class="QGridLayout" name="gridLayout_3">
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="jarjestaVuosiRP">
+                 <property name="text">
+                  <string>Vuoden mukaan</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QRadioButton" name="jarjestaSeuranNimiRP">
+                 <property name="text">
+                  <string>Seuran nimen mukaan</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QRadioButton" name="jarjestaSijoitusRP">
+                 <property name="text">
+                  <string>Sijoituksen mukaan</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QRadioButton" name="jarjestaMatkaRP">
+                 <property name="text">
+                  <string>Matkan mukaan</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="jarjestaVainParasRP">
+                 <property name="text">
+                  <string>Näytä vain paras</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QRadioButton" name="jarjestaAinutLRP">
+                 <property name="text">
+                  <string>Ainutlaatuisten mukaan</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QRadioButton" name="jarjestaKotimaaRP">
+                 <property name="text">
+                  <string>Kotimaan mukaan</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QRadioButton" name="jarjestaAakkosRP">
+                 <property name="text">
+                  <string>Aakkosjärjestykseen</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">JarjestaButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtoLisaaHaku">
+             <property name="text">
+              <string>Lisää nykyinen haku</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="pushButtonNollaKaikki">
+               <property name="text">
+                <string>Nollaa kaikki haut</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Tee haut</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="3">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -1330,7 +1433,7 @@
  <buttongroups>
   <buttongroup name="EsitysButtons"/>
   <buttongroup name="HaeButtons"/>
-  <buttongroup name="HaettavaTietoButtons"/>
   <buttongroup name="JarjestaButtons"/>
+  <buttongroup name="HaettavaTietoButtons"/>
  </buttongroups>
 </ui>
