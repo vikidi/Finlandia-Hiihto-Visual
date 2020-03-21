@@ -6,13 +6,13 @@
 #include <QTime>
 
 
-bool InternetExplorers::InterfaceFilter::validateFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
+bool InternetExplorers::InterfaceFilter::validateFilter(std::map<Constants::Filter::ValueFilters, QString> filters)
 {
     bool isOK = true;
 
     // Can't have year and year range filters both
-    if (filters.find(InterfaceFilter::ValueFilters::YEAR) != filters.end()) {
-        if (filters.find(InterfaceFilter::ValueFilters::YEAR_RANGE) != filters.end()) {
+    if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
+        if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
             throw FilterException("Can not use Year and Year range same time");
         }
     }
@@ -20,55 +20,59 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<InterfaceFilter
     for(auto& filter : filters) {
         switch(filter.first) {
 
-            case InterfaceFilter::ValueFilters::YEAR:
+            case Constants::Filter::ValueFilters::YEAR:
                 isOK = validateYear(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::YEAR_RANGE:
+            case Constants::Filter::ValueFilters::YEAR_RANGE:
                 isOK = validateYearRange(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::DISTANCE:
+            case Constants::Filter::ValueFilters::DISTANCE:
                 isOK = validateDistance(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::SEX:
+            case Constants::Filter::ValueFilters::SEX:
                 isOK = validateSex(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::CITY:
+            case Constants::Filter::ValueFilters::CITY:
                 isOK = validateCity(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::NAME:
+            case Constants::Filter::ValueFilters::NAME:
                 isOK = validateName(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::TEAM:
+            case Constants::Filter::ValueFilters::TEAM:
                 isOK = validateTeam(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::TIME_RANGE:
+            case Constants::Filter::ValueFilters::TIME_RANGE:
                 isOK = validateTimeRange(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::PLACE:
+            case Constants::Filter::ValueFilters::PLACE:
                 isOK = validatePlace(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::PLACE_MEN:
+            case Constants::Filter::ValueFilters::PLACE_RANGE:
+                isOK = validatePlaceRange(filter.second);
+                break;
+
+            case Constants::Filter::ValueFilters::PLACE_MEN:
                 isOK = validatePlaceMen(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::PLACE_WOMEN:
+            case Constants::Filter::ValueFilters::PLACE_WOMEN:
                 isOK = validatePlaceWomen(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::BIRTH_YEAR:
+            case Constants::Filter::ValueFilters::BIRTH_YEAR:
                 isOK = validateBirthYear(filter.second);
                 break;
 
-            case InterfaceFilter::ValueFilters::NATIONALITY:
+            case Constants::Filter::ValueFilters::NATIONALITY:
                 isOK = validateNationality(filter.second);
                 break;
         }
@@ -135,7 +139,9 @@ bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
         throw FilterException("Distance value is empty", "DISTANCE", filterValue.toStdString().c_str());
     }
 
-    if (std::find(DISTANCES.begin(), DISTANCES.end(), filterValue.toStdString()) == DISTANCES.end()) {
+    if (std::find(Constants::DISTANCES.begin(),
+                  Constants::DISTANCES.end(),
+                  filterValue.toStdString()) == Constants::DISTANCES.end()) {
         throw FilterException("Distance value is not valid", "DISTANCE", filterValue.toStdString().c_str());
     }
 
@@ -210,6 +216,36 @@ bool InternetExplorers::InterfaceFilter::validatePlace(QString filterValue)
     int place = filterValue.toInt();
     if (place < 1) {
         throw FilterException("Placing value is smaller than 1", "PLACE", filterValue.toStdString().c_str());
+    }
+
+    return true;
+}
+
+bool InternetExplorers::InterfaceFilter::validatePlaceRange(QString filterValue)
+{
+    if (filterValue == "") {
+        throw FilterException("Placing range value is empty", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    if (!filterValue.contains(';')) {
+        throw FilterException("Place range value does not have separator ';'", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    QStringList places = filterValue.split(";");
+
+    if (places.length() != 2) {
+        throw FilterException("Place range value does not have two places", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    int lower = places[0].toInt();
+    int upper = places[1].toInt();
+
+    if (lower < 1 || upper < 1) {
+        throw FilterException("Place range values need to be bigger or equal to 1", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    if (lower > upper) {
+        throw FilterException("Lower value needs to be smaller than higher", "PLACE_RANGE", filterValue.toStdString().c_str());
     }
 
     return true;

@@ -31,14 +31,14 @@ InternetExplorers::DataHandler::DataHandler():
 
     auto msg(QString("Constructor ready"));
     auto msgSender(QString("DataHandler"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 }
 
 InternetExplorers::DataHandler::~DataHandler()
 {
     auto msg(QString("Destructor called"));
     auto msgSender(QString("DataHandler"));
-    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::INFO, msgSender);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
 
     delete m_finlandiaAPI;
     delete m_localAPI;
@@ -47,21 +47,37 @@ InternetExplorers::DataHandler::~DataHandler()
 void InternetExplorers::DataHandler::Initialize()
 {
     if (!m_loadOngoing) {
+        auto msg(QString("Loading data"));
+        auto msgSender(QString("DataHandler"));
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+
         m_loadOngoing = true;
         loadData();
+
+        msg = QString("Loading finished");
+        msgSender = QString("DataHandler");
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
     }
 }
 
-std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<InterfaceFilter::ValueFilters, QString> filters)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters)
 {
     std::vector<std::vector<std::string>> data = {};
 
     // Check filter validity
     try {
         if (!InterfaceFilter::validateFilter(filters)) {
+            auto msg(QString("Filter did not pass validation"));
+            auto msgSender(QString("DataHandler"));
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
+
             return {};
         }
     } catch (InternetExplorers::FilterException& e) {
+        auto msg(QString(e.what()));
+        auto msgSender(QString("DataHandler"));
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
+
         return {};
     }
 
@@ -69,7 +85,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
 
         auto msg(QString("Filtering values with no filter"));
         auto msgSender(QString("DataHandler"));
-        InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Logger::Severity::WARNING, msgSender);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
 
         for(auto yearMap : m_data)
         {
@@ -89,11 +105,11 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     // Try to do first filterin with fast filters
 
     // Filter first by year if allowed
-    if (filters.find(InternetExplorers::InterfaceFilter::ValueFilters::YEAR) != filters.end()) {
-        data = getAllByYear(filters[InternetExplorers::InterfaceFilter::ValueFilters::YEAR]);
+    if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
+        data = getAllByYear(filters[Constants::Filter::ValueFilters::YEAR]);
 
         // Remove year filter
-        filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::YEAR);
+        filters.erase(Constants::Filter::ValueFilters::YEAR);
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
@@ -103,11 +119,11 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     }
 
     // If not, filter by year range if allowed
-    else if (filters.find(InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE) != filters.end()) {
-        data = getAllByYearRange(filters[InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE]);
+    else if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
+        data = getAllByYearRange(filters[Constants::Filter::ValueFilters::YEAR_RANGE]);
 
         // Remove year filter
-        filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE);
+        filters.erase(Constants::Filter::ValueFilters::YEAR_RANGE);
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
@@ -117,11 +133,11 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     }
 
     // If not, filter by distances if allowed
-    else if (filters.find(InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE) != filters.end()) {
-        data = getAllByDistance(filters[InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE]);
+    else if (filters.find(Constants::Filter::ValueFilters::DISTANCE) != filters.end()) {
+        data = getAllByDistance(filters[Constants::Filter::ValueFilters::DISTANCE]);
 
         // Remove year filter
-        filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE);
+        filters.erase(Constants::Filter::ValueFilters::DISTANCE);
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
@@ -131,11 +147,11 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     }
 
     // If not, filter by name if allowed
-    else if (filters.find(InternetExplorers::InterfaceFilter::ValueFilters::NAME) != filters.end()) {
-        data = getAllByName(filters[InternetExplorers::InterfaceFilter::ValueFilters::NAME]);
+    else if (filters.find(Constants::Filter::ValueFilters::NAME) != filters.end()) {
+        data = getAllByName(filters[Constants::Filter::ValueFilters::NAME]);
 
         // Remove year filter
-        filters.erase(InternetExplorers::InterfaceFilter::ValueFilters::NAME);
+        filters.erase(Constants::Filter::ValueFilters::NAME);
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
@@ -162,14 +178,20 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     return data;
 }
 
-void InternetExplorers::DataHandler::applyFilterToData(std::map<InterfaceFilter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
+void InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
 {
     // Check filter validity
     try {
         if (!InterfaceFilter::validateFilter(filters)) {
+            auto msg(QString("Filter did not pass validation"));
+            auto msgSender(QString("DataHandler"));
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
             return;
         }
     } catch (InternetExplorers::FilterException& e) {
+        auto msg(QString(e.what()));
+        auto msgSender(QString("DataHandler"));
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
         return;
     }
 
@@ -239,7 +261,7 @@ void InternetExplorers::DataHandler::setRowsByName()
             for(auto& row : distance.second) {
 
                 // Add names as lower case
-                std::string name = row[IndexInData::NAME];
+                std::string name = row[Constants::DataIndex::IndexInData::NAME];
                 std::transform(name.begin(), name.end(), name.begin(),
                     [](unsigned char c){ return std::tolower(c); });
 
@@ -250,42 +272,54 @@ void InternetExplorers::DataHandler::setRowsByName()
     }
 }
 
-bool InternetExplorers::DataHandler::applyAllFiltersToRow(std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filters, std::vector<std::string> row)
+bool InternetExplorers::DataHandler::applyAllFiltersToRow(std::map<Constants::Filter::ValueFilters, QString> filters, std::vector<std::string> row)
 {
     bool passes = true;
 
     // Apply each filter to the row
     for(auto& filter : filters) {
         switch (filter.first) {
-        case InternetExplorers::InterfaceFilter::ValueFilters::YEAR:
+        case Constants::Filter::ValueFilters::YEAR:
             passes = filterByYear(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE:
+        case Constants::Filter::ValueFilters::DISTANCE:
             passes = filterByDistance(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE:
+        case Constants::Filter::ValueFilters::YEAR_RANGE:
             passes = filterByYearRange(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::NAME:
+        case Constants::Filter::ValueFilters::NAME:
             passes = filterByName(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::TIME_RANGE:
+        case Constants::Filter::ValueFilters::TIME_RANGE:
+            passes = filterByTimeRange(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::PLACE:
+        case Constants::Filter::ValueFilters::PLACE:
+            passes = filterByPlace(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::PLACE_MEN:
+        case Constants::Filter::ValueFilters::PLACE_RANGE:
+            passes = filterByPlaceRange(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::PLACE_WOMEN:
+        case Constants::Filter::ValueFilters::PLACE_MEN:
+            passes = filterByPlaceMen(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::SEX:
+        case Constants::Filter::ValueFilters::PLACE_WOMEN:
+            passes = filterByPlaceWomen(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::CITY:
+        case Constants::Filter::ValueFilters::SEX:
+            passes = filterBySex(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::NATIONALITY:
+        case Constants::Filter::ValueFilters::CITY:
+            passes = filterByCity(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::BIRTH_YEAR:
+        case Constants::Filter::ValueFilters::NATIONALITY:
+            passes = filterByNationality(row, filter.second);
             break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::TEAM:
+        case Constants::Filter::ValueFilters::BIRTH_YEAR:
+            passes = filterByBirthYear(row, filter.second);
+            break;
+        case Constants::Filter::ValueFilters::TEAM:
+            passes = filterByTeam(row, filter.second);
             break;
         }
 
@@ -380,7 +414,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getAllByN
 
 bool InternetExplorers::DataHandler::filterByYear(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::YEAR] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::YEAR] == filterValue.toStdString()) {
         return true;
     }
 
@@ -395,7 +429,7 @@ bool InternetExplorers::DataHandler::filterByYearRange(std::vector<std::string> 
     QString lower = years[0];
     QString upper = years[1];
 
-    std::string year = row[IndexInData::YEAR];
+    std::string year = row[Constants::DataIndex::IndexInData::YEAR];
 
     if (year <= upper.toStdString() && year >= lower.toStdString()) {
         return true;
@@ -406,7 +440,7 @@ bool InternetExplorers::DataHandler::filterByYearRange(std::vector<std::string> 
 
 bool InternetExplorers::DataHandler::filterByDistance(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::DISTANCE] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::DISTANCE] == filterValue.toStdString()) {
         return true;
     }
 
@@ -420,7 +454,7 @@ bool InternetExplorers::DataHandler::filterByName(std::vector<std::string> row, 
     std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
         [](unsigned char c){ return std::tolower(c); });
 
-    std::string name = row[IndexInData::NAME];
+    std::string name = row[Constants::DataIndex::IndexInData::NAME];
     std::transform(name.begin(), name.end(), name.begin(),
         [](unsigned char c){ return std::tolower(c); });
 
@@ -439,7 +473,7 @@ bool InternetExplorers::DataHandler::filterByTimeRange(std::vector<std::string> 
     QTime lower = QTime::fromString(times[0], "h:mm:ss");
     QTime upper = QTime::fromString(times[1], "h:mm:ss");
 
-    QTime rowValue = QTime::fromString(QString::fromStdString(row[IndexInData::TIME]), "h:mm:ss");
+    QTime rowValue = QTime::fromString(QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]), "h:mm:ss");
 
     if (rowValue >= lower && rowValue <= upper) {
         return true;
@@ -450,7 +484,23 @@ bool InternetExplorers::DataHandler::filterByTimeRange(std::vector<std::string> 
 
 bool InternetExplorers::DataHandler::filterByPlace(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::PLACE] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::PLACE] == filterValue.toStdString()) {
+        return true;
+    }
+
+    return false;
+}
+
+bool InternetExplorers::DataHandler::filterByPlaceRange(std::vector<std::string> row, QString filterValue)
+{
+    int place = std::stoi(row[Constants::DataIndex::IndexInData::PLACE]);
+
+    QStringList places = filterValue.split(";");
+
+    int lower = places[0].toInt();
+    int upper = places[1].toInt();
+
+    if (place >= lower && place <= upper) {
         return true;
     }
 
@@ -459,7 +509,7 @@ bool InternetExplorers::DataHandler::filterByPlace(std::vector<std::string> row,
 
 bool InternetExplorers::DataHandler::filterByPlaceMen(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::PLACE_MEN] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::PLACE_MEN] == filterValue.toStdString()) {
         return true;
     }
 
@@ -468,7 +518,7 @@ bool InternetExplorers::DataHandler::filterByPlaceMen(std::vector<std::string> r
 
 bool InternetExplorers::DataHandler::filterByPlaceWomen(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::PLACE_WOMEN] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::PLACE_WOMEN] == filterValue.toStdString()) {
         return true;
     }
 
@@ -477,7 +527,7 @@ bool InternetExplorers::DataHandler::filterByPlaceWomen(std::vector<std::string>
 
 bool InternetExplorers::DataHandler::filterBySex(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::SEX] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::SEX] == filterValue.toStdString()) {
         return true;
     }
 
@@ -491,7 +541,7 @@ bool InternetExplorers::DataHandler::filterByCity(std::vector<std::string> row, 
     std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
         [](unsigned char c){ return std::tolower(c); });
 
-    std::string city = row[IndexInData::CITY];
+    std::string city = row[Constants::DataIndex::IndexInData::CITY];
     std::transform(city.begin(), city.end(), city.begin(),
         [](unsigned char c){ return std::tolower(c); });
 
@@ -505,7 +555,7 @@ bool InternetExplorers::DataHandler::filterByCity(std::vector<std::string> row, 
 
 bool InternetExplorers::DataHandler::filterByNationality(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::NATIONALITY] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::NATIONALITY] == filterValue.toStdString()) {
         return true;
     }
 
@@ -514,7 +564,7 @@ bool InternetExplorers::DataHandler::filterByNationality(std::vector<std::string
 
 bool InternetExplorers::DataHandler::filterByBirthYear(std::vector<std::string> row, QString filterValue)
 {
-    if (row[IndexInData::BIRTH_YEAR] == filterValue.toStdString()) {
+    if (row[Constants::DataIndex::IndexInData::BIRTH_YEAR] == filterValue.toStdString()) {
         return true;
     }
 
@@ -528,7 +578,7 @@ bool InternetExplorers::DataHandler::filterByTeam(std::vector<std::string> row, 
     std::transform(filterVal.begin(), filterVal.end(), filterVal.begin(),
         [](unsigned char c){ return std::tolower(c); });
 
-    std::string team = row[IndexInData::TEAM];
+    std::string team = row[Constants::DataIndex::IndexInData::TEAM];
     std::transform(team.begin(), team.end(), team.begin(),
         [](unsigned char c){ return std::tolower(c); });
 

@@ -7,98 +7,108 @@
 #include <vector>
 #include <QException>
 
+#include "constants.h"
+
 namespace InternetExplorers
 {
 
-const std::vector<std::string> DISTANCES = {
-    "P50",
-    "V50",
-    "P100",
-    "P32",
-    "V20",
-    "V32",
-    "V20jun",
-    "P42",
-    "V42",
-    "P20",
-    "P30",
-    "P44",
-    "P60",
-    "P62",
-    "P25",
-    "P35",
-    "P45",
-    "P52",
-    "P53",
-    "P75",
-    "V30",
-    "V45",
-    "V53",
-    "V75"
-};
-
+/*!
+ * \brief
+ * Custom exception that is used in filtering errors.
+ */
 class FilterException : public std::exception
 {
 public:
-    FilterException(const char* msg = " ", const char* filterName = " ", const char* filterValue = " ") :
+
+    /*!
+     * \brief
+     * Default constructor
+     * \param msg
+     * Message for the exception
+     * \param filterName
+     * The filter parameter where error occurred
+     * \param filterValue
+     * The filter parameters value that caused the error
+     */
+    FilterException(const char* msg = "", const char* filterName = "", const char* filterValue = "") :
         message(msg),
         filterName(filterName),
         filterValue(filterValue) {}
+
     ~FilterException() {}
+
+    /*!
+     * \brief
+     * Gets the message of the error
+     * \return
+     * Message text of the error
+     */
     const char *what() const noexcept { return message.c_str(); }
+
+    /*!
+     * \brief
+     * Gets the filter parameters name
+     * \return
+     * The filters name
+     */
     const char *getFilterName() const noexcept { return filterName.c_str(); }
+
+    /*!
+     * \brief
+     * Gets the filters value
+     * \return
+     * Filter parameters value
+     */
     const char *getFilterValue() const noexcept { return filterValue.c_str(); }
 
 private:
-    std::string message;
-    std::string filterName;
-    std::string filterValue;
+    std::string message;        // Message text
+    std::string filterName;     // Filters name
+    std::string filterValue;    // Filters value
 };
 
+/*!
+ * \brief
+ * Handles the interfaces filter
+ * \details
+ * This class is a declaration of the backend interface parameters.<br>
+ * It handles the possible filter parameters<br>
+ * and the validation of the values given to them.
+ */
 class InterfaceFilter
 {
 public:
     InterfaceFilter() {}
     ~InterfaceFilter() {}
 
-    enum ValueFilters {
-        YEAR = 0,
-        YEAR_RANGE,
-        DISTANCE,
-        NAME,
-        TIME_RANGE,
-        PLACE,
-        PLACE_MEN,
-        PLACE_WOMEN,
-        SEX,
-        CITY,
-        NATIONALITY,
-        BIRTH_YEAR,
-        TEAM
-    };
-    static const ValueFilters valueFilters;
-
-    enum OrderFilters {
-        PLACEMENT = 0,
-        AGE
-    };
-    static const OrderFilters orderFilters;
-
-    ///
-    /// \brief
-    ///     Checks that the given filters and values are valid
-    /// \return
-    ///     True if filter is valid.
-    ///
-    static bool validateFilter(std::map<ValueFilters, QString>);
+    /*!
+     * \brief
+     * Validates the filter and its values.
+     * \details
+     * Checks that the given filter and its values
+     * are correct and contain values within wanted boudaries.<br>
+     * This function should be called every time fetching data.
+     * \param filters
+     * The filter to be validated
+     * \return
+     * True if the filter is valid.
+     * \todo
+     * Write all value boundaries eg. cases when exception is thrown
+     * \exception FilterException
+     * is thrown if filter or its value is incorrect.
+     * Details for these can be found from Contants namespace in ValueFilter enum.
+     */
+    static bool validateFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
 private:
+    // TODO: should these be public?
     static bool validateYear(QString filterValue);
     static bool validateYearRange(QString filterValue);
     static bool validateDistance(QString filterValue);
     static bool validateName(QString filterValue);
     static bool validateTimeRange(QString filterValue);
     static bool validatePlace(QString filterValue);
+    static bool validatePlaceRange(QString filterValue);
     static bool validatePlaceMen(QString filterValue);
     static bool validatePlaceWomen(QString filterValue);
     static bool validateSex(QString filterValue);

@@ -60,8 +60,9 @@ HEADERS += \
     UI/finlandia.h \
     libraries/simplecrypt.h \
     APIs/localdataloader.h \
-    logger.h
-	
+    logger.h \
+    constants.h
+
 FORMS += \
         mainwindow.ui \
 	UI/finlandia.ui

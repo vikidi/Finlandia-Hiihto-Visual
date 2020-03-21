@@ -13,34 +13,10 @@
 namespace InternetExplorers
 {
 
-const std::vector<std::string> TRIPS = {
-    "P50",
-    "V50",
-    "P100",
-    "P32",
-    "V20",
-    "V32",
-    "V20jun",
-    "P42",
-    "V42",
-    "P20",
-    "P30",
-    "P44",
-    "P60",
-    "P62",
-    "P25",
-    "P35",
-    "P45",
-    "P52",
-    "P53",
-    "P75",
-    "V30",
-    "V45",
-    "V53",
-    "V75"
-};
-
-
+/*!
+ * \brief
+ * This class is the public interface to the finlandia web data
+ */
 class FinlandiaAPI : public QObject
 {
     Q_OBJECT
@@ -49,24 +25,40 @@ public:
     FinlandiaAPI();
     ~FinlandiaAPI();
 
+    /*!
+     * \brief
+     * Parameters for the data queries from the server
+     */
     struct Parameters {
-        QString year = "kaikki";
-        QString trip = "kaikki";
-        QString gender = "kaikki";
-        QString age = "kaikki";
-        QString firstName = "";
-        QString lastName = "";
-        QString city = "";
-        QString nationality = "0";
-        QString team = "";
+        QString year = "kaikki";    /*!< Year parameter */
+        QString trip = "kaikki";    /*!< Distance/trip parameter */
+        QString gender = "kaikki";  /*!< Gender/sex paramenter */
+        QString age = "kaikki";     /*!< Age parameter */
+        QString firstName = "";     /*!< First name of skier paramenter */
+        QString lastName = "";      /*!< Last name of skier paramenter */
+        QString city = "";          /*!< City of skier parameter */
+        QString nationality = "0";  /*!< Nationality of skier parameter */
+        QString team = "";          /*!< Team of skier parameter */
     };
 
-
+    /*!
+     * \brief
+     * Function to load all data from the finlandia hiihto website
+     * \return
+     * Loaded data in format < Year, Distance, < Row > > >
+     */
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> loadAllData();
 
 
 signals:
-    void progressChanged(const int);
+
+    /*!
+     * \brief
+     * Progress has changed in loading
+     * \param progress
+     * The current progress
+     */
+    void progressChanged(const int progress);
 
 private slots:
 

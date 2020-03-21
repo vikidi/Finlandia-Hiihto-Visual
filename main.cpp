@@ -6,6 +6,12 @@
 #include <QMetaType>
 #include <iostream>
 
+/*!
+ * \brief
+ * Our project groups root namespace
+ */
+namespace InternetExplorers {
+}
 
 int main(int argc, char *argv[])
 {

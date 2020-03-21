@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "interfacefilter.h"
+#include "constants.h"
 
 MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* dh, QWidget *parent) :
     QMainWindow(parent),
@@ -56,8 +57,8 @@ void MainWindow::dataReady()
     std::vector<std::vector<std::string>> test;
 
     // OK
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter = {
-        {InternetExplorers::InterfaceFilter::YEAR, "2017"}
+    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filter = {
+        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "Kaikki vuodet"}
     };
 
     // CLOCKING
@@ -77,9 +78,9 @@ void MainWindow::dataReady()
 
     // OK, Mursu vaan painaa
     filter = {
-        {InternetExplorers::InterfaceFilter::ValueFilters::YEAR, "2017"},
-        {InternetExplorers::InterfaceFilter::ValueFilters::DISTANCE, "P100"},
-        {InternetExplorers::InterfaceFilter::ValueFilters::NAME, "Mursu Esa"}
+        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "2017"},
+        {InternetExplorers::Constants::Filter::ValueFilters::DISTANCE, "P100"},
+        {InternetExplorers::Constants::Filter::ValueFilters::NAME, "Mursu Esa"}
     };
 
     // CLOCKING
