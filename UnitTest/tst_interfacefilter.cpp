@@ -28,6 +28,16 @@ private Q_SLOTS:
     void bencmarkYearFilterFail();
     /* !YEAR FILTER */
 
+    /* YEAR RANGE FILTER */
+    void testYearRangeFilter_data();
+    void testYearRangeFilter();
+    void bencmarkYearRangeFilter();
+
+    void testYearRangeFilterFail_data();
+    void testYearRangeFilterFail();
+    void bencmarkYearRangeFilterFail();
+    /* !YEAR RANGE FILTER */
+
 private:
     InternetExplorers::InterfaceFilter* m_filter;
 };
@@ -107,6 +117,82 @@ void InterfaceFilter::testYearFilterFail()
 void InterfaceFilter::bencmarkYearFilterFail()
 {
     filtermap fil = filtermap({{InternetExplorers::Constants::Filter::ValueFilters::YEAR, "2420"}});
+    QBENCHMARK{
+        try {
+            m_filter->validateFilter(fil);
+        } catch (InternetExplorers::FilterException) {
+
+        }
+    }
+}
+
+void InterfaceFilter::testYearRangeFilter_data()
+{
+    QTest::addColumn<std::map<InternetExplorers::Constants::Filter::ValueFilters, QString>>("filter");
+
+    QTest::newRow("Normal range") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1987;2002"}});
+    QTest::newRow("Lower year on lower bound") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1974;1996"}});
+    QTest::newRow("Upper year on upper bound") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1996;2019"}});
+    QTest::newRow("Both values on bounds") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1974;2019"}});
+    QTest::newRow("One year difference") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1980;1981"}});
+}
+
+void InterfaceFilter::testYearRangeFilter()
+{
+    QFETCH(filtermap, filter);
+    QCOMPARE(m_filter->validateFilter(filter), true);
+}
+
+void InterfaceFilter::bencmarkYearRangeFilter()
+{
+    filtermap fil = filtermap({{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1996;2002"}});
+    QBENCHMARK{
+        m_filter->validateFilter(fil);
+    }
+}
+
+void InterfaceFilter::testYearRangeFilterFail_data()
+{
+    QTest::addColumn<std::map<InternetExplorers::Constants::Filter::ValueFilters, QString>>("filter");
+
+    QTest::newRow("Empty") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, ""}});
+    QTest::newRow("White space") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "    "}});
+    QTest::newRow("Only separator") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, ";"}});
+    QTest::newRow("Only one year, no separator") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1996"}});
+    QTest::newRow("Only lower year, with separator") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1996;"}});
+    QTest::newRow("Only upper year, with separator") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, ";1996"}});
+    QTest::newRow("Wrong separator") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1980:1990"}});
+    QTest::newRow("Lower bound too low") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1970;1990"}});
+    QTest::newRow("Upper bound too high") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1990;2420"}});
+    QTest::newRow("Same lower and upper years") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1990;1990"}});
+    QTest::newRow("Lower year higher than upper") << filtermap(
+            {{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1990;1980"}});
+}
+
+void InterfaceFilter::testYearRangeFilterFail()
+{
+    QFETCH(filtermap, filter);
+    QVERIFY_EXCEPTION_THROWN(m_filter->validateFilter(filter), InternetExplorers::FilterException);
+}
+
+void InterfaceFilter::bencmarkYearRangeFilterFail()
+{
+    filtermap fil = filtermap({{InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE, "1990;1980"}});
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);

@@ -122,8 +122,8 @@ bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
         throw FilterException("Year range value is not between range 1974-2019", "YEAR RANGE", filterValue.toStdString().c_str());
     }
 
-    if (lower > upper) {
-        throw FilterException("Year range values lower bound is bigger than upper", "YEAR RANGE", filterValue.toStdString().c_str());
+    if (lower >= upper) {
+        throw FilterException("Year range values lower bound is bigger or same than upper", "YEAR RANGE", filterValue.toStdString().c_str());
     }
 
     return true;
