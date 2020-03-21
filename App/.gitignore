@@ -1,0 +1,8 @@
+*.pro.user
+*.moc
+*~
+build-*
+*.o
+node_modules
+*.autosave
+latex
