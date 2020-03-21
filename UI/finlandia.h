@@ -21,7 +21,7 @@ public:
                        QWidget *parent = 0);
     ~Finlandia();
 
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> makefilter();
+    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> makefilter();
 
     void make_listview();
 

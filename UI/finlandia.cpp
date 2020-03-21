@@ -46,12 +46,12 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->esitysGraafinenRP->setChecked(false);
 }
 
-std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::makefilter(){
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter;
+std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> Finlandia::makefilter(){
+    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filter;
     QString title;
 
     //Only one year is selected
-    if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" and
+    if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" &&
             ui->vuosivaliBox->currentText() == "Vuosiväli"){
         if (title.length()>0){
             title = title + ":" + ui->comboBoxVuosi->currentText();
@@ -59,11 +59,11 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
         else{
             title = ui->comboBoxVuosi->currentText();
         }
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> year_pair(
-                    InternetExplorers::InterfaceFilter::YEAR, ui->comboBoxVuosi->currentText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> year_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::YEAR, ui->comboBoxVuosi->currentText());
         filter.insert(year_pair);
     }
-    else if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" and
+    else if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" &&
             ui->vuosivaliBox->currentText() != "Vuosiväli"){
 
         if (title.length()>0){
@@ -74,8 +74,8 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
             title = ui->comboBoxVuosi->currentText() + "-" +ui->vuosivaliBox->currentText();
         }
 
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> yearRange_pair(
-                    InternetExplorers::InterfaceFilter::ValueFilters::YEAR_RANGE,
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> yearRange_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE,
                     ui->comboBoxVuosi->currentText() + ";" + ui->vuosivaliBox->currentText());
         filter.insert(yearRange_pair);
     }
@@ -87,8 +87,8 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
         else{
             title = ui->textEditUrheilija->toPlainText();
         }
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> name_pair(
-                    InternetExplorers::InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> name_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::NAME, ui->textEditUrheilija->toPlainText());
         filter.insert(name_pair);
     }
 
@@ -101,12 +101,12 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
             title = ui->comboBoxMatka->currentText();
         }
 
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> distance_pair(
-                    InternetExplorers::InterfaceFilter::DISTANCE, ui->comboBoxMatka->currentText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> distance_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::DISTANCE, ui->comboBoxMatka->currentText());
         filter.insert(distance_pair);
     }
 
-    if(ui->timeEditLower->time().toString() != "00:00:00" or
+    if(ui->timeEditLower->time().toString() != "00:00:00" ||
             ui->timeEditUpper->time().toString() != "00:00:00"){
 
         if(title.length() > 0){
@@ -118,14 +118,14 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
                     + "-" + ui->timeEditUpper->time().toString();
         }
 
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> timeRange_pair(
-                    InternetExplorers::InterfaceFilter::ValueFilters::TIME_RANGE,
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> timeRange_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::TIME_RANGE,
                     ui->timeEditLower->time().toString() + ";" +
                     ui->timeEditUpper->time().toString());
         filter.insert(timeRange_pair);
     }
 
-    if(ui->ComboBoxSijoitus->currentText() != "" and
+    if(ui->ComboBoxSijoitus->currentText() != "" &&
             ui->sukupuoliCB->currentText() == ""){
 
         if (title.length() > 0 ){
@@ -135,16 +135,16 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
             title = ui->ComboBoxSijoitus->currentText();
         }
 
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> place_pair(
-                    InternetExplorers::InterfaceFilter::PLACE, ui->ComboBoxSijoitus->currentText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> place_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::PLACE, ui->ComboBoxSijoitus->currentText());
         filter.insert(place_pair);
     }else if(ui->sukupuoliCB->currentText() == "M"){
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> place_pair(
-                    InternetExplorers::InterfaceFilter::PLACE_MEN, ui->ComboBoxSijoitus->currentText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> place_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::PLACE_MEN, ui->ComboBoxSijoitus->currentText());
         filter.insert(place_pair);
     }else if(ui->sukupuoliCB->currentText() == "N"){
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> place_pair(
-                    InternetExplorers::InterfaceFilter::PLACE_WOMEN, ui->ComboBoxSijoitus->currentText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> place_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::PLACE_WOMEN, ui->ComboBoxSijoitus->currentText());
         filter.insert(place_pair);
     }
 
@@ -157,8 +157,8 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
             title = ui->sukupuoliCB->currentText();
         }
 
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> sex_pair(
-                    InternetExplorers::InterfaceFilter::SEX, ui->sukupuoliCB->currentText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> sex_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::SEX, ui->sukupuoliCB->currentText());
         filter.insert(sex_pair);
     }
 
@@ -171,8 +171,8 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
             title = ui->textEditHome->toPlainText();
         }
 
-        std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> national_pair(
-                    InternetExplorers::InterfaceFilter::NATIONALITY, ui->textEditHome->toPlainText());
+        std::pair<InternetExplorers::Constants::Filter::ValueFilters, QString> national_pair(
+                    InternetExplorers::Constants::Filter::ValueFilters::NATIONALITY, ui->textEditHome->toPlainText());
         filter.insert(national_pair);
     }
 
@@ -302,7 +302,7 @@ std::vector<int> Finlandia::select_attributes()
 void Finlandia::on_pushButtoLisaaHaku_clicked()
 {
     curr_series_title = "";
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> filter;
+    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filter;
 
     filter = makefilter();
 
