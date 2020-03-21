@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>815</height>
+    <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>1280</width>
-    <height>1000</height>
+    <height>720</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -938,6 +938,9 @@
                  <property name="text">
                   <string>Hitain</string>
                  </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
                  </attribute>
@@ -947,6 +950,9 @@
                 <widget class="QRadioButton" name="haeNopeinRP">
                  <property name="text">
                   <string>Nopein</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
@@ -958,6 +964,9 @@
                  <property name="text">
                   <string>Kotimaa</string>
                  </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
                  </attribute>
@@ -967,6 +976,9 @@
                 <widget class="QRadioButton" name="haeOsalMaarRP">
                  <property name="text">
                   <string>Osallistujen lukumäärä</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
@@ -987,6 +999,9 @@
                 <widget class="QRadioButton" name="haeJoukkueRP">
                  <property name="text">
                   <string>Joukkue</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
@@ -1375,8 +1390,15 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QListWidget" name="listWidgetResult"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="ListViewesityslabel">
+           <property name="text">
+            <string>Esitetään:</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -1431,8 +1453,16 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="EsitysButtons"/>
-  <buttongroup name="HaeButtons"/>
+  <buttongroup name="EsitysButtons">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
+  <buttongroup name="HaeButtons">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
   <buttongroup name="JarjestaButtons"/>
   <buttongroup name="HaettavaTietoButtons"/>
  </buttongroups>

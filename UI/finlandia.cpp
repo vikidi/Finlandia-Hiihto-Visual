@@ -42,6 +42,8 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->ComboBoxSijoitus->setCurrentIndex(0);
     ui->sukupuoliCB->setCurrentIndex(0);
     ui->textEditHome->setText("");
+    ui->esitysListanaRP->setChecked(false);
+    ui->esitysGraafinenRP->setChecked(false);
 }
 
 std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::makefilter(){
@@ -80,10 +82,10 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
 
     if(ui->textEditUrheilija->toPlainText() != ""){
         if (title.length()>0){
-            title = ui->textEditUrheilija->toPlainText();
+            title = title + ":" + ui->textEditUrheilija->toPlainText();
         }
         else{
-            title = title + ":" + ui->textEditUrheilija->toPlainText();
+            title = ui->textEditUrheilija->toPlainText();
         }
         std::pair<InternetExplorers::InterfaceFilter::ValueFilters, QString> name_pair(
                     InternetExplorers::InterfaceFilter::NAME, ui->textEditUrheilija->toPlainText());
@@ -190,6 +192,31 @@ std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> Finlandia::m
 
 void Finlandia::make_listview()
 {
+
+    // Going through all of the added search data:
+    for (unsigned int i = 0; i < allSearches.size(); i++){
+        // Data added per search:
+        std::vector<std::vector<std::string>> data = allSearches.at(i);
+
+        // Going through individual results in a search:
+        for (unsigned int j= 0; j < data.size(); j++){
+            std::vector<std::string> result = data.at(j);
+            QString disp = "";
+
+            for (unsigned int k = 0; k < result.size(); k++){
+                // Showcasing a result:
+
+                disp += QString::fromStdString(result.at(k)) + " ";
+
+            }
+            ui->listWidgetResult->addItem(disp);
+        }
+        ui->listWidgetResult->addItem(+ "\n");
+    }
+}
+
+void Finlandia::make_chart()
+{
     //Lineseries for test purposes
     QLineSeries *lineseries = new QLineSeries();
     lineseries->setName(curr_series_title);
@@ -202,26 +229,40 @@ void Finlandia::make_listview()
         // Going through individual results in a search:
         for (unsigned int j= 0; j < data.size(); j++){
             std::vector<std::string> result = data.at(j);
-            QString disp = "";
-
-
             lineseries->append(QPoint(stoi(result.at(0)),stoi(result.at(2))));
-            for (unsigned int k = 0; k < result.size(); k++){
-                // Showcasing a result:
-
-                disp += QString::fromStdString(result.at(k)) + " ";
-
-            }
-            ui->listWidgetResult->addItem(disp);
         }
-        ui->listWidgetResult->addItem(+ "\n");
         //Adding the series to m_chart
         m_chart->addSeries(lineseries);
         m_chart->createDefaultAxes();
         ui->graafiWiev->setChart(m_chart);
     }
+}
 
-    // ui->listWidgetResults->
+void Finlandia::make_listviweLabel()
+{
+    QString label = "Esitetään:";
+
+    if(ui->haeHitainRP->isChecked()){
+        label = label + " Hitain,";
+    }
+    if(ui->haeKaikkiRP->isChecked()){
+        label = label + " Kaikki tulokset,";
+    }
+    if(ui->haeNopeinRP->isChecked()){
+        label = label + " Nopein,";
+    }
+    if(ui->haeOsalMaarRP->isChecked()){
+        label = label + " Osallistujien määrä,";
+    }
+    if(ui->KotimaaRP->isChecked()){
+        label = label + " Kotimaa,";
+    }
+    if(ui->haeJoukkueRP->isChecked()){
+        label = label + " Joukkue,";
+    }
+
+    ui->ListViewesityslabel->setText(label.mid(0, label.length()-1));
+
 }
 
 void Finlandia::on_pushButtoLisaaHaku_clicked()
@@ -249,6 +290,18 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
 void Finlandia::on_pushButton_clicked()
 {
-    make_listview();
+    if(ui->esitysListanaRP->isChecked()){
+        make_listview();
+        make_listviweLabel();
+        if(ui->esitysGraafinenRP->isChecked()){
+            make_chart();
+        }
+    }else if(ui->esitysGraafinenRP->isChecked()){
+        make_chart();
+    }else{
+        QMessageBox msgBox;
+        msgBox.setText("Et ole valinnut esitystapaa.");
+        msgBox.exec();
+    }
 }
 

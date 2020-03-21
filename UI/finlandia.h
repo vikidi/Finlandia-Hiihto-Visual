@@ -24,6 +24,10 @@ public:
 
     void make_listview();
 
+    void make_chart();
+
+    void make_listviweLabel();
+
 private slots:
     void on_pushButtonNollaKaikki_clicked();
 
