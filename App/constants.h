@@ -179,7 +179,7 @@ namespace Filter {
  * Time must be in format h:mm:ss.<br>
  * Time can have more than 9 hours.<br>
  * Both times must be in the valid format described above.<br>
- * Start time must be smaller (<) than end time.<br>
+ * Start time must be smaller or equal (<) to end time.<br>
  * Hours must be greater or equal (>=) to 0.<br>
  * Minutes must be between [0, 59].<br>
  * Seconds must be between [0, 59].

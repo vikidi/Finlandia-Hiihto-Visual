@@ -84,7 +84,7 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<Constants::Filt
 
 bool InternetExplorers::InterfaceFilter::validateYear(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Year value empty", "YEAR", filterValue.toStdString().c_str());
     }
 
@@ -97,7 +97,7 @@ bool InternetExplorers::InterfaceFilter::validateYear(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Year range value empty", "YEAR RANGE", filterValue.toStdString().c_str());
     }
 
@@ -131,7 +131,7 @@ bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Distance value is empty", "DISTANCE", filterValue.toStdString().c_str());
     }
 
@@ -146,7 +146,7 @@ bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateName(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Name value is empty", "NAME", filterValue.toStdString().c_str());
     }
 
@@ -171,7 +171,7 @@ bool InternetExplorers::InterfaceFilter::validateTimeRange(QString filterValue)
     // eg. 2:30:00;3:30:00
     // Time is in format hh:mm:ss
 
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Time range value empty", "TIME RANGE", filterValue.toStdString().c_str());
     }
 
@@ -205,7 +205,7 @@ bool InternetExplorers::InterfaceFilter::validateTimeRange(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validatePlace(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Placing value is empty", "PLACE", filterValue.toStdString().c_str());
     }
 
@@ -243,7 +243,7 @@ bool InternetExplorers::InterfaceFilter::validatePlaceWomen(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateSex(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Sex value is empty", "SEX", filterValue.toStdString().c_str());
     }
 
@@ -289,7 +289,7 @@ bool InternetExplorers::InterfaceFilter::validateNationality(QString filterValue
 
 bool InternetExplorers::InterfaceFilter::validateBirthYear(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Birth year value is empty", "BIRTH YEAR", filterValue.toStdString().c_str());
     }
 
