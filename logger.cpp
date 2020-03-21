@@ -10,11 +10,12 @@ std::mutex InternetExplorers::Logger::m_mtx;
 InternetExplorers::Logger::Logger()
 {
     // Create root folder if not exists
-    if(!QDir(Constants::LOG_FOLDER_NAME).exists()) {
-        QDir().mkdir(Constants::LOG_FOLDER_NAME);
+    if(!QDir(InternetExplorers::Constants::LOG_FOLDER_NAME).exists()) {
+        QDir().mkdir(InternetExplorers::Constants::LOG_FOLDER_NAME);
     }
 
-    std::string path = Constants::LOG_FOLDER_NAME.toStdString() + "/" + Constants::LOG_FILE_NAME.toStdString();
+    std::string path = InternetExplorers::Constants::LOG_FOLDER_NAME.toStdString() + "/"
+            + InternetExplorers::Constants::LOG_FILE_NAME.toStdString();
     if (QFile::exists(QString::fromStdString(path))) {
         // Empty the file
         QFile file(QString::fromStdString(path));
@@ -26,35 +27,64 @@ InternetExplorers::Logger::Logger()
         file.open(path);
         file.close();
     }
+
+    QFile f(InternetExplorers::Constants::LOG_FOLDER_NAME + "/" + InternetExplorers::Constants::LOG_FILE_NAME);
+    if (f.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        QString msg(getTime() + "Logger initialized\n");
+        f.write(msg.toStdString().c_str());
+        f.close();
+    }
+
+    m_writeBuffer.reserve(InternetExplorers::Constants::Logger::WRITE_BUFFER_MAX_SIZE);
+
 }
 
-void InternetExplorers::Logger::write(QString &msg)
+InternetExplorers::Logger::~Logger()
 {
-    std::lock_guard<std::mutex> lock(m_mtx);
-    QFile f(Constants::LOG_FOLDER_NAME + "/" + Constants::LOG_FILE_NAME);
-    if (f.open(QIODevice::WriteOnly | QIODevice::Append)) {
-        f.write(msg.toStdString().c_str());
+    if(getInstance().m_writeBuffer.size() != 0)
+    {
+        getInstance().writeBuffer();
     }
+    QFile f(InternetExplorers::Constants::LOG_FOLDER_NAME + "/" + InternetExplorers::Constants::LOG_FILE_NAME);
+    if (f.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        QString msg(getInstance().getTime() + "Logger closing\n");
+        f.write(msg.toStdString().c_str());
+        f.close();
+    }
+}
+
+void InternetExplorers::Logger::writeBuffer()
+{
+    QFile f(InternetExplorers::Constants::LOG_FOLDER_NAME + "/" + InternetExplorers::Constants::LOG_FILE_NAME);
+    if (f.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        for(QString& msg : m_writeBuffer)
+        {
+            f.write(msg.toStdString().c_str());
+        }
+        f.close();
+    }
+    getInstance().m_writeBuffer.clear();
 }
 
 QString InternetExplorers::Logger::getTime()
 {
-    QDateTime now = QDateTime::currentDateTime();
+    QDateTime now(QDateTime::currentDateTime());
     return now.toString("dd.MM.yyyy") + " " + now.toString("hh:mm:ss.zzz") + "\t- ";
 }
 
-QString InternetExplorers::Logger::getSeverity(Constants::Logger::Severity severity)
+QString InternetExplorers::Logger::getSeverity(InternetExplorers::Constants::Logger::Severity severity)
 {
     switch (severity) {
-        case Constants::Logger::Severity::INFO:
+        case InternetExplorers::Constants::Logger::Severity::INFO:
             return "INFO";
-        case Constants::Logger::Severity::WARNING:
+        case InternetExplorers::Constants::Logger::Severity::WARNING:
             return "WARNING";
-        case Constants::Logger::Severity::CRITICAL:
-            return "WARNING";
+        case InternetExplorers::Constants::Logger::Severity::CRITICAL:
+            return "CRITICAL";
+        default:
+            Q_UNREACHABLE();
+            return "";
     }
-
-    return "";
 }
 
 InternetExplorers::Logger &InternetExplorers::Logger::getInstance()
@@ -63,19 +93,31 @@ InternetExplorers::Logger &InternetExplorers::Logger::getInstance()
     return loggerInstance;
 }
 
-void InternetExplorers::Logger::log(QString &msg, Constants::Logger::Severity severity)
+void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Constants::Logger::Severity severity)
 {
     QString str = getInstance().getTime();
     str += getInstance().getSeverity(severity);
     str += ": " + msg + "\n";
-    getInstance().write(str);
+    std::lock_guard<std::mutex> lock(m_mtx);
+    getInstance().m_writeBuffer.push_back(str);
+    if(Q_UNLIKELY((getInstance().m_writeBuffer.size() == InternetExplorers::Constants::Logger::WRITE_BUFFER_MAX_SIZE)
+        || (severity == InternetExplorers::Constants::Logger::Severity::CRITICAL)))
+    { // Buffer is full or message severity was critical
+        getInstance().writeBuffer();
+    }
 }
 
-void InternetExplorers::Logger::log(QString &msg, Constants::Logger::Severity severity, QString &sender)
+void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Constants::Logger::Severity severity, QString &sender)
 {
     QString str = getInstance().getTime();
     str += sender + " - ";
     str += getInstance().getSeverity(severity);
     str += ": " + msg + "\n";
-    getInstance().write(str);
+    std::lock_guard<std::mutex> lock(m_mtx);
+    getInstance().m_writeBuffer.push_back(str);
+    if(Q_UNLIKELY((getInstance().m_writeBuffer.size() == InternetExplorers::Constants::Logger::WRITE_BUFFER_MAX_SIZE)
+        || (severity == InternetExplorers::Constants::Logger::Severity::CRITICAL)))
+    { // Buffer is full or message severity was critical
+        getInstance().writeBuffer();
+    }
 }

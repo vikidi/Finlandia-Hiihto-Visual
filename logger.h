@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <mutex>
+#include <vector>
 
 #include "constants.h"
 
@@ -27,10 +28,6 @@ class Logger
 {
 
 public:
-    /*!
-     * \brief
-     * Severity levels for logged messages.
-     */
 
     /*!
      * \brief
@@ -68,7 +65,7 @@ public:
      * \param severity
      * Severity of the message
      */
-    void log(QString& msg, Constants::Logger::Severity severity);
+    void log(QString& msg, InternetExplorers::Constants::Logger::Severity severity);
 
     /*!
      * \brief
@@ -84,7 +81,7 @@ public:
      * \param sender
      * Sender of the message
      */
-    void log(QString& msg, Constants::Logger::Severity severity, QString& sender);
+    void log(QString& msg, InternetExplorers::Constants::Logger::Severity severity, QString& sender);
 
 private:
     /*!
@@ -93,14 +90,13 @@ private:
      * Clears or creates the log file.
      */
     Logger();
+    ~Logger();
 
     /*!
      * \brief
-     * Writes the message to the log files end.
-     * \param msg
-     * Message that contains everything for the row.
+     * Writes the message buffer to the log files end.
      */
-    void write(QString& msg);
+    void writeBuffer();
 
     /*!
      * \brief
@@ -118,12 +114,13 @@ private:
      * \return
      * Severity as string
      */
-    QString getSeverity(Constants::Logger::Severity severity);
+    QString getSeverity(InternetExplorers::Constants::Logger::Severity severity);
 
     /*!
      * \brief Mutex for the file
      */
     static std::mutex m_mtx;
+    std::vector<QString> m_writeBuffer;
 };
 
 }

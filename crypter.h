@@ -13,7 +13,7 @@ namespace InternetExplorers {
  * Crypter is used to crypt local data
  * \details
  * Crypter can hash the local data on disc and in program memory<br>
- * so thet it can not be decrypted back.<br>
+ * so that it can not be decrypted back.<br>
  * It can also encrypt the data so that it can be decrypted.
  */
 class Crypter
