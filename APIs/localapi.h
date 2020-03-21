@@ -73,14 +73,12 @@ public slots:
     /*!
      * \brief
      * Updates the current progress
+     * \todo
+     * Make this thread safe
      */
     void updateProgress();
 
 private:
-    const QString DATA_ROOT_NAME = "FinlandiaData";
-    const QString DATA_FILE_NAME = "Data.txt";
-    const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
-    const QString META_DATA_FILE_NAME = "Metadata.txt";
 
     /*!
      * \brief
@@ -127,7 +125,7 @@ private:
      * \return
      * Results < Path, MD5 checksum >
      */
-    std::vector<std::pair<QString, QString>> readMD5File();
+    std::map<QString, QString> readMD5File();
 
     /*!
      * \brief
@@ -167,9 +165,9 @@ private:
      */
     bool isDataAvailable();
 
-    int m_fileCount;
-    int m_currentProgress;
-    int m_maxProgress; // aka amount of files
+    std::atomic_int m_fileCount;
+    std::atomic_int m_currentProgress;
+    std::atomic_int m_maxProgress; // aka amount of files
 
     std::mutex m_mtx;
     std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > m_data;

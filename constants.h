@@ -93,6 +93,12 @@ enum Severity {
     CRITICAL    /*!< Critical error in program */
 };
 
+/*!
+ * \brief
+ * Amount of messages that gets written at once to the disk
+ */
+const size_t WRITE_BUFFER_MAX_SIZE = 100;
+
 }
 
 /*!
@@ -190,6 +196,22 @@ namespace Filter {
  * Value must be greater or equal (>=) to 1.
  * \note Example:
  * 5
+ */
+
+/*!
+ * \var ValueFilters::PLACE_RANGE
+ * \brief
+ * Range of placing of the skier in general
+ * \details
+ * Value can not be empty.<br>
+ * Value must contain ";" as separator between start and end place.<br>
+ * Start place is the first one before ";", end place is after that.<br>
+ * Both places will be included in the results -> range is [start, end].<br>
+ * Value must contain exactly two places defined.<br>
+ * Both places must be greater or equal (>=) to 1.<br>
+ * Start place must be smaller (<) than end place.
+ * \note Example:
+ * 1;5
  */
 
 /*!
@@ -295,6 +317,7 @@ enum ValueFilters {
     NAME,
     TIME_RANGE,
     PLACE,
+    PLACE_RANGE,
     PLACE_MEN,
     PLACE_WOMEN,
     SEX,
