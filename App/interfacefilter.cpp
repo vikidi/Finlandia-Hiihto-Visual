@@ -56,6 +56,10 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<Constants::Filt
                 isOK = validatePlace(filter.second);
                 break;
 
+            case Constants::Filter::ValueFilters::PLACE_RANGE:
+                isOK = validatePlaceRange(filter.second);
+                break;
+
             case Constants::Filter::ValueFilters::PLACE_MEN:
                 isOK = validatePlaceMen(filter.second);
                 break;
@@ -84,7 +88,7 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<Constants::Filt
 
 bool InternetExplorers::InterfaceFilter::validateYear(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Year value empty", "YEAR", filterValue.toStdString().c_str());
     }
 
@@ -97,7 +101,7 @@ bool InternetExplorers::InterfaceFilter::validateYear(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Year range value empty", "YEAR RANGE", filterValue.toStdString().c_str());
     }
 
@@ -122,8 +126,8 @@ bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
         throw FilterException("Year range value is not between range 1974-2019", "YEAR RANGE", filterValue.toStdString().c_str());
     }
 
-    if (lower > upper) {
-        throw FilterException("Year range values lower bound is bigger than upper", "YEAR RANGE", filterValue.toStdString().c_str());
+    if (lower >= upper) {
+        throw FilterException("Year range values lower bound is bigger or same than upper", "YEAR RANGE", filterValue.toStdString().c_str());
     }
 
     return true;
@@ -131,7 +135,7 @@ bool InternetExplorers::InterfaceFilter::validateYearRange(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Distance value is empty", "DISTANCE", filterValue.toStdString().c_str());
     }
 
@@ -146,7 +150,7 @@ bool InternetExplorers::InterfaceFilter::validateDistance(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateName(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Name value is empty", "NAME", filterValue.toStdString().c_str());
     }
 
@@ -171,7 +175,7 @@ bool InternetExplorers::InterfaceFilter::validateTimeRange(QString filterValue)
     // eg. 2:30:00;3:30:00
     // Time is in format hh:mm:ss
 
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Time range value empty", "TIME RANGE", filterValue.toStdString().c_str());
     }
 
@@ -205,7 +209,7 @@ bool InternetExplorers::InterfaceFilter::validateTimeRange(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validatePlace(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Placing value is empty", "PLACE", filterValue.toStdString().c_str());
     }
 
@@ -216,6 +220,37 @@ bool InternetExplorers::InterfaceFilter::validatePlace(QString filterValue)
 
     return true;
 }
+
+bool InternetExplorers::InterfaceFilter::validatePlaceRange(QString filterValue)
+{
+    if (filterValue == "") {
+        throw FilterException("Placing range value is empty", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    if (!filterValue.contains(';')) {
+        throw FilterException("Place range value does not have separator ';'", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    QStringList places = filterValue.split(";");
+
+    if (places.length() != 2) {
+        throw FilterException("Place range value does not have two places", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    int lower = places[0].toInt();
+    int upper = places[1].toInt();
+
+    if (lower < 1 || upper < 1) {
+        throw FilterException("Place range values need to be bigger or equal to 1", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    if (lower > upper) {
+        throw FilterException("Lower value needs to be smaller than higher", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    return true;
+}
+
 
 bool InternetExplorers::InterfaceFilter::validatePlaceMen(QString filterValue)
 {
@@ -243,7 +278,7 @@ bool InternetExplorers::InterfaceFilter::validatePlaceWomen(QString filterValue)
 
 bool InternetExplorers::InterfaceFilter::validateSex(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Sex value is empty", "SEX", filterValue.toStdString().c_str());
     }
 
@@ -289,7 +324,7 @@ bool InternetExplorers::InterfaceFilter::validateNationality(QString filterValue
 
 bool InternetExplorers::InterfaceFilter::validateBirthYear(QString filterValue)
 {
-    if (filterValue == "") {
+    if (filterValue.trimmed() == "") {
         throw FilterException("Birth year value is empty", "BIRTH YEAR", filterValue.toStdString().c_str());
     }
 

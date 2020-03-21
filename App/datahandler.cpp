@@ -297,6 +297,9 @@ bool InternetExplorers::DataHandler::applyAllFiltersToRow(std::map<Constants::Fi
         case Constants::Filter::ValueFilters::PLACE:
             passes = filterByPlace(row, filter.second);
             break;
+        case Constants::Filter::ValueFilters::PLACE_RANGE:
+            passes = filterByPlaceRange(row, filter.second);
+            break;
         case Constants::Filter::ValueFilters::PLACE_MEN:
             passes = filterByPlaceMen(row, filter.second);
             break;
@@ -487,6 +490,23 @@ bool InternetExplorers::DataHandler::filterByPlace(std::vector<std::string> row,
 
     return false;
 }
+
+bool InternetExplorers::DataHandler::filterByPlaceRange(std::vector<std::string> row, QString filterValue)
+{
+    int place = std::stoi(row[Constants::DataIndex::IndexInData::PLACE]);
+
+    QStringList places = filterValue.split(";");
+
+    int lower = places[0].toInt();
+    int upper = places[1].toInt();
+
+    if (place >= lower && place <= upper) {
+        return true;
+    }
+
+    return false;
+}
+
 
 bool InternetExplorers::DataHandler::filterByPlaceMen(std::vector<std::string> row, QString filterValue)
 {
