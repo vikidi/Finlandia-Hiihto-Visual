@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['year_191',['year',['../struct_internet_explorers_1_1_finlandia_a_p_i_1_1_parameters.html#aeae1f95a9a2249ccfc0f2ff5e320ca3f',1,'InternetExplorers::FinlandiaAPI::Parameters']]]
+  ['write_5fbuffer_5fmax_5fsize_192',['WRITE_BUFFER_MAX_SIZE',['../namespace_internet_explorers_1_1_constants_1_1_logger.html#ae68e55161879ceaf975f054881e263f6',1,'InternetExplorers::Constants::Logger']]]
 ];

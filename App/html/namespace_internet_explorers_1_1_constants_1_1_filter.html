@@ -85,15 +85,16 @@ Enumerations</h2></td></tr>
 <br />
 &#160;&#160;<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8af760667b073ea3993a606413852a9393">TIME_RANGE</a>, 
 <a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a9d2ab0a6ccfc8b8eed01279b2045560b">PLACE</a>, 
+<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8adc5aac3b9fe32e5309138748517405c1">PLACE_RANGE</a>, 
 <a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a82c97a88be69357dbd80dbf45f3eb9a5">PLACE_MEN</a>, 
-<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a156dc0dda91cbdd40a1f5ea039dbfb3c">PLACE_WOMEN</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a0ed05d40510f25b4697af5719c0bdd7b">SEX</a>, 
+&#160;&#160;<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a156dc0dda91cbdd40a1f5ea039dbfb3c">PLACE_WOMEN</a>, 
+<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a0ed05d40510f25b4697af5719c0bdd7b">SEX</a>, 
 <a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8adda27659f570409d88c793754c9ce527">CITY</a>, 
 <a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8add9a742b5cde9b9c1f77d5fc982f5b62">NATIONALITY</a>, 
-<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8accce2d835c3edf2af9c29f804022e36f">BIRTH_YEAR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a7a0ae56ac8ed962e90704967bd5af710">TEAM</a>
+&#160;&#160;<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8accce2d835c3edf2af9c29f804022e36f">BIRTH_YEAR</a>, 
+<a class="el" href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8a7a0ae56ac8ed962e90704967bd5af710">TEAM</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a3c278a034d845a01993a079f7a8c57e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">All of the value related filter options in interface filter.  <a href="namespace_internet_explorers_1_1_constants_1_1_filter.html#a3c278a034d845a01993a079f7a8c57e8">More...</a><br /></td></tr>
@@ -189,7 +190,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a3c278a034d845a01993a079f7a8c57e8a651b819d97420070002f4ed5afde04ca"></a>DISTANCE&#160;</td><td class="fielddoc"><p>Distance/trip of the race. </p>
 <p>Value can not be empty.<br  />
- Value must be exactly on that is in <a class="el" href="namespace_internet_explorers_1_1_constants.html#aa7aaa954099d62430cafa0191da3c76b" title="All possible distances.">InternetExplorers::Constants::DISTANCES</a>. </p><dl class="section note"><dt>Note</dt><dd>Example: V50 </dd></dl>
+ Value must be exactly one that is in <a class="el" href="namespace_internet_explorers_1_1_constants.html#aa7aaa954099d62430cafa0191da3c76b" title="All possible distances.">InternetExplorers::Constants::DISTANCES</a>. </p><dl class="section note"><dt>Note</dt><dd>Example: V50 </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a3c278a034d845a01993a079f7a8c57e8a3c00eca4be9508e736d2185d2fd0e1f7"></a>NAME&#160;</td><td class="fielddoc"><p>Name of the skier. </p>
 <p>Value can not be empty.<br  />
@@ -205,7 +206,7 @@ Enumerations</h2></td></tr>
  Value must contain exactly two times defined. Time must be in format h:mm:ss.<br  />
  Time can have more than 9 hours.<br  />
  Both times must be in the valid format described above.<br  />
- Start time must be smaller (&lt;) than end time.<br  />
+ Start time must be smaller or equal (&lt;) to end time.<br  />
  Hours must be greater or equal (&gt;=) to 0.<br  />
  Minutes must be between [0, 59].<br  />
  Seconds must be between [0, 59]. </p><dl class="section note"><dt>Note</dt><dd>Example: 5:10:27;12:05:15 </dd></dl>
@@ -213,6 +214,15 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a3c278a034d845a01993a079f7a8c57e8a9d2ab0a6ccfc8b8eed01279b2045560b"></a>PLACE&#160;</td><td class="fielddoc"><p>Placing of the skier in general. </p>
 <p>Value can not be empty.<br  />
  Value must be greater or equal (&gt;=) to 1. </p><dl class="section note"><dt>Note</dt><dd>Example: 5 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a3c278a034d845a01993a079f7a8c57e8adc5aac3b9fe32e5309138748517405c1"></a>PLACE_RANGE&#160;</td><td class="fielddoc"><p>Range of placing of the skier in general. </p>
+<p>Value can not be empty.<br  />
+ Value must contain ";" as separator between start and end place.<br  />
+ Start place is the first one before ";", end place is after that.<br  />
+ Both places will be included in the results -&gt; range is [start, end].<br  />
+ Value must contain exactly two places defined.<br  />
+ Both places must be greater or equal (&gt;=) to 1.<br  />
+ Start place must be smaller (&lt;) than end place. </p><dl class="section note"><dt>Note</dt><dd>Example: 1;5 </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a3c278a034d845a01993a079f7a8c57e8a82c97a88be69357dbd80dbf45f3eb9a5"></a>PLACE_MEN&#160;</td><td class="fielddoc"><p>Placing of the skier considering only men. </p>
 <p>Value can not be empty.<br  />

@@ -56,6 +56,10 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<Constants::Filt
                 isOK = validatePlace(filter.second);
                 break;
 
+            case Constants::Filter::ValueFilters::PLACE_RANGE:
+                isOK = validatePlaceRange(filter.second);
+                break;
+
             case Constants::Filter::ValueFilters::PLACE_MEN:
                 isOK = validatePlaceMen(filter.second);
                 break;
@@ -216,6 +220,37 @@ bool InternetExplorers::InterfaceFilter::validatePlace(QString filterValue)
 
     return true;
 }
+
+bool InternetExplorers::InterfaceFilter::validatePlaceRange(QString filterValue)
+{
+    if (filterValue == "") {
+        throw FilterException("Placing range value is empty", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    if (!filterValue.contains(';')) {
+        throw FilterException("Place range value does not have separator ';'", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    QStringList places = filterValue.split(";");
+
+    if (places.length() != 2) {
+        throw FilterException("Place range value does not have two places", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    int lower = places[0].toInt();
+    int upper = places[1].toInt();
+
+    if (lower < 1 || upper < 1) {
+        throw FilterException("Place range values need to be bigger or equal to 1", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    if (lower > upper) {
+        throw FilterException("Lower value needs to be smaller than higher", "PLACE_RANGE", filterValue.toStdString().c_str());
+    }
+
+    return true;
+}
+
 
 bool InternetExplorers::InterfaceFilter::validatePlaceMen(QString filterValue)
 {

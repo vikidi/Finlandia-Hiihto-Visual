@@ -108,6 +108,7 @@ private:
     static bool validateName(QString filterValue);
     static bool validateTimeRange(QString filterValue);
     static bool validatePlace(QString filterValue);
+    static bool validatePlaceRange(QString filterValue);
     static bool validatePlaceMen(QString filterValue);
     static bool validatePlaceWomen(QString filterValue);
     static bool validateSex(QString filterValue);
