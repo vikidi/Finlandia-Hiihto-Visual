@@ -13,7 +13,14 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<Constants::Filt
     // Can't have year and year range filters both
     if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
         if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
-            throw FilterException("Can not use Year and Year range same time");
+            throw FilterException("Can not use year and year range same time");
+        }
+    }
+
+    // Can't have place and place range filters both
+    if (filters.find(Constants::Filter::ValueFilters::PLACE) != filters.end()) {
+        if (filters.find(Constants::Filter::ValueFilters::PLACE_RANGE) != filters.end()) {
+            throw FilterException("Can not use place and place range same time");
         }
     }
 
@@ -244,7 +251,7 @@ bool InternetExplorers::InterfaceFilter::validatePlaceRange(QString filterValue)
         throw FilterException("Place range values need to be bigger or equal to 1", "PLACE_RANGE", filterValue.toStdString().c_str());
     }
 
-    if (lower > upper) {
+    if (lower >= upper) {
         throw FilterException("Lower value needs to be smaller than higher", "PLACE_RANGE", filterValue.toStdString().c_str());
     }
 
@@ -331,6 +338,11 @@ bool InternetExplorers::InterfaceFilter::validateBirthYear(QString filterValue)
     // Should be 2 numbers
     if (filterValue.length() != 2) {
         throw FilterException("Birth year value does not have 2 numbers", "BIRTH YEAR", filterValue.toStdString().c_str());
+    }
+
+    int asInt = filterValue.toInt();
+    if (filterValue != "00" && asInt == 0) {
+        throw FilterException("Birth year needs to have 2 numbers", "BIRTH YEAR", filterValue.toStdString().c_str());
     }
 
     return true;
