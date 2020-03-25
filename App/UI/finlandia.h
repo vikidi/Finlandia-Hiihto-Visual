@@ -4,8 +4,17 @@
 #include <QtCharts>
 #include <QMainWindow>
 #include <vector>
+#include "constants.h"
 #include "datahandler.h"
 #include "interfacefilter.h"
+
+
+// Alias to make things easier
+#ifndef FILTER_NS
+#define FILTER_NS
+
+using Filter_NS = InternetExplorers::Constants::Filter::ValueFilters;
+#endif
 
 namespace Ui {
 class Finlandia;
