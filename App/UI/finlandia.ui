@@ -33,7 +33,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <attribute name="title">
@@ -207,10 +207,10 @@
             <layout class="QHBoxLayout" name="horizontalLayout_21">
              <item>
               <layout class="QGridLayout" name="gridLayout_4">
-               <item row="4" column="0">
-                <widget class="QRadioButton" name="haeHitainRP">
+               <item row="2" column="1">
+                <widget class="QRadioButton" name="haeOsalMaarRP">
                  <property name="text">
-                  <string>Hitain</string>
+                  <string>Osallistujien lukumäärä</string>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>
@@ -220,7 +220,7 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="1" column="0">
+               <item row="1" column="1">
                 <widget class="QRadioButton" name="haeNopeinRP">
                  <property name="text">
                   <string>Nopein</string>
@@ -233,33 +233,7 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="2" column="1">
-                <widget class="QRadioButton" name="KotimaaRP">
-                 <property name="text">
-                  <string>Kotimaa</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QRadioButton" name="haeOsalMaarRP">
-                 <property name="text">
-                  <string>Osallistujen lukumäärä</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="1">
+               <item row="1" column="0">
                 <widget class="QRadioButton" name="haeKaikkiRP">
                  <property name="text">
                   <string>Kaikki tulokset</string>
@@ -269,10 +243,10 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="1" column="1">
-                <widget class="QRadioButton" name="haeJoukkueRP">
+               <item row="2" column="0">
+                <widget class="QRadioButton" name="haeHitainRP">
                  <property name="text">
-                  <string>Joukkue</string>
+                  <string>Hitain</string>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>
@@ -1201,7 +1175,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Haettava tieto:</string>
+              <string>Esitettävät tiedot:</string>
              </property>
             </widget>
            </item>
@@ -1238,6 +1212,36 @@
                </property>
                <attribute name="buttonGroup">
                 <string notr="true">HaettavaTietoButtons</string>
+               </attribute>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="KotimaaRP">
+               <property name="text">
+                <string>Kotimaa</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">HaeButtons</string>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QRadioButton" name="haeJoukkueRP">
+               <property name="text">
+                <string>Joukkue</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">HaeButtons</string>
                </attribute>
               </widget>
              </item>
@@ -1448,15 +1452,129 @@
        <attribute name="title">
         <string>Graafit</string>
        </attribute>
-       <widget class="QChartView" name="graafiWiev">
+       <widget class="QWidget" name="horizontalLayoutWidget_2">
         <property name="geometry">
          <rect>
-          <x>5</x>
-          <y>11</y>
-          <width>1241</width>
-          <height>581</height>
+          <x>1</x>
+          <y>1</y>
+          <width>2001</width>
+          <height>721</height>
          </rect>
         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Kuvaaja-asetukset:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>Y-akseli:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>X-akseli:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QComboBox" name="x_akseliCB"/>
+             </item>
+             <item row="1" column="1">
+              <widget class="QComboBox" name="y_akseliCB"/>
+             </item>
+             <item row="3" column="1">
+              <widget class="QComboBox" name="comboBox">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Pylväsdiagrammi</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Jatkuva kuvaaja</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Kuvaajan tyyppi:</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="add_graphButton">
+             <property name="text">
+              <string>Lisää Kuvaaja</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="del_all_graphs">
+             <property name="text">
+              <string>Poista kaikki</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QChartView" name="graafiWiev">
+           <property name="minimumSize">
+            <size>
+             <width>1000</width>
+             <height>700</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
