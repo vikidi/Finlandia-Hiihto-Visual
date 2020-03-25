@@ -20,7 +20,7 @@ public:
                        QWidget *parent = 0);
     ~Finlandia();
 
-    std::map<InternetExplorers::InterfaceFilter::ValueFilters, QString> makefilter();
+    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> makefilter();
 
     void make_listview();
 
@@ -44,7 +44,7 @@ private slots:
 
 private:
     Ui::Finlandia *ui;
-    std::vector<InternetExplorers::InterfaceFilter::ValueFilters> previousSrc;
+    std::vector<InternetExplorers::Constants::Filter::ValueFilters> previousSrc;
 
     InternetExplorers::DataHandler *m_DataHandler;
 
