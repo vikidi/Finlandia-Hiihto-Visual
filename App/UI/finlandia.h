@@ -33,7 +33,7 @@ public:
 
     void make_listview();
 
-    void make_chart();
+
 
     void make_listviweLabel();
 
@@ -51,9 +51,11 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void make_chart();
+
 private:
     Ui::Finlandia *ui;
-    std::vector<InternetExplorers::Constants::Filter::ValueFilters> previousSrc;
+    std::vector<Filter_NS> previousSrc;
 
     InternetExplorers::DataHandler *m_DataHandler;
 
@@ -61,6 +63,11 @@ private:
 
     QChart *m_chart;
     QString curr_series_title;
+    std::vector<std::string> attribute_enum = {"YEAR", "DISTANCE", "TIME",
+                                               "PLACE", "PLACE_MEN",
+                                               "PLACE_WOMEN", "SEX", "NAME",
+                                               "CITY", "NATIONALITY",
+                                               "BIRTH_YEAR", "TEAM"};
 };
 
 #endif // FINLANDIA_H

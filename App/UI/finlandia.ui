@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>720</height>
+    <width>1302</width>
+    <height>827</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -18,8 +18,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>1280</width>
-    <height>720</height>
+    <width>1302</width>
+    <height>827</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -36,6 +36,18 @@
        <number>2</number>
       </property>
       <widget class="QWidget" name="searchTab">
+       <property name="minimumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
        <attribute name="title">
         <string>Haku</string>
        </attribute>
@@ -207,20 +219,7 @@
             <layout class="QHBoxLayout" name="horizontalLayout_21">
              <item>
               <layout class="QGridLayout" name="gridLayout_4">
-               <item row="2" column="1">
-                <widget class="QRadioButton" name="haeOsalMaarRP">
-                 <property name="text">
-                  <string>Osallistujien lukumäärä</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="1" column="1">
+               <item row="0" column="2">
                 <widget class="QRadioButton" name="haeNopeinRP">
                  <property name="text">
                   <string>Nopein</string>
@@ -233,20 +232,23 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="1" column="0">
-                <widget class="QRadioButton" name="haeKaikkiRP">
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="haeHitainRP">
                  <property name="text">
-                  <string>Kaikki tulokset</string>
+                  <string>Hitain</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">HaeButtons</string>
                  </attribute>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QRadioButton" name="haeHitainRP">
+               <item row="0" column="1">
+                <widget class="QRadioButton" name="haeOsalMaarRP">
                  <property name="text">
-                  <string>Hitain</string>
+                  <string>Osallistujien lukumäärä</string>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>
@@ -1246,12 +1248,15 @@
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="tietoKaikkiRP">
+              <widget class="QRadioButton" name="haeKaikkiRP">
                <property name="text">
-                <string>Kaikki tiedot</string>
+                <string>Kaikki tulokset</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
                <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
+                <string notr="true">HaeButtons</string>
                </attribute>
               </widget>
              </item>
@@ -1422,6 +1427,18 @@
        </widget>
       </widget>
       <widget class="QWidget" name="resultsTab">
+       <property name="minimumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
        <attribute name="title">
         <string>Tulokset</string>
        </attribute>
@@ -1449,6 +1466,18 @@
        </widget>
       </widget>
       <widget class="QWidget" name="tab">
+       <property name="minimumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
        <attribute name="title">
         <string>Graafit</string>
        </attribute>
@@ -1458,14 +1487,26 @@
           <x>1</x>
           <y>1</y>
           <width>2001</width>
-          <height>721</height>
+          <height>722</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
+         </property>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetFixedSize</enum>
+           </property>
            <item>
             <widget class="QLabel" name="label_8">
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <weight>75</weight>
@@ -1473,12 +1514,18 @@
               </font>
              </property>
              <property name="text">
-              <string>Kuvaaja-asetukset:</string>
+              <string>Kuvaajan asetukset:</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="Line" name="line_6">
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -1486,8 +1533,23 @@
            </item>
            <item>
             <layout class="QGridLayout" name="gridLayout_6">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetFixedSize</enum>
+             </property>
              <item row="1" column="0">
               <widget class="QLabel" name="label_7">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="text">
                 <string>Y-akseli:</string>
                </property>
@@ -1495,23 +1557,187 @@
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_6">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="text">
                 <string>X-akseli:</string>
                </property>
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QComboBox" name="x_akseliCB"/>
-             </item>
-             <item row="1" column="1">
-              <widget class="QComboBox" name="y_akseliCB"/>
-             </item>
-             <item row="3" column="1">
-              <widget class="QComboBox" name="comboBox">
+              <widget class="QComboBox" name="x_akseliCB">
                <property name="minimumSize">
                 <size>
                  <width>120</width>
                  <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>YEAR</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>DISTANCE</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>TIME</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PLACE</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PLACE_MEN</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PLACE_WOMEN</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>SEX</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>NAME</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>CITY</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>NATIONALITY</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>BIRTH_YEAR</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>TEAM</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QComboBox" name="y_akseliCB">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>YEAR</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>DISTANCE </string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>TIME</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PLACE</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PLACE_MEN</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PLACE_WOMEN</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>SEX</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>NAME</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>CITY</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>NATIONALITY </string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>BIRTH_YEAR</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>TEAM  </string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QComboBox" name="kuvaajatyyppiCB">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <item>
@@ -1528,6 +1754,18 @@
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="label_9">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="text">
                 <string>Kuvaajan tyyppi:</string>
                </property>
@@ -1536,7 +1774,35 @@
             </layout>
            </item>
            <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Maximum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>240</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QPushButton" name="add_graphButton">
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>Lisää Kuvaaja</string>
              </property>
@@ -1544,6 +1810,18 @@
            </item>
            <item>
             <widget class="QPushButton" name="del_all_graphs">
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>Poista kaikki</string>
              </property>
@@ -1565,14 +1843,37 @@
           </layout>
          </item>
          <item>
-          <widget class="QChartView" name="graafiWiev">
-           <property name="minimumSize">
-            <size>
-             <width>1000</width>
-             <height>700</height>
-            </size>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QChartView" name="graafiWiev">
+             <property name="minimumSize">
+              <size>
+               <width>1000</width>
+               <height>680</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>1000</width>
+               <height>700</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -1586,7 +1887,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1302</width>
      <height>21</height>
     </rect>
    </property>
@@ -1613,7 +1914,11 @@
  <connections/>
  <buttongroups>
   <buttongroup name="JarjestaButtons"/>
-  <buttongroup name="HaettavaTietoButtons"/>
+  <buttongroup name="HaettavaTietoButtons">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
   <buttongroup name="EsitysButtons">
    <property name="exclusive">
     <bool>false</bool>

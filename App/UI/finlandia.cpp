@@ -17,13 +17,17 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     m_chart(new QChart())
 {
     ui->setupUi(this);
-    //m_DataHandler->Initialize();
+
+    connect(ui->add_graphButton, &QPushButton::clicked, this,
+            &Finlandia::make_chart);
+
 
 }
 
 Finlandia::~Finlandia()
 {
     delete ui;
+    delete m_chart;
 }
 
 void Finlandia::on_pushButtonNollaKaikki_clicked()
@@ -31,6 +35,10 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     m_chart -> removeAllSeries();
     ui->listWidgetTehtHaut->clear();
     curr_series_title = "";
+    ui->listWidgetResult->clear();
+
+    allSearches.clear();
+    previousSrc.clear();
 
     ui->comboBoxVuosi->setCurrentIndex(0);
     ui->vuosivaliBox->setCurrentIndex(0);
@@ -62,8 +70,8 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
     QString title;
 
     //Only one year is selected
-    if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" and
-            ui->vuosivaliBox->currentText() == "Vuosiväli"){
+    if(ui->comboBoxVuosi->currentIndex() != 0 and
+            ui->vuosivaliBox->currentIndex() == 0){
         if (title.length()>0){
             title = title + ":" + ui->comboBoxVuosi->currentText();
         }
@@ -76,20 +84,23 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
         filter.insert(year_pair);
     }
-    else if(ui->comboBoxVuosi->currentText() != "Kaikki Vuodet" and
-            ui->vuosivaliBox->currentText() != "Vuosiväli"){
+    else if(ui->comboBoxVuosi->currentIndex() != 0 and
+            ui->vuosivaliBox->currentIndex() != 0){
 
         if (title.length()>0){
             title = title + ":" + ui->comboBoxVuosi->currentText() +
                     "-" +ui->vuosivaliBox->currentText();
         }
         else{
-            title = ui->comboBoxVuosi->currentText() + "-" +ui->vuosivaliBox->currentText();
+            title = ui->comboBoxVuosi->currentText() + "-" +
+                    ui->vuosivaliBox->currentText();
         }
 
         std::pair<Filter_NS, QString> yearRange_pair(
                     InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE,
-                    ui->comboBoxVuosi->currentText() + ";" + ui->vuosivaliBox->currentText());
+                    ui->comboBoxVuosi->currentText() + ";" +
+                    ui->vuosivaliBox->currentText());
+
         filter.insert(yearRange_pair);
     }
 
@@ -101,11 +112,13 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
             title = ui->textEditUrheilija->toPlainText();
         }
         std::pair<Filter_NS, QString> name_pair(
-                    InternetExplorers::Constants::Filter::NAME, ui->textEditUrheilija->toPlainText());
+                    InternetExplorers::Constants::Filter::NAME,
+                    ui->textEditUrheilija->toPlainText());
+
         filter.insert(name_pair);
     }
 
-    if(ui->comboBoxMatka->currentText() != "Kaikki Matkat"){
+    if(ui->comboBoxMatka->currentIndex() != 0){
 
         if(title.length() > 0){
             title = title + ":" + ui->comboBoxMatka->currentText();
@@ -115,7 +128,9 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         }
 
         std::pair<Filter_NS, QString> distance_pair(
-                    InternetExplorers::Constants::Filter::DISTANCE, ui->comboBoxMatka->currentText());
+                    InternetExplorers::Constants::Filter::DISTANCE,
+                    ui->comboBoxMatka->currentText());
+
         filter.insert(distance_pair);
     }
 
@@ -245,13 +260,19 @@ void Finlandia::make_listview()
     std::vector<std::vector<std::string>> data =
             allSearches.at(allSearches.size() -1);
 
+    QString header = "";
+
+    //Make small header for listview
+    for(int k : attr_vect){
+        header += QString::fromStdString(attribute_enum.at(k)) + " : ";
+    }
+    header = header.mid(0, header.length()-2);
+    ui->listWidgetResult->addItem(header);
 
     // Going through individual results in a search:
     for (unsigned int j= 0; j < data.size(); j++){
         std::vector<std::string> result = data.at(j);
         QString disp = "";
-
-        //for (unsigned int k = 0; k < result.size(); k++)
         for(int k : attr_vect){
             // Showcasing a result:
 
@@ -268,25 +289,47 @@ void Finlandia::make_listview()
 
 void Finlandia::make_chart()
 {
-    //Lineseries for test purposes
-    QLineSeries *lineseries = new QLineSeries();
-    lineseries->setName(curr_series_title);
+    int x = ui->x_akseliCB->currentIndex();
+    int y = ui->y_akseliCB->currentIndex();
 
-    // Going through all of the added search data:
-    for (unsigned int i = 0; i < allSearches.size(); i++){
-        // Data added per search:
-        std::vector<std::vector<std::string>> data = allSearches.at(i);
+    if(ui->kuvaajatyyppiCB->currentIndex() == 1){
+        QLineSeries *series = new QLineSeries();
+        series->setName(curr_series_title);
+
+        //adding the data from only last search: TODO add later searches too
+        std::vector<std::vector<std::string>> data = allSearches.at(allSearches.size()-1);
 
         // Going through individual results in a search:
-        for (unsigned int j= 0; j < data.size(); j++){
-            std::vector<std::string> result = data.at(j);
-            lineseries->append(QPoint(stoi(result.at(0)),stoi(result.at(2))));
+        for(std::vector<std::string> result : data){
+            series->append(QPoint(stoi(result.at(x)),stoi(result.at(y))));
         }
         //Adding the series to m_chart
-        m_chart->addSeries(lineseries);
-        m_chart->createDefaultAxes();
-        ui->graafiWiev->setChart(m_chart);
+        m_chart->addSeries(series);
+
+    }else if(ui->kuvaajatyyppiCB->currentIndex() == 0){
+
+        QBarSeries* series = new QBarSeries();
+        series->setName(curr_series_title);
+
+        //adding the data from only last search: TODO add later searches too
+        std::vector<std::vector<std::string>> data = allSearches.at(allSearches.size()-1);
+
+        // Going through individual results in a search:
+        for(std::vector<std::string> result : data){
+
+            QBarSet *set = new QBarSet(QString::fromStdString(result.at(x)));
+
+            *set << stoi(result.at(y));
+
+            series->append(set);
+        }
+        //Adding the series to m_chart
+        m_chart->addSeries(series);
+
     }
+    m_chart->createDefaultAxes();
+    ui->graafiWiev->setChart(m_chart);
+
 }
 
 void Finlandia::make_listviweLabel()
@@ -297,7 +340,7 @@ void Finlandia::make_listviweLabel()
         label = label + " Hitain,";
     }
     if(ui->haeKaikkiRP->isChecked()){
-        label = label + " Kaikki tulokset,";
+        label = "Esitetään: Kaikki tulokset";
     }
     if(ui->haeNopeinRP->isChecked()){
         label = label + " Nopein,";
@@ -320,9 +363,6 @@ void Finlandia::make_listviweLabel()
     if(ui->hiihtajanNimiRP->isChecked()){
         label = label + " Nimi,";
     }
-    if(ui->haeKaikkiRP->isChecked()){
-        label = label + " Kaikki tiedot,";
-    }
 
     //Remove the last comma
     ui->ListViewesityslabel->setText(label.mid(0, label.length()-1));
@@ -336,24 +376,21 @@ std::vector<int> Finlandia::select_attributes()
     enum Atributes { year, distance, time, place, place_men, place_wm,
                      sex, name, town, nationality, birth_yr, team};
 
-    if(ui->haeHitainRP->isChecked()){
-
-    }
     if(ui->haeKaikkiRP->isChecked()){
         atr_vec = {year, distance, time, place, place_men, place_wm,
                    sex, name, town, nationality, birth_yr, team};
-    }
-    if(ui->haeNopeinRP->isChecked()){
-
-    }
-    if(ui->haeOsalMaarRP->isChecked()){
-
     }
     if(ui->KotimaaRP->isChecked()){
         atr_vec.push_back(nationality);
     }
     if(ui->haeJoukkueRP->isChecked()){
         atr_vec.push_back(team);
+    }
+    if(ui->aikaRP->isChecked()){
+        atr_vec.push_back(time);
+    }
+    if(ui->hiihtajanNimiRP->isChecked()){
+        atr_vec.push_back(name);
     }
 
     return atr_vec;
@@ -366,8 +403,6 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
     filter = makefilter();
 
-    ui->listWidgetTehtHaut->addItem(curr_series_title);
-
     std::vector<std::vector<std::string>> newData;
     try {
         newData = m_DataHandler->getDataWithFilter(filter);
@@ -376,26 +411,40 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
     }
 
     unsigned long int size = newData.size();
-    std::cout << size << std::endl;
+    std::cout << "Koko " << size << std::endl;
 
-    allSearches.push_back(newData);
-
+    if(size > 0){
+        allSearches.push_back(newData);
+        ui->listWidgetTehtHaut->addItem(curr_series_title);
+    }
+    else{
+        QMessageBox msgBox;
+        msgBox.setText("Valitsemiasi kriteereitä vastaavia tuloksia "
+                       "ei löytynyt.");
+        msgBox.exec();
+    }
 }
 
 void Finlandia::on_pushButton_clicked()
 {
-    if(ui->esitysListanaRP->isChecked()){
-        make_listview();
-        make_listviweLabel();
-        if(ui->esitysGraafinenRP->isChecked()){
-            make_chart();
-        }
-    }else if(ui->esitysGraafinenRP->isChecked()){
-        make_chart();
-    }else{
-        QMessageBox msgBox;
-        msgBox.setText("Et ole valinnut esitystapaa.");
-        msgBox.exec();
-    }
+    make_listview();
+    make_listviweLabel();
+
+    //Tarviiko oikeesti kysellä miten esitys
+    //halutaan?
+
+    //    if(ui->esitysListanaRP->isChecked()){
+    //        make_listview();
+    //        make_listviweLabel();
+    //        if(ui->esitysGraafinenRP->isChecked()){
+    //            make_chart();
+    //        }
+    //    }else if(ui->esitysGraafinenRP->isChecked()){
+    //        make_chart();
+    //    }else{
+    //        QMessageBox msgBox;
+    //        msgBox.setText("Et ole valinnut esitystapaa.");
+    //        msgBox.exec();
+    //    }
 }
 
