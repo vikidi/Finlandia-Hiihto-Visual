@@ -221,7 +221,7 @@ void InternetExplorersTests::InterfaceFilter::testOverallFilter()
     filter = filtermap({});
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 
@@ -244,7 +244,7 @@ void InternetExplorersTests::InterfaceFilter::testYearFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -287,7 +287,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkYearFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -314,7 +314,7 @@ void InternetExplorersTests::InterfaceFilter::testYearRangeFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -367,7 +367,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkYearRangeFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -388,7 +388,7 @@ void InternetExplorersTests::InterfaceFilter::testDistanceFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -425,7 +425,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkDistanceFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -450,7 +450,7 @@ void InternetExplorersTests::InterfaceFilter::testNameFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -487,7 +487,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkNameFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -522,7 +522,7 @@ void InternetExplorersTests::InterfaceFilter::testTimeRangeFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -579,7 +579,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkTimeRangeFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -602,7 +602,7 @@ void InternetExplorersTests::InterfaceFilter::testPlaceFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -643,7 +643,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkPlaceFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -666,7 +666,7 @@ void InternetExplorersTests::InterfaceFilter::testPlaceMenFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -707,7 +707,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkPlaceMenFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -730,7 +730,7 @@ void InternetExplorersTests::InterfaceFilter::testPlaceWomenFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -771,7 +771,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkPlaceWomenFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -792,7 +792,7 @@ void InternetExplorersTests::InterfaceFilter::testSexFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -831,7 +831,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkSexFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -854,7 +854,7 @@ void InternetExplorersTests::InterfaceFilter::testPlaceRangeFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -903,7 +903,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkPlaceRangeFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -926,7 +926,7 @@ void InternetExplorersTests::InterfaceFilter::testCityFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -963,7 +963,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkCityFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -986,7 +986,7 @@ void InternetExplorersTests::InterfaceFilter::testNationalityFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -1027,7 +1027,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkNationalityFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -1046,7 +1046,7 @@ void InternetExplorersTests::InterfaceFilter::testBirthYearFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -1087,7 +1087,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkBirthYearFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
@@ -1112,7 +1112,7 @@ void InternetExplorersTests::InterfaceFilter::testTeamFilter()
     QFETCH(filtermap, filter);
     try {
         QCOMPARE(m_filter->validateFilter(filter), true);
-    } catch (InternetExplorers::FilterException) {
+    } catch (const InternetExplorers::FilterException&) {
         QFAIL("Threw filter exception when shouldnt have");
     }
 }
@@ -1149,7 +1149,7 @@ void InternetExplorersTests::InterfaceFilter::bencmarkTeamFilterFail()
     QBENCHMARK{
         try {
             m_filter->validateFilter(fil);
-        } catch (InternetExplorers::FilterException) {
+        } catch (const InternetExplorers::FilterException&) {
 
         }
     }
