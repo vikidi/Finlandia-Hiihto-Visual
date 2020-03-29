@@ -21,7 +21,11 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     connect(ui->add_graphButton, &QPushButton::clicked, this,
             &Finlandia::make_chart);
 
+    connect(ui->del_all_graphs, &QPushButton::clicked, this,
+            &Finlandia::remove_cart);
 
+    connect(ui->save_graph_pb, &QPushButton::clicked, this,
+            &Finlandia::save_chart);
 }
 
 Finlandia::~Finlandia()
@@ -67,16 +71,18 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
 
 std::map<Filter_NS, QString> Finlandia::makefilter(){
     std::map<Filter_NS, QString> filter;
+
+    //The title for the search is made at the same time
     QString title;
 
     //Only one year is selected
     if(ui->comboBoxVuosi->currentIndex() != 0 and
             ui->vuosivaliBox->currentIndex() == 0){
         if (title.length()>0){
-            title = title + ":" + ui->comboBoxVuosi->currentText();
+            title = title + ", Vuosi: " + ui->comboBoxVuosi->currentText();
         }
         else{
-            title = ui->comboBoxVuosi->currentText();
+            title = "Vuosi: " + ui->comboBoxVuosi->currentText();
         }
         std::pair<Filter_NS, QString> year_pair(
                     InternetExplorers::Constants::Filter::YEAR,
@@ -88,11 +94,11 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
             ui->vuosivaliBox->currentIndex() != 0){
 
         if (title.length()>0){
-            title = title + ":" + ui->comboBoxVuosi->currentText() +
+            title = title + ", Vuosiväli: " + ui->comboBoxVuosi->currentText() +
                     "-" +ui->vuosivaliBox->currentText();
         }
         else{
-            title = ui->comboBoxVuosi->currentText() + "-" +
+            title = "Vuosiväli: " + ui->comboBoxVuosi->currentText() + "-" +
                     ui->vuosivaliBox->currentText();
         }
 
@@ -106,10 +112,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
     if(ui->textEditUrheilija->toPlainText() != ""){
         if (title.length()>0){
-            title = title + ":" + ui->textEditUrheilija->toPlainText();
+            title = title + ", Nimi: " + ui->textEditUrheilija->toPlainText();
         }
         else{
-            title = ui->textEditUrheilija->toPlainText();
+            title = "Nimi: " + ui->textEditUrheilija->toPlainText();
         }
         std::pair<Filter_NS, QString> name_pair(
                     InternetExplorers::Constants::Filter::NAME,
@@ -121,10 +127,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
     if(ui->comboBoxMatka->currentIndex() != 0){
 
         if(title.length() > 0){
-            title = title + ":" + ui->comboBoxMatka->currentText();
+            title = title + ", Matka: " + ui->comboBoxMatka->currentText();
         }
         else{
-            title = ui->comboBoxMatka->currentText();
+            title = "Matka: " + ui->comboBoxMatka->currentText();
         }
 
         std::pair<Filter_NS, QString> distance_pair(
@@ -138,11 +144,11 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
             ui->timeEditUpper->time().toString() != "00:00:00"){
 
         if(title.length() > 0){
-            title = title + ":" + ui->timeEditLower->time().toString()
+            title = title + ", Suoritusaikaväli: " + ui->timeEditLower->time().toString()
                     + "-" + ui->timeEditUpper->time().toString();
         }
         else{
-            title = ui->timeEditLower->time().toString()
+            title = "Suoritusaikaväli: " + ui->timeEditLower->time().toString()
                     + "-" + ui->timeEditUpper->time().toString();
         }
 
@@ -160,10 +166,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         if(ui->ComboBoxSijoitusYla->currentIndex() == 0){
 
             if (title.length() > 0 ){
-                title = title + ":" + ui->comboBoxSijoitusAla->currentText();
+                title = title + ", Sijoitus: " + ui->comboBoxSijoitusAla->currentText();
             }
             else{
-                title = ui->comboBoxSijoitusAla->currentText();
+                title = "Sijoitus: " + ui->comboBoxSijoitusAla->currentText();
             }
 
             std::pair<Filter_NS, QString> place_pair(
@@ -174,11 +180,11 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         }
         else{
             if (title.length() > 0 ){
-                title = title + ":" + ui->comboBoxSijoitusAla->currentText() +
+                title = title + ", Sijoitusväli: " + ui->comboBoxSijoitusAla->currentText() +
                         "-" + ui->ComboBoxSijoitusYla->currentText();
             }
             else{
-                title = ui->comboBoxSijoitusAla->currentText()+
+                title = "Sijoitusväli: " + ui->comboBoxSijoitusAla->currentText()+
                         "-" + ui->ComboBoxSijoitusYla->currentText();
             }
 
@@ -208,10 +214,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
     if(ui->sukupuoliCB->currentText() != ""){
 
         if(title.length()>0){
-            title = title + ":" + ui->sukupuoliCB->currentText();
+            title = title + ", Sukupuoli:" + ui->sukupuoliCB->currentText();
         }
         else{
-            title = ui->sukupuoliCB->currentText();
+            title = "Sukupuoli:" + ui->sukupuoliCB->currentText();
         }
 
         std::pair<Filter_NS, QString> sex_pair(
@@ -224,10 +230,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
     if(ui->textEditHome->toPlainText() != ""){
 
         if(title.length() > 0){
-            title = title + ":" + ui->textEditHome->toPlainText();
+            title = title + ", Kotimaa: " + ui->textEditHome->toPlainText();
         }
         else{
-            title = ui->textEditHome->toPlainText();
+            title = "Kotimaa: " + ui->textEditHome->toPlainText();
         }
 
         std::pair<Filter_NS, QString> national_pair(
@@ -284,13 +290,17 @@ void Finlandia::make_listview()
         ui->listWidgetResult->addItem(disp);
     }
     ui->listWidgetResult->addItem(+ "\n");
+    ui->hakuLabelTulokset->setText("Haku: " + curr_series_title);
 
 }
 
 void Finlandia::make_chart()
 {
     int x = ui->x_akseliCB->currentIndex();
+    ui->x_axisTitle->setText(ui->x_akseliCB->currentText());
+
     int y = ui->y_akseliCB->currentIndex();
+    ui->y_axisTitle->setText(ui->y_akseliCB->currentText());
 
     if(ui->kuvaajatyyppiCB->currentIndex() == 1){
         QLineSeries *series = new QLineSeries();
@@ -322,6 +332,7 @@ void Finlandia::make_chart()
             *set << stoi(result.at(y));
 
             series->append(set);
+
         }
         //Adding the series to m_chart
         m_chart->addSeries(series);
@@ -332,6 +343,24 @@ void Finlandia::make_chart()
 
 }
 
+void Finlandia::remove_cart()
+{
+    m_chart->removeAllSeries();
+}
+
+void Finlandia::save_chart()
+{
+    QPixmap p = ui->graafiWiev->grab();
+
+    QString fileName = QFileDialog::
+            getSaveFileName(this,tr("Save Chart as Image"),
+                            QString(), tr("Images (*.png)"));
+
+    if (!fileName.isEmpty()){
+        p.save(fileName);
+    }
+}
+
 void Finlandia::make_listviweLabel()
 {
     QString label = "Esitetään:";
@@ -340,7 +369,7 @@ void Finlandia::make_listviweLabel()
         label = label + " Hitain,";
     }
     if(ui->haeKaikkiRP->isChecked()){
-        label = "Esitetään: Kaikki tulokset";
+        label = "Esitetään: Kaikki tulokset,";
     }
     if(ui->haeNopeinRP->isChecked()){
         label = label + " Nopein,";

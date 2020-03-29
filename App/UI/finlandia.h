@@ -53,6 +53,10 @@ private slots:
 
     void make_chart();
 
+    void remove_cart();
+
+    void save_chart();
+
 private:
     Ui::Finlandia *ui;
     std::vector<Filter_NS> previousSrc;

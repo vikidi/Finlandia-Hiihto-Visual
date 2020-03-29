@@ -1453,12 +1453,19 @@
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="0">
-          <widget class="QListWidget" name="listWidgetResult"/>
-         </item>
-         <item row="0" column="0">
           <widget class="QLabel" name="ListViewesityslabel">
            <property name="text">
             <string>Esitetään:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QListWidget" name="listWidgetResult"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="hakuLabelTulokset">
+           <property name="text">
+            <string>Haku:</string>
            </property>
           </widget>
          </item>
@@ -1828,6 +1835,25 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="save_graph_pb">
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Tallenna kuvaaja</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="verticalSpacer_4">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1841,6 +1867,20 @@
             </spacer>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="Line" name="line_7">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="y_axisTitle">
+           <property name="text">
+            <string>Y-Axis Title</string>
+           </property>
+          </widget>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1859,6 +1899,43 @@
               </size>
              </property>
             </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="x_axisTitle">
+               <property name="text">
+                <string>X-Axis Title</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
            <item>
             <spacer name="verticalSpacer_5">
@@ -1913,17 +1990,17 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="JarjestaButtons"/>
-  <buttongroup name="HaettavaTietoButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
   <buttongroup name="EsitysButtons">
    <property name="exclusive">
     <bool>false</bool>
    </property>
   </buttongroup>
+  <buttongroup name="HaettavaTietoButtons">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
+  <buttongroup name="JarjestaButtons"/>
   <buttongroup name="HaeButtons">
    <property name="exclusive">
     <bool>false</bool>
