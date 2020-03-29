@@ -8,8 +8,6 @@
 #include <QMainWindow>
 #include <QProgressBar>
 #include <QGraphicsView>
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
 
 namespace Ui {
 class MainWindow;
@@ -69,10 +67,6 @@ private slots:
     void on_haunAloitusNappi_clicked();
 
 private:
-
-    // Sounds
-    QMediaPlayer m_musicPlayer;
-    QMediaPlaylist m_musicPlaylist;
 
     // Finlandia UI window
     Finlandia* m_finlandiaUI;
