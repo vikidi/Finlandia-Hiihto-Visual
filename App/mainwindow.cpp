@@ -9,6 +9,8 @@
 
 MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* dh, QWidget *parent) :
     QMainWindow(parent),
+    m_musicPlayer(QMediaPlayer(this)),
+    m_musicPlaylist(new QMediaPlaylist(this)),
     m_finlandiaUI(finlandiaUI),
     m_dataHandler(dh),
     m_progress(new QProgressBar(this)),
@@ -17,6 +19,14 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Sounds
+    m_musicPlaylist.addMedia(QUrl("https://vignette.wikia.nocookie.net/2007scape/images/6/64/Winter_Funfair.ogg"));
+    m_musicPlaylist.setPlaybackMode(QMediaPlaylist::Loop);
+    m_musicPlayer.setPlaylist(&m_musicPlaylist);
+    m_musicPlayer.play();
+    connect(ui->MusicCheckbox, &QCheckBox::stateChanged, [&](int state)
+    {state ? m_musicPlayer.play() : m_musicPlayer.pause();});
 
     connect(m_dataHandler, &InternetExplorers::DataHandler::loadingReady, this, &MainWindow::dataReady);
     m_dataHandler->Initialize();
@@ -104,5 +114,6 @@ void MainWindow::progressChanged(const int progress)
 void MainWindow::on_haunAloitusNappi_clicked()
 {
     m_finlandiaUI->show();
+    m_musicPlayer.stop();
     this->close();
 }
