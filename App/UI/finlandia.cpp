@@ -30,8 +30,8 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
 
     // Menubar does not take ownership of created menu, so it is stored in a vector
     m_menus.push_back(new QMenu("File"));
-    QAction* settings = m_menus.back()->addAction("Unimplemented GDPR stuff");
-    connect(settings, &QAction::triggered, [](){qDebug() << "Hello world!";});
+    QAction* settings = m_menus.back()->addAction("Encryption settings");
+    connect(settings, &QAction::triggered, this, &Finlandia::encryptionSettingsOpened);
     menuBar()->addMenu(m_menus.back());
     QAction* close = m_menus.back()->addAction("Close");
     connect(close, &QAction::triggered, [&](){QMainWindow::close();});
@@ -487,3 +487,10 @@ void Finlandia::on_pushButton_clicked()
     make_listviweLabel();
 }
 
+void Finlandia::encryptionSettingsOpened()
+{
+    m_encryptionSettings = std::make_unique<EncryptionSettingsWindow>();
+    m_encryptionSettings->setWindowModality(Qt::WindowModality::ApplicationModal);
+    m_encryptionSettings->show();
+    connect(m_encryptionSettings.get(), &EncryptionSettingsWindow::closeProgram, [&](){this->close();});
+}
