@@ -7,6 +7,7 @@
 #include "UI/finlandia.h"
 #include "ui_finlandia.h"
 #include <QtCharts>
+#include <cctype>
 
 Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
                      QWidget *parent) :
@@ -283,8 +284,8 @@ void Finlandia::make_listview()
             // Showcasing a result:
 
             disp += QString::fromStdString(result.at(k)) + " ";
-            qDebug() << QString::number(k) + ", "  +
-                        QString::fromStdString(result.at(k));
+//            qDebug() << QString::number(k) + ", "  +
+//                        QString::fromStdString(result.at(k));
 
         }
         ui->listWidgetResult->addItem(disp);
@@ -311,6 +312,7 @@ void Finlandia::make_chart()
 
         // Going through individual results in a search:
         for(std::vector<std::string> result : data){
+            if(std::isdigit(*result.at(x).c_str()) && std::isdigit(*result.at(y).c_str()))
             series->append(QPoint(stoi(result.at(x)),stoi(result.at(y))));
         }
         //Adding the series to m_chart
@@ -326,7 +328,8 @@ void Finlandia::make_chart()
 
         // Going through individual results in a search:
         for(std::vector<std::string> result : data){
-
+            if(!std::isdigit(*result.at(y).c_str()))
+                continue;
             QBarSet *set = new QBarSet(QString::fromStdString(result.at(x)));
 
             *set << stoi(result.at(y));
