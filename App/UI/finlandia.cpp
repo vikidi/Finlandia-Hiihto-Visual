@@ -27,10 +27,29 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
 
     connect(ui->save_graph_pb, &QPushButton::clicked, this,
             &Finlandia::save_chart);
+
+    // Menubar does not take ownership of created menu, so it is stored in a vector
+    m_menus.push_back(new QMenu("File"));
+    QAction* settings = m_menus.back()->addAction("Unimplemented GDPR stuff");
+    connect(settings, &QAction::triggered, [](){qDebug() << "Hello world!";});
+    menuBar()->addMenu(m_menus.back());
+    QAction* close = m_menus.back()->addAction("Close");
+    connect(close, &QAction::triggered, [&](){QMainWindow::close();});
 }
 
 Finlandia::~Finlandia()
 {
+    // Delete created menus
+    for(auto menu : m_menus)
+    {
+        for(auto action : menu->actions())
+        { // Delete all actions inside menus
+            menu->removeAction(action);
+            delete action;
+        }
+        delete menu;
+    }
+
     delete ui;
     delete m_chart;
 }

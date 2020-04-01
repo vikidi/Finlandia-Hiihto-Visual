@@ -3,6 +3,7 @@
 
 #include <QtCharts>
 #include <QMainWindow>
+#include <QMenu>
 #include <vector>
 #include "constants.h"
 #include "datahandler.h"
@@ -90,6 +91,7 @@ private:
                                                "PLACE_WOMEN", "SEX", "NAME",
                                                "CITY", "NATIONALITY",
                                                "BIRTH_YEAR", "TEAM"};
+    std::vector<QMenu*> m_menus;
 };
 
 #endif // FINLANDIA_H
