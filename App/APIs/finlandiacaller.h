@@ -28,18 +28,6 @@ public:
 
     /*!
      * \brief
-     * Loads all data from finlandia hiihto website from given year and distance
-     * \param year
-     * The year to load from
-     * \param distance
-     * The distance to load from
-     * \return
-     * The loaded data in rows
-     */
-    std::vector<std::vector<std::string>> loadAllData(QString year, QString distance);
-
-    /*!
-     * \brief
      * Loads data from finlandia hiihto website with given parameters.
      * \param parameters
      * Parameters to use in the data loading
