@@ -200,8 +200,8 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
             if (title.length() > 0 ){
 
 
-                title = title + ", Sijoitusväli: " + ui->comboBoxSijoitusAla->currentText() +
-                        "-" + ui->ComboBoxSijoitusYla->currentText();
+                title = title + ", Sijoitusväli: " + ui->comboBoxSijoitusAla->
+                        currentText() + "-" + ui->ComboBoxSijoitusYla->currentText();
             }
             else{
                 title = "Sijoitusväli: " + ui->comboBoxSijoitusAla->currentText()+

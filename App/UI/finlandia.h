@@ -45,35 +45,58 @@ public:
     std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> makefilter();
 
     /**
-     * @brief make_listview
+     * @brief make_listview adds all search results to the listview
      *
      */
     void make_listview();
 
 
     /**
-     * @brief make_listviweLabel
+     * @brief make_listviweLabel checks what choises the user has made in the
+     * UI and creates a label based on that
      */
     void make_listviweLabel();
 
     /**
      * @brief select_attributes
-     * @return vector on integers pointin out what
+     * @return vector of integers pointing out what
      * attributes the listView should show
      */
     std::vector<int> select_attributes();
 
 private slots:
+
+    /**
+     * @brief on_pushButtonNollaKaikki_clicked resets
+     * everything to default position
+     */
     void on_pushButtonNollaKaikki_clicked();
 
+    /**
+     * @brief on_pushButtoLisaaHaku_clicked adds the filters to
+     * a queue for completing the searches
+     */
     void on_pushButtoLisaaHaku_clicked();
 
+    /**
+     * @brief on_pushButton_clicked Makes the actual searches happen
+     */
     void on_pushButton_clicked();
 
+    /**
+     * @brief make_chart creates the graphics of the chartView
+     */
     void make_chart();
 
+    /**
+     * @brief remove_cart deletes all charts added to the chartView
+     */
     void remove_cart();
 
+    /**
+     * @brief save_chart is used to save the current view of the
+     * chartView
+     */
     void save_chart();
 
 private:
@@ -86,6 +109,8 @@ private:
 
     QChart *m_chart;
     QString curr_series_title;
+
+    //this is used for getting the corresponing string with the enum index
     std::vector<std::string> attribute_enum = {"YEAR", "DISTANCE", "TIME",
                                                "PLACE", "PLACE_MEN",
                                                "PLACE_WOMEN", "SEX", "NAME",
