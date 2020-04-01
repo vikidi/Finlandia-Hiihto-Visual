@@ -159,7 +159,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(timeRange_pair);
     }
 
-    if(ui->comboBoxSijoitusAla->currentIndex() != 0 and
+    if(ui->comboBoxSijoitusAla->currentIndex() != 0 &&
             ui->sukupuoliCB->currentIndex() == 0){
 
         if(ui->ComboBoxSijoitusYla->currentIndex() == 0){
@@ -179,6 +179,8 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         }
         else{
             if (title.length() > 0 ){
+
+
                 title = title + ", Sijoitusväli: " + ui->comboBoxSijoitusAla->currentText() +
                         "-" + ui->ComboBoxSijoitusYla->currentText();
             }
@@ -195,14 +197,19 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
             filter.insert(place_pair);
         }
 
-    }else if(ui->sukupuoliCB->currentText() == "M"){
+    }
+
+    if(ui->comboBoxSijoitusAla->currentIndex() != 0 &&
+            ui->sukupuoliCB->currentIndex() == 1){
         std::pair<Filter_NS, QString> place_pair(
                     InternetExplorers::Constants::Filter::PLACE_MEN,
                     ui->comboBoxSijoitusAla->currentText());
 
         filter.insert(place_pair);
 
-    }else if(ui->sukupuoliCB->currentText() == "N"){
+    }
+    if(ui->comboBoxSijoitusAla->currentIndex() != 0 &&
+            ui->sukupuoliCB->currentText() == "N"){
         std::pair<Filter_NS, QString> place_pair(
                     InternetExplorers::Constants::Filter::PLACE_WOMEN,
                     ui->comboBoxSijoitusAla->currentText());
@@ -210,7 +217,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(place_pair);
     }
 
-    if(ui->sukupuoliCB->currentText() != ""){
+    if(ui->sukupuoliCB->currentIndex() != 0){
 
         if(title.length()>0){
             title = title + ", Sukupuoli:" + ui->sukupuoliCB->currentText();
@@ -282,8 +289,8 @@ void Finlandia::make_listview()
             // Showcasing a result:
 
             disp += QString::fromStdString(result.at(k)) + " ";
-//            qDebug() << QString::number(k) + ", "  +
-//                        QString::fromStdString(result.at(k));
+            //            qDebug() << QString::number(k) + ", "  +
+            //                        QString::fromStdString(result.at(k));
 
         }
         ui->listWidgetResult->addItem(disp);
@@ -311,7 +318,7 @@ void Finlandia::make_chart()
         // Going through individual results in a search:
         for(std::vector<std::string> result : data){
             if(std::isdigit(*result.at(x).c_str()) && std::isdigit(*result.at(y).c_str()))
-            series->append(QPoint(stoi(result.at(x)),stoi(result.at(y))));
+                series->append(QPoint(stoi(result.at(x)),stoi(result.at(y))));
         }
         //Adding the series to m_chart
         m_chart->addSeries(series);

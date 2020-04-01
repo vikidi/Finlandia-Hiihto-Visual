@@ -25,16 +25,34 @@ class Finlandia : public QMainWindow
     Q_OBJECT
 
 public:
+    /**
+     * @brief Finlandia
+     * @param datahandler
+     * @param parent
+     */
     explicit Finlandia(InternetExplorers::DataHandler* dh,
                        QWidget *parent = 0);
+
     ~Finlandia();
 
+    /**
+     * @brief makefilter takes the params given by user and
+     * creates a filter based on them
+     * @return map of filternames and their values. Contains
+     * all the filters specified in the search made by user
+     */
     std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> makefilter();
 
+    /**
+     * @brief make_listview
+     *
+     */
     void make_listview();
 
 
-
+    /**
+     * @brief make_listviweLabel
+     */
     void make_listviweLabel();
 
     /**
