@@ -33,7 +33,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <property name="minimumSize">
@@ -1125,48 +1125,7 @@
          <item row="1" column="3">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QLabel" name="labelEsitys">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Esitys:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QRadioButton" name="esitysGraafinenRP">
-               <property name="text">
-                <string>Graafisesti </string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">EsitysButtons</string>
-               </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="esitysListanaRP">
-               <property name="text">
-                <string>Listana</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">EsitysButtons</string>
-               </attribute>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_10"/>
            </item>
            <item>
             <widget class="QLabel" name="labelHaettavaTieto">
@@ -1965,7 +1924,7 @@
      <x>0</x>
      <y>0</y>
      <width>1302</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -1995,16 +1954,16 @@
     <bool>false</bool>
    </property>
   </buttongroup>
-  <buttongroup name="HaeButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
   <buttongroup name="HaettavaTietoButtons">
    <property name="exclusive">
     <bool>false</bool>
    </property>
   </buttongroup>
   <buttongroup name="JarjestaButtons"/>
+  <buttongroup name="HaeButtons">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
  </buttongroups>
 </ui>

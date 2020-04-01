@@ -56,10 +56,8 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->comboBoxSijoitusAla->setCurrentIndex(0);
     ui->sukupuoliCB->setCurrentIndex(0);
     ui->textEditHome->setText("");
-    ui->esitysListanaRP->setChecked(false);
-    ui->esitysGraafinenRP->setChecked(false);
     ui->haeHitainRP->setChecked(false);
-    ui->haeKaikkiRP->setChecked(false);
+    ui->haeKaikkiRP->setChecked(true);
     ui->haeNopeinRP->setChecked(false);
     ui->haeOsalMaarRP->setChecked(false);
     ui->KotimaaRP->setChecked(false);
@@ -461,22 +459,5 @@ void Finlandia::on_pushButton_clicked()
 {
     make_listview();
     make_listviweLabel();
-
-    //Tarviiko oikeesti kysellä miten esitys
-    //halutaan?
-
-    //    if(ui->esitysListanaRP->isChecked()){
-    //        make_listview();
-    //        make_listviweLabel();
-    //        if(ui->esitysGraafinenRP->isChecked()){
-    //            make_chart();
-    //        }
-    //    }else if(ui->esitysGraafinenRP->isChecked()){
-    //        make_chart();
-    //    }else{
-    //        QMessageBox msgBox;
-    //        msgBox.setText("Et ole valinnut esitystapaa.");
-    //        msgBox.exec();
-    //    }
 }
 
