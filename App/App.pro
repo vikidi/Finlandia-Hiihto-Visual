@@ -40,7 +40,8 @@ SOURCES += \
     interfacefilter.cpp \
     libraries/simplecrypt.cpp \
     APIs/localdataloader.cpp \
-    logger.cpp
+    logger.cpp \
+    dataorderer.cpp
 
 HEADERS += \
     UI/encryptionsettingswindow.h \
@@ -57,7 +58,8 @@ HEADERS += \
     libraries/simplecrypt.h \
     APIs/localdataloader.h \
     logger.h \
-    constants.h
+    constants.h \
+    dataorderer.h
 
 FORMS += \
     UI/encryptionsettingswindow.ui \

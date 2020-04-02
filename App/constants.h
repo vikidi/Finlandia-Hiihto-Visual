@@ -342,14 +342,13 @@ enum ValueFilters {
  */
 enum OrderFilters {
     PLACEMENT = 0,      /*!< Sort by placement */
-    PLACEMENT_MEN,      /*!< Sort by placement within men */
-    PLACEMENT_WOMEN,    /*!< Sort by placement within women */
+    YEAR_ORDER,         /*!< Sort by year */
+    DISTANCE_ORDER,     /*!< Sort by distance */
     AGE,                /*!< Sort by age of the skier */
     ALPH_NATIONALITY,   /*!< Sort alphabetically by nationality */
     ALPH_NAME,          /*!< Sort alphabetically by name */
     ALPH_TEAM,          /*!< Sort alphabetically by team */
     ALPH_CITY,          /*!< Sort alphabetically by city */
-    TIME                /*!< Sort by result time*/
 };
 
 }
