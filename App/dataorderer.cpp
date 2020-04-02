@@ -42,6 +42,10 @@ void InternetExplorers::DataOrderer::sortByIndex(std::vector<std::vector<std::st
 {
     // Sort with custom lambda expression
     std::sort(data.begin(), data.end(), [index](std::vector<std::string> a, std::vector<std::string> b) {
-        return a[index] < b[index];
+        std::string f = a[index];
+        std::string s = b[index];
+        std::transform(f.begin(), f.end(), f.begin(), ::tolower);
+        std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+        return f < s;
     });
 }
