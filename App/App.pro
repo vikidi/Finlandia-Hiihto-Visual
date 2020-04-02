@@ -26,6 +26,7 @@ CONFIG += c++17
 CONFIG += openssl-linked
 
 SOURCES += \
+    UI/encryptionsettingswindow.cpp \
     UI/gamescene.cpp \
     crypter.cpp \
         main.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
     logger.cpp
 
 HEADERS += \
+    UI/encryptionsettingswindow.h \
     UI/gamescene.h \
     crypter.h \
         mainwindow.h \
@@ -58,6 +60,7 @@ HEADERS += \
     constants.h
 
 FORMS += \
+    UI/encryptionsettingswindow.ui \
         mainwindow.ui \
     UI/finlandia.ui
 
