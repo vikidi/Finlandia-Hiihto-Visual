@@ -67,6 +67,14 @@ bool InternetExplorers::InterfaceFilter::validateFilter(std::map<Constants::Filt
                 isOK = validatePlaceRange(filter.second);
                 break;
 
+            case Constants::Filter::ValueFilters::PLACE_RANGE_MEN:
+                isOK = validatePlaceRangeMen(filter.second);
+                break;
+
+            case Constants::Filter::ValueFilters::PLACE_RANGE_WOMEN:
+                isOK = validatePlaceRangeWomen(filter.second);
+                break;
+
             case Constants::Filter::ValueFilters::PLACE_MEN:
                 isOK = validatePlaceMen(filter.second);
                 break;
@@ -256,6 +264,30 @@ bool InternetExplorers::InterfaceFilter::validatePlaceRange(QString filterValue)
     }
 
     return true;
+}
+
+bool InternetExplorers::InterfaceFilter::validatePlaceRangeMen(QString filterValue)
+{
+    // Try-Catch to change the possible error
+    bool success = true;
+    try {
+        success = validatePlaceRange(filterValue);
+    } catch (FilterException& e) {
+        throw FilterException(e.what(), "PLACE RANGE MEN", filterValue.toStdString().c_str());
+    }
+    return success;
+}
+
+bool InternetExplorers::InterfaceFilter::validatePlaceRangeWomen(QString filterValue)
+{
+    // Try-Catch to change the possible error
+    bool success = true;
+    try {
+        success = validatePlaceRange(filterValue);
+    } catch (FilterException& e) {
+        throw FilterException(e.what(), "PLACE RANGE WOMEN", filterValue.toStdString().c_str());
+    }
+    return success;
 }
 
 

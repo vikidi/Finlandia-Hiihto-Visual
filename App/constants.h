@@ -325,6 +325,8 @@ enum ValueFilters {
     PLACE_RANGE,
     PLACE_MEN,
     PLACE_WOMEN,
+    PLACE_RANGE_MEN,
+    PLACE_RANGE_WOMEN,
     SEX,
     CITY,
     NATIONALITY,

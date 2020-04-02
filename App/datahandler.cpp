@@ -300,6 +300,12 @@ bool InternetExplorers::DataHandler::applyAllFiltersToRow(std::map<Constants::Fi
         case Constants::Filter::ValueFilters::PLACE_RANGE:
             passes = filterByPlaceRange(row, filter.second);
             break;
+        case Constants::Filter::ValueFilters::PLACE_RANGE_MEN:
+            passes = filterByPlaceRangeMen(row, filter.second);
+            break;
+        case Constants::Filter::ValueFilters::PLACE_RANGE_WOMEN:
+            passes = filterByPlaceRangeWomen(row, filter.second);
+            break;
         case Constants::Filter::ValueFilters::PLACE_MEN:
             passes = filterByPlaceMen(row, filter.second);
             break;
@@ -494,6 +500,38 @@ bool InternetExplorers::DataHandler::filterByPlace(std::vector<std::string> row,
 bool InternetExplorers::DataHandler::filterByPlaceRange(std::vector<std::string> row, QString filterValue)
 {
     int place = std::stoi(row[Constants::DataIndex::IndexInData::PLACE]);
+
+    QStringList places = filterValue.split(";");
+
+    int lower = places[0].toInt();
+    int upper = places[1].toInt();
+
+    if (place >= lower && place <= upper) {
+        return true;
+    }
+
+    return false;
+}
+
+bool InternetExplorers::DataHandler::filterByPlaceRangeMen(std::vector<std::string> row, QString filterValue)
+{
+    int place = std::stoi(row[Constants::DataIndex::IndexInData::PLACE_MEN]);
+
+    QStringList places = filterValue.split(";");
+
+    int lower = places[0].toInt();
+    int upper = places[1].toInt();
+
+    if (place >= lower && place <= upper) {
+        return true;
+    }
+
+    return false;
+}
+
+bool InternetExplorers::DataHandler::filterByPlaceRangeWomen(std::vector<std::string> row, QString filterValue)
+{
+    int place = std::stoi(row[Constants::DataIndex::IndexInData::PLACE_WOMEN]);
 
     QStringList places = filterValue.split(";");
 
