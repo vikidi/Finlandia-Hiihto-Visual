@@ -22,6 +22,7 @@ InternetExplorers::DataHandler::DataHandler():
     m_loadOngoing(false),
     m_finlandiaAPI(new InternetExplorers::FinlandiaAPI),
     m_localAPI(new InternetExplorers::LocalAPI),
+    m_orderer(new InternetExplorers::DataOrderer),
     m_data({}),
     m_dataByName({})
 {
@@ -42,6 +43,7 @@ InternetExplorers::DataHandler::~DataHandler()
 
     delete m_finlandiaAPI;
     delete m_localAPI;
+    delete m_orderer;
 }
 
 void InternetExplorers::DataHandler::Initialize()
@@ -178,6 +180,13 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     return data;
 }
 
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, InternetExplorers::Constants::Filter::OrderFilters order)
+{
+    std::vector<std::vector<std::string> > data = getDataWithFilter(filters);
+    m_orderer->orderData(data, order);
+    return data;
+}
+
 void InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
 {
     // Check filter validity
@@ -213,6 +222,12 @@ void InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filte
     data = resultData;
 
     return;
+}
+
+void InternetExplorers::DataHandler::applyFilterToData(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data, InternetExplorers::Constants::Filter::OrderFilters order)
+{
+    applyFilterToData(filters, data);
+    m_orderer->orderData(data, order);
 }
 
 void InternetExplorers::DataHandler::progressChangedInApi(const int progress)

@@ -6,6 +6,7 @@
 #include "APIs/finlandiaapi.h"
 #include "APIs/localapi.h"
 #include "interfacefilter.h"
+#include "dataorderer.h"
 #include <unordered_map>
 #include <QString>
 #include <QHash>
@@ -80,6 +81,10 @@ public:
      */
     std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
+
+    std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters,
+                                                            Constants::Filter::OrderFilters order);
+
     /*!
      * \brief
      * Apply filter to data. The data itself will be filtered.
@@ -97,6 +102,11 @@ public:
      */
     void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
+
+
+    void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
+                           std::vector<std::vector<std::string>>& data,
+                           Constants::Filter::OrderFilters order);
 
     /* /PUBLIC INTERFACE */
 
@@ -226,6 +236,8 @@ private:
 
     // API to the local data in folders
     InternetExplorers::LocalAPI *m_localAPI;
+
+    InternetExplorers::DataOrderer *m_orderer;
 
     // < Year, < Distance, Row< Column< Value > > > >
     std::map<QString, std::map<QString,
