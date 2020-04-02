@@ -94,7 +94,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
     QString title;
 
     //Only one year is selected
-    if(ui->comboBoxVuosi->currentIndex() != 0 and
+    if(ui->comboBoxVuosi->currentIndex() != 0 &&
             ui->vuosivaliBox->currentIndex() == 0){
         if (title.length()>0){
             title = title + ", Vuosi: " + ui->comboBoxVuosi->currentText();
@@ -108,7 +108,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
         filter.insert(year_pair);
     }
-    else if(ui->comboBoxVuosi->currentIndex() != 0 and
+    else if(ui->comboBoxVuosi->currentIndex() != 0 &&
             ui->vuosivaliBox->currentIndex() != 0){
 
         if (title.length()>0){
@@ -158,7 +158,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(distance_pair);
     }
 
-    if(ui->timeEditLower->time().toString() != "00:00:00" or
+    if(ui->timeEditLower->time().toString() != "00:00:00" ||
             ui->timeEditUpper->time().toString() != "00:00:00"){
 
         if(title.length() > 0){
