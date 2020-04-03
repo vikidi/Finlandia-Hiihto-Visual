@@ -278,7 +278,9 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
             break;
         };*/
 
+
     curr_series_title = title;
+
     return filter;
 }
 
@@ -288,35 +290,37 @@ void Finlandia::make_listview()
     std::vector<int>attr_vect = select_attributes();
 
     //Adding only latest search to list
-    std::vector<std::vector<std::string>> data =
-            allSearches.at(allSearches.size() -1);
+    //std::vector<std::vector<std::string>> data =
+    //allSearches.at(allSearches.size() -1);
 
-    QString header = "";
+    //Adding all the searches in line
+    for(auto data : allSearches){
 
-    //Make small header for listview
-    for(int k : attr_vect){
-        header += QString::fromStdString(attribute_enum.at(k)) + " : ";
-    }
-    header = header.mid(0, header.length()-2);
-    ui->listWidgetResult->addItem(header);
+        QString header = "";
 
-    // Going through individual results in a search:
-    for (unsigned int j= 0; j < data.size(); j++){
-        std::vector<std::string> result = data.at(j);
-        QString disp = "";
+        //Make small header for listview
         for(int k : attr_vect){
-            // Showcasing a result:
-
-            disp += QString::fromStdString(result.at(k)) + " ";
-            //            qDebug() << QString::number(k) + ", "  +
-            //                        QString::fromStdString(result.at(k));
-
+            header += QString::fromStdString(attribute_enum.at(k)) + " : ";
         }
-        ui->listWidgetResult->addItem(disp);
-    }
-    ui->listWidgetResult->addItem(+ "\n");
-    ui->hakuLabelTulokset->setText("Haku: " + curr_series_title);
+        header = header.mid(0, header.length()-2);
+        ui->listWidgetResult->addItem(header);
 
+        // Going through individual results in a search:
+        for (unsigned int j= 0; j < data.size(); j++){
+            std::vector<std::string> result = data.at(j);
+            QString disp = "";
+            for(int k : attr_vect){
+                // Showcasing a result:
+
+                disp += QString::fromStdString(result.at(k)) + " ";
+
+            }
+            ui->listWidgetResult->addItem(disp);
+        }
+        ui->listWidgetResult->addItem(+ "\n");
+        ui->hakuLabelTulokset->setText("Haku: " + curr_series_title);
+
+    }
 }
 
 void Finlandia::make_chart()
@@ -332,7 +336,7 @@ void Finlandia::make_chart()
         series->setName(curr_series_title);
 
         //adding the data from only last search: TODO add later searches too
-        std::vector<std::vector<std::string>> data = allSearches.at(allSearches.size()-1);
+        std::vector<std::vector<std::string>> data = m_datalump;
 
         // Going through individual results in a search:
         for(std::vector<std::string> result : data){
@@ -348,7 +352,7 @@ void Finlandia::make_chart()
         series->setName(curr_series_title);
 
         //adding the data from only last search: TODO add later searches too
-        std::vector<std::vector<std::string>> data = allSearches.at(allSearches.size()-1);
+        std::vector<std::vector<std::string>> data = m_datalump;
 
         // Going through individual results in a search:
         for(std::vector<std::string> result : data){
@@ -356,8 +360,15 @@ void Finlandia::make_chart()
                 continue;
             QBarSet *set = new QBarSet(QString::fromStdString(result.at(x)));
 
-            *set << stoi(result.at(y));
 
+            //EI TOIMI
+            if(y == 2){
+
+                QDateTime yValue;
+                yValue.setTime(QTime::fromString(QString::fromStdString(result.at(y))));
+
+                *set << yValue.toMSecsSinceEpoch();
+            }
             series->append(set);
 
         }
@@ -387,6 +398,7 @@ void Finlandia::save_chart()
         p.save(fileName);
     }
 }
+
 
 void Finlandia::make_listviweLabel()
 {
@@ -452,14 +464,34 @@ std::vector<int> Finlandia::select_attributes()
     return atr_vec;
 }
 
+int Finlandia::convert_time_to_seconds(std::string time)
+{
+    std::string hours = time.substr(0, 2);
+    std::string minutes = time.substr(3, 2);
+    std::string seconds = time.substr(6, 2);
+
+
+    return stoi(hours)*60*60 + stoi(minutes)*60 + stoi(seconds);
+}
+
 void Finlandia::on_pushButtoLisaaHaku_clicked()
 {
-    curr_series_title = "";
+
     std::map<Filter_NS, QString> filter;
 
+    //Also makes curr_series_title
     filter = makefilter();
 
+    m_search_queue.push_back(filter);
+
+    ui->listWidgetTehtHaut->addItem(curr_series_title);
+
+}
+
+void Finlandia::make_search(std::map<Filter_NS, QString> filter)
+{
     std::vector<std::vector<std::string>> newData;
+
     try {
         newData = m_DataHandler->getDataWithFilter(filter);
     } catch (InternetExplorers::FilterException &e) {
@@ -471,19 +503,33 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
     if(size > 0){
         allSearches.push_back(newData);
-        ui->listWidgetTehtHaut->addItem(curr_series_title);
+
+        m_datalump.insert( m_datalump.end(), newData.begin(), newData.end());
+
+        //m_all_searches.at(curr_series_title) = newData;
     }
     else{
         QMessageBox msgBox;
-        msgBox.setText("Valitsemiasi kriteereitä vastaavia tuloksia "
-                       "ei löytynyt.");
+        msgBox.setText("Yksi tai useampi hakuehto ei tuottanut yhtäkään"
+                       " tulosta.");
         msgBox.exec();
     }
 }
 
 void Finlandia::on_pushButton_clicked()
 {
+    m_datalump.clear();
+
+    //Making all the searches in the queue
+    for (std::map<Filter_NS, QString> filter : m_search_queue){
+        make_search(filter);
+
+    }
+
+    m_search_queue.clear();
+
     make_listview();
     make_listviweLabel();
-}
+    curr_series_title = "";
 
+}

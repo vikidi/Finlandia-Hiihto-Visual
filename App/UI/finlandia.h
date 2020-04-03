@@ -64,6 +64,13 @@ public:
      */
     std::vector<int> select_attributes();
 
+    /**
+     * @brief convert_time_to_seconds helper function
+     * @param time
+     * @return time in seconds as double
+     */
+    int convert_time_to_seconds(std::string time);
+
 private slots:
 
     /**
@@ -99,6 +106,14 @@ private slots:
      */
     void save_chart();
 
+    /**
+     * @brief make_search is called when pushbutton for making the searches
+     * is pushed. It is called for all the filters in the m_search_queue and
+     * it stores the data into allSearches vector
+     * @param filter
+     */
+    void make_search(std::map<Filter_NS, QString> filter);
+
 private:
     Ui::Finlandia *ui;
     std::vector<Filter_NS> previousSrc;
@@ -106,6 +121,7 @@ private:
     InternetExplorers::DataHandler *m_DataHandler;
 
     std::vector<std::vector<std::vector<std::string>>> allSearches;
+    std::vector<std::vector<std::string>> m_datalump;
 
     QChart *m_chart;
     QString curr_series_title;
@@ -117,6 +133,8 @@ private:
                                                "CITY", "NATIONALITY",
                                                "BIRTH_YEAR", "TEAM"};
     std::vector<QMenu*> m_menus;
+
+    std::vector<std::map<Filter_NS, QString>> m_search_queue;
 };
 
 #endif // FINLANDIA_H
