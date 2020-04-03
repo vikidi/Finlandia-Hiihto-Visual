@@ -118,6 +118,22 @@ public:
     // < year, amount >
     std::map<std::string, int> getAmountOfParticipants(std::map<Constants::Filter::ValueFilters, QString> filters);
 
+    // Needs to have at least DISTANCE filter
+    // < year, row >
+    std::map<std::string, std::vector<std::string>> getSlowest(std::map<Constants::Filter::ValueFilters, QString> filters);
+    std::map<std::string, std::vector<std::string>> getFastest(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    // Needs to have at least DISTANCE filter
+    // < year, average time >
+    std::map<std::string, std::string> getAverageTimes(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    // < year, amount >
+    std::map<std::string, int > getParticipantsByCountry(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    // Needs to have at least DISTANCE filter
+    // < team, average time >
+    std::vector<std::pair<std::string, std::string>> getBestTenTeams(std::map<Constants::Filter::ValueFilters, QString> filters);
+
     /* /PUBLIC INTERFACE */
 
 private slots:
