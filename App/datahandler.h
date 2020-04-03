@@ -108,6 +108,16 @@ public:
                            std::vector<std::vector<std::string>>& data,
                            Constants::Filter::OrderFilters order);
 
+    /* Special functions */
+
+    // < year, distance >
+    std::vector<std::pair<std::string, std::string>> getRacesWithParticipants();
+
+    // These take in account only YEAR or YEAR_RANGE and DISTANCE
+
+    // < year, amount >
+    std::map<std::string, int> getAmountOfParticipants(std::map<Constants::Filter::ValueFilters, QString> filters);
+
     /* /PUBLIC INTERFACE */
 
 private slots:

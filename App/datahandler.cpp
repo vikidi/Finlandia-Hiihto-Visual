@@ -230,6 +230,115 @@ void InternetExplorers::DataHandler::applyFilterToData(std::map<InternetExplorer
     m_orderer->orderData(data, order);
 }
 
+std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler::getRacesWithParticipants()
+{
+    std::vector<std::pair<std::string, std::string> > results = {};
+
+    // Loop years and distances
+    for(auto& yearMap : m_data)
+    {
+        for(auto& tripMap : yearMap.second)
+        {
+            // Has participants
+            if (tripMap.second.size() > 0) {
+                // Add to results
+                results.emplace_back(std::pair<std::string, std::string>{yearMap.first.toStdString(), tripMap.first.toStdString()});
+            }
+        }
+    }
+
+    return results;
+}
+
+std::map<std::string, int> InternetExplorers::DataHandler::getAmountOfParticipants(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
+{
+    std::map<std::string, int> results = {};
+
+    // Year given
+    if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
+        QString year = filters[Constants::Filter::ValueFilters::YEAR];
+
+        // Year and distance
+        if (filters.find(Constants::Filter::ValueFilters::DISTANCE) != filters.end()) {
+            QString distance = filters[Constants::Filter::ValueFilters::DISTANCE];
+
+            results.insert({year.toStdString(), m_data.at(year).at(distance).size()});
+        }
+        // Only year
+        else {
+            int amount = 0;
+            // loop distances
+            for (auto& dist : m_data.at(year)) {
+                amount += dist.second.size();
+            }
+
+            results.insert({year.toStdString(), amount});
+        }
+    }
+
+    // Year range given
+    else if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
+
+        // Should be in style firstYear;secondYear eg. 2014;2018
+        QStringList years = filters[Constants::Filter::ValueFilters::YEAR_RANGE].split(";");
+
+        QString lower = years[0];
+        QString upper = years[1];
+
+        // Go through given years
+        for (int i = lower.toInt(); i <= upper.toInt(); i++) {
+            QString year = QString::number(i);
+
+            // Year and distance
+            if (filters.find(Constants::Filter::ValueFilters::DISTANCE) != filters.end()) {
+                QString distance = filters[Constants::Filter::ValueFilters::DISTANCE];
+
+                results.insert({year.toStdString(), m_data.at(year).at(distance).size()});
+            }
+            // Only year
+            else {
+                int amount = 0;
+                // loop distances
+                for (auto& dist : m_data.at(year)) {
+                    amount += dist.second.size();
+                }
+
+                results.insert({year.toStdString(), amount});
+            }
+        }
+    }
+
+    // Distance given
+    else if (filters.find(Constants::Filter::ValueFilters::DISTANCE) != filters.end()) {
+        QString dist = filters[Constants::Filter::ValueFilters::DISTANCE];
+
+        // Go through all years
+        for (auto& _year : m_data) {
+            QString year = _year.first;
+
+            results.insert({year.toStdString(), _year.second.at(dist).size()});
+        }
+    }
+
+    // All years all distances
+    else {
+        // Go through all years
+        for (auto& _year : m_data) {
+            QString year = _year.first;
+
+            int amount = 0;
+            // loop distances
+            for (auto& dist : _year.second) {
+                amount += dist.second.size();
+            }
+
+            results.insert({year.toStdString(), amount});
+        }
+    }
+
+    return results;
+}
+
 void InternetExplorers::DataHandler::progressChangedInApi(const int progress)
 {
     emit progressChanged(progress);
