@@ -30,8 +30,8 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
 
     // Menubar does not take ownership of created menu, so it is stored in a vector
     m_menus.push_back(new QMenu("File"));
-    QAction* settings = m_menus.back()->addAction("Unimplemented GDPR stuff");
-    connect(settings, &QAction::triggered, [](){qDebug() << "Hello world!";});
+    QAction* settings = m_menus.back()->addAction("Encryption settings");
+    connect(settings, &QAction::triggered, this, &Finlandia::encryptionSettingsOpened);
     menuBar()->addMenu(m_menus.back());
     QAction* close = m_menus.back()->addAction("Close");
     connect(close, &QAction::triggered, [&](){QMainWindow::close();});
@@ -94,7 +94,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
     QString title;
 
     //Only one year is selected
-    if(ui->comboBoxVuosi->currentIndex() != 0 and
+    if(ui->comboBoxVuosi->currentIndex() != 0 &&
             ui->vuosivaliBox->currentIndex() == 0){
         if (title.length()>0){
             title = title + ", Vuosi: " + ui->comboBoxVuosi->currentText();
@@ -108,7 +108,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
         filter.insert(year_pair);
     }
-    else if(ui->comboBoxVuosi->currentIndex() != 0 and
+    else if(ui->comboBoxVuosi->currentIndex() != 0 &&
             ui->vuosivaliBox->currentIndex() != 0){
 
         if (title.length()>0){
@@ -158,7 +158,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(distance_pair);
     }
 
-    if(ui->timeEditLower->time().toString() != "00:00:00" or
+    if(ui->timeEditLower->time().toString() != "00:00:00" ||
             ui->timeEditUpper->time().toString() != "00:00:00"){
 
         if(title.length() > 0){
@@ -531,5 +531,14 @@ void Finlandia::on_pushButton_clicked()
     make_listview();
     make_listviweLabel();
     curr_series_title = "";
+
+}
+
+void Finlandia::encryptionSettingsOpened()
+{
+    m_encryptionSettings = std::make_unique<EncryptionSettingsWindow>();
+    m_encryptionSettings->setWindowModality(Qt::WindowModality::ApplicationModal);
+    m_encryptionSettings->show();
+    connect(m_encryptionSettings.get(), &EncryptionSettingsWindow::closeProgram, [&](){this->close();});
 
 }

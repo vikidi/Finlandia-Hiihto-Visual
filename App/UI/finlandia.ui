@@ -33,7 +33,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <property name="minimumSize">
@@ -1924,7 +1924,7 @@
      <x>0</x>
      <y>0</y>
      <width>1302</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
@@ -1949,7 +1949,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="EsitysButtons">
+  <buttongroup name="HaeButtons">
    <property name="exclusive">
     <bool>false</bool>
    </property>
@@ -1960,10 +1960,5 @@
    </property>
   </buttongroup>
   <buttongroup name="JarjestaButtons"/>
-  <buttongroup name="HaeButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
  </buttongroups>
 </ui>

@@ -5,9 +5,11 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <vector>
+#include <memory>
 #include "constants.h"
 #include "datahandler.h"
 #include "interfacefilter.h"
+#include "encryptionsettingswindow.h"
 
 
 // Alias to make things easier
@@ -95,6 +97,12 @@ private slots:
      */
     void make_chart();
 
+    /*!
+     * \brief encryptionSettingsOpened opens a new settings window
+     * for encryption settings
+     */
+    void encryptionSettingsOpened();
+
     /**
      * @brief remove_cart deletes all charts added to the chartView
      */
@@ -134,7 +142,12 @@ private:
                                                "BIRTH_YEAR", "TEAM"};
     std::vector<QMenu*> m_menus;
 
+    //vector for saving filters after "lisää haku" pressed
     std::vector<std::map<Filter_NS, QString>> m_search_queue;
+
+    // Settings window is stored here
+    std::unique_ptr<EncryptionSettingsWindow> m_encryptionSettings;
+
 };
 
 #endif // FINLANDIA_H
