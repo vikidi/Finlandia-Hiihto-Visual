@@ -6,6 +6,7 @@
 #include "APIs/finlandiaapi.h"
 #include "APIs/localapi.h"
 #include "interfacefilter.h"
+#include "dataorderer.h"
 #include <unordered_map>
 #include <QString>
 #include <QHash>
@@ -80,6 +81,10 @@ public:
      */
     std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
+
+    std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters,
+                                                            Constants::Filter::OrderFilters order);
+
     /*!
      * \brief
      * Apply filter to data. The data itself will be filtered.
@@ -97,6 +102,37 @@ public:
      */
     void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
+
+
+    void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
+                           std::vector<std::vector<std::string>>& data,
+                           Constants::Filter::OrderFilters order);
+
+    /* Special functions */
+
+    // < year, distance >
+    std::vector<std::pair<std::string, std::string>> getRacesWithParticipants();
+
+    // These take in account only YEAR or YEAR_RANGE and DISTANCE
+
+    // < year, amount >
+    std::map<std::string, int> getAmountOfParticipants(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    // Needs to have at least DISTANCE filter
+    // < year, row >
+    std::map<std::string, std::vector<std::string>> getSlowest(std::map<Constants::Filter::ValueFilters, QString> filters);
+    std::map<std::string, std::vector<std::string>> getFastest(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    // Needs to have at least DISTANCE filter
+    // < year, average time >
+    std::map<std::string, std::string> getAverageTimes(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    // < year, amount >
+    std::map<std::string, int > getParticipantsByCountry(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    // Needs to have at least DISTANCE filter
+    // < team, average time >
+    std::vector<std::pair<std::string, std::string>> getBestTenTeams(std::map<Constants::Filter::ValueFilters, QString> filters);
 
     /* /PUBLIC INTERFACE */
 
@@ -207,6 +243,8 @@ private:
     bool filterByTimeRange(std::vector<std::string> row, QString filterValue);
     bool filterByPlace(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceRange(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceRangeMen(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceRangeWomen(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceMen(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceWomen(std::vector<std::string> row, QString filterValue);
     bool filterBySex(std::vector<std::string> row, QString filterValue);
@@ -224,6 +262,8 @@ private:
 
     // API to the local data in folders
     InternetExplorers::LocalAPI *m_localAPI;
+
+    InternetExplorers::DataOrderer *m_orderer;
 
     // < Year, < Distance, Row< Column< Value > > > >
     std::map<QString, std::map<QString,

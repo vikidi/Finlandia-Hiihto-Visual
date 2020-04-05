@@ -194,6 +194,8 @@ namespace Filter {
  * \details
  * Value can not be empty.<br>
  * Value must be greater or equal (>=) to 1.
+ * \attention
+ * This can not be used with PLACE_RANGE filter.
  * \note Example:
  * 5
  */
@@ -210,6 +212,8 @@ namespace Filter {
  * Value must contain exactly two places defined.<br>
  * Both places must be greater or equal (>=) to 1.<br>
  * Start place must be smaller (<) than end place.
+ * \attention
+ * This can not be used with PLACE filter.
  * \note Example:
  * 1;5
  */
@@ -308,7 +312,8 @@ namespace Filter {
  * These filters are used to filter in searches the wanted data.<br>
  * User can define with these parameters the conditions for result data.
  * \attention
- * YEAR and YEAR_RANGE filters can not be used together
+ * YEAR and YEAR_RANGE filters can not be used together.<br>
+ * PLACE and PLACE_RANGE filters can not be used together.
  */
 enum ValueFilters {
     YEAR = 0,
@@ -320,6 +325,8 @@ enum ValueFilters {
     PLACE_RANGE,
     PLACE_MEN,
     PLACE_WOMEN,
+    PLACE_RANGE_MEN,
+    PLACE_RANGE_WOMEN,
     SEX,
     CITY,
     NATIONALITY,
@@ -335,14 +342,13 @@ enum ValueFilters {
  */
 enum OrderFilters {
     PLACEMENT = 0,      /*!< Sort by placement */
-    PLACEMENT_MEN,      /*!< Sort by placement within men */
-    PLACEMENT_WOMEN,    /*!< Sort by placement within women */
+    YEAR_ORDER,         /*!< Sort by year */
+    DISTANCE_ORDER,     /*!< Sort by distance */
     AGE,                /*!< Sort by age of the skier */
     ALPH_NATIONALITY,   /*!< Sort alphabetically by nationality */
     ALPH_NAME,          /*!< Sort alphabetically by name */
     ALPH_TEAM,          /*!< Sort alphabetically by team */
     ALPH_CITY,          /*!< Sort alphabetically by city */
-    TIME                /*!< Sort by result time*/
 };
 
 }
