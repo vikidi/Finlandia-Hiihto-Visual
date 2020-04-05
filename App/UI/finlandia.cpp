@@ -68,12 +68,11 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->vuosivaliBox->setCurrentIndex(0);
     ui->textEditUrheilija->setText("");
     ui->comboBoxMatka->setCurrentIndex(0);
-    ui->textEditUrheilija->setText("");
     ui->timeEditLower->setTime(QTime(0,0,0));
     ui->timeEditUpper->setTime(QTime(0,0,0));
-    ui->ComboBoxSijoitusYla->setCurrentIndex(0);
-    ui->comboBoxSijoitusAla->setCurrentIndex(0);
     ui->sukupuoliCB->setCurrentIndex(0);
+    ui->spinBoxSijoitusYla->setValue(0);
+    ui->spinBoxSijoitusAla->setValue(0);
     ui->textEditHome->setText("");
     ui->haeHitainRP->setChecked(false);
     ui->haeKaikkiRP->setChecked(true);
@@ -178,65 +177,130 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(timeRange_pair);
     }
 
-    if(ui->comboBoxSijoitusAla->currentIndex() != 0 &&
-            ui->sukupuoliCB->currentIndex() == 0){
+    if(ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentIndex() == 0)
+    { // PLACE has lower limit, no gender assigned
 
-        if(ui->ComboBoxSijoitusYla->currentIndex() == 0){
+        if(ui->spinBoxSijoitusYla->value() == 0)
+        { // PLACE does not have upper limit
 
             if (title.length() > 0 ){
-                title = title + ", Sijoitus: " + ui->comboBoxSijoitusAla->currentText();
+                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
             }
             else{
-                title = "Sijoitus: " + ui->comboBoxSijoitusAla->currentText();
+                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
             }
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE,
-                        ui->comboBoxSijoitusAla->currentText());
+                        QString::number(ui->spinBoxSijoitusAla->value()));
 
             filter.insert(place_pair);
         }
-        else{
+        else{ // PLACE has upper limit
             if (title.length() > 0 ){
 
-
-                title = title + ", Sijoitusväli: " + ui->comboBoxSijoitusAla->
-                        currentText() + "-" + ui->ComboBoxSijoitusYla->currentText();
+                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
+                        value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
             }
             else{
-                title = "Sijoitusväli: " + ui->comboBoxSijoitusAla->currentText()+
-                        "-" + ui->ComboBoxSijoitusYla->currentText();
+                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
+                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
             }
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE_RANGE,
-                        ui->comboBoxSijoitusAla->currentText() +
-                        ";" + ui->ComboBoxSijoitusYla->currentText());
+                        QString::number(ui->spinBoxSijoitusAla->value())+
+                        ";" + QString::number(ui->spinBoxSijoitusYla->value()));
 
             filter.insert(place_pair);
         }
 
     }
 
-    if(ui->comboBoxSijoitusAla->currentIndex() != 0 &&
-            ui->sukupuoliCB->currentIndex() == 1){
-        std::pair<Filter_NS, QString> place_pair(
-                    InternetExplorers::Constants::Filter::PLACE_MEN,
-                    ui->comboBoxSijoitusAla->currentText());
+    if(ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentText() == "N")
+    { // PLACE has lower limit, gender is N
 
-        filter.insert(place_pair);
+        if(ui->spinBoxSijoitusYla->value() == 0)
+        { // PLACE does not have upper limit
 
+            if (title.length() > 0 ){
+                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+            else{
+                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+
+            std::pair<Filter_NS, QString> place_pair(
+                        InternetExplorers::Constants::Filter::PLACE_WOMEN,
+                        QString::number(ui->spinBoxSijoitusAla->value()));
+
+            filter.insert(place_pair);
+        }
+        else{ // PLACE has upper limit
+            if (title.length() > 0 ){
+
+
+                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
+                        value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+            else{
+                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
+                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+
+            std::pair<Filter_NS, QString> place_pair(
+                        InternetExplorers::Constants::Filter::PLACE_RANGE_WOMEN,
+                        QString::number(ui->spinBoxSijoitusAla->value())+
+                        ";" + QString::number(ui->spinBoxSijoitusYla->value()));
+
+            filter.insert(place_pair);
+        }
     }
-    if(ui->comboBoxSijoitusAla->currentIndex() != 0 &&
-            ui->sukupuoliCB->currentText() == "N"){
-        std::pair<Filter_NS, QString> place_pair(
-                    InternetExplorers::Constants::Filter::PLACE_WOMEN,
-                    ui->comboBoxSijoitusAla->currentText());
 
-        filter.insert(place_pair);
+    if(ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentText() == "M")
+    { // PLACE has lower limit, gender is M
+
+        if(ui->spinBoxSijoitusYla->value() == 0)
+        { // PLACE does not have upper limit
+
+            if (title.length() > 0 ){
+                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+            else{
+                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+
+            std::pair<Filter_NS, QString> place_pair(
+                        InternetExplorers::Constants::Filter::PLACE_MEN,
+                        QString::number(ui->spinBoxSijoitusAla->value()));
+
+            filter.insert(place_pair);
+        }
+        else{ // PLACE has upper limit
+            if (title.length() > 0 ){
+
+                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
+                        value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+            else{
+                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
+                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+
+            std::pair<Filter_NS, QString> place_pair(
+                        InternetExplorers::Constants::Filter::PLACE_RANGE_MEN,
+                        QString::number(ui->spinBoxSijoitusAla->value())+
+                        ";" + QString::number(ui->spinBoxSijoitusYla->value()));
+
+            filter.insert(place_pair);
+        }
     }
 
-    if(ui->sukupuoliCB->currentIndex() != 0){
+    if(ui->sukupuoliCB->currentIndex() != 0)
+    { // No gender assigned
 
         if(title.length()>0){
             title = title + ", Sukupuoli:" + ui->sukupuoliCB->currentText();
@@ -280,6 +344,11 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
 
     curr_series_title = title;
+
+    for(auto value : filter)
+    {
+        qDebug() << value.first << value.second << "\n";
+    }
 
     return filter;
 }
@@ -541,4 +610,41 @@ void Finlandia::encryptionSettingsOpened()
     m_encryptionSettings->show();
     connect(m_encryptionSettings.get(), &EncryptionSettingsWindow::closeProgram, [&](){this->close();});
 
+}
+
+void Finlandia::on_spinBoxSijoitusYla_valueChanged(int newValue)
+{
+    if(newValue == 0)
+    { // No need to check anything
+        return;
+    }
+
+    if(ui->spinBoxSijoitusAla->value() == 0)
+    { // Lower limit is not set
+        if(newValue != 0)
+        { // Automatically set lower limit to 1 to enable filter check for upper limit
+            ui->spinBoxSijoitusAla->setValue(1);
+            return;
+        }
+
+    } else if(ui->spinBoxSijoitusAla->value() > newValue)
+    { // Prevent lower limit from being bigger than upper limit
+        ui->spinBoxSijoitusAla->setValue(newValue);
+    }
+}
+
+void Finlandia::on_spinBoxSijoitusAla_valueChanged(int newValue)
+{
+    if(newValue == 0)
+    { // If RANGE -filters are not used
+        ui->spinBoxSijoitusYla->setValue(0);
+
+    } else if(ui->spinBoxSijoitusYla->value() != 0)
+    { // If PLACE_RANGE filter is going to be used
+
+        if(ui->spinBoxSijoitusYla->value() < newValue)
+        { // Prevent upper limit from being smaller than lower limit
+            ui->spinBoxSijoitusYla->setValue(newValue);
+        }
+    }
 }

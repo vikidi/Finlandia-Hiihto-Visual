@@ -122,6 +122,18 @@ private slots:
      */
     void make_search(std::map<Filter_NS, QString> filter);
 
+    /*!
+     * \brief Checks that range limits are valid and fixes them if not
+     * \param newValue what number was spinbox changed to
+     */
+    void on_spinBoxSijoitusYla_valueChanged(int newValue);
+
+    /*!
+     * \brief Checks that range limits are valid and fixes them if not
+     * \param newValue what number was spinbox changed to
+     */
+    void on_spinBoxSijoitusAla_valueChanged(int newValue);
+
 private:
     Ui::Finlandia *ui;
     std::vector<Filter_NS> previousSrc;

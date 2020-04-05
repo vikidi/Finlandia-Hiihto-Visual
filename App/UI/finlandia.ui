@@ -16,12 +16,6 @@
     <height>720</height>
    </size>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>1302</width>
-    <height>827</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Finlandia</string>
   </property>
@@ -323,8 +317,34 @@
            </item>
            <item row="14" column="3">
             <layout class="QGridLayout" name="gridLayout_5">
-             <item row="4" column="3">
-              <widget class="QComboBox" name="ComboBoxSijoitusYla">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Kilpailu:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QTimeEdit" name="timeEditLower">
+               <property name="maximumSize">
+                <size>
+                 <width>130</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="displayFormat">
+                <string>HH:mm:ss</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QComboBox" name="comboBoxMatka">
                <property name="maximumSize">
                 <size>
                  <width>125</width>
@@ -333,40 +353,135 @@
                </property>
                <item>
                 <property name="text">
-                 <string/>
+                 <string>Kaikki Matkat</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>1.</string>
+                 <string>P50</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>2.</string>
+                 <string>V50</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>3.</string>
+                 <string>P100</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>4.</string>
+                 <string>P32</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>5.</string>
+                 <string>V20</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V32</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V20jun</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P42</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V42</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P20</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P30</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P44</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P60</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P62</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P25</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P35</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P45</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P52</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P53</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P75</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V30</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V45</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V53</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V75</string>
                 </property>
                </item>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="labelVuosi">
+             <item row="2" column="2">
+              <widget class="QLabel" name="label">
                <property name="text">
-                <string>Vuosi</string>
+                <string>-</string>
                </property>
               </widget>
              </item>
@@ -380,6 +495,258 @@
                </property>
                <property name="displayFormat">
                 <string>HH:mm:ss</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QComboBox" name="comboBoxVuosi">
+               <property name="maximumSize">
+                <size>
+                 <width>130</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Kaikki Vuodet</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1974</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1975</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1976</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1977</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1978</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1979</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1980</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1981</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1982</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1983</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1984</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1985</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1986</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1987</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1988</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1989</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1990</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1991</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1992</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1993</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1994</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1995</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1996</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1997</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1998</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1999</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2000</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2001</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2002</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2003</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2004</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2005</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2006</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2007</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2008</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2009</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2010</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2011</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2012</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2013</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2014</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2015</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2016</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2017</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2018</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2019</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>-</string>
                </property>
               </widget>
              </item>
@@ -633,258 +1000,6 @@
                </item>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QComboBox" name="comboBoxVuosi">
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <item>
-                <property name="text">
-                 <string>Kaikki Vuodet</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1974</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1975</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1976</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1977</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1978</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1979</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1980</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1981</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1982</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1983</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1984</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1985</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1986</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1987</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1988</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1989</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1990</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1991</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1992</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1993</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1994</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1995</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1996</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1997</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1998</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1999</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2000</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2001</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2002</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2003</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2004</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2005</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2006</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2007</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2008</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2009</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2010</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2011</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2012</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2013</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2014</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2015</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2016</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2017</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2018</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2019</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>-</string>
-               </property>
-              </widget>
-             </item>
              <item row="3" column="0">
               <widget class="QLabel" name="labelSuoritusaika">
                <property name="text">
@@ -892,156 +1007,8 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="3">
-              <widget class="QComboBox" name="comboBoxMatka">
-               <property name="maximumSize">
-                <size>
-                 <width>125</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <item>
-                <property name="text">
-                 <string>Kaikki Matkat</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P50</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V50</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P100</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P32</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V20</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V32</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V20jun</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P42</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V42</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P20</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P30</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P44</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P60</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P62</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P25</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P35</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P45</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P52</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P53</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P75</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V30</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V45</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V53</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V75</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QTimeEdit" name="timeEditLower">
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="displayFormat">
-                <string>HH:mm:ss</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QLabel" name="label_2">
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_4">
                <property name="text">
                 <string>-</string>
                </property>
@@ -1061,57 +1028,24 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_3">
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelVuosi">
                <property name="text">
-                <string>Kilpailu:</string>
+                <string>Vuosi</string>
                </property>
               </widget>
              </item>
              <item row="4" column="1">
-              <widget class="QComboBox" name="comboBoxSijoitusAla">
-               <item>
-                <property name="text">
-                 <string/>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>3.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>4.</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>5.</string>
-                </property>
-               </item>
+              <widget class="QSpinBox" name="spinBoxSijoitusAla">
+               <property name="maximum">
+                <number>1000</number>
+               </property>
               </widget>
              </item>
-             <item row="4" column="2">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>-</string>
+             <item row="4" column="3">
+              <widget class="QSpinBox" name="spinBoxSijoitusYla">
+               <property name="maximum">
+                <number>1000</number>
                </property>
               </widget>
              </item>
