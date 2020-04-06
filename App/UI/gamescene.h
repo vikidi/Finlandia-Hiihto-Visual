@@ -50,14 +50,30 @@ private:
     QMovie* skiAnimation_;
     QLabel* skiLabel_;
     QGraphicsProxyWidget* skier_;
-    std::vector<QPixmap*> obstaclePixmaps_;
     QGraphicsSimpleTextItem* progressView_;
+
+    // Game related parts
+    int skierHeight_;
+    float skierSpeed_;
+    std::vector<QPixmap*> obstaclePixmaps_;
+    std::vector<QGraphicsPixmapItem*> obstacles_;
     QTimer* timer_;
     /*!
      * \brief gametick updates locations of game objects.
      * It is called using single shot timer.
      */
     void gametick();
+    /*!
+     * \brief startNewGame clears extra objects from scene
+     * and moves player to starting position
+     */
+    void startNewGame();
+    /*!
+     * \brief spawnObstacle sometimes spawns new obstacle
+     * if there is space available
+     */
+    void spawnObstacle();
+    void keyPressEvent(QKeyEvent *event) override;
 };
 
 }

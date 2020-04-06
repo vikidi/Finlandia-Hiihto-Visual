@@ -13,7 +13,7 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     m_dataHandler(dh),
     m_progress(new QProgressBar(this)),
     m_view(new QGraphicsView),
-    m_scene(new InternetExplorers::GameScene),
+    m_scene(new InternetExplorers::GameScene(true)),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
