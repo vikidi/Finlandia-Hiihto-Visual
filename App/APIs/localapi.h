@@ -127,7 +127,7 @@ private:
      * \return
      * Results < Path, MD5 checksum >
      */
-    std::vector<std::pair<QString, QString>> readMD5File();
+    std::map<QString, QString> readMD5File();
 
     /*!
      * \brief
