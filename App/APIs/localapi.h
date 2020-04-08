@@ -77,10 +77,6 @@ public slots:
     void updateProgress();
 
 private:
-    const QString DATA_ROOT_NAME = "FinlandiaData";
-    const QString DATA_FILE_NAME = "Data.txt";
-    const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
-    const QString META_DATA_FILE_NAME = "Metadata.txt";
 
     /*!
      * \brief
@@ -166,6 +162,14 @@ private:
      * True, if there is data
      */
     bool isDataAvailable();
+
+    /*!
+     * \brief
+     * Counts the amount of rows in data
+     * \return
+     * Amount of rows
+     */
+    int getAmountOfRows() const;
 
     int m_fileCount;
     int m_currentProgress;
