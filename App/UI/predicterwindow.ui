@@ -7,12 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>1300</width>
-    <height>800</height>
+    <height>830</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QPushButton" name="btn_browser">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>800</y>
+     <width>150</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Open in browser</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

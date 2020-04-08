@@ -19,6 +19,9 @@ public:
 signals:
     void closeProgram();
 
+private slots:
+    void openInBrowser();
+
 private:
     Ui::PredicterWindow *ui;
     QWebEngineView *view;
