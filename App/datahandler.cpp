@@ -1123,6 +1123,9 @@ bool InternetExplorers::DataHandler::filterByPlaceRange(std::vector<std::string>
 
 bool InternetExplorers::DataHandler::filterByPlaceRangeMen(std::vector<std::string> row, QString filterValue)
 {
+    // Check that string is not empty
+    if (row[Constants::DataIndex::IndexInData::PLACE_MEN].find_first_not_of(' ') == std::string::npos) return false;
+
     int place = std::stoi(row[Constants::DataIndex::IndexInData::PLACE_MEN]);
 
     QStringList places = filterValue.split(";");
@@ -1139,6 +1142,9 @@ bool InternetExplorers::DataHandler::filterByPlaceRangeMen(std::vector<std::stri
 
 bool InternetExplorers::DataHandler::filterByPlaceRangeWomen(std::vector<std::string> row, QString filterValue)
 {
+    // Check that string is not empty
+    if (row[Constants::DataIndex::IndexInData::PLACE_WOMEN].find_first_not_of(' ') == std::string::npos) return false;
+
     int place = std::stoi(row[Constants::DataIndex::IndexInData::PLACE_WOMEN]);
 
     QStringList places = filterValue.split(";");
