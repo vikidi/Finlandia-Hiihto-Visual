@@ -10,7 +10,7 @@
 #include "datahandler.h"
 #include "interfacefilter.h"
 #include "encryptionsettingswindow.h"
-
+#include "predicterwindow.h"
 
 // Alias to make things easier
 #ifndef FILTER_NS
@@ -103,6 +103,8 @@ private slots:
      */
     void encryptionSettingsOpened();
 
+    void predicterOpened();
+
     /**
      * @brief remove_cart deletes all charts added to the chartView
      */
@@ -159,6 +161,9 @@ private:
 
     // Settings window is stored here
     std::unique_ptr<EncryptionSettingsWindow> m_encryptionSettings;
+
+    // Predicter window is stored here
+    std::unique_ptr<PredicterWindow> m_predicter;
 
 };
 

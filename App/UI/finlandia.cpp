@@ -32,6 +32,8 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     m_menus.push_back(new QMenu("File"));
     QAction* settings = m_menus.back()->addAction("Encryption settings");
     connect(settings, &QAction::triggered, this, &Finlandia::encryptionSettingsOpened);
+    QAction* settings2 = m_menus.back()->addAction("Results predicter");
+    connect(settings2, &QAction::triggered, this, &Finlandia::predicterOpened);
     menuBar()->addMenu(m_menus.back());
     QAction* close = m_menus.back()->addAction("Close");
     connect(close, &QAction::triggered, [&](){QMainWindow::close();});
@@ -610,6 +612,14 @@ void Finlandia::encryptionSettingsOpened()
     m_encryptionSettings->show();
     connect(m_encryptionSettings.get(), &EncryptionSettingsWindow::closeProgram, [&](){this->close();});
 
+}
+
+void Finlandia::predicterOpened()
+{
+    m_predicter = std::make_unique<PredicterWindow>();
+    m_predicter->setWindowModality(Qt::WindowModality::ApplicationModal);
+    m_predicter->show();
+    connect(m_predicter.get(), &PredicterWindow::closeProgram, [&](){this->close();});
 }
 
 void Finlandia::on_spinBoxSijoitusYla_valueChanged(int newValue)
