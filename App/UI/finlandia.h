@@ -116,14 +116,6 @@ private slots:
      */
     void save_chart();
 
-    /**
-     * @brief make_search is called when pushbutton for making the searches
-     * is pushed. It is called for all the filters in the m_search_queue and
-     * it stores the data into allSearches vector
-     * @param filter
-     */
-    void make_search(std::map<Filter_NS, QString> filter);
-
     /*!
      * \brief Checks that range limits are valid and fixes them if not
      * \param newValue what number was spinbox changed to
@@ -147,6 +139,7 @@ private:
 
     QChart *m_chart;
     QString curr_series_title;
+    std::vector<QString> all_titles;
 
     //this is used for getting the corresponing string with the enum index
     std::vector<std::string> attribute_enum = {"YEAR", "DISTANCE", "TIME",
@@ -156,8 +149,6 @@ private:
                                                "BIRTH_YEAR", "TEAM"};
     std::vector<QMenu*> m_menus;
 
-    //vector for saving filters after "lisää haku" pressed
-    std::vector<std::map<Filter_NS, QString>> m_search_queue;
 
     // Settings window is stored here
     std::unique_ptr<EncryptionSettingsWindow> m_encryptionSettings;
