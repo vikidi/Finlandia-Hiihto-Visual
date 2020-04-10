@@ -16,9 +16,6 @@ public:
     explicit PredicterWindow(QWidget *parent = nullptr);
     ~PredicterWindow();
 
-signals:
-    void closeProgram();
-
 private slots:
     void openInBrowser();
 

@@ -622,7 +622,6 @@ void Finlandia::predicterOpened()
     m_predicter = std::make_unique<PredicterWindow>();
     m_predicter->setWindowModality(Qt::WindowModality::ApplicationModal);
     m_predicter->show();
-    connect(m_predicter.get(), &PredicterWindow::closeProgram, [&](){this->close();});
 }
 
 void Finlandia::on_spinBoxSijoitusYla_valueChanged(int newValue)
