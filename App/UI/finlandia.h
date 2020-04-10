@@ -103,7 +103,15 @@ private slots:
      */
     void encryptionSettingsOpened();
 
+    /*!
+     * \brief predicterOpened opens result predicter program in a new window
+     */
     void predicterOpened();
+
+    /*!
+     * \brief openGame opens a small game in a new window
+     */
+    void openGame();
 
     /**
      * @brief remove_cart deletes all charts added to the chartView
@@ -155,6 +163,9 @@ private:
 
     // Predicter window is stored here
     std::unique_ptr<PredicterWindow> m_predicter;
+
+    // Game window is stored here
+    std::unique_ptr<QMainWindow> m_gameWindow;
 
 };
 
