@@ -86,7 +86,7 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
     bool thisRunnerIsDone(false);
 
     while (m_runners > 0) {
-        std::vector<std::vector<std::string> > data = caller.loadData(searchVector);
+        std::vector<std::vector<std::string> > data{caller.loadData(searchVector)};
         if(Q_LIKELY(data.size() > 0))
         {
             if(Q_UNLIKELY(thisRunnerIsDone))

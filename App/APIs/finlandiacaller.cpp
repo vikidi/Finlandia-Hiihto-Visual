@@ -10,7 +10,7 @@
 #include <QNetworkProxy>
 #include <QEventLoop>
 #include <QTimer>
-
+#include <algorithm>
 #include "constants.h"
 
 std::mutex InternetExplorers::FinlandiaCaller::m_mtx;
@@ -266,10 +266,11 @@ void InternetExplorers::FinlandiaCaller::escapeBR(std::string &src)
 
 void InternetExplorers::FinlandiaCaller::escapeSpace(std::string &src)
 {
-    std::size_t found = src.find("&amp;nbsp;");
-    while(found != std::string::npos) {
-        src = src.replace(found, 10, "");
-        found = src.find("&amp;nbsp;", found);
+    std::size_t found{0};
+
+    while ((found = src.find("&amp;nbsp;", found)) != std::string::npos)
+    {
+        src.replace(found, 10, "");
     }
 }
 
@@ -294,20 +295,28 @@ std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::parse
 
     stringdata = escapeAmp(stringdata);
     escapeBR(stringdata);
-    escapeSpace(stringdata);
+
+    // The check for "&nbsp;" in later loop should replace this
+    //escapeSpace(stringdata);
 
     std::vector<std::vector<std::string>> parsedData;
+
+    // This seems to be quite good estimation
+    parsedData.reserve(stringdata.size()/1000);
 
     QXmlStreamReader reader(QString::fromStdString(stringdata));
     while (!reader.atEnd()) {
         reader.readNext();
         if (reader.isStartElement()) {
             if(reader.name() == "tr") {
-                std::vector<std::string> newRow;
-                parsedData.emplace_back(newRow);
+                parsedData.emplace_back(std::vector<std::string>());
             }
             if(reader.name() == "td") {
                 parsedData.back().emplace_back(reader.readElementText().toStdString());
+                if(auto pos = parsedData.back().back().find("&nbsp;",0); pos != std::string::npos)
+                {
+                    parsedData.back().back().replace(pos, 6, "");
+                }
             }
         }
     }
