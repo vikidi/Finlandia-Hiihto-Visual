@@ -27,7 +27,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <property name="minimumSize">
@@ -213,7 +213,30 @@
             <layout class="QHBoxLayout" name="horizontalLayout_21">
              <item>
               <layout class="QGridLayout" name="gridLayout_4">
-               <item row="0" column="2">
+               <item row="0" column="1">
+                <widget class="QRadioButton" name="haeOsalMaarRP">
+                 <property name="text">
+                  <string>Osallistujien lukumäärä</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">HaeButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="keskinopeusRP">
+                 <property name="text">
+                  <string>Keskinopeus</string>
+                 </property>
+                 <attribute name="buttonGroup">
+                  <string notr="true">HaettavaTietoButtons</string>
+                 </attribute>
+                </widget>
+               </item>
+               <item row="1" column="1">
                 <widget class="QRadioButton" name="haeNopeinRP">
                  <property name="text">
                   <string>Nopein</string>
@@ -239,17 +262,18 @@
                  </attribute>
                 </widget>
                </item>
-               <item row="0" column="1">
-                <widget class="QRadioButton" name="haeOsalMaarRP">
+               <item row="2" column="0">
+                <widget class="QRadioButton" name="osall_lkm_maittainRP">
                  <property name="text">
-                  <string>Osallistujien lukumäärä</string>
+                  <string>Urheilijoiden määrä maittain</string>
                  </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QRadioButton" name="vuodenXparhaatRP">
+                 <property name="text">
+                  <string>Vuoden X parhaat joukkueet</string>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
                 </widget>
                </item>
               </layout>
@@ -265,7 +289,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Hae:</string>
+              <string>Lisävaihtoehdot:</string>
              </property>
             </widget>
            </item>
@@ -1075,11 +1099,24 @@
             </widget>
            </item>
            <item>
+            <widget class="QRadioButton" name="haeKaikkiRP">
+             <property name="text">
+              <string>Kaikki tulokset</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <attribute name="buttonGroup">
+              <string notr="true">HaeButtons</string>
+             </attribute>
+            </widget>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_11">
              <item>
-              <widget class="QRadioButton" name="aikaRP">
+              <widget class="QRadioButton" name="hiihtajanNimiRP">
                <property name="text">
-                <string>Aika</string>
+                <string>Hiihtäjän nimi</string>
                </property>
                <attribute name="buttonGroup">
                 <string notr="true">HaettavaTietoButtons</string>
@@ -1087,9 +1124,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="hiihtajanNimiRP">
+              <widget class="QRadioButton" name="aikaRP">
                <property name="text">
-                <string>Hiihtäjän nimi</string>
+                <string>Aika</string>
                </property>
                <attribute name="buttonGroup">
                 <string notr="true">HaettavaTietoButtons</string>
@@ -1101,12 +1138,15 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
-              <widget class="QRadioButton" name="keskinopeusRP">
+              <widget class="QRadioButton" name="haeJoukkueRP">
                <property name="text">
-                <string>Keskinopeus</string>
+                <string>Joukkue</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
                </property>
                <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
+                <string notr="true">HaeButtons</string>
                </attribute>
               </widget>
              </item>
@@ -1126,34 +1166,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QRadioButton" name="haeJoukkueRP">
-               <property name="text">
-                <string>Joukkue</string>
-               </property>
-               <property name="autoExclusive">
-                <bool>false</bool>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaeButtons</string>
-               </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="haeKaikkiRP">
-               <property name="text">
-                <string>Kaikki tulokset</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaeButtons</string>
-               </attribute>
-              </widget>
-             </item>
-            </layout>
+            <layout class="QHBoxLayout" name="horizontalLayout_5"/>
            </item>
            <item>
             <widget class="Line" name="line_3">
@@ -1345,6 +1358,16 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="hakuLabelTulokset">
+           <property name="text">
+            <string>Haku:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QListWidget" name="listWidgetResult"/>
+         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="ListViewesityslabel">
            <property name="text">
@@ -1352,13 +1375,10 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QListWidget" name="listWidgetResult"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="hakuLabelTulokset">
+         <item row="2" column="0">
+          <widget class="QLabel" name="jarjestyslabel">
            <property name="text">
-            <string>Haku:</string>
+            <string>Järjestetään:</string>
            </property>
           </widget>
          </item>
@@ -1858,7 +1878,7 @@
      <x>0</x>
      <y>0</y>
      <width>1302</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -1883,16 +1903,20 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="HaeButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
   <buttongroup name="HaettavaTietoButtons">
    <property name="exclusive">
     <bool>false</bool>
    </property>
   </buttongroup>
-  <buttongroup name="JarjestaButtons"/>
+  <buttongroup name="HaeButtons">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
+  <buttongroup name="JarjestaButtons">
+   <property name="exclusive">
+    <bool>false</bool>
+   </property>
+  </buttongroup>
  </buttongroups>
 </ui>

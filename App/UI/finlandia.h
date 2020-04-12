@@ -44,7 +44,7 @@ public:
      * @return map of filternames and their values. Contains
      * all the filters specified in the search made by user
      */
-    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> makefilter();
+    std::map<Filter_NS, QString> makefilter();
 
     /**
      * @brief make_listview adds all search results to the listview
@@ -66,12 +66,16 @@ public:
      */
     std::vector<int> select_attributes();
 
-    /**
-     * @brief convert_time_to_seconds helper function
-     * @param time
-     * @return time in seconds as double
-     */
-    int convert_time_to_seconds(std::string time);
+    void make_bar_chart(int x, int y);
+    void make_line_chart(int x, int y);
+
+    void apply_special_filters(std::map<Filter_NS, QString> filters);
+
+    void order_result(std::map<Filter_NS,
+                      QString> filters);
+
+    bool check_for_special_filters();
+
 
 private slots:
 
@@ -128,9 +132,10 @@ private slots:
      */
     void on_spinBoxSijoitusAla_valueChanged(int newValue);
 
+    void print_special_result(std::vector<int> atr_vec);
+
 private:
     Ui::Finlandia *ui;
-    std::vector<Filter_NS> previousSrc;
 
     InternetExplorers::DataHandler *m_DataHandler;
 
@@ -146,15 +151,39 @@ private:
                                                "PLACE", "PLACE_MEN",
                                                "PLACE_WOMEN", "SEX", "NAME",
                                                "CITY", "NATIONALITY",
-                                               "BIRTH_YEAR", "TEAM"};
-    std::vector<QMenu*> m_menus;
+                                               "BIRTH_YEAR", "TEAM",
+                                               "NUMBER OF PARTICIPANTS",
+                                              "FASTEST", "SLOWEST", "AVERAGE SPEED",
+                                              "PARTICIPANTS NATION VICE",
+                                              "BEST OF YEAR"};
 
+
+    enum Atributes { year = 0, distance, time, place, place_men, place_wm,
+                     sex, name, town, nationality, birth_yr, team,
+                     nmbr_of_parts, fastest, slowest, avrg_speed,
+                     nmbr_of_parts_nationvice, bestofx};
+
+    std::vector<QMenu*> m_menus;
 
     // Settings window is stored here
     std::unique_ptr<EncryptionSettingsWindow> m_encryptionSettings;
 
     // Predicter window is stored here
     std::unique_ptr<PredicterWindow> m_predicter;
+
+    //Place for storing all results of special searches
+    //<year, nmr>
+    std::map<std::string, int> m_nmbr_of_parts;
+    //<year, row>
+    std::map<std::string, std::vector<std::string>> m_fastest;
+    // < year, row >
+    std::map<std::string, std::vector<std::string>> m_slowest;
+    // <year, time>
+    std::map<std::string, std::string> m_avrg_time;
+    //<nation, nmr>
+    std::map<std::string, int> m_nmbr_of_parts_nationvice;
+    //< team, average time >
+    std::vector<std::pair<std::string, std::string>> m_best_of_year_X;
 
 };
 
