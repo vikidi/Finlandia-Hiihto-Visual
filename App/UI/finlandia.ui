@@ -27,7 +27,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <property name="minimumSize">
@@ -1189,92 +1189,124 @@
             </widget>
            </item>
            <item>
+            <layout class="QGridLayout" name="gridLayout_7">
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="jarjestaAakkosRP">
+               <property name="font">
+                <font>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Aakkosjärjestykseen:</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_14">
              <item>
               <layout class="QGridLayout" name="gridLayout_3">
-               <item row="0" column="0">
-                <widget class="QRadioButton" name="jarjestaVuosiRP">
-                 <property name="text">
-                  <string>Vuoden mukaan</string>
+               <item row="3" column="1">
+                <widget class="Line" name="line_10">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
                 </widget>
                </item>
-               <item row="0" column="1">
+               <item row="3" column="3">
+                <widget class="Line" name="line_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
                 <widget class="QRadioButton" name="jarjestaSeuranNimiRP">
                  <property name="text">
                   <string>Seuran nimen mukaan</string>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
                 </widget>
                </item>
-               <item row="4" column="1">
-                <widget class="QRadioButton" name="jarjestaSijoitusRP">
-                 <property name="text">
-                  <string>Sijoituksen mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="1" column="1">
+               <item row="5" column="1">
                 <widget class="QRadioButton" name="jarjestaMatkaRP">
                  <property name="text">
                   <string>Matkan mukaan</string>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
                 </widget>
                </item>
-               <item row="1" column="0">
+               <item row="6" column="0">
+                <widget class="QRadioButton" name="jarjestaSijoitusRP">
+                 <property name="text">
+                  <string>Sijoituksen mukaan</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="Line" name="line_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0">
                 <widget class="QRadioButton" name="jarjestaVainParasRP">
                  <property name="text">
                   <string>Näytä vain paras</string>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="0">
-                <widget class="QRadioButton" name="jarjestaAinutLRP">
-                 <property name="text">
-                  <string>Ainutlaatuisten mukaan</string>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
                 </widget>
                </item>
-               <item row="2" column="0">
+               <item row="1" column="0">
                 <widget class="QRadioButton" name="jarjestaKotimaaRP">
                  <property name="text">
                   <string>Kotimaan mukaan</string>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
                 </widget>
                </item>
-               <item row="2" column="1">
-                <widget class="QRadioButton" name="jarjestaAakkosRP">
+               <item row="6" column="1">
+                <widget class="QRadioButton" name="jarjestaVuosiRP">
                  <property name="text">
-                  <string>Aakkosjärjestykseen</string>
+                  <string>Vuoden mukaan</string>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2">
+                <widget class="Line" name="line_9">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QRadioButton" name="nimi_jarkkaRP">
+                 <property name="text">
+                  <string>Nimen mukaan</string>
+                 </property>
                 </widget>
                </item>
               </layout>
              </item>
             </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_8"/>
            </item>
            <item>
             <widget class="QPushButton" name="pushButtoLisaaHaku">
@@ -1909,11 +1941,6 @@
    </property>
   </buttongroup>
   <buttongroup name="HaeButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
-  <buttongroup name="JarjestaButtons">
    <property name="exclusive">
     <bool>false</bool>
    </property>

@@ -885,8 +885,8 @@ void Finlandia::encryptionSettingsOpened()
 void Finlandia::predicterOpened()
 {
     m_predicter = std::make_unique<PredicterWindow>();
-    m_predicter->setWindowModality(Qt::WindowModality::ApplicationModal);
-    m_predicter->show();
+    //m_predicter->setWindowModality(Qt::WindowModality::ApplicationModal);
+    //m_predicter->show();
 }
 
 void Finlandia::openGame()
