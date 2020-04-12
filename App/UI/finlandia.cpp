@@ -1,11 +1,11 @@
 #include <QWidget>
 #include <QtCharts>
 #include <QPlainTextEdit>
-#include <iostream>
 #include <QDebug>
 #include "finlandia.h"
 #include "UI/finlandia.h"
 #include "ui_finlandia.h"
+#include "gamescene.h"
 #include <QtCharts>
 #include <cctype>
 
@@ -34,9 +34,11 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     connect(settings, &QAction::triggered, this, &Finlandia::encryptionSettingsOpened);
     QAction* settings2 = m_menus.back()->addAction("Results predicter");
     connect(settings2, &QAction::triggered, this, &Finlandia::predicterOpened);
-    menuBar()->addMenu(m_menus.back());
+    QAction* game = m_menus.back()->addAction("Open a game");
+    connect(game, &QAction::triggered, this, &Finlandia::openGame);
     QAction* close = m_menus.back()->addAction("Close");
     connect(close, &QAction::triggered, [&](){QMainWindow::close();});
+    menuBar()->addMenu(m_menus.back());
 }
 
 Finlandia::~Finlandia()
@@ -839,11 +841,11 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
         newData = m_DataHandler->getDataWithFilter(filter);
     }
     catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
+        qDebug() << e.what();
     }
 
     unsigned long int size = newData.size();
-    std::cout << "Koko " << size << std::endl;
+    qDebug() << "Koko" << size;
 
     if(size > 0){
         allSearches.push_back(newData);
@@ -885,7 +887,17 @@ void Finlandia::predicterOpened()
     m_predicter = std::make_unique<PredicterWindow>();
     m_predicter->setWindowModality(Qt::WindowModality::ApplicationModal);
     m_predicter->show();
-    connect(m_predicter.get(), &PredicterWindow::closeProgram, [&](){this->close();});
+}
+
+void Finlandia::openGame()
+{
+    m_gameWindow = std::make_unique<QMainWindow>();
+    m_gameWindow->setWindowTitle("Ski game");
+    auto scene = new InternetExplorers::GameScene(true,m_gameWindow.get());
+    auto sceneView = new QGraphicsView(scene,m_gameWindow.get());
+    m_gameWindow->setCentralWidget(sceneView);
+    m_gameWindow->resize(620,150);
+    m_gameWindow->show();
 }
 
 void Finlandia::on_spinBoxSijoitusYla_valueChanged(int newValue)

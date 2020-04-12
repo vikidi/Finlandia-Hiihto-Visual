@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-// DEBUG
 #include <QDebug>
 
 #include "interfacefilter.h"
@@ -51,49 +50,6 @@ MainWindow::~MainWindow()
 void MainWindow::dataReady()
 {
     ui->haunAloitusNappi->setDisabled(false);
-
-    std::vector<std::vector<std::string>> test;
-
-    // OK
-    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filter = {
-        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "Kaikki vuodet"}
-    };
-
-    // CLOCKING
-    using namespace std::chrono;
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-    try {
-       test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, YEAR " << time_span.count() << " s" << std::endl;
-
-    // OK, Mursu vaan painaa
-    filter = {
-        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "2017"},
-        {InternetExplorers::Constants::Filter::ValueFilters::DISTANCE, "P100"},
-        {InternetExplorers::Constants::Filter::ValueFilters::NAME, "Mursu Esa"}
-    };
-
-    // CLOCKING
-    t1 = high_resolution_clock::now();
-
-    try {
-        test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    t2 = high_resolution_clock::now();
-    time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, YEAR, DISTANCE, NAME " << time_span.count() << " s" << std::endl;
 }
 
 void MainWindow::progressChanged(const int progress)

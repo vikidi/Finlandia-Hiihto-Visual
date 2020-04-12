@@ -856,7 +856,7 @@ void InternetExplorers::DataHandler::loadInThread()
     // CLOCKING
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Data fetch done in " << time_span.count() << " s" << std::endl;
+    qDebug() << "Data fetch done in " << time_span.count() << " s";
 
     m_loadOngoing = false;
     emit loadingReady();

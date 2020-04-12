@@ -1,7 +1,7 @@
 #include "finlandiaapi.h"
 #include "finlandiacaller.h"
 #include "logger.h"
-
+#include "constants.h"
 #include <thread>
 #include <QDebug>
 
@@ -36,12 +36,12 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
     emit progressChanged(0);
 
     int optimalAmountOfThreads(std::thread::hardware_concurrency());
-    std::cout << optimalAmountOfThreads << " concurrent threads are supported.\n";
+    qDebug() << optimalAmountOfThreads << " concurrent threads are supported";
 
     if(optimalAmountOfThreads < 1)
     {
-        std::cout << "Number of concurrent threads is not well defined.\n"
-                     "Setting it to 4\n";
+        qDebug() << "Number of concurrent threads is not well defined.\n"
+                     "Setting it to 4";
         optimalAmountOfThreads = 4;
     }
 
@@ -127,15 +127,16 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
 
 void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)
 {
+    using namespace InternetExplorers::Constants::DataIndex;
 
-    QString year(QString::fromStdString(data.at(0).at(0)));
+    QString year(QString::fromStdString(data.at(0).at(IndexInData::YEAR)));
 
 
     // Sort the data
     std::vector<std::vector<std::vector<std::string>>> sortedData;
     for(std::vector<std::string>& row : data)
     {
-        if(int ranking(std::stoi(row.at(3))); ranking < 1)
+        if(int ranking(std::stoi(row.at(IndexInData::PLACE))); ranking < 1)
         {
             // Someone got better than 1st place
         } else
@@ -144,7 +145,7 @@ void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::st
             bool correctTripIndexFound(false);
             for(int index(0); index < static_cast<int>(sortedData.size()); index++)
             {
-                if(sortedData.at(index).at(0).at(1) == row.at(1))
+                if(sortedData.at(index).at(0).at(IndexInData::DISTANCE) == row.at(IndexInData::DISTANCE))
                 {
                     correctTripIndex = index;
                     correctTripIndexFound = true;
@@ -158,7 +159,7 @@ void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::st
                 bool addNewRow(true);
                 for(auto oldRow : sortedData.at(correctTripIndex))
                 {
-                    if(oldRow.at(7) == row.at(7))
+                    if(oldRow.at(IndexInData::NAME) == row.at(IndexInData::NAME))
                     {
                         // Duplicate name
                         if(oldRow == row)
@@ -205,12 +206,12 @@ void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::st
         newTrip.resize(trip.size());
         for(auto& row : trip)
         {
-            while (static_cast<int>(newTrip.size()) < std::stoi(row.at(3)))
+            while (static_cast<int>(newTrip.size()) < std::stoi(row.at(IndexInData::PLACE)))
             {
                 // Make sure newTrip is not too small
                 newTrip.push_back({});
             }
-            auto& oldData = m_data[year][QString::fromStdString(trip.at(0).at(1))];
+            auto& oldData = m_data[year][QString::fromStdString(trip.at(0).at(IndexInData::DISTANCE))];
             for(auto& oldRow : oldData)
             {
                 bool duplicatefound(false);
@@ -227,9 +228,9 @@ void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::st
                     oldData = {};
                 }
             }
-            newTrip.at(std::stoi(row.at(3))-1) = row;
+            newTrip.at(std::stoi(row.at(IndexInData::PLACE))-1) = row;
         }
-        m_data[year][QString::fromStdString(trip.at(0).at(1))] = newTrip;
+        m_data[year][QString::fromStdString(trip.at(0).at(IndexInData::DISTANCE))] = newTrip;
     }
 
 }
