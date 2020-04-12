@@ -1,7 +1,6 @@
 #include <QWidget>
 #include <QtCharts>
 #include <QPlainTextEdit>
-#include <iostream>
 #include <QDebug>
 #include "finlandia.h"
 #include "UI/finlandia.h"
@@ -576,11 +575,11 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
         newData = m_DataHandler->getDataWithFilter(filter);
     }
     catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
+        qDebug() << e.what();
     }
 
     unsigned long int size = newData.size();
-    std::cout << "Koko " << size << std::endl;
+    qDebug() << "Koko" << size;
 
     if(size > 0){
         allSearches.push_back(newData);

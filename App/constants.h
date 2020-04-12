@@ -97,7 +97,7 @@ enum Severity {
  * \brief
  * Amount of messages that gets written at once to the disk
  */
-const size_t WRITE_BUFFER_MAX_SIZE = 100;
+constexpr size_t WRITE_BUFFER_MAX_SIZE = 100;
 
 }
 
@@ -363,7 +363,7 @@ namespace DataIndex {
  * \brief
  * The amount of columns in data row
  */
-const size_t ROW_SIZE = 12;
+constexpr size_t ROW_SIZE = 12;
 
 /*!
  * \brief
