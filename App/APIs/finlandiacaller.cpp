@@ -177,7 +177,7 @@ std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadD
     if(timer.isActive()) {
         timer.stop();
         if(m_reply->error() > 0) { // Error
-            std::cout << "ERROR OCCURRED\n";
+            qDebug() << "ERROR OCCURRED";
             return {};
         }
         else {
@@ -230,7 +230,7 @@ std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadD
     } else {
        // timeout
        disconnect(m_reply, SIGNAL(finished()), &loop, SLOT(quit()));
-       std::cout << "TIMED OUT\n";
+       qDebug() << "TIMED OUT";
        m_reply->abort();
        return {};
     }

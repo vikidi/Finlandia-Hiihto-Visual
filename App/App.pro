@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui network charts
+QT += core gui network charts webenginewidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = firstTest
@@ -41,7 +41,8 @@ SOURCES += \
     libraries/simplecrypt.cpp \
     APIs/localdataloader.cpp \
     logger.cpp \
-    dataorderer.cpp
+    dataorderer.cpp \
+    UI/predicterwindow.cpp
 
 HEADERS += \
     UI/encryptionsettingswindow.h \
@@ -59,12 +60,14 @@ HEADERS += \
     APIs/localdataloader.h \
     logger.h \
     constants.h \
-    dataorderer.h
+    dataorderer.h \
+    UI/predicterwindow.h
 
 FORMS += \
     UI/encryptionsettingswindow.ui \
         mainwindow.ui \
-    UI/finlandia.ui
+    UI/finlandia.ui \
+    UI/predicterwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

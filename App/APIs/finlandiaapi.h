@@ -6,9 +6,10 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
-#include <iostream>
+#include <string>
 #include <mutex>
 #include <atomic>
+#include <QString>
 
 namespace InternetExplorers
 {

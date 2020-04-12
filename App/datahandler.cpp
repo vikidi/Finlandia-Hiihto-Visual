@@ -525,17 +525,20 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
     // One year
     if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
         QString year = filters[Constants::Filter::ValueFilters::YEAR];
-        int sum = 0;
-        int count = 0;
+        long sum = 0; // Milliseconds
+        long count = 0;
 
         for (auto& row : m_data.at(year).at(distance)) {
             QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-            sum += QTime(0, 0, 0).secsTo(QTime::fromString(time, "h:mm:ss"));
+            sum += QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z"));
             count++;
         }
 
-        QString time = QDateTime::fromSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss");
-        results.insert({year.toStdString(), time.toStdString()});
+        if(!count) return {}; // Do not divide with 0
+        QString time = QDateTime::fromMSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss.zzz");
+
+        std::string stdTime{time.toStdString()}; // Chop result to 0.1s
+        results.insert({year.toStdString(), stdTime.substr(0,stdTime.size()-2)});
     }
 
     // Multiple years
@@ -548,17 +551,20 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
         // Go through given years
         for (int i = lower.toInt(); i <= upper.toInt(); i++) {
             QString year = QString::number(i);
-            int sum = 0;
-            int count = 0;
+            long sum = 0; // Milliseconds
+            long count = 0;
 
             for (auto& row : m_data.at(year).at(distance)) {
                 QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-                sum += QTime(0, 0, 0).secsTo(QTime::fromString(time, "h:mm:ss"));
+                sum += QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z"));
                 count++;
             }
 
-            QString time = QDateTime::fromSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss");
-            results.insert({year.toStdString(), time.toStdString()});
+            if(!count) continue; // Do not divide with 0
+            QString time = QDateTime::fromMSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss.zzz");
+
+            std::string stdTime{time.toStdString()}; // Chop result to 0.1s
+            results.insert({year.toStdString(), stdTime.substr(0,stdTime.size()-2)});
         }
     }
 
@@ -567,17 +573,20 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
         for (auto& _year : m_data) {
             QString year = _year.first;
 
-            int sum = 0;
-            int count = 0;
+            long sum = 0; // Milliseconds
+            long count = 0;
 
             for (auto& row : _year.second.at(distance)) {
                 QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-                sum += QTime(0, 0, 0).secsTo(QTime::fromString(time, "h:mm:ss"));
+                sum += QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z"));
                 count++;
             }
 
-            QString time = QDateTime::fromSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss");
-            results.insert({year.toStdString(), time.toStdString()});
+            if(!count) continue; // Do not divide with 0
+            QString time = QDateTime::fromMSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss.zzz");
+
+            std::string stdTime{time.toStdString()}; // Chop result to 0.1s
+            results.insert({year.toStdString(), stdTime.substr(0,stdTime.size()-2)});
         }
     }
 
@@ -856,7 +865,7 @@ void InternetExplorers::DataHandler::loadInThread()
     // CLOCKING
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Data fetch done in " << time_span.count() << " s" << std::endl;
+    qDebug() << "Data fetch done in " << time_span.count() << " s";
 
     m_loadOngoing = false;
     emit loadingReady();

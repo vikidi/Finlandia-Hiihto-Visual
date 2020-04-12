@@ -2,7 +2,7 @@
 #define DATAORDERER_H
 
 #include <vector>
-
+#include <string>
 #include "constants.h"
 
 namespace InternetExplorers {

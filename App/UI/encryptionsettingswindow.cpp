@@ -17,14 +17,18 @@ EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
         {
             for(auto line : file.readAll().split('\n'))
             {
-                if(line.size() == 0) continue;
-                if(line.chopped(2) == "ShowHashes")
+                // "Chopped" would be better than chop but
+                // it is not supported on remote desktops qt version
+                auto lineCopy{line};
+                lineCopy.chop(2);
+                if(lineCopy.size() == 0) continue;
+                if(lineCopy == "ShowHashes")
                 {
                     if(line.back() == '1')
                     {
                         ui->checkBoxShowNamesAsHashes->setChecked(true);
                     }
-                } else if(line.chopped(2) == "LocalDataHashed")
+                } else if(lineCopy == "LocalDataHashed")
                 {
                     if(line.back() == '1')
                     {
@@ -36,7 +40,7 @@ EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
                         ui->checkBoxShowNamesAsHashes->setEnabled(false);
                         break;
                     }
-                } else if(line.chopped(2) == "LocalDataEncrypted")
+                } else if(line == "LocalDataEncrypted")
                 {
                     if(line.back() == '1')
                     {
@@ -135,8 +139,10 @@ void EncryptionSettingsWindow::editSetting(QString setting, QString value)
         QByteArray newData;
         for(auto line : all.split('\n'))
         {
-            if(line.size() == 0) continue;
-            if(line.chopped(2) == setting)
+            auto lineCopy{line};
+            lineCopy.chop(2);
+            if(lineCopy.size() == 0) continue;
+            if(lineCopy == setting)
             {
                 newData.append((setting + "=" + value + '\n').toUtf8());
             } else
