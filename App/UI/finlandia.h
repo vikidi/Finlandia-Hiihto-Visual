@@ -76,6 +76,9 @@ public:
 
     bool check_for_special_filters();
 
+    bool check_for_order_filter();
+    std::vector<std::vector<std::string>> get_ordered_data(std::map<Filter_NS,
+                                                           QString> filter);
 
 private slots:
 

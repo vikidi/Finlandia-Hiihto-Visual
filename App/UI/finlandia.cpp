@@ -646,6 +646,7 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
 void Finlandia::order_result(std::map<Filter_NS,
                              QString> filters)
 {
+    //void applyFilterToData(ValueFilters, QString> filters,&data, OrderFilters order)
     //Järjestetään tietyn vuoden tulokset seuran nimen mukaan aakkosjärjestykseen.
     if(ui->jarjestaAakkosRP->isChecked() && ui->jarjestaSeuranNimiRP->isChecked()){
         std::vector<std::vector<std::string>> ordered_data =
@@ -691,6 +692,69 @@ bool Finlandia::check_for_special_filters()
     }
     return false;
 }
+
+bool Finlandia::check_for_order_filter()
+{
+    if(ui->jarjestaMatkaRP){
+
+        return true;
+    }
+
+    if(ui->jarjestaVuosiRP){
+
+        return true;
+    }
+    if(ui->jarjestaAakkosRP){
+        return true;
+
+    }
+    if(ui->jarjestaSijoitusRP){
+        return true;
+    }
+    return false;
+}
+
+std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filter_NS,
+                                                                  QString> filter)
+{
+    if(ui->jarjestaAakkosRP->isChecked()){
+
+        if(ui->jarjestaSeuranNimiRP->isChecked()){
+            std::vector<std::vector<std::string>> ordered_data =
+                    m_DataHandler->getDataWithFilter(filter,
+                                                     InternetExplorers::Constants::
+                                                     Filter::OrderFilters::ALPH_TEAM);
+            return ordered_data;
+        }
+        if(ui->jarjestaKotimaaRP->isChecked()){
+            std::vector<std::vector<std::string>> ordered_data =
+                    m_DataHandler->getDataWithFilter
+                    (filter, InternetExplorers::Constants::Filter::
+                     OrderFilters::ALPH_NATIONALITY);
+
+            return ordered_data;
+        }
+        if(ui->nimi_jarkkaRP->isChecked()){
+            std::vector<std::vector<std::string>> ordered_data =
+                    m_DataHandler->getDataWithFilter
+                    (filter, InternetExplorers::Constants::Filter::
+                     OrderFilters::ALPH_NAME);
+
+            return ordered_data;
+        }
+        if(ui->jarjestaSeuranNimiRP->isChecked()){
+            std::vector<std::vector<std::string>> ordered_data =
+                    m_DataHandler->getDataWithFilter
+                    (filter, InternetExplorers::Constants::Filter::
+                     OrderFilters::ALPH_TEAM);
+
+            return ordered_data;
+        }
+
+    }
+    return {};
+}
+
 
 void Finlandia::remove_cart()
 {
@@ -838,7 +902,12 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
 
     try {
-        newData = m_DataHandler->getDataWithFilter(filter);
+        if(check_for_order_filter()){
+            newData = get_ordered_data(filter);
+        }
+        else{
+            newData = m_DataHandler->getDataWithFilter(filter);
+        }
     }
     catch (InternetExplorers::FilterException &e) {
         qDebug() << e.what();
