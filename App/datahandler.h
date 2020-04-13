@@ -81,7 +81,19 @@ public:
      */
     std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
-
+    /*!
+     * \brief
+     * Gets data using the value filter
+     * and return the results sorted by the given order filter
+     * \param filters
+     * Value filters, refers to InternetExplorers::Constants::Filters::ValueFilters
+     * \param order
+     * Order filter, refers to InternetExplorers::Constants::Filters::OrderFilters
+     * \attention
+     * The filter must be validated with InterfaceFilter before calling
+     * \return
+     * Ordered data that passed the filter
+     */
     std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters,
                                                             Constants::Filter::OrderFilters order);
 
@@ -103,36 +115,114 @@ public:
     void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
 
-
+    /*!
+     * \brief
+     * Apply filter to data and sort the result.
+     * \param filters
+     * Value filter to be applied,
+     * refers to InternetExplorers::Constants::Filters::ValueFilters
+     * \param data
+     * Data where the filters will be applied
+     * \param order
+     * Filter used in sorting,
+     * refers to InternetExplorers::Constants::Filters::OrderFilters
+     */
     void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data,
                            Constants::Filter::OrderFilters order);
 
     /* Special functions */
 
-    // < year, distance >
+    /*!
+     * \brief
+     * Gets the races that has had participants
+     * \return
+     * Results in format < year, distance >
+     */
     std::vector<std::pair<std::string, std::string>> getRacesWithParticipants();
 
     // These take in account only YEAR or YEAR_RANGE and DISTANCE
 
-    // < year, amount >
+    /*!
+     * \brief
+     * Gets the amount of participants per year
+     * \param filters
+     * Uses the filter to narrow down data to get participants from
+     * \attention
+     * Uses only YEAR or YEAR_RANGE and DISTANCE filters.
+     * \return
+     * Results in format < year, amount >
+     */
     std::map<std::string, int> getAmountOfParticipants(std::map<Constants::Filter::ValueFilters, QString> filters);
 
-    // Needs to have at least DISTANCE filter
-    // < year, row >
+    /*!
+     * \brief
+     * Gets the slowes result
+     * \param filters
+     * Uses the filter to narrow down data from where to get the slowest
+     * \attention
+     * Uses only YEAR or YEAR_RANGE and DISTANCE filters.<br>
+     * DISTANCE filter must be used!
+     * \return
+     * Results in format < year, row of the slowest >
+     */
     std::map<std::string, std::vector<std::string>> getSlowest(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
+     * Gets the fastest result
+     * \param filters
+     * Uses the filter to narrow down data from where to get the fastest
+     * \attention
+     * Uses only YEAR or YEAR_RANGE and DISTANCE filters.<br>
+     * DISTANCE filter must be used!
+     * \return
+     * Results in format < year, row of the fastest >
+     */
     std::map<std::string, std::vector<std::string>> getFastest(std::map<Constants::Filter::ValueFilters, QString> filters);
 
-    // Needs to have at least DISTANCE filter
-    // < year, average time >
+    /*!
+     * \brief
+     * Gets the average result time
+     * \param filters
+     * Uses the filter to narrow down data from where to get the average time
+     * \attention
+     * Uses only YEAR or YEAR_RANGE, DISTANCE, PLACE_RANGE,
+     * PLACE_RANGE_MEN and PLACE_RANGE_WOMEN filters.<br>
+     * DISTANCE filter must be used!
+     * \return
+     * Results in format < year, average time >
+     */
     std::map<std::string, std::string> getAverageTimes(std::map<Constants::Filter::ValueFilters, QString> filters);
 
-    // < year, amount >
+    /*!
+     * \brief
+     * Gets the amount of participants by country
+     * \param filters
+     * Uses the filter to narrow down data from where to get the participants
+     * \attention
+     * Uses only YEAR or YEAR_RANGE and DISTANCE filters.
+     * \return
+     * Results in format < country, amount >
+     */
     std::map<std::string, int > getParticipantsByCountry(std::map<Constants::Filter::ValueFilters, QString> filters);
 
-    // Needs to have at least DISTANCE filter
-    // < team, average time >
+    /*!
+     * \brief
+     * Gets the top ten best teams and their average result time.
+     * \param filters
+     * Uses the filter to narrow down data from where to get the participants
+     * \attention
+     * To be counted as a team there needs to be at least
+     * four participants from that team.<br>
+     * Uses only YEAR or YEAR_RANGE and DISTANCE filters.<br>
+     * DISTANCE filter must be used!
+     * \return
+     * Results in format < team, average time of the four best participants from that team >
+     */
     std::vector<std::pair<std::string, std::string>> getBestTenTeams(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /* /Special functions */
 
     /* /PUBLIC INTERFACE */
 
