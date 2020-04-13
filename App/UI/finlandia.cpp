@@ -420,6 +420,7 @@ void Finlandia::make_listview()
         }
 
         ui->hakuLabelTulokset->setText("Haku: " + combined_title);
+        ui->hakuLabelTulokset_2->setText("Data " + combined_title);
     }
 
     if(check_for_special_filters()){
@@ -604,8 +605,16 @@ void Finlandia::make_line_chart(int x, int y)
 
     // Going through individual results in a search:
     for(std::vector<std::string> result : data){
+        if(y == 2){
+            int secs = QTime(0, 0, 0).secsTo(QTime::fromString
+                                             (QString::fromStdString(
+                                                  result.at(y)), "h:mm:ss"));
+            series->append(QPoint(stoi(result.at(x)),secs));
+        }
+        else{
 
-        series->append(QPoint(stoi(result.at(x)),stoi(result.at(y))));
+            series->append(QPoint(stoi(result.at(x)),stoi(result.at(y))));
+        }
     }
     //Adding the series to m_chart
     m_chart->addSeries(series);

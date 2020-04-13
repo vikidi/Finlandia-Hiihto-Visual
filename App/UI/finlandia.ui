@@ -27,7 +27,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <property name="minimumSize">
@@ -1484,12 +1484,45 @@
             </widget>
            </item>
            <item>
+            <widget class="QLabel" name="hakuLabelTulokset_2">
+             <property name="text">
+              <string>Data:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <layout class="QGridLayout" name="gridLayout_6">
              <property name="sizeConstraint">
               <enum>QLayout::SetFixedSize</enum>
              </property>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_7">
+             <item row="3" column="2">
+              <widget class="QComboBox" name="kuvaajatyyppiCB">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Pylväsdiagrammi</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Jatkuva kuvaaja</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_9">
                <property name="minimumSize">
                 <size>
                  <width>120</width>
@@ -1503,30 +1536,11 @@
                 </size>
                </property>
                <property name="text">
-                <string>Y-akseli:</string>
+                <string>Kuvaajan tyyppi:</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="minimumSize">
-                <size>
-                 <width>120</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>120</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>X-akseli:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
+             <item row="1" column="2">
               <widget class="QComboBox" name="x_akseliCB">
                <property name="minimumSize">
                 <size>
@@ -1602,7 +1616,7 @@
                </item>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="2" column="2">
               <widget class="QComboBox" name="y_akseliCB">
                <property name="minimumSize">
                 <size>
@@ -1678,34 +1692,8 @@
                </item>
               </widget>
              </item>
-             <item row="3" column="1">
-              <widget class="QComboBox" name="kuvaajatyyppiCB">
-               <property name="minimumSize">
-                <size>
-                 <width>120</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>120</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <item>
-                <property name="text">
-                 <string>Pylväsdiagrammi</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Jatkuva kuvaaja</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_9">
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_7">
                <property name="minimumSize">
                 <size>
                  <width>120</width>
@@ -1719,7 +1707,26 @@
                 </size>
                </property>
                <property name="text">
-                <string>Kuvaajan tyyppi:</string>
+                <string>Y-akseli:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>X-akseli:</string>
                </property>
               </widget>
              </item>
@@ -1833,7 +1840,7 @@
             <widget class="QChartView" name="graafiWiev">
              <property name="minimumSize">
               <size>
-               <width>1000</width>
+               <width>950</width>
                <height>680</height>
               </size>
              </property>
