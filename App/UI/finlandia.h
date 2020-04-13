@@ -62,23 +62,68 @@ public:
     /**
      * @brief select_attributes
      * @return vector of integers pointing out what
-     * attributes the listView should show
+     * attributes (year, distance, name etc.) the listView should show
      */
     std::vector<int> select_attributes();
 
+    /**
+     * @brief make_bar_chart
+     * @param x indicates the attribute wanted on the x axis
+     * @param y indicates the attribute wanted on y axis
+     */
     void make_bar_chart(int x, int y);
+
+    /**
+     * @brief make_line_chart
+     * @param x indicates the attribute wanted on the x axis
+     * @param y indicates the attribute wanted on y axis
+     */
     void make_line_chart(int x, int y);
 
+    /**
+     * @brief apply_special_filters does filtering for "Lisäehdot" -part
+     * and stores the wanted information in the private section
+     * @param filters
+     */
     void apply_special_filters(std::map<Filter_NS, QString> filters);
 
+    /**
+     * @brief order_result is used if the user wants the data in a specific
+     * order
+     * @param filters
+     */
     void order_result(std::map<Filter_NS,
                       QString> filters);
 
+    /**
+     * @brief check_for_special_filters returns 1 if special filters are
+     * wanted, else 0
+     * @return bool
+     */
     bool check_for_special_filters();
 
+    /**
+     * @brief check_for_order_filter returns 1 if the user wants the data
+     * in a specific order,else 0
+     * @return  bool
+     */
     bool check_for_order_filter();
+
+    /**
+     * @brief get_ordered_data is called by on_pushButtoLisaaHaku_clicked()
+     * if check_for_special_filters returns 1.
+     * @param filter
+     * @return ordered and filtered data
+     */
     std::vector<std::vector<std::string>> get_ordered_data(std::map<Filter_NS,
                                                            QString> filter);
+
+    /**
+     * @brief print_special_result is used to show thing like average times
+     * in the listview
+     * @param atr_vec pointing out what special filters were used
+     */
+    void print_special_result(std::vector<int> atr_vec);
 
 private slots:
 
@@ -89,13 +134,14 @@ private slots:
     void on_pushButtonNollaKaikki_clicked();
 
     /**
-     * @brief on_pushButtoLisaaHaku_clicked adds the filters to
-     * a queue for completing the searches
+     * @brief on_pushButtoLisaaHaku_clicked checks if special searches or
+     * ordering is required and completes the search. Stores the data in private
      */
     void on_pushButtoLisaaHaku_clicked();
 
     /**
-     * @brief on_pushButton_clicked Makes the actual searches happen
+     * @brief on_pushButton_clicked Makes the search results appear, basically
+     * just calls make_listview
      */
     void on_pushButton_clicked();
 
@@ -142,8 +188,6 @@ private slots:
      * \param newValue what number was spinbox changed to
      */
     void on_spinBoxSijoitusAla_valueChanged(int newValue);
-
-    void print_special_result(std::vector<int> atr_vec);
 
 private:
     Ui::Finlandia *ui;

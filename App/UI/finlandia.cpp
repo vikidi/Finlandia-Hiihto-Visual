@@ -81,15 +81,36 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->haeKaikkiRP->setChecked(true);
     ui->haeNopeinRP->setChecked(false);
     ui->haeOsalMaarRP->setChecked(false);
+    ui->osall_lkm_maittainRP->setChecked(false);
+    ui->vuodenXparhaatRP->setChecked(false);
     ui->KotimaaRP->setChecked(false);
     ui->haeJoukkueRP->setChecked(false);
     ui->aikaRP->setChecked(false);
     ui->keskinopeusRP->setChecked(false);
     ui->hiihtajanNimiRP->setChecked(false);
+    ui->jarjestaMatkaRP->setChecked(false);
+    ui->jarjestaVuosiRP->setChecked(false);
+    ui->jarjestaAakkosRP->setChecked(false);
+    ui->jarjestaKotimaaRP->setChecked(false);
+    ui->jarjestaSijoitusRP->setChecked(false);
+    ui->jarjestaVainParasRP->setChecked(false);
+    ui->jarjestaSeuranNimiRP->setChecked(false);
+
 
     m_datalump.clear();
     all_titles.clear();
 
+    m_nmbr_of_parts.clear();
+    //<year, row>
+    m_fastest.clear();
+    // < year, row >
+    m_slowest.clear();
+    // <year, time>
+    m_avrg_time.clear();
+    //<nation, nmr>
+    m_nmbr_of_parts_nationvice.clear();
+    //< team, average time >
+    m_best_of_year_X.clear();
 }
 
 std::map<Filter_NS, QString> Finlandia::makefilter(){
@@ -494,28 +515,30 @@ void Finlandia::print_special_result(std::vector<int> atr_vec)
         if(k == Atributes::nmbr_of_parts_nationvice){
             ui->listWidgetResult->addItem("Osallistujat maittain");
 
-            for(auto thing : m_avrg_time){
+            for(auto thing : m_nmbr_of_parts_nationvice){
                 QString disp = "";
                 disp += "Maa: ";
                 disp += QString::fromStdString(thing.first) + " ";
                 disp += "Urheilijoiden määrä : ";
-                disp += QString::fromStdString(thing.second);
+                disp += QString::number(thing.second);
 
                 ui->listWidgetResult->addItem(disp);
             }
             ui->listWidgetResult->addItem("\n");
         }
         if(k == Atributes::bestofx){
-            ui->listWidgetResult->addItem("Vuoden parhaat joukkueet");
+            ui->listWidgetResult->addItem("Vuoden TOP10");
+            int i = 1;
 
-            for(auto thing : m_avrg_time){
+            for(auto thing : m_best_of_year_X){
                 QString disp = "";
-                disp += "Joukkue: ";
+                disp += QString::number(i) + ". " + "Joukkue: ";
                 disp += QString::fromStdString(thing.first) + " ";
                 disp += "Suoritusaikojen keskiarvo: ";
                 disp += QString::fromStdString(thing.second);
 
                 ui->listWidgetResult->addItem(disp);
+                ++i;
             }
             ui->listWidgetResult->addItem("\n");
         }
@@ -695,20 +718,20 @@ bool Finlandia::check_for_special_filters()
 
 bool Finlandia::check_for_order_filter()
 {
-    if(ui->jarjestaMatkaRP){
+    if(ui->jarjestaMatkaRP->isChecked()){
 
         return true;
     }
 
-    if(ui->jarjestaVuosiRP){
+    if(ui->jarjestaVuosiRP->isChecked()){
 
         return true;
     }
-    if(ui->jarjestaAakkosRP){
+    if(ui->jarjestaAakkosRP->isChecked()){
         return true;
 
     }
-    if(ui->jarjestaSijoitusRP){
+    if(ui->jarjestaSijoitusRP->isChecked()){
         return true;
     }
     return false;
@@ -751,6 +774,35 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
             return ordered_data;
         }
 
+    }
+    if(ui->jarjestaMatkaRP->isChecked()){
+        std::vector<std::vector<std::string>> ordered_data =
+                m_DataHandler->getDataWithFilter
+                (filter, InternetExplorers::Constants::Filter::
+                 OrderFilters::DISTANCE_ORDER);
+
+        return ordered_data;
+    }
+    if(ui->jarjestaVuosiRP->isChecked()){
+        std::vector<std::vector<std::string>> ordered_data =
+                m_DataHandler->getDataWithFilter
+                (filter, InternetExplorers::Constants::Filter::
+                 OrderFilters::YEAR_ORDER);
+
+        return ordered_data;
+    }
+    if(ui->jarjestaSijoitusRP->isChecked()){
+        std::vector<std::vector<std::string>> ordered_data =
+                m_DataHandler->getDataWithFilter
+                (filter, InternetExplorers::Constants::Filter::
+                 OrderFilters::PLACEMENT);
+
+        return ordered_data;
+    }
+    if(ui->jarjestaVainParasRP->isChecked()){
+
+
+        //return ordered_data;
     }
     return {};
 }
@@ -805,8 +857,8 @@ void Finlandia::make_listviweLabel()
     }
 
     if(ui->vuodenXparhaatRP->isChecked()){
-        label = label + " Vuoden " + ui->comboBoxVuosi->currentText() +
-                " parhaat tulokset, ";
+        label = label + " Vuoden '" + ui->comboBoxVuosi->currentText() +
+                "' parhaat tulokset, ";
     }
 
     if(ui->haeOsalMaarRP->isChecked()){
@@ -898,15 +950,19 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
     if(check_for_special_filters()){
         apply_special_filters(filter);
+        qDebug() << "Applying special filters";
     }
-
-
     try {
-        if(check_for_order_filter()){
+        if(check_for_order_filter())
+        {
             newData = get_ordered_data(filter);
+            qDebug() << "ordered filtering";
         }
-        else{
+        else
+        {
             newData = m_DataHandler->getDataWithFilter(filter);
+            qDebug() << "Normal filtering";
+
         }
     }
     catch (InternetExplorers::FilterException &e) {
