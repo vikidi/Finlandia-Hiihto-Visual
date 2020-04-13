@@ -88,14 +88,6 @@ public:
     void apply_special_filters(std::map<Filter_NS, QString> filters);
 
     /**
-     * @brief order_result is used if the user wants the data in a specific
-     * order
-     * @param filters
-     */
-    void order_result(std::map<Filter_NS,
-                      QString> filters);
-
-    /**
      * @brief check_for_special_filters returns 1 if special filters are
      * wanted, else 0
      * @return bool

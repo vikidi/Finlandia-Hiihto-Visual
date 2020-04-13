@@ -101,15 +101,10 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     all_titles.clear();
 
     m_nmbr_of_parts.clear();
-    //<year, row>
     m_fastest.clear();
-    // < year, row >
     m_slowest.clear();
-    // <year, time>
     m_avrg_time.clear();
-    //<nation, nmr>
     m_nmbr_of_parts_nationvice.clear();
-    //< team, average time >
     m_best_of_year_X.clear();
 }
 
@@ -666,32 +661,6 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
 
 }
 
-void Finlandia::order_result(std::map<Filter_NS,
-                             QString> filters)
-{
-    //void applyFilterToData(ValueFilters, QString> filters,&data, OrderFilters order)
-    //Järjestetään tietyn vuoden tulokset seuran nimen mukaan aakkosjärjestykseen.
-    if(ui->jarjestaAakkosRP->isChecked() && ui->jarjestaSeuranNimiRP->isChecked()){
-        std::vector<std::vector<std::string>> ordered_data =
-                m_DataHandler->getDataWithFilter(filters,
-                                                 InternetExplorers::Constants::
-                                                 Filter::OrderFilters::ALPH_TEAM);
-    }
-
-    /*
-    enum OrderFilters {
-        PLACEMENT = 0,      //< Sort by placement
-    YEAR_ORDER,         //< Sort by year
-            DISTANCE_ORDER,     //< Sort by distance
-            AGE,                //< Sort by age of the skier
-            ALPH_NATIONALITY,   //< Sort alphabetically by nationality
-            ALPH_NAME,          //< Sort alphabetically by name
-            ALPH_TEAM,          //< Sort alphabetically by team
-            ALPH_CITY,          //< Sort alphabetically by city
-};
-*/
-
-}
 
 bool Finlandia::check_for_special_filters()
 {
