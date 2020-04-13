@@ -59,7 +59,7 @@ void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QStr
 
             // Create file with the rows
             QFile file(dfolder + QString("/") + Constants::DATA_FILE_NAME);
-            if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
+            if ( Q_LIKELY(file.open(QIODevice::WriteOnly | QIODevice::Text)) )
             {
                 QTextStream stream( &file );
                 stream.setCodec("UTF-8");
@@ -96,14 +96,14 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
 
     // Create year vectors
     auto years = std::vector<std::string>();
-    for (int i = 1974; i < 2020; i++) {
+    for (int i = 1974; i < 2020; ++i) {
         years.emplace_back(std::to_string(i));
     }
     std::vector<std::shared_ptr<std::vector<std::string>>> yearVectors = SplitVector(years, optimalAmountOfThreads);
 
     std::vector<std::thread> threads;
     threads.reserve(optimalAmountOfThreads);
-    for(size_t i = 0; i < optimalAmountOfThreads; i++)
+    for(size_t i = 0; i < optimalAmountOfThreads; ++i)
     {
         threads.push_back(std::thread(&LocalAPI::loadDataInThread, this, yearVectors[i]));
     }
@@ -154,7 +154,7 @@ std::map<QString, QString> InternetExplorers::LocalAPI::readMetaDataFile()
 
 void InternetExplorers::LocalAPI::updateProgress()
 {
-    m_fileCount++;
+    ++m_fileCount;
 
     int progress = static_cast<int>(100 * (m_fileCount/static_cast<double>(m_maxProgress)));
 
@@ -170,7 +170,7 @@ int InternetExplorers::LocalAPI::getAmountOfFiles()
     int count = 0;
     while (it.hasNext()){
         it.next();
-        count++;
+        ++count;
     }
     return count;
 }
@@ -195,7 +195,7 @@ std::map<QString, QString> InternetExplorers::LocalAPI::readMD5File()
     std::map<QString, QString> sums = {};
 
     QFile file(Constants::MD5_DATA_FILE_NAME);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (Q_UNLIKELY(!file.open(QIODevice::ReadOnly | QIODevice::Text))) {
         return {};
     }
 
@@ -254,9 +254,9 @@ void InternetExplorers::LocalAPI::createMD5File()
 QByteArray InternetExplorers::LocalAPI::getMD5CheckSum(const QString &file)
 {
     QFile f(file);
-    if (f.open(QFile::ReadOnly)) {
+    if (Q_LIKELY(f.open(QFile::ReadOnly))) {
         QCryptographicHash hash(QCryptographicHash::Algorithm::Md5);
-        if (hash.addData(&f)) {
+        if (Q_LIKELY(hash.addData(&f))) {
             return hash.result();
         }
     }
@@ -274,14 +274,14 @@ bool InternetExplorers::LocalAPI::isDataCorrupted()
     // in FinlandiaData
     int amount = 0;
     QFile file(Constants::MD5_DATA_FILE_NAME);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (Q_UNLIKELY(!file.open(QIODevice::ReadOnly | QIODevice::Text))) {
         return true;
     }
     QTextStream in(&file);
     while (!in.atEnd()) {
         QString line = in.readLine();
-        if (line.trimmed() != "") {
-            amount++;
+        if (Q_LIKELY(line.trimmed() != "")) {
+            ++amount;
         }
     }
 

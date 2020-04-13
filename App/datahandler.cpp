@@ -299,7 +299,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getAmountOfParticipan
         QString upper = years[1];
 
         // Go through given years
-        for (int i = lower.toInt(); i <= upper.toInt(); i++) {
+        for (int i = lower.toInt(); i <= upper.toInt(); ++i) {
             QString year = QString::number(i);
 
             // Year and distance
@@ -356,77 +356,44 @@ std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler:
 {
     if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
 
-    QString distance = filters[Constants::Filter::ValueFilters::DISTANCE];
+    // Create the filter to fetch data
+    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
+        if (it->first == Constants::Filter::ValueFilters::DISTANCE
+            || it->first == Constants::Filter::ValueFilters::YEAR
+            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE) {
+            // Accept filter
+            ++it;
+        }
+        else {
+            // Remove filter
+            filters.erase(it++);
+        }
+    }
 
+    // Get rows that pass filter
+    std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
+
+    if (data.size() == 0) return {};
+
+    // Go through data to get slowests
     std::map<std::string, std::vector<std::string> > result = {};
+    std::map<std::string, long> times = {};
+    for (auto& row : data) {
+        std::string year = row[Constants::DataIndex::IndexInData::YEAR];
+        QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
 
-    // One year
-    if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
-        QString year = filters[Constants::Filter::ValueFilters::YEAR];
-
-        int slowest = INT_MIN;
-        std::vector<std::string> sRow = {};
-
-        for (auto& row : m_data.at(year).at(distance)) {
-            int place = stoi(row[Constants::DataIndex::IndexInData::PLACE]);
-
-            // Search for slowest
-            if (place > slowest) {
-                sRow = row;
-                slowest = place;
-            }
+        // Need different format depending if milliseconds are present
+        long time;
+        if (stime.contains('.')) {
+            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
+        } else {
+            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
         }
 
-        result.insert({year.toStdString(), sRow});
-    }
-
-    // Multiple years
-    else if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
-        QStringList years = filters[Constants::Filter::ValueFilters::YEAR_RANGE].split(";");
-
-        QString lower = years[0];
-        QString upper = years[1];
-
-        // Go through given years
-        for (int i = lower.toInt(); i <= upper.toInt(); i++) {
-            QString year = QString::number(i);
-
-            int slowest = INT_MIN;
-            std::vector<std::string> sRow = {};
-
-            for (auto& row : m_data.at(year).at(distance)) {
-                int place = stoi(row[Constants::DataIndex::IndexInData::PLACE]);
-
-                // Search for slowest
-                if (place > slowest) {
-                    sRow = row;
-                    slowest = place;
-                }
-            }
-
-            result.insert({year.toStdString(), sRow});
-        }
-    }
-
-    // All years
-    else {
-        for (auto& _year : m_data) {
-            QString year = _year.first;
-
-            int slowest = INT_MIN;
-            std::vector<std::string> sRow = {};
-
-            for (auto& row : _year.second.at(distance)) {
-                int place = stoi(row[Constants::DataIndex::IndexInData::PLACE]);
-
-                // Search for slowest
-                if (place > slowest) {
-                    sRow = row;
-                    slowest = place;
-                }
-            }
-
-            result.insert({year.toStdString(), sRow});
+        // There is no times yet or time is solver
+        if (times.find(year) == times.end() || time > times[year]) {
+            times[year] = time;
+            result[year] = row;
         }
     }
 
@@ -437,77 +404,44 @@ std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler:
 {
     if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
 
-    QString distance = filters[Constants::Filter::ValueFilters::DISTANCE];
+    // Create the filter to fetch data
+    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
+        if (it->first == Constants::Filter::ValueFilters::DISTANCE
+            || it->first == Constants::Filter::ValueFilters::YEAR
+            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE) {
+            // Accept filter
+            ++it;
+        }
+        else {
+            // Remove filter
+            filters.erase(it++);
+        }
+    }
 
+    // Get rows that pass filter
+    std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
+
+    if (data.size() == 0) return {};
+
+    // Go through data to get slowests
     std::map<std::string, std::vector<std::string> > result = {};
+    std::map<std::string, long> times = {};
+    for (auto& row : data) {
+        std::string year = row[Constants::DataIndex::IndexInData::YEAR];
+        QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
 
-    // One year
-    if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
-        QString year = filters[Constants::Filter::ValueFilters::YEAR];
-
-        int slowest = INT_MAX;
-        std::vector<std::string> sRow = {};
-
-        for (auto& row : m_data.at(year).at(distance)) {
-            int place = stoi(row[Constants::DataIndex::IndexInData::PLACE]);
-
-            // Search for fastest
-            if (place < slowest && place > 0) {
-                sRow = row;
-                slowest = place;
-            }
+        // Need different format depending if milliseconds are present
+        long time;
+        if (stime.contains('.')) {
+            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
+        } else {
+            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
         }
 
-        result.insert({year.toStdString(), sRow});
-    }
-
-    // Multiple years
-    else if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
-        QStringList years = filters[Constants::Filter::ValueFilters::YEAR_RANGE].split(";");
-
-        QString lower = years[0];
-        QString upper = years[1];
-
-        // Go through given years
-        for (int i = lower.toInt(); i <= upper.toInt(); i++) {
-            QString year = QString::number(i);
-
-            int slowest = INT_MAX;
-            std::vector<std::string> sRow = {};
-
-            for (auto& row : m_data.at(year).at(distance)) {
-                int place = stoi(row[Constants::DataIndex::IndexInData::PLACE]);
-
-                // Search for fastest
-                if (place < slowest && place > 0) {
-                    sRow = row;
-                    slowest = place;
-                }
-            }
-
-            result.insert({year.toStdString(), sRow});
-        }
-    }
-
-    // All years
-    else {
-        for (auto& _year : m_data) {
-            QString year = _year.first;
-
-            int slowest = INT_MAX;
-            std::vector<std::string> sRow = {};
-
-            for (auto& row : _year.second.at(distance)) {
-                int place = stoi(row[Constants::DataIndex::IndexInData::PLACE]);
-
-                // Search for fastest
-                if (place < slowest && place > 0) {
-                    sRow = row;
-                    slowest = place;
-                }
-            }
-
-            result.insert({year.toStdString(), sRow});
+        // There is no times yet or time is solver
+        if (times.find(year) == times.end() || time < times[year]) {
+            times[year] = time;
+            result[year] = row;
         }
     }
 
@@ -559,7 +493,7 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
         }
 
         // Add count
-        counts[year]++;
+        ++counts[year];
     }
 
     // Calculate averages
@@ -589,7 +523,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
 
             // Loop rows
             for (auto& row : m_data.at(year).at(distance)) {
-                results[row[Constants::DataIndex::IndexInData::NATIONALITY]]++;
+                ++results[row[Constants::DataIndex::IndexInData::NATIONALITY]];
             }
         }
         // Only year
@@ -598,7 +532,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
             for (auto& dist : m_data.at(year)) {
                 // Loop rows
                 for (auto& row : dist.second) {
-                    results[row[Constants::DataIndex::IndexInData::NATIONALITY]]++;
+                    ++results[row[Constants::DataIndex::IndexInData::NATIONALITY]];
                 }
             }
         }
@@ -614,7 +548,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
         QString upper = years[1];
 
         // Go through given years
-        for (int i = lower.toInt(); i <= upper.toInt(); i++) {
+        for (int i = lower.toInt(); i <= upper.toInt(); ++i) {
             QString year = QString::number(i);
 
             // Year and distance
@@ -623,7 +557,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
 
                 // Loop rows
                 for (auto& row : m_data.at(year).at(distance)) {
-                    results[row[Constants::DataIndex::IndexInData::NATIONALITY]]++;
+                    ++results[row[Constants::DataIndex::IndexInData::NATIONALITY]];
                 }
             }
             // Only year
@@ -632,7 +566,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
                 for (auto& dist : m_data.at(year)) {
                     // Loop rows
                     for (auto& row : dist.second) {
-                        results[row[Constants::DataIndex::IndexInData::NATIONALITY]]++;
+                        ++results[row[Constants::DataIndex::IndexInData::NATIONALITY]];
                     }
                 }
             }
@@ -648,7 +582,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
             QString year = _year.first;
 
             for (auto& row : _year.second.at(dist)) {
-                results[row[Constants::DataIndex::IndexInData::NATIONALITY]]++;
+                ++results[row[Constants::DataIndex::IndexInData::NATIONALITY]];
             }
         }
     }
@@ -661,7 +595,7 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
 
             for (auto& dist : _year.second) {
                 for (auto& row : dist.second) {
-                    results[row[Constants::DataIndex::IndexInData::NATIONALITY]]++;
+                    ++results[row[Constants::DataIndex::IndexInData::NATIONALITY]];
                 }
             }
         }
@@ -706,7 +640,7 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
         std::string team = row[Constants::DataIndex::IndexInData::TEAM];
 
         // Need different format depending if milliseconds are present
-        int time;
+        long time;
         if (stime.contains('.')) {
             time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
         } else {
@@ -720,7 +654,7 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
             teams[team] += time;
 
             // Add to count
-            teamsCount[team]++;
+            ++teamsCount[team];
 
             // Add to the teams times
             teamTimes[team].emplace_back(time);
@@ -761,7 +695,7 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
 
         std::string stdTime{time.toStdString()}; // Chop result to 0.1s
         results.emplace_back(std::pair<std::string, std::string>(team.first, stdTime.substr(0, stdTime.size() - 2)));
-        i++;
+        ++i;
     }
 
     return results;
@@ -918,7 +852,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getAllByY
     QString upper = years[1];
 
     // Go through given years
-    for (int i = lower.toInt(); i <= upper.toInt(); i++) {
+    for (int i = lower.toInt(); i <= upper.toInt(); ++i) {
 
         // Year not found from data
         if (m_data.find(QString::number(i)) == m_data.end()) {
