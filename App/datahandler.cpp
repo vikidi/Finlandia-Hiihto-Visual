@@ -550,7 +550,13 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
 
         // Add time
         QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-        times[year] += static_cast<unsigned long long>(QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z")));
+
+        // Need sifferent format depending if milliseconds are present
+        if (time.contains('.')) {
+            times[year] += static_cast<unsigned long long>(QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z")));
+        } else {
+            times[year] += static_cast<unsigned long long>(QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss")));
+        }
 
         // Add count
         counts[year]++;
