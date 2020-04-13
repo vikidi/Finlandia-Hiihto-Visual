@@ -349,6 +349,7 @@ enum OrderFilters {
     ALPH_NAME,          /*!< Sort alphabetically by name */
     ALPH_TEAM,          /*!< Sort alphabetically by team */
     ALPH_CITY,          /*!< Sort alphabetically by city */
+    TIME
 };
 
 }

@@ -19,6 +19,7 @@ public:
 private:
     void sortByIndex(std::vector<std::vector<std::string>>& data, Constants::DataIndex::IndexInData index);
     void sortByIndexNum(std::vector<std::vector<std::string>>& data, Constants::DataIndex::IndexInData index);
+    void sortByTime(std::vector<std::vector<std::string>>& data);
 };
 
 }

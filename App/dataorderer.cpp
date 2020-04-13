@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <QTime>
 
 InternetExplorers::DataOrderer::DataOrderer()
 {
@@ -35,6 +36,9 @@ void InternetExplorers::DataOrderer::orderData(std::vector<std::vector<std::stri
     case OrderFilters::ALPH_NATIONALITY:
         sortByIndex(data, Constants::DataIndex::IndexInData::NATIONALITY);
         break;
+    case OrderFilters::TIME:
+        sortByTime(data);
+        break;
     }
 }
 
@@ -55,5 +59,30 @@ void InternetExplorers::DataOrderer::sortByIndexNum(std::vector<std::vector<std:
     // Sort with custom lambda expression
     std::sort(data.begin(), data.end(), [index](std::vector<std::string> a, std::vector<std::string> b) {
         return a[index] < b[index];
+    });
+}
+
+void InternetExplorers::DataOrderer::sortByTime(std::vector<std::vector<std::string> > &data)
+{
+    // Sort with custom lambda expression
+    std::sort(data.begin(), data.end(), [](std::vector<std::string> a, std::vector<std::string> b) {
+
+        int f, s;
+        QString as = QString::fromStdString(a[Constants::DataIndex::IndexInData::TIME]);
+        QString bs = QString::fromStdString(b[Constants::DataIndex::IndexInData::TIME]);
+
+        if (as.contains('.')) {
+            f = QTime(0, 0, 0).msecsTo(QTime::fromString(as, "h:mm:ss.z"));
+        } else {
+            f = QTime(0, 0, 0).msecsTo(QTime::fromString(as, "h:mm:ss"));
+        }
+
+        if (bs.contains('.')) {
+            s = QTime(0, 0, 0).msecsTo(QTime::fromString(bs, "h:mm:ss.z"));
+        } else {
+            s = QTime(0, 0, 0).msecsTo(QTime::fromString(bs, "h:mm:ss"));
+        }
+
+        return f < s;
     });
 }

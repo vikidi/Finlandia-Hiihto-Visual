@@ -19,12 +19,12 @@
 #include "logger.h"
 #include <limits.h>
 
-typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
+typedef std::function<bool(std::pair<std::string, long>, std::pair<std::string, long>)> Comparator;
 
 namespace InternetExplorers {
 
 static Comparator compFunctor =
-[](std::pair<std::string, int> elem1 ,std::pair<std::string, int> elem2)
+[](std::pair<std::string, long> elem1 ,std::pair<std::string, long> elem2)
 {
     return elem1.second < elem2.second;
 };
@@ -543,7 +543,7 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
 
     // < year, value >
     std::map<std::string, unsigned long long> times = {}; // In milliseconds
-    std::map<std::string, unsigned long long> counts = {};
+    std::map<std::string, int> counts = {};
 
     for (auto& row : data) {
         std::string year = row[Constants::DataIndex::IndexInData::YEAR];
@@ -551,7 +551,7 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
         // Add time
         QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
 
-        // Need sifferent format depending if milliseconds are present
+        // Need different format depending if milliseconds are present
         if (time.contains('.')) {
             times[year] += static_cast<unsigned long long>(QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z")));
         } else {
@@ -569,7 +569,7 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
                                                             Qt::UTC).toString("h:mm:ss.zzz");
 
         std::string stdTime{avetime.toStdString()}; // Chop result to 0.1s
-        results.insert({time.first, stdTime.substr(0,stdTime.size()-2)});
+        results.insert({time.first, stdTime.substr(0, stdTime.size() - 2)});
     }
 
     return results;
@@ -674,141 +674,76 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
 {
     if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
 
-    QString distance = filters[Constants::Filter::ValueFilters::DISTANCE];
+    // Create the filter to fetch data
+    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
+        if (it->first == Constants::Filter::ValueFilters::DISTANCE
+            || it->first == Constants::Filter::ValueFilters::YEAR
+            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE) {
+            // Accept filter
+            ++it;
+        }
+        else {
+            // Remove filter
+            filters.erase(it++);
+        }
+    }
+
+    // Get rows that pass filter
+    std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
+
+    if (data.size() == 0) return {};
 
     std::vector<std::pair<std::string, std::string> > results = {};
 
-    // One year
-    if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
-        QString year = filters[Constants::Filter::ValueFilters::YEAR];
+    // Order data first by place
+    m_orderer->orderData(data, Constants::Filter::OrderFilters::TIME);
 
-        auto data = m_data.at(year).at(distance);
+    // Get teams and times
+    std::map<std::string, long> teams = {};
+    std::map<std::string, int> teamsCount = {};
+    for (auto& row : data) {
 
-        // Order data first by place
-        m_orderer->orderData(data, Constants::Filter::OrderFilters::PLACEMENT);
+        // No empty teams
+        if (row[Constants::DataIndex::IndexInData::TEAM] == "") continue;
 
-        // Get teams and times
-        std::map<std::string, int> teams = {};
-        std::map<std::string, int> teamsCount = {};
-        for (auto& row : data) {
-            if (teamsCount[row[Constants::DataIndex::IndexInData::TEAM]] < 4) {
-                // Add to times
-                QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-                teams[row[Constants::DataIndex::IndexInData::TEAM]] += QTime(0, 0, 0).secsTo(QTime::fromString(time, "h:mm:ss"));
+        if (teamsCount[row[Constants::DataIndex::IndexInData::TEAM]] < 4) {
 
-                // Add to count
-                teamsCount[row[Constants::DataIndex::IndexInData::TEAM]]++;
+            // Add to times
+            QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
+
+            // Need different format depending if milliseconds are present
+            int time;
+            if (stime.contains('.')) {
+                time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
+            } else {
+                time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
             }
-        }
 
-        // Sort teams
-        std::set<std::pair<std::string, int>, Comparator> sortedTeams(
-                    teams.begin(), teams.end(), compFunctor);
+            // Add time
+            teams[row[Constants::DataIndex::IndexInData::TEAM]] += time;
 
-        // Take top ten
-        int i = 0;
-        for (std::pair<std::string, int> team : sortedTeams) {
-            if (i >= 10) break; // Top ten
-
-            // Check that team actually has 4 times
-            if (teamsCount.at(team.first) != 4) continue;
-
-            QString time = QDateTime::fromSecsSinceEpoch(team.second/4, Qt::UTC).toString("h:mm:ss");
-            results.emplace_back(std::pair<std::string, std::string>{team.first, time.toStdString()});
-            i++;
+            // Add to count
+            teamsCount[row[Constants::DataIndex::IndexInData::TEAM]]++;
         }
     }
 
-    // Multiple years
-    else if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
-        QStringList years = filters[Constants::Filter::ValueFilters::YEAR_RANGE].split(";");
+    // Sort teams
+    std::set<std::pair<std::string, long>, Comparator> sortedTeams(
+                teams.begin(), teams.end(), compFunctor);
 
-        QString lower = years[0];
-        QString upper = years[1];
+    // Take top ten
+    int i = 0;
+    for (std::pair<std::string, long> team : sortedTeams) {
+        if (i >= 10) break; // Top ten
 
-        // Go through given years
-        for (int i = lower.toInt(); i <= upper.toInt(); i++) {
-            QString year = QString::number(i);
+        // Check that team actually has 4 times
+        if (teamsCount.at(team.first) != 4) continue;
 
-            auto data = m_data.at(year).at(distance);
+        QString time = QDateTime::fromMSecsSinceEpoch(team.second/4, Qt::UTC).toString("h:mm:ss.zzz");
 
-            // Order data first by place
-            m_orderer->orderData(data, Constants::Filter::OrderFilters::PLACEMENT);
-
-            // Get teams and times
-            std::map<std::string, int> teams = {};
-            std::map<std::string, int> teamsCount = {};
-            for (auto& row : data) {
-                if (teamsCount[row[Constants::DataIndex::IndexInData::TEAM]] < 4) {
-                    // Add to times
-                    QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-                    teams[row[Constants::DataIndex::IndexInData::TEAM]] += QTime(0, 0, 0).secsTo(QTime::fromString(time, "h:mm:ss"));
-
-                    // Add to count
-                    teamsCount[row[Constants::DataIndex::IndexInData::TEAM]]++;
-                }
-            }
-
-            // Sort teams
-            std::set<std::pair<std::string, int>, Comparator> sortedTeams(
-                        teams.begin(), teams.end(), compFunctor);
-
-            // Take top ten
-            int j = 0;
-            for (std::pair<std::string, int> team : sortedTeams) {
-                if (j >= 10) break; // Top ten
-
-                // Check that team actually has 4 times
-                if (teamsCount.at(team.first) != 4) continue;
-
-                QString time = QDateTime::fromSecsSinceEpoch(team.second/4, Qt::UTC).toString("h:mm:ss");
-                results.emplace_back(std::pair<std::string, std::string>{team.first, time.toStdString()});
-                j++;
-            }
-        }
-    }
-
-    // All years
-    else {
-        for (auto& _year : m_data) {
-            QString year = _year.first;
-
-            auto data = m_data.at(year).at(distance);
-
-            // Order data first by place
-            m_orderer->orderData(data, Constants::Filter::OrderFilters::PLACEMENT);
-
-            // Get teams and times
-            std::map<std::string, int> teams = {};
-            std::map<std::string, int> teamsCount = {};
-            for (auto& row : data) {
-                if (teamsCount[row[Constants::DataIndex::IndexInData::TEAM]] < 4) {
-                    // Add to times
-                    QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-                    teams[row[Constants::DataIndex::IndexInData::TEAM]] += QTime(0, 0, 0).secsTo(QTime::fromString(time, "h:mm:ss"));
-
-                    // Add to count
-                    teamsCount[row[Constants::DataIndex::IndexInData::TEAM]]++;
-                }
-            }
-
-            // Sort teams
-            std::set<std::pair<std::string, int>, Comparator> sortedTeams(
-                        teams.begin(), teams.end(), compFunctor);
-
-            // Take top ten
-            int i = 0;
-            for (std::pair<std::string, int> team : sortedTeams) {
-                if (i >= 10) break; // Top ten
-
-                // Check that team actually has 4 times
-                if (teamsCount.at(team.first) != 4) continue;
-
-                QString time = QDateTime::fromSecsSinceEpoch(team.second/4, Qt::UTC).toString("h:mm:ss");
-                results.emplace_back(std::pair<std::string, std::string>{team.first, time.toStdString()});
-                i++;
-            }
-        }
+        std::string stdTime{time.toStdString()}; // Chop result to 0.1s
+        results.emplace_back(std::pair<std::string, std::string>(team.first, stdTime.substr(0, stdTime.size() - 2)));
+        i++;
     }
 
     return results;
