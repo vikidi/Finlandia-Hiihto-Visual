@@ -516,78 +516,54 @@ std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler:
 
 std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTimes(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
 {
+    // Distance filter required
     if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
 
-    QString distance = filters[Constants::Filter::ValueFilters::DISTANCE];
+    // Create the filter to fetch data
+    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
+        if (it->first == Constants::Filter::ValueFilters::DISTANCE
+            || it->first == Constants::Filter::ValueFilters::YEAR
+            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE
+            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE
+            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_MEN
+            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_WOMEN) {
+            // Accept filter
+            ++it;
+        }
+        else {
+            // Remove filter
+            filters.erase(it++);
+        }
+    }
 
+    // Get rows that pass filter
+    std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
+
+    if (data.size() == 0) return {};
+
+    // < year, value >
+    std::map<std::string, unsigned long long> times = {}; // In milliseconds
+    std::map<std::string, unsigned long long> counts = {};
+
+    for (auto& row : data) {
+        std::string year = row[Constants::DataIndex::IndexInData::YEAR];
+
+        // Add time
+        QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
+        times[year] += static_cast<unsigned long long>(QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z")));
+
+        // Add count
+        counts[year]++;
+    }
+
+    // Calculate averages
     std::map<std::string, std::string> results = {};
+    for (auto& time : times) {
+        QString avetime = QDateTime::fromMSecsSinceEpoch(static_cast<long long>(time.second/counts[time.first]),
+                                                            Qt::UTC).toString("h:mm:ss.zzz");
 
-    // One year
-    if (filters.find(Constants::Filter::ValueFilters::YEAR) != filters.end()) {
-        QString year = filters[Constants::Filter::ValueFilters::YEAR];
-        long sum = 0; // Milliseconds
-        long count = 0;
-
-        for (auto& row : m_data.at(year).at(distance)) {
-            QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-            sum += QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z"));
-            count++;
-        }
-
-        if(!count) return {}; // Do not divide with 0
-        QString time = QDateTime::fromMSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss.zzz");
-
-        std::string stdTime{time.toStdString()}; // Chop result to 0.1s
-        results.insert({year.toStdString(), stdTime.substr(0,stdTime.size()-2)});
-    }
-
-    // Multiple years
-    else if (filters.find(Constants::Filter::ValueFilters::YEAR_RANGE) != filters.end()) {
-        QStringList years = filters[Constants::Filter::ValueFilters::YEAR_RANGE].split(";");
-
-        QString lower = years[0];
-        QString upper = years[1];
-
-        // Go through given years
-        for (int i = lower.toInt(); i <= upper.toInt(); i++) {
-            QString year = QString::number(i);
-            long sum = 0; // Milliseconds
-            long count = 0;
-
-            for (auto& row : m_data.at(year).at(distance)) {
-                QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-                sum += QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z"));
-                count++;
-            }
-
-            if(!count) continue; // Do not divide with 0
-            QString time = QDateTime::fromMSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss.zzz");
-
-            std::string stdTime{time.toStdString()}; // Chop result to 0.1s
-            results.insert({year.toStdString(), stdTime.substr(0,stdTime.size()-2)});
-        }
-    }
-
-    // All years
-    else {
-        for (auto& _year : m_data) {
-            QString year = _year.first;
-
-            long sum = 0; // Milliseconds
-            long count = 0;
-
-            for (auto& row : _year.second.at(distance)) {
-                QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
-                sum += QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z"));
-                count++;
-            }
-
-            if(!count) continue; // Do not divide with 0
-            QString time = QDateTime::fromMSecsSinceEpoch(sum/count, Qt::UTC).toString("h:mm:ss.zzz");
-
-            std::string stdTime{time.toStdString()}; // Chop result to 0.1s
-            results.insert({year.toStdString(), stdTime.substr(0,stdTime.size()-2)});
-        }
+        std::string stdTime{avetime.toStdString()}; // Chop result to 0.1s
+        results.insert({time.first, stdTime.substr(0,stdTime.size()-2)});
     }
 
     return results;
