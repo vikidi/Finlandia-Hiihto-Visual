@@ -565,7 +565,7 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
     // Calculate averages
     std::map<std::string, std::string> results = {};
     for (auto& time : times) {
-        QString avetime = QDateTime::fromMSecsSinceEpoch(static_cast<long long>(time.second/counts[time.first]),
+        QString avetime = QDateTime::fromMSecsSinceEpoch(static_cast<long long>(time.second/static_cast<unsigned long long>(counts[time.first])),
                                                             Qt::UTC).toString("h:mm:ss.zzz");
 
         std::string stdTime{avetime.toStdString()}; // Chop result to 0.1s
@@ -693,37 +693,54 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
 
     if (data.size() == 0) return {};
 
-    std::vector<std::pair<std::string, std::string> > results = {};
-
-    // Order data first by place
-    m_orderer->orderData(data, Constants::Filter::OrderFilters::TIME);
-
     // Get teams and times
     std::map<std::string, long> teams = {};
     std::map<std::string, int> teamsCount = {};
+    std::map<std::string, std::vector<long>> teamTimes = {};
     for (auto& row : data) {
 
         // No empty teams
         if (row[Constants::DataIndex::IndexInData::TEAM] == "") continue;
 
-        if (teamsCount[row[Constants::DataIndex::IndexInData::TEAM]] < 4) {
+        QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
+        std::string team = row[Constants::DataIndex::IndexInData::TEAM];
 
-            // Add to times
-            QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
+        // Need different format depending if milliseconds are present
+        int time;
+        if (stime.contains('.')) {
+            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
+        } else {
+            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
+        }
 
-            // Need different format depending if milliseconds are present
-            int time;
-            if (stime.contains('.')) {
-                time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
-            } else {
-                time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
-            }
+        // Not enough times yet
+        if (teamsCount[team] < 4) {
 
             // Add time
-            teams[row[Constants::DataIndex::IndexInData::TEAM]] += time;
+            teams[team] += time;
 
             // Add to count
-            teamsCount[row[Constants::DataIndex::IndexInData::TEAM]]++;
+            teamsCount[team]++;
+
+            // Add to the teams times
+            teamTimes[team].emplace_back(time);
+
+            // Sort teams times so that slowest is last
+            std::sort(teamTimes[team].begin(), teamTimes[team].end());
+        }
+
+        // If time is better than teams current worst,
+        // replace the worst with this
+        else if (teamTimes[team].back() > time){
+
+            // Substract the time difference from teams total time
+            teams[team] -= (teamTimes[team].back() - time);
+
+            // Replace the last time with this
+            teamTimes[team].back() = time;
+
+            // Sort teams times so that slowest is last
+            std::sort(teamTimes[team].begin(), teamTimes[team].end());
         }
     }
 
@@ -732,6 +749,7 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
                 teams.begin(), teams.end(), compFunctor);
 
     // Take top ten
+    std::vector<std::pair<std::string, std::string> > results = {};
     int i = 0;
     for (std::pair<std::string, long> team : sortedTeams) {
         if (i >= 10) break; // Top ten
