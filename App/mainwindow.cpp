@@ -23,7 +23,9 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged,
             m_scene, &InternetExplorers::GameScene::updateProgress);
 
-    // Conenct for info box
+    // Connect for info box
+    connect(m_dataHandler, &InternetExplorers::DataHandler::appendInfo,
+            this, &MainWindow::appendInfo);
 
     // Remove toolbar
     QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
@@ -54,8 +56,9 @@ void MainWindow::dataReady()
 
 void MainWindow::appendInfo(const QString text)
 {
-    QDateTime now(QDateTime::currentDateTime());
-    QString msg = now.toString("hh:mm:ss.zzz") + "\t- " + text;
+    std::string now = QDateTime::currentDateTime().toString("hh:mm:ss.zzz").toStdString();
+    QString time = QString::fromStdString(now.substr(0, now.size() - 2));
+    QString msg = time + "  -  " + text;
     ui->txt_info->append(msg);
 }
 

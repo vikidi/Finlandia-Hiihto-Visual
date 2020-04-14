@@ -112,7 +112,7 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
         th.join();
     }
 
-    std::cout << getAmountOfRows() << " rows fetched!" << std::endl;
+    emit appendInfo(QString::number(getAmountOfRows()) + " rows fetched!");
 
     return m_data;
 }

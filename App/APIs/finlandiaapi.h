@@ -61,6 +61,14 @@ signals:
      */
     void progressChanged(const int progress);
 
+    /*!
+     * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfo(const QString text);
+
 private slots:
 
 private:

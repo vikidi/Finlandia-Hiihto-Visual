@@ -236,6 +236,14 @@ private slots:
      */
     void progressChangedInApi(const int progress);
 
+    /*!
+     * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfoFromApi(const QString text);
+
 signals:
     /*!
      * \brief
@@ -244,6 +252,14 @@ signals:
      * The current progress
      */
     void progressChanged(const int progress);
+
+    /*!
+     * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfo(const QString text);
 
     /*!
      * \brief

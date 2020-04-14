@@ -40,8 +40,16 @@ InternetExplorers::DataHandler::DataHandler():
     m_dataByName({})
 {
     // For progress
-    connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::progressChanged, this, &DataHandler::progressChangedInApi);
-    connect(m_localAPI, &InternetExplorers::LocalAPI::progressChanged, this, &DataHandler::progressChangedInApi);
+    connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::progressChanged,
+            this, &DataHandler::progressChangedInApi);
+    connect(m_localAPI, &InternetExplorers::LocalAPI::progressChanged,
+            this, &DataHandler::progressChangedInApi);
+
+    // For info box
+    connect(m_finlandiaAPI, &InternetExplorers::FinlandiaAPI::appendInfo,
+            this, &DataHandler::appendInfoFromApi);
+    connect(m_localAPI, &InternetExplorers::LocalAPI::appendInfo,
+            this, &DataHandler::appendInfoFromApi);
 
     auto msg(QString("Constructor ready"));
     auto msgSender(QString("DataHandler"));
@@ -704,6 +712,11 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
 void InternetExplorers::DataHandler::progressChangedInApi(const int progress)
 {
     emit progressChanged(progress);
+}
+
+void InternetExplorers::DataHandler::appendInfoFromApi(const QString text)
+{
+    emit appendInfo(text);
 }
 
 void InternetExplorers::DataHandler::loadData()
