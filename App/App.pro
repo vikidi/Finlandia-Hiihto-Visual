@@ -34,7 +34,6 @@ SOURCES += \
     APIs/finlandiaapi.cpp \
     APIs/localapi.cpp \
     datahandler.cpp \
-    APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
     UI/finlandia.cpp \
     interfacefilter.cpp \
@@ -52,7 +51,6 @@ HEADERS += \
     APIs/finlandiaapi.h \
     APIs/localapi.h \
     datahandler.h \
-    APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
     UI/finlandia.h \
     interfacefilter.h \

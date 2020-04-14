@@ -68,6 +68,8 @@ private slots:
 
 private:
 
+    const QString m_name = "MainWindow";
+
     // Finlandia UI window
     Finlandia* m_finlandiaUI;
 

@@ -66,13 +66,13 @@ void InternetExplorers::Logger::writeBuffer()
     getInstance().m_writeBuffer.clear();
 }
 
-QString InternetExplorers::Logger::getTime()
+QString InternetExplorers::Logger::getTime() const
 {
     QDateTime now(QDateTime::currentDateTime());
     return now.toString("dd.MM.yyyy") + " " + now.toString("hh:mm:ss.zzz") + "\t- ";
 }
 
-QString InternetExplorers::Logger::getSeverity(InternetExplorers::Constants::Logger::Severity severity)
+QString InternetExplorers::Logger::getSeverity(const Constants::Logger::Severity severity) const
 {
     switch (severity) {
         case InternetExplorers::Constants::Logger::Severity::INFO:
@@ -93,7 +93,7 @@ InternetExplorers::Logger &InternetExplorers::Logger::getInstance()
     return loggerInstance;
 }
 
-void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Constants::Logger::Severity severity)
+void InternetExplorers::Logger::log(const QString &msg, const Constants::Logger::Severity severity)
 {
     QString str = getInstance().getTime();
     str += getInstance().getSeverity(severity);
@@ -107,7 +107,7 @@ void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Constants::
     }
 }
 
-void InternetExplorers::Logger::log(QString &msg, InternetExplorers::Constants::Logger::Severity severity, QString &sender)
+void InternetExplorers::Logger::log(const QString &msg, InternetExplorers::Constants::Logger::Severity severity, const QString &sender)
 {
     QString str = getInstance().getTime();
     str += sender + " - ";

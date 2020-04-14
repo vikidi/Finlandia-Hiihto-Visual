@@ -5,6 +5,7 @@
 
 #include "interfacefilter.h"
 #include "constants.h"
+#include "logger.h"
 
 MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* dh, QWidget *parent) :
     QMainWindow(parent),
@@ -23,7 +24,9 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged,
             m_scene, &InternetExplorers::GameScene::updateProgress);
 
-    // Conenct for info box
+    // Connect for info box
+    connect(m_dataHandler, &InternetExplorers::DataHandler::appendInfo,
+            this, &MainWindow::appendInfo);
 
     // Remove toolbar
     QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
@@ -38,10 +41,20 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     m_view->verticalScrollBar()->setVisible(false);
     m_view->horizontalScrollBar()->setVisible(false);
     m_view->setFixedSize(m_scene->width()+30,m_scene->height()+30);
+
+    QString msg("Luokan rakentaja on valmis.");
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::INFO, m_name);
+
+    msg = QString("Ohjelma on käynnistetty.");
+    appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::INFO, m_name);
 }
 
 MainWindow::~MainWindow()
 {
+    QString msg("Luokan tuhoaja on kutsuttu.");
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::INFO, m_name);
+
     delete m_scene;
     delete m_view;
     delete ui;
@@ -50,12 +63,16 @@ MainWindow::~MainWindow()
 void MainWindow::dataReady()
 {
     ui->haunAloitusNappi->setDisabled(false);
+
+    QString msg("Käynnistä päänäkymä painamalla \"Aloita haku\"-painiketta.");
+    appendInfo(msg);
 }
 
 void MainWindow::appendInfo(const QString text)
 {
-    QDateTime now(QDateTime::currentDateTime());
-    QString msg = now.toString("hh:mm:ss.zzz") + "\t- " + text;
+    std::string now = QDateTime::currentDateTime().toString("hh:mm:ss.zzz").toStdString();
+    QString time = QString::fromStdString(now.substr(0, now.size() - 2));
+    QString msg = time + "  -  " + text;
     ui->txt_info->append(msg);
 }
 

@@ -236,6 +236,14 @@ private slots:
      */
     void progressChangedInApi(const int progress);
 
+    /*!
+     * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfoFromApi(const QString text);
+
 signals:
     /*!
      * \brief
@@ -247,11 +255,21 @@ signals:
 
     /*!
      * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfo(const QString text);
+
+    /*!
+     * \brief
      * Data has been loaded
      */
     void loadingReady();
 
 private:
+
+    const QString m_name = "DataHandler";
 
     /*!
      * \brief
