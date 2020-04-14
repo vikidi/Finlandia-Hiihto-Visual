@@ -47,3 +47,8 @@ std::string InternetExplorers::Helper::mSecsToString(const unsigned long long ti
     std::string stdTime{t.toStdString()}; // Chop result to 0.1s
     return stdTime.substr(0, stdTime.size() - 2);
 }
+
+double InternetExplorers::Helper::mSecsToH(const unsigned long long time)
+{
+    return (time / static_cast<double>(1000 * 60 * 60));
+}

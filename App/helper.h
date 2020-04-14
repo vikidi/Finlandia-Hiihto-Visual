@@ -31,6 +31,8 @@ public:
     static QString mSecsToQString(const unsigned long long time);
     static std::string mSecsToString(const unsigned long long time);
 
+    static double mSecsToH(const unsigned long long time);
+
 private:
     Helper() {}
 };

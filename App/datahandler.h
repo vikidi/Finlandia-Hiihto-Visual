@@ -197,6 +197,20 @@ public:
 
     /*!
      * \brief
+     * Gets the average speed of skiers
+     * \param filters
+     * Uses the filter to narrow down data from where to get the average time
+     * \attention
+     * Uses only YEAR or YEAR_RANGE, DISTANCE, PLACE_RANGE,
+     * PLACE_RANGE_MEN and PLACE_RANGE_WOMEN filters.<br>
+     * DISTANCE filter must be used!
+     * \return
+     * Results in format < year, average speed (km/h) >
+     */
+    std::map<std::string, std::string> getAverageSpeeds(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
      * Gets the amount of participants by country
      * \param filters
      * Uses the filter to narrow down data from where to get the participants

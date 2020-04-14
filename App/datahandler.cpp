@@ -510,6 +510,83 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
     return results;
 }
 
+std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageSpeeds(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
+{
+    // Distance filter required
+    if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
+
+    // Parse distance in kilometers
+    std::string dist = filters[Constants::Filter::ValueFilters::DISTANCE].toStdString();
+
+    std::string nums = "0123456789";
+    std::string tmp = "";
+    for(auto c : dist) {
+        if (nums.find(c) != nums.npos) {
+            tmp += c;
+        }
+    }
+
+    int distance;
+    try {
+        distance = std::stoi(tmp);
+    } catch (std::exception) {
+        return {};
+    }
+
+    // Create the filter to fetch data
+    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
+        if (it->first == Constants::Filter::ValueFilters::DISTANCE
+            || it->first == Constants::Filter::ValueFilters::YEAR
+            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE
+            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE
+            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_MEN
+            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_WOMEN) {
+            // Accept filter
+            ++it;
+        }
+        else {
+            // Remove filter
+            filters.erase(it++);
+        }
+    }
+
+    // Get rows that pass filter
+    std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
+
+    if (data.size() == 0) return {};
+
+    // < year, value >
+    std::map<std::string, unsigned long long> times = {}; // In milliseconds
+    std::map<std::string, int> counts = {};
+
+    for (auto& row : data) {
+        std::string year = row[Constants::DataIndex::IndexInData::YEAR];
+
+        // Add time
+        QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
+
+        long itime = Helper::timeToMSecs(time);
+
+        if (itime == -1) continue; // Invalid time
+
+        times[year] += static_cast<unsigned long long>(itime);
+
+        // Add count
+        ++counts[year];
+    }
+
+    // Calculate averages
+    std::map<std::string, std::string> results = {};
+    for (auto& time : times) {
+        unsigned long long aveMSecs = (time.second/static_cast<unsigned long long>(counts[time.first]));
+        QString st = QString::number(distance/Helper::mSecsToH(aveMSecs));
+
+        results.insert({time.first, st.toStdString()});
+    }
+
+    return results;
+}
+
 std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCountry(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
 {
     std::map<std::string, int> results = {};
