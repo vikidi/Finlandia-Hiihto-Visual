@@ -18,6 +18,7 @@
 #include <QTime>
 #include "logger.h"
 #include <limits.h>
+#include "helper.h"
 
 typedef std::function<bool(std::pair<std::string, long>, std::pair<std::string, long>)> Comparator;
 
@@ -393,13 +394,9 @@ std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler:
         std::string year = row[Constants::DataIndex::IndexInData::YEAR];
         QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
 
-        // Need different format depending if milliseconds are present
-        long time;
-        if (stime.contains('.')) {
-            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
-        } else {
-            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
-        }
+        long time = Helper::timeToMSecs(stime);
+
+        if (time == -1) continue; // Invalid time
 
         // There is no times yet or time is solver
         if (times.find(year) == times.end() || time > times[year]) {
@@ -441,13 +438,9 @@ std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler:
         std::string year = row[Constants::DataIndex::IndexInData::YEAR];
         QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
 
-        // Need different format depending if milliseconds are present
-        long time;
-        if (stime.contains('.')) {
-            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
-        } else {
-            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
-        }
+        long time = Helper::timeToMSecs(stime);
+
+        if (time == -1) continue; // Invalid time
 
         // There is no times yet or time is solver
         if (times.find(year) == times.end() || time < times[year]) {
@@ -496,12 +489,11 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
         // Add time
         QString time = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
 
-        // Need different format depending if milliseconds are present
-        if (time.contains('.')) {
-            times[year] += static_cast<unsigned long long>(QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss.z")));
-        } else {
-            times[year] += static_cast<unsigned long long>(QTime(0, 0, 0).msecsTo(QTime::fromString(time, "h:mm:ss")));
-        }
+        long itime = Helper::timeToMSecs(time);
+
+        if (itime == -1) continue; // Invalid time
+
+        times[year] += static_cast<unsigned long long>(itime);
 
         // Add count
         ++counts[year];
@@ -510,11 +502,9 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
     // Calculate averages
     std::map<std::string, std::string> results = {};
     for (auto& time : times) {
-        QString avetime = QDateTime::fromMSecsSinceEpoch(static_cast<long long>(time.second/static_cast<unsigned long long>(counts[time.first])),
-                                                            Qt::UTC).toString("h:mm:ss.zzz");
+        std::string st = Helper::mSecsToString(time.second/static_cast<unsigned long long>(counts[time.first]));
 
-        std::string stdTime{avetime.toStdString()}; // Chop result to 0.1s
-        results.insert({time.first, stdTime.substr(0, stdTime.size() - 2)});
+        results.insert({time.first, st});
     }
 
     return results;
@@ -650,13 +640,9 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
         QString stime = QString::fromStdString(row[Constants::DataIndex::IndexInData::TIME]);
         std::string team = row[Constants::DataIndex::IndexInData::TEAM];
 
-        // Need different format depending if milliseconds are present
-        long time;
-        if (stime.contains('.')) {
-            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss.z")));
-        } else {
-            time = static_cast<long>(QTime(0, 0, 0).msecsTo(QTime::fromString(stime, "h:mm:ss")));
-        }
+        long time = Helper::timeToMSecs(stime);
+
+        if (time == -1) continue; // Invalid time
 
         // Not enough times yet
         if (teamsCount[team] < 4) {
@@ -702,10 +688,9 @@ std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler
         // Check that team actually has 4 times
         if (teamsCount.at(team.first) != 4) continue;
 
-        QString time = QDateTime::fromMSecsSinceEpoch(team.second/4, Qt::UTC).toString("h:mm:ss.zzz");
+        std::string st = Helper::mSecsToString(static_cast<unsigned long long>(team.second)/4);
 
-        std::string stdTime{time.toStdString()}; // Chop result to 0.1s
-        results.emplace_back(std::pair<std::string, std::string>(team.first, stdTime.substr(0, stdTime.size() - 2)));
+        results.emplace_back(std::pair<std::string, std::string>(team.first, st));
         ++i;
     }
 
