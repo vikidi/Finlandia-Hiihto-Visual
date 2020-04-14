@@ -72,9 +72,19 @@ signals:
 private slots:
 
 private:
+    const QString m_name = "FinalndiaAPI";
+
     void loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>>);
     void appendData(std::vector<std::vector<std::string>>);
     void removePlankLines();
+
+    /*!
+     * \brief
+     * Counts the amount of rows in data
+     * \return
+     * Amount of rows
+     */
+    int getAmountOfRows() const;
 
     std::mutex m_mtx;
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> m_data;

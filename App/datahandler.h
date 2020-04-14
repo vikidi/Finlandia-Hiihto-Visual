@@ -269,6 +269,8 @@ signals:
 
 private:
 
+    const QString m_name = "DataHandler";
+
     /*!
      * \brief
      * Loads the data.

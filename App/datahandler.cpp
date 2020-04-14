@@ -51,16 +51,14 @@ InternetExplorers::DataHandler::DataHandler():
     connect(m_localAPI, &InternetExplorers::LocalAPI::appendInfo,
             this, &DataHandler::appendInfoFromApi);
 
-    auto msg(QString("Constructor ready"));
-    auto msgSender(QString("DataHandler"));
-    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+    auto msg(QString("Luokan rakentaja on valmis."));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 }
 
 InternetExplorers::DataHandler::~DataHandler()
 {
-    auto msg(QString("Destructor called"));
-    auto msgSender(QString("DataHandler"));
-    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+    auto msg(QString("Luokan tuhoaja on kutsuttu."));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
     delete m_finlandiaAPI;
     delete m_localAPI;
@@ -70,16 +68,21 @@ InternetExplorers::DataHandler::~DataHandler()
 void InternetExplorers::DataHandler::Initialize()
 {
     if (!m_loadOngoing) {
-        auto msg(QString("Loading data"));
-        auto msgSender(QString("DataHandler"));
-        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+        QString msg("Aloitetaan datan lataaminen.");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
         m_loadOngoing = true;
         loadData();
 
-        msg = QString("Loading finished");
-        msgSender = QString("DataHandler");
-        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+        msg = QString("Datan lataaminen on valmis.");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+    }
+    else {
+        QString msg("Datan lataus on jo käynnissä!");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
     }
 }
 
@@ -742,12 +745,20 @@ void InternetExplorers::DataHandler::loadInThread()
         m_data = m_localAPI->loadData();
     }
 
+    QString msg("Luodaan ohjelman muistissa olevia säiliöitä.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     setRowsByName();
 
     // CLOCKING
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
     qDebug() << "Data fetch done in " << time_span.count() << " s";
+
+    msg = QString("Datan lataaminen suoritettu " + QString::number(time_span.count()) + " sekunnissa.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
     m_loadOngoing = false;
     emit loadingReady();

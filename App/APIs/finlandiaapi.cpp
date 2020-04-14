@@ -12,20 +12,21 @@ InternetExplorers::FinlandiaAPI::FinlandiaAPI():
     m_finishedCalls(0),
     m_currentProgress(0)
 {
-    auto msg(QString("Constructor ready"));
-    auto msgSender(QString("FinlandiaAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+    auto msg(QString("Luokan rakentaja on valmis"));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 }
 
 InternetExplorers::FinlandiaAPI::~FinlandiaAPI()
 {
-    auto msg(QString("Destructor called"));
-    auto msgSender(QString("FinlandiaAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+    auto msg(QString("Luokan tuhoaja on kutsuttu."));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 }
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::FinlandiaAPI::loadAllData()
 {
+    QString msg("Aloitetaan datan lataaminen Finlandia hiihdon sivuilta.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
     m_ready = 0;
     m_runners = 0;
@@ -59,6 +60,10 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
         searchVector->push_back(search);
     }
 
+    msg = QString("Ladataan data käyttäen " + QString::number(optimalAmountOfThreads) + " säiettä.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     for(int i(0); i < optimalAmountOfThreads; i++)
     {
         m_runners++;
@@ -74,6 +79,10 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
 
     // Make sure 100% is reached
     emit progressChanged(100);
+
+    msg = QString(QString::number(getAmountOfRows()) + " riviä dataa ladattu.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
     return m_data;
 }
@@ -100,9 +109,9 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
                 if((progress < 0) || (progress > 100))
                 {
                     // More calls than expected were added. Increasing m_totalCalls somewhat compensates it
-                    auto msg(QString("Precalculated m_totalCalls might be incorrect"));
-                    auto msgSender(QString("FinlandiaAPI"));
-                    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
+                    auto msg(QString("Etukäteen laskettu m_totalCalls saattaa olla virheellinen"));
+                    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
                     m_currentProgress = 0;
                     m_totalCalls += 24;
                 } else
@@ -253,4 +262,18 @@ void InternetExplorers::FinlandiaAPI::removePlankLines()
             }
         }
     }
+}
+
+int InternetExplorers::FinlandiaAPI::getAmountOfRows() const
+{
+    if (m_data.size() == 0) return 0;
+
+    int count = 0;
+    for (auto& year : m_data) {
+        for (auto& dist : year.second) {
+            count += static_cast<int>(dist.second.size());
+        }
+    }
+
+    return count;
 }

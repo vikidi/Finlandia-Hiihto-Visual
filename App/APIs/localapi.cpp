@@ -96,7 +96,7 @@ void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QStr
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::LocalAPI::loadData()
 {
-    QString msg("Aloitetaan datan lataus paikalliselta levyltä välimuistiin.");
+    QString msg("Aloitetaan datan lataus paikalliselta levyltä ohjelman muistiin.");
     emit appendInfo(msg);
     InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
@@ -111,6 +111,13 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
     }
 
     size_t optimalAmountOfThreads(std::thread::hardware_concurrency());
+
+    if(optimalAmountOfThreads < 1)
+    {
+        qDebug() << "Number of concurrent threads is not well defined.\n"
+                     "Setting it to 4";
+        optimalAmountOfThreads = 4;
+    }
 
     // Create year vectors
     auto years = std::vector<std::string>();
