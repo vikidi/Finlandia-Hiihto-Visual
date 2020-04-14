@@ -48,7 +48,7 @@ public:
      * \return
      * True, if the data needs to be loaded from web
      */
-    bool needsToBeLoadedFromWeb();
+    bool needsToBeLoadedFromWeb() const;
 
     /*!
      * \brief
@@ -66,7 +66,7 @@ signals:
      * \param progress
      * Current progress
      */
-    void progressChanged(const int progress);
+    void progressChanged(const int progress) const;
 
     /*!
      * \brief
@@ -74,7 +74,7 @@ signals:
      * \param text
      * Text to be appended
      */
-    void appendInfo(const QString text);
+    void appendInfo(const QString text) const;
 
 public slots:
 
@@ -86,13 +86,15 @@ public slots:
 
 private:
 
+    const QString m_name = "LocalAPI";
+
     /*!
      * \brief
      * Gets the amount of data files on disk
      * \return
      * The amount of files
      */
-    int getAmountOfFiles();
+    int getAmountOfFiles() const;
 
     /*!
      * \brief
@@ -110,7 +112,7 @@ private:
      * \attention
      * Method is thread safe.
      */
-    void appendData(std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>>& data);
+    void appendData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>>& data);
 
     template<typename T> // Template for the method below
     /*!
@@ -131,7 +133,7 @@ private:
      * \return
      * Results < Path, MD5 checksum >
      */
-    std::map<QString, QString> readMD5File();
+    std::map<QString, QString> readMD5File() const;
 
     /*!
      * \brief
@@ -153,7 +155,7 @@ private:
      * \return
      * MD5 check sum for the file, empty QByteArray if failure
      */
-    QByteArray getMD5CheckSum(const QString &file);
+    QByteArray getMD5CheckSum(const QString &file) const;
 
     /*!
      * \brief
@@ -161,7 +163,7 @@ private:
      * \return
      * True, if data on disk is corrupted.
      */
-    bool isDataCorrupted();
+    bool isDataCorrupted() const;
 
     /*!
      * \brief
@@ -169,7 +171,7 @@ private:
      * \return
      * True, if there is data
      */
-    bool isDataAvailable();
+    bool isDataAvailable() const;
 
     /*!
      * \brief
