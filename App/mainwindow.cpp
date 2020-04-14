@@ -10,7 +10,6 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     QMainWindow(parent),
     m_finlandiaUI(finlandiaUI),
     m_dataHandler(dh),
-    m_progress(new QProgressBar(this)),
     m_view(new QGraphicsView),
     m_scene(new InternetExplorers::GameScene(true)),
     ui(new Ui::MainWindow)
@@ -20,10 +19,11 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     connect(m_dataHandler, &InternetExplorers::DataHandler::loadingReady, this, &MainWindow::dataReady);
     m_dataHandler->Initialize();
 
-    // For progress
-    connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged, this, &MainWindow::progressChanged);
+    // Connect for progress
     connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged,
             m_scene, &InternetExplorers::GameScene::updateProgress);
+
+    // Conenct for info box
 
     // Remove toolbar
     QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
@@ -52,9 +52,11 @@ void MainWindow::dataReady()
     ui->haunAloitusNappi->setDisabled(false);
 }
 
-void MainWindow::progressChanged(const int progress)
+void MainWindow::appendInfo(const QString text)
 {
-    m_progress->setValue(progress);
+    QDateTime now(QDateTime::currentDateTime());
+    QString msg = now.toString("hh:mm:ss.zzz") + "\t- " + text;
+    ui->txt_info->append(msg);
 }
 
 void MainWindow::on_haunAloitusNappi_clicked()
