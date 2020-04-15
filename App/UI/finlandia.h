@@ -11,6 +11,7 @@
 #include "interfacefilter.h"
 #include "encryptionsettingswindow.h"
 #include "predicterwindow.h"
+#include "../helper.h"
 
 // Alias to make things easier
 #ifndef FILTER_NS
@@ -187,10 +188,13 @@ private:
     InternetExplorers::DataHandler *m_DataHandler;
 
     std::vector<std::vector<std::vector<std::string>>> allSearches;
+
+    // DEPR
     std::vector<std::vector<std::string>> m_datalump;
 
     QChart *m_chart;
 
+    // DEPR
     std::vector<QString> all_titles;
 
     // Layout for tables
