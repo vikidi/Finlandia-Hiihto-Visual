@@ -1090,9 +1090,6 @@
          <item row="1" column="3">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10"/>
-           </item>
-           <item>
             <widget class="QLabel" name="labelHaettavaTieto">
              <property name="font">
               <font>
@@ -1113,73 +1110,134 @@
              <property name="checked">
               <bool>true</bool>
              </property>
-             <attribute name="buttonGroup">
-              <string notr="true">HaettavaTietoButtons</string>
-             </attribute>
+			 <property name="autoExclusive">
+              <bool>false</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
-             <item>
-              <widget class="QRadioButton" name="hiihtajanNimiRP">
+            <layout class="QGridLayout" name="gridLayout_9" columnstretch="0,0">
+             <item row="0" column="1">
+              <widget class="QRadioButton" name="naytaMatkaRP">
                <property name="text">
-                <string>Hiihtäjän nimi</string>
+                <string>Matka</string>
                </property>
-               <property name="autoExclusive">
-                <bool>true</bool>
+			   <property name="autoExclusive">
+                <bool>false</bool>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
               </widget>
              </item>
-             <item>
-              <widget class="QRadioButton" name="aikaRP">
+             <item row="1" column="1">
+              <widget class="QRadioButton" name="naytaSijaRP">
+               <property name="text">
+                <string>Sija</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QRadioButton" name="naytaSijaMRP">
+               <property name="text">
+                <string>Sija (miehet)</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="naytaVuosiRP">
+               <property name="text">
+                <string>Vuosi</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="naytaAikaRP">
                <property name="text">
                 <string>Aika</string>
                </property>
-               <property name="autoExclusive">
-                <bool>true</bool>
+			   <property name="autoExclusive">
+                <bool>false</bool>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
               </widget>
              </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="QRadioButton" name="haeJoukkueRP">
+             <item row="3" column="0">
+              <widget class="QRadioButton" name="naytaSPRP">
+               <property name="text">
+                <string>Sukupuoli</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QRadioButton" name="naytaKaupunkiRP">
+               <property name="text">
+                <string>Kaupunki</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QRadioButton" name="naytaSVRP">
+               <property name="text">
+                <string>Syntymävuosi</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QRadioButton" name="naytaSijaNRP">
+               <property name="text">
+                <string>Sija (naiset)</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QRadioButton" name="naytaNimiRP">
+               <property name="text">
+                <string>Nimi</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QRadioButton" name="naytaMaaRP">
+               <property name="text">
+                <string>Kansallisuus</string>
+               </property>
+			   <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QRadioButton" name="naytaJoukkueRP">
                <property name="text">
                 <string>Joukkue</string>
                </property>
-               <property name="autoExclusive">
-                <bool>true</bool>
+			   <property name="autoExclusive">
+                <bool>false</bool>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="KotimaaRP">
-               <property name="text">
-                <string>Kotimaa</string>
-               </property>
-               <property name="autoExclusive">
-                <bool>true</bool>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
               </widget>
              </item>
             </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5"/>
            </item>
            <item>
             <widget class="Line" name="line_3">

@@ -10,6 +10,7 @@
 #include <cctype>
 #include <QSizePolicy>
 #include "../constants.h"
+#include <algorithm>
 
 Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
                      QWidget *parent) :
@@ -45,6 +46,39 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     // Setup scroll area for tables
     ui->scrollArea->setWidget(ui->scrollWidget);
     m_scrollLayout = new QHBoxLayout(ui->scrollWidget);
+
+    // Connects for attribute radio buttons
+    connect(ui->haeKaikkiRP, &QRadioButton::clicked, this, &Finlandia::onAllAttributesRPClicked);
+    connect(ui->naytaSPRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaSVRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaMaaRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaAikaRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaNimiRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaSijaRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaMatkaRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaSijaMRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaSijaNRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaVuosiRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaJoukkueRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+    connect(ui->naytaKaupunkiRP, &QRadioButton::clicked, this, &Finlandia::onAttributeRPClicked);
+
+    // Connects for order radio buttons
+    connect(ui->jarjestaAlkupRP, &QRadioButton::clicked, this, &Finlandia::onOrderRPClicked);
+    connect(ui->jarjestaMatkaRP, &QRadioButton::clicked, this, &Finlandia::onOrderRPClicked);
+    connect(ui->jarjestaVuosiRP, &QRadioButton::clicked, this, &Finlandia::onOrderRPClicked);
+    connect(ui->jarjestaKotimaaRP, &QRadioButton::clicked, this, &Finlandia::onOrderRPClicked);
+    connect(ui->jarjestaSijoitusRP, &QRadioButton::clicked, this, &Finlandia::onOrderRPClicked);
+    connect(ui->jarjestaSeuranNimiRP, &QRadioButton::clicked, this, &Finlandia::onOrderRPClicked);
+    connect(ui->nimi_jarkkaRP, &QRadioButton::clicked, this, &Finlandia::onOrderRPClicked);
+
+    // Connects for special function radio buttons
+    connect(ui->haeHitainRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
+    connect(ui->haeNopeinRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
+    connect(ui->haeOsalMaarRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
+    connect(ui->osall_lkm_maittainRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
+    connect(ui->vuodenXparhaatRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
+    connect(ui->keskinopeusRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
+    connect(ui->keskiaikaRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
 }
 
 Finlandia::~Finlandia()
@@ -95,25 +129,39 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->spinBoxSijoitusYla->setValue(0);
     ui->spinBoxSijoitusAla->setValue(0);
     ui->textEditHome->setText("");
+
+    // Special radio buttons
     ui->haeHitainRP->setChecked(false);
-    ui->haeKaikkiRP->setChecked(true);
     ui->haeNopeinRP->setChecked(false);
     ui->haeOsalMaarRP->setChecked(false);
     ui->osall_lkm_maittainRP->setChecked(false);
     ui->vuodenXparhaatRP->setChecked(false);
-    ui->KotimaaRP->setChecked(false);
-    ui->haeJoukkueRP->setChecked(false);
-    ui->aikaRP->setChecked(false);
     ui->keskinopeusRP->setChecked(false);
     ui->keskiaikaRP->setChecked(false);
-    ui->hiihtajanNimiRP->setChecked(false);
 
+    // Radio buttons for attributes to show
+    ui->haeKaikkiRP->setChecked(true);
+    ui->naytaSPRP->setChecked(false);
+    ui->naytaSVRP->setChecked(false);
+    ui->naytaMaaRP->setChecked(false);
+    ui->naytaAikaRP->setChecked(false);
+    ui->naytaNimiRP->setChecked(false);
+    ui->naytaSijaRP->setChecked(false);
+    ui->naytaMatkaRP->setChecked(false);
+    ui->naytaSijaMRP->setChecked(false);
+    ui->naytaSijaNRP->setChecked(false);
+    ui->naytaVuosiRP->setChecked(false);
+    ui->naytaJoukkueRP->setChecked(false);
+    ui->naytaKaupunkiRP->setChecked(false);
+
+    // Order radio buttons
+    ui->jarjestaAlkupRP->setChecked(true);
     ui->jarjestaMatkaRP->setChecked(false);
     ui->jarjestaVuosiRP->setChecked(false);
     ui->jarjestaKotimaaRP->setChecked(false);
     ui->jarjestaSijoitusRP->setChecked(false);
     ui->jarjestaSeuranNimiRP->setChecked(false);
-    ui->jarjestaAlkupRP->setChecked(true);
+    ui->nimi_jarkkaRP->setChecked(false);
 
     // DEPR
     m_datalump.clear();
@@ -754,52 +802,69 @@ void Finlandia::save_chart()
 
 std::vector<int> Finlandia::select_attributes()
 {
-    std::vector<int>atr_vec;
+    if(check_for_special_filters()){
+        return {};
+    }
 
+    std::vector<int> atr_vec = {};
+
+    // All attributes
     if(ui->haeKaikkiRP->isChecked()){
-        atr_vec = {Atributes::year, Atributes::distance, Atributes::time,
-                   Atributes::place, Atributes::place_men, Atributes::place_wm,
-                   Atributes::sex, Atributes::name, Atributes::town,
-                   Atributes::nationality, Atributes::birth_yr, Atributes::team};
-
-        if(!check_for_special_filters()){
-            return atr_vec;
+        for (std::size_t i = 0; i < InternetExplorers::Constants::DataIndex::ROW_SIZE; ++i) {
+            atr_vec.emplace_back(static_cast<int>(i));
         }
+        return atr_vec;
     }
 
-    if(ui->KotimaaRP->isChecked()){
-        atr_vec.push_back(Atributes::nationality);
-    }
-    if(ui->haeJoukkueRP->isChecked()){
-        atr_vec.push_back(Atributes::team);
-    }
-    if(ui->aikaRP->isChecked()){
-        atr_vec.push_back(Atributes::time);
-    }
-    if(ui->hiihtajanNimiRP->isChecked()){
-        atr_vec.push_back(Atributes::name);
-    }
-    if(ui->haeOsalMaarRP->isChecked()){
-        atr_vec.push_back(Atributes::nmbr_of_parts); //Number of participants
-    }
-    if( ui->haeNopeinRP->isChecked() ){
-        atr_vec.push_back(Atributes::fastest); //fastest time
+    // Individual attribute choices
+    if (ui->naytaSPRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::SEX);
     }
 
-    if(ui->haeHitainRP->isChecked()){
-        atr_vec.push_back(Atributes::slowest); //the slowest time
+    if (ui->naytaSVRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::BIRTH_YEAR);
     }
 
-    if(ui->keskinopeusRP->isChecked()){
-        atr_vec.push_back(Atributes::avrg_speed);
-    }
-    if(ui->osall_lkm_maittainRP->isChecked()){
-        atr_vec.push_back(Atributes::nmbr_of_parts_nationvice);
+    if (ui->naytaMaaRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::NATIONALITY);
     }
 
-    if(ui->vuodenXparhaatRP->isChecked()){
-        atr_vec.push_back(Atributes::bestofx);
+    if (ui->naytaAikaRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::TIME);
     }
+
+    if (ui->naytaNimiRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::NAME);
+    }
+
+    if (ui->naytaSijaRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::PLACE);
+    }
+
+    if (ui->naytaMatkaRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::DISTANCE);
+    }
+
+    if (ui->naytaSijaMRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::PLACE_MEN);
+    }
+
+    if (ui->naytaSijaNRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::PLACE_WOMEN);
+    }
+
+    if (ui->naytaVuosiRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::YEAR);
+    }
+
+    if (ui->naytaJoukkueRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::TEAM);
+    }
+
+    if (ui->naytaKaupunkiRP->isChecked()) {
+        atr_vec.emplace_back(InternetExplorers::Constants::DataIndex::IndexInData::CITY);
+    }
+
     return atr_vec;
 }
 
@@ -835,7 +900,14 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
         unsigned long long size = newData.size();
 
-        if(size > 0){
+        if (size > 0) {
+
+            // Parse away some columns
+            if (!ui->haeKaikkiRP->isChecked()) {
+                std::vector<int> attrVec = select_attributes();
+                parseColumns(newData, attrVec);
+            }
+
             // Add the new data
             allSearches.push_back(newData);
 
@@ -848,7 +920,7 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
             // Add the title to the list
             ui->listWidgetTehtHaut->addItem(m_titles.back());
         }
-        else{
+        else {
             QMessageBox msgBox;
             msgBox.setText("Hakuehdot eivät tuottaneet yhtäkään tulosta");
             msgBox.exec();
@@ -925,11 +997,84 @@ void Finlandia::on_spinBoxSijoitusAla_valueChanged(int newValue)
     }
 }
 
+void Finlandia::onAttributeRPClicked()
+{
+    if (ui->haeKaikkiRP->isChecked()) {
+        ui->haeKaikkiRP->setChecked(false);
+
+        // These cant be used with attribure restricting
+        ui->haeHitainRP->setChecked(false);
+        ui->haeNopeinRP->setChecked(false);
+        ui->haeOsalMaarRP->setChecked(false);
+        ui->osall_lkm_maittainRP->setChecked(false);
+        ui->vuodenXparhaatRP->setChecked(false);
+        ui->keskinopeusRP->setChecked(false);
+        ui->keskiaikaRP->setChecked(false);
+    }
+}
+
+void Finlandia::onAllAttributesRPClicked()
+{
+    ui->naytaSPRP->setChecked(false);
+    ui->naytaSVRP->setChecked(false);
+    ui->naytaMaaRP->setChecked(false);
+    ui->naytaAikaRP->setChecked(false);
+    ui->naytaNimiRP->setChecked(false);
+    ui->naytaSijaRP->setChecked(false);
+    ui->naytaMatkaRP->setChecked(false);
+    ui->naytaSijaMRP->setChecked(false);
+    ui->naytaSijaNRP->setChecked(false);
+    ui->naytaVuosiRP->setChecked(false);
+    ui->naytaJoukkueRP->setChecked(false);
+    ui->naytaKaupunkiRP->setChecked(false);
+}
+
+void Finlandia::onSpecialRPClicked()
+{
+    if (!ui->haeKaikkiRP->isChecked()) {
+        ui->haeKaikkiRP->setChecked(true);
+
+        // These cant be used with special functions
+        ui->naytaSPRP->setChecked(false);
+        ui->naytaSVRP->setChecked(false);
+        ui->naytaMaaRP->setChecked(false);
+        ui->naytaAikaRP->setChecked(false);
+        ui->naytaNimiRP->setChecked(false);
+        ui->naytaSijaRP->setChecked(false);
+        ui->naytaMatkaRP->setChecked(false);
+        ui->naytaSijaMRP->setChecked(false);
+        ui->naytaSijaNRP->setChecked(false);
+        ui->naytaVuosiRP->setChecked(false);
+        ui->naytaJoukkueRP->setChecked(false);
+        ui->naytaKaupunkiRP->setChecked(false);
+    }
+
+    if (!ui->jarjestaAlkupRP->isChecked()) {
+        // This also sets the other order buttons to false
+        ui->jarjestaAlkupRP->setChecked(true);
+    }
+}
+
+void Finlandia::onOrderRPClicked()
+{
+    if (!ui->jarjestaAlkupRP->isChecked()) {
+
+        // These cant be used with order filtering
+        ui->haeHitainRP->setChecked(false);
+        ui->haeNopeinRP->setChecked(false);
+        ui->haeOsalMaarRP->setChecked(false);
+        ui->osall_lkm_maittainRP->setChecked(false);
+        ui->vuodenXparhaatRP->setChecked(false);
+        ui->keskinopeusRP->setChecked(false);
+        ui->keskiaikaRP->setChecked(false);
+    }
+}
+
 void Finlandia::createNormalHeader()
 {
     std::vector<std::string> head({});
 
-    if(ui->haeKaikkiRP->isChecked()){
+    if (ui->haeKaikkiRP->isChecked()) {
         head.emplace_back(" Vuosi ");
         head.emplace_back(" Matka ");
         head.emplace_back(" Aika ");
@@ -939,21 +1084,56 @@ void Finlandia::createNormalHeader()
         head.emplace_back(" Sukupuoli ");
         head.emplace_back(" Nimi ");
         head.emplace_back(" Kaupunki ");
-        head.emplace_back(" Maa ");
+        head.emplace_back(" Kansalaisuus ");
         head.emplace_back(" Syntymävuosi ");
         head.emplace_back(" Joukkue ");
     }
     else {
-        if(ui->hiihtajanNimiRP->isChecked()){
-            head.emplace_back(" Nimi ");
+        if (ui->naytaVuosiRP->isChecked()) {
+            head.emplace_back(" Vuosi ");
         }
-        if(ui->aikaRP->isChecked()){
+
+        if (ui->naytaMatkaRP->isChecked()) {
+            head.emplace_back(" Matka ");
+        }
+
+        if (ui->naytaAikaRP->isChecked()) {
             head.emplace_back(" Aika ");
         }
-        if(ui->KotimaaRP->isChecked()){
-            head.emplace_back(" Maa ");
+
+        if (ui->naytaSijaRP->isChecked()) {
+            head.emplace_back(" Sija ");
         }
-        if(ui->haeJoukkueRP->isChecked()){
+
+        if (ui->naytaSijaMRP->isChecked()) {
+            head.emplace_back(" Sija (miehet) ");
+        }
+
+        if (ui->naytaSijaNRP->isChecked()) {
+            head.emplace_back(" Sija (naiset) ");
+        }
+
+        if (ui->naytaSPRP->isChecked()) {
+            head.emplace_back(" Sukupuoli ");
+        }
+
+        if (ui->naytaNimiRP->isChecked()) {
+            head.emplace_back(" Nimi ");
+        }
+
+        if (ui->naytaKaupunkiRP->isChecked()) {
+            head.emplace_back(" Kaupunki ");
+        }
+
+        if (ui->naytaMaaRP->isChecked()) {
+            head.emplace_back(" Kansalaisuus ");
+        }
+
+        if (ui->naytaSVRP->isChecked()) {
+            head.emplace_back(" Syntymävuosi ");
+        }
+
+        if (ui->naytaJoukkueRP->isChecked()) {
             head.emplace_back(" Joukkue ");
         }
     }
@@ -1205,6 +1385,33 @@ QString Finlandia::makeOrderTitle()
     }
 
     return "";
+}
+
+void Finlandia::parseColumns(std::vector<std::vector<std::string> > &data, const std::vector<int> &columns)
+{
+    std::vector<int>::const_iterator it_c;
+
+    for (std::size_t r = 0; r < data.size(); ++r) {
+
+        auto& row = data.at(r);
+
+        int i = 0;
+        auto it = row.begin();
+        while (it != row.end()) {
+
+            it_c = std::find(columns.begin(), columns.end(), i);
+            if (it_c != columns.end()) {
+                // Don't remove
+                ++it;
+            }
+            else {
+                // Remove
+                it = row.erase(it);
+            }
+
+            ++i;
+        }
+    }
 }
 
 

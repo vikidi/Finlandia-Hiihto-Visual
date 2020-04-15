@@ -167,6 +167,11 @@ private slots:
      */
     void on_spinBoxSijoitusAla_valueChanged(int newValue);
 
+    void onAttributeRPClicked();
+    void onAllAttributesRPClicked();
+    void onSpecialRPClicked();
+    void onOrderRPClicked();
+
 private:
 
     void createNormalHeader();
@@ -175,6 +180,7 @@ private:
                         const std::string& title);
     QString makeNormalTitle();
     QString makeOrderTitle();
+    void parseColumns(std::vector<std::vector<std::string>>& data, const std::vector<int>& columns);
 
     Ui::Finlandia *ui;
 
@@ -195,23 +201,6 @@ private:
 
     // Titles for each individual search
     std::vector<QString> m_titles;
-
-    //this is used for getting the corresponing string with the enum index
-    std::vector<std::string> attribute_enum = {"YEAR", "DISTANCE", "TIME",
-                                               "PLACE", "PLACE_MEN",
-                                               "PLACE_WOMEN", "SEX", "NAME",
-                                               "CITY", "NATIONALITY",
-                                               "BIRTH_YEAR", "TEAM",
-                                               "NUMBER OF PARTICIPANTS",
-                                              "FASTEST", "SLOWEST", "AVERAGE SPEED",
-                                              "PARTICIPANTS NATION VICE",
-                                              "BEST OF YEAR"};
-
-
-    enum Atributes { year = 0, distance, time, place, place_men, place_wm,
-                     sex, name, town, nationality, birth_yr, team,
-                     nmbr_of_parts, fastest, slowest, avrg_speed,
-                     nmbr_of_parts_nationvice, bestofx};
 
     std::vector<QMenu*> m_menus;
 
