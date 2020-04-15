@@ -8,6 +8,8 @@
 #include "gamescene.h"
 #include <QtCharts>
 #include <cctype>
+#include <QSizePolicy>
+#include "../constants.h"
 
 Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
                      QWidget *parent) :
@@ -39,6 +41,10 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     QAction* close = m_menus.back()->addAction("Close");
     connect(close, &QAction::triggered, [&](){QMainWindow::close();});
     menuBar()->addMenu(m_menus.back());
+
+    // Setup scroll area for tables
+    ui->scrollArea->setWidget(ui->scrollWidget);
+    m_scrollLayout = new QHBoxLayout(ui->scrollWidget);
 }
 
 Finlandia::~Finlandia()
@@ -60,13 +66,25 @@ Finlandia::~Finlandia()
 
 void Finlandia::on_pushButtonNollaKaikki_clicked()
 {
+    // Clear charts
     m_chart -> removeAllSeries();
+
+    // Clear result tables
+    QLayoutItem* item;
+    while ( (item = m_scrollLayout->takeAt( 0 )) != nullptr ) {
+        delete item->widget();
+        delete item;
+    }
+
+    // Clear search listing
     ui->listWidgetTehtHaut->clear();
-    curr_series_title = "";
-    ui->listWidgetResult->clear();
 
+    // Clear search related containers
     allSearches.clear();
+    m_titles.clear();
+    m_headers.clear();
 
+    // Clear UI options
     ui->comboBoxVuosi->setCurrentIndex(0);
     ui->vuosivaliBox->setCurrentIndex(0);
     ui->textEditUrheilija->setText("");
@@ -88,58 +106,38 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->aikaRP->setChecked(false);
     ui->keskinopeusRP->setChecked(false);
     ui->hiihtajanNimiRP->setChecked(false);
+
     ui->jarjestaMatkaRP->setChecked(false);
     ui->jarjestaVuosiRP->setChecked(false);
-    ui->jarjestaAakkosRP->setChecked(false);
     ui->jarjestaKotimaaRP->setChecked(false);
     ui->jarjestaSijoitusRP->setChecked(false);
     ui->jarjestaVainParasRP->setChecked(false);
     ui->jarjestaSeuranNimiRP->setChecked(false);
+    ui->jarjestaAlkupRP->setChecked(true);
 
-
+    // DEPR
     m_datalump.clear();
     all_titles.clear();
-
-    m_nmbr_of_parts.clear();
-    m_fastest.clear();
-    m_slowest.clear();
-    m_avrg_time.clear();
-    m_nmbr_of_parts_nationvice.clear();
-    m_best_of_year_X.clear();
+    // /DEPR
 }
 
-std::map<Filter_NS, QString> Finlandia::makefilter(){
+std::map<Filter_NS, QString> Finlandia::makefilter()
+{
     std::map<Filter_NS, QString> filter;
 
-    //The title for the search is made at the same time
-    QString title;
-
     //Only one year is selected
-    if(ui->comboBoxVuosi->currentIndex() != 0 &&
-            ui->vuosivaliBox->currentIndex() == 0){
-        if (title.length()>0){
-            title = title + ", Vuosi: " + ui->comboBoxVuosi->currentText();
-        }
-        else{
-            title = "Vuosi: " + ui->comboBoxVuosi->currentText();
-        }
+    if (ui->comboBoxVuosi->currentIndex() != 0 &&
+            ui->vuosivaliBox->currentIndex() == 0) {
+
         std::pair<Filter_NS, QString> year_pair(
                     InternetExplorers::Constants::Filter::YEAR,
                     ui->comboBoxVuosi->currentText());
 
         filter.insert(year_pair);
     }
-    else if(ui->comboBoxVuosi->currentIndex() != 0 &&
-            ui->vuosivaliBox->currentIndex() != 0){
 
-        if (title.length()>0){
-            title = title + ", Vuosiväli: " + ui->comboBoxVuosi->currentText() +
-                    "-" +ui->vuosivaliBox->currentText();
-        }
-        else{
-            title = "Vuosiväli: " + ui->comboBoxVuosi->currentText() + "-" +
-                    ui->vuosivaliBox->currentText();
-        }
+    else if (ui->comboBoxVuosi->currentIndex() != 0 &&
+            ui->vuosivaliBox->currentIndex() != 0) {
 
         std::pair<Filter_NS, QString> yearRange_pair(
                     InternetExplorers::Constants::Filter::ValueFilters::YEAR_RANGE,
@@ -149,13 +147,8 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(yearRange_pair);
     }
 
-    if(ui->textEditUrheilija->toPlainText() != ""){
-        if (title.length()>0){
-            title = title + ", Nimi: " + ui->textEditUrheilija->toPlainText();
-        }
-        else{
-            title = "Nimi: " + ui->textEditUrheilija->toPlainText();
-        }
+    if (ui->textEditUrheilija->toPlainText() != "") {
+
         std::pair<Filter_NS, QString> name_pair(
                     InternetExplorers::Constants::Filter::NAME,
                     ui->textEditUrheilija->toPlainText());
@@ -163,14 +156,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(name_pair);
     }
 
-    if(ui->comboBoxMatka->currentIndex() != 0){
-
-        if(title.length() > 0){
-            title = title + ", Matka: " + ui->comboBoxMatka->currentText();
-        }
-        else{
-            title = "Matka: " + ui->comboBoxMatka->currentText();
-        }
+    if (ui->comboBoxMatka->currentIndex() != 0) {
 
         std::pair<Filter_NS, QString> distance_pair(
                     InternetExplorers::Constants::Filter::DISTANCE,
@@ -179,17 +165,8 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(distance_pair);
     }
 
-    if(ui->timeEditLower->time().toString() != "00:00:00" ||
-            ui->timeEditUpper->time().toString() != "00:00:00"){
-
-        if(title.length() > 0){
-            title = title + ", Suoritusaikaväli: " + ui->timeEditLower->time().toString()
-                    + "-" + ui->timeEditUpper->time().toString();
-        }
-        else{
-            title = "Suoritusaikaväli: " + ui->timeEditLower->time().toString()
-                    + "-" + ui->timeEditUpper->time().toString();
-        }
+    if (ui->timeEditLower->time().toString() != "00:00:00" ||
+            ui->timeEditUpper->time().toString() != "00:00:00") {
 
         std::pair<Filter_NS, QString> timeRange_pair(
                     InternetExplorers::Constants::Filter::ValueFilters::TIME_RANGE,
@@ -199,19 +176,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(timeRange_pair);
     }
 
-    if(ui->spinBoxSijoitusAla->value() != 0 &&
-            ui->sukupuoliCB->currentIndex() == 0)
-    { // PLACE has lower limit, no gender assigned
+    if (ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentIndex() == 0) { // PLACE has lower limit, no gender assigned
 
-        if(ui->spinBoxSijoitusYla->value() == 0)
-        { // PLACE does not have upper limit
-
-            if (title.length() > 0 ){
-                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
-            }
-            else{
-                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
-            }
+        if (ui->spinBoxSijoitusYla->value() == 0) { // PLACE does not have upper limit
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE,
@@ -219,16 +187,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
             filter.insert(place_pair);
         }
-        else{ // PLACE has upper limit
-            if (title.length() > 0 ){
-
-                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
-                                                                     value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
-            }
-            else{
-                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
-                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
-            }
+        else { // PLACE has upper limit
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE_RANGE,
@@ -240,19 +199,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
     }
 
-    if(ui->spinBoxSijoitusAla->value() != 0 &&
-            ui->sukupuoliCB->currentText() == "N")
-    { // PLACE has lower limit, gender is N
+    if (ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentText() == "N") { // PLACE has lower limit, gender is N
 
-        if(ui->spinBoxSijoitusYla->value() == 0)
-        { // PLACE does not have upper limit
-
-            if (title.length() > 0 ){
-                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
-            }
-            else{
-                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
-            }
+        if(ui->spinBoxSijoitusYla->value() == 0) { // PLACE does not have upper limit
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE_WOMEN,
@@ -260,17 +210,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
             filter.insert(place_pair);
         }
-        else{ // PLACE has upper limit
-            if (title.length() > 0 ){
-
-
-                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
-                                                                     value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
-            }
-            else{
-                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
-                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
-            }
+        else { // PLACE has upper limit
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE_RANGE_WOMEN,
@@ -281,19 +221,10 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         }
     }
 
-    if(ui->spinBoxSijoitusAla->value() != 0 &&
-            ui->sukupuoliCB->currentText() == "M")
-    { // PLACE has lower limit, gender is M
+    if (ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentText() == "M") { // PLACE has lower limit, gender is M
 
-        if(ui->spinBoxSijoitusYla->value() == 0)
-        { // PLACE does not have upper limit
-
-            if (title.length() > 0 ){
-                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
-            }
-            else{
-                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
-            }
+        if(ui->spinBoxSijoitusYla->value() == 0) { // PLACE does not have upper limit
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE_MEN,
@@ -301,16 +232,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
 
             filter.insert(place_pair);
         }
-        else{ // PLACE has upper limit
-            if (title.length() > 0 ){
-
-                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
-                                                                     value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
-            }
-            else{
-                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
-                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
-            }
+        else { // PLACE has upper limit
 
             std::pair<Filter_NS, QString> place_pair(
                         InternetExplorers::Constants::Filter::PLACE_RANGE_MEN,
@@ -321,15 +243,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         }
     }
 
-    if(ui->sukupuoliCB->currentIndex() != 0)
-    { // No gender assigned
-
-        if(title.length()>0){
-            title = title + ", Sukupuoli:" + ui->sukupuoliCB->currentText();
-        }
-        else{
-            title = "Sukupuoli:" + ui->sukupuoliCB->currentText();
-        }
+    if (ui->sukupuoliCB->currentIndex() != 0) { // No gender assigned
 
         std::pair<Filter_NS, QString> sex_pair(
                     InternetExplorers::Constants::Filter::SEX,
@@ -338,14 +252,7 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(sex_pair);
     }
 
-    if(ui->textEditHome->toPlainText() != ""){
-
-        if(title.length() > 0){
-            title = title + ", Kotimaa: " + ui->textEditHome->toPlainText();
-        }
-        else{
-            title = "Kotimaa: " + ui->textEditHome->toPlainText();
-        }
+    if (ui->textEditHome->toPlainText() != "") {
 
         std::pair<Filter_NS, QString> national_pair(
                     InternetExplorers::Constants::Filter::NATIONALITY,
@@ -354,85 +261,22 @@ std::map<Filter_NS, QString> Finlandia::makefilter(){
         filter.insert(national_pair);
     }
 
-
-    /*
-
-        case InternetExplorers::InterfaceFilter::ValueFilters::CITY:
-            break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::BIRTH_YEAR:
-            break;
-        case InternetExplorers::InterfaceFilter::ValueFilters::TEAM:
-            break;
-        };*/
-
-
-
-
-    curr_series_title = title;
-
-    for(auto value : filter)
-    {
-        qDebug() << value.first << value.second << "\n";
-    }
-
     return filter;
 }
 
 void Finlandia::make_listview()
 {
-
-    std::vector<int>attr_vect = select_attributes();
-    QString combined_title;
-
-    int i = 0;
-
-    //Adding all the searches in line
+    //Adding all the searches
+    unsigned long long i = 0;
     for(auto data : allSearches){
-
-        QString header = all_titles.at(i);
+        addTableWidget(data, m_headers.at(i), m_titles.at(i).toStdString());
         ++i;
-        ui->listWidgetResult->addItem(header);
-
-        // Going through individual results in a search:
-        for (unsigned int j= 0; j < data.size(); j++){
-            std::vector<std::string> result = data.at(j);
-            QString disp = "";
-
-            //showing only attributes demanded in attr_vect
-            for(int k : attr_vect){
-
-                if(k <= Atributes::team){
-                    // Showcasing a result:
-                    disp += QString::fromStdString(result.at(k)) + " ";
-                }
-            }
-            ui->listWidgetResult->addItem(disp);
-        }
-        ui->listWidgetResult->addItem(+ "\n");
-
-        for (auto title : all_titles) {
-            if (combined_title.length() > 0){
-                combined_title = combined_title + "[" + title + "]";
-            }
-            else{
-                combined_title = "[" + title + "]";
-            }
-        }
-
-        ui->hakuLabelTulokset->setText("Haku: " + combined_title);
-        ui->hakuLabelTulokset_2->setText("Data " + combined_title);
-    }
-
-    if(check_for_special_filters()){
-        ui->listWidgetResult->addItem("#########" + combined_title +
-                                      " LISÄTIEDOT:" + "#########");
-        print_special_result(attr_vect);
     }
 }
 
 void Finlandia::print_special_result(std::vector<int> atr_vec)
 {
-    for (int k : atr_vec){
+    /*for (int k : atr_vec){
         if(k == Atributes::nmbr_of_parts)
         {
             ui->listWidgetResult->addItem("Osallistujien määrä vuosittain");
@@ -538,7 +382,7 @@ void Finlandia::print_special_result(std::vector<int> atr_vec)
             }
             ui->listWidgetResult->addItem("\n");
         }
-    }
+    }*/
 }
 
 void Finlandia::make_chart()
@@ -568,7 +412,7 @@ void Finlandia::make_chart()
 void Finlandia::make_bar_chart(int x, int y)
 {
     QBarSeries* series = new QBarSeries();
-    series->setName(curr_series_title);
+    //series->setName(curr_series_title);
 
     //adding the data from only last search: TODO add later searches too
     std::vector<std::vector<std::string>> data = m_datalump;
@@ -598,7 +442,7 @@ void Finlandia::make_bar_chart(int x, int y)
 void Finlandia::make_line_chart(int x, int y)
 {
     QLineSeries *series = new QLineSeries();
-    series->setName(curr_series_title);
+    //series->setName(curr_series_title);
 
     //adding the data from only last search: TODO add later searches too
     std::vector<std::vector<std::string>> data = m_datalump;
@@ -624,50 +468,204 @@ void Finlandia::make_line_chart(int x, int y)
 void Finlandia::apply_special_filters(std::map<Filter_NS,
                                       QString> filters)
 {
-
-
-    //Näytetään kullekin vuodelle osallistujien määrä sekä voittajan
-    //ja viimeiseksi maaliin tulleen ajat ja keskinopeudet jokaiselta matkalta.
+    // Osallistujien määrä
     if(ui->haeOsalMaarRP->isChecked()){
-        // < year, amount >
-        m_nmbr_of_parts = m_DataHandler->getAmountOfParticipants(filters);
 
+        // Get data, < year, amount >
+        std::map<std::string, int> data = m_DataHandler->getAmountOfParticipants(filters);
+
+        if (data.size() > 0) {
+
+            // Change data to row format
+            std::vector<std::vector<std::string>> newData = {};
+            for (const auto& row : data) {
+                std::vector<std::string> newRow = {};
+                newRow.emplace_back(row.first); // Add year
+                newRow.emplace_back(std::to_string(row.second)); // Add amount
+
+                newData.emplace_back(newRow);
+            }
+
+            // Add to searches
+            allSearches.emplace_back(newData);
+
+            // Create title
+            QString title = "Osallistujien määrä; " + makeNormalTitle();
+            ui->listWidgetTehtHaut->addItem(title);
+            m_titles.emplace_back(title);
+
+            // Create header
+            std::vector<std::string> head({});
+            head.emplace_back(" Vuosi ");
+            head.emplace_back(" Osallisujamäärä ");
+            m_headers.emplace_back(head);
+        }
     }
 
     if(ui->haeHitainRP->isChecked()){
         // < year, row >
-        m_slowest = m_DataHandler -> getSlowest(filters);
+        std::map<std::string, std::vector<std::string>> data = m_DataHandler->getSlowest(filters);
 
+        if (data.size() > 0) {
+
+            // Change data to row format
+            std::vector<std::vector<std::string>> newData = {};
+            for (const auto& row : data) {
+                std::vector<std::string> newRow = {};
+                newRow.emplace_back(row.first); // Add year
+                newRow.emplace_back(row.second[InternetExplorers::Constants::DataIndex::IndexInData::NAME]); // Add name
+                newRow.emplace_back(row.second[InternetExplorers::Constants::DataIndex::IndexInData::TIME]); // Add time
+
+                newData.emplace_back(newRow);
+            }
+
+            // Add to searches
+            allSearches.emplace_back(newData);
+
+            // Create title
+            QString title = "Hitain aika; " + makeNormalTitle();
+            ui->listWidgetTehtHaut->addItem(title);
+            m_titles.emplace_back(title);
+
+            // Create header
+            std::vector<std::string> head({});
+            head.emplace_back(" Vuosi ");
+            head.emplace_back(" Nimi ");
+            head.emplace_back(" Aika ");
+            m_headers.emplace_back(head);
+        }
     }
     if( ui->haeNopeinRP->isChecked() ){
-        // <year, row >
-        m_fastest = m_DataHandler->getFastest(filters);
 
+        // <year, row >
+        std::map<std::string, std::vector<std::string>> data = m_DataHandler->getFastest(filters);
+
+        if (data.size() > 0) {
+
+
+            std::vector<std::vector<std::string>> newData = {};
+            for (const auto& row : data) {
+                std::vector<std::string> newRow = {};
+                newRow.emplace_back(row.first); // Add year
+                newRow.emplace_back(row.second[InternetExplorers::Constants::DataIndex::IndexInData::NAME]); // Add name
+                newRow.emplace_back(row.second[InternetExplorers::Constants::DataIndex::IndexInData::TIME]); // Add time
+
+                newData.emplace_back(newRow);
+            }
+
+            // Add to searches
+            allSearches.emplace_back(newData);
+
+            // Create title
+            QString title = "Nopein aika; " + makeNormalTitle();
+            ui->listWidgetTehtHaut->addItem(title);
+            m_titles.emplace_back(title);
+
+            // Create header
+            std::vector<std::string> head({});
+            head.emplace_back(" Vuosi ");
+            head.emplace_back(" Nimi ");
+            head.emplace_back(" Aika ");
+            m_headers.emplace_back(head);
+        }
     }
 
     if(ui->keskinopeusRP->isChecked()){
         // Needs to have at least DISTANCE filter
         // < year, average time >
-        m_avrg_time = m_DataHandler->getAverageTimes(filters);
+        std::map<std::string, std::string> data = m_DataHandler->getAverageTimes(filters);
 
+        if (data.size() > 0) {
+
+
+            std::vector<std::vector<std::string>> newData = {};
+            for (const auto& row : data) {
+                std::vector<std::string> newRow = {};
+                newRow.emplace_back(row.first); // Add year
+                newRow.emplace_back(row.second); // Add time
+
+                newData.emplace_back(newRow);
+            }
+
+            // Add to searches
+            allSearches.emplace_back(newData);
+
+            // Create title
+            QString title = "Keskiaika; " + makeNormalTitle();
+            ui->listWidgetTehtHaut->addItem(title);
+            m_titles.emplace_back(title);
+
+            // Create header
+            std::vector<std::string> head({});
+            head.emplace_back(" Vuosi ");
+            head.emplace_back(" Keskinopeus ");
+            m_headers.emplace_back(head);
+        }
     }
 
     if(ui->osall_lkm_maittainRP->isChecked()){
-        //•Näytetään urheilijoiden jakauma maittain
-        //hae-kohtaan "Urheilijoiden määrä maittain"
-        m_nmbr_of_parts_nationvice =
-                m_DataHandler->getParticipantsByCountry(filters);
+
+        std::map<std::string, int> data = m_DataHandler->getParticipantsByCountry(filters);
+
+        if (data.size() > 0) {
 
 
+            std::vector<std::vector<std::string>> newData = {};
+            for (const auto& row : data) {
+                std::vector<std::string> newRow = {};
+                newRow.emplace_back(row.first); // Add year
+                newRow.emplace_back(std::to_string(row.second)); // Add amount
+
+                newData.emplace_back(newRow);
+            }
+
+            // Add to searches
+            allSearches.emplace_back(newData);
+
+            // Create title
+            QString title = "Osallistujien määrä maittain; " + makeNormalTitle();
+            ui->listWidgetTehtHaut->addItem(title);
+            m_titles.emplace_back(title);
+
+            // Create header
+            std::vector<std::string> head({});
+            head.emplace_back(" Maa ");
+            head.emplace_back(" Osallistujamäärä ");
+            m_headers.emplace_back(head);
+        }
     }
 
     if(ui->vuodenXparhaatRP->isChecked()){
         //Vuoden X parhaat joukkeet
         //Needs to have at least DISTANCE filter
         // < team, average time >
-        m_best_of_year_X = m_DataHandler->getBestTenTeams(filters);
-    }
+        std::vector<std::pair<std::string, std::string>> data = m_DataHandler->getBestTenTeams(filters);
 
+        if (data.size() > 0) {
+            std::vector<std::vector<std::string>> newData = {};
+            for (const auto& row : data) {
+                std::vector<std::string> newRow = {};
+                newRow.emplace_back(row.first); // Add year
+                newRow.emplace_back(row.second); // Add time
+
+                newData.emplace_back(newRow);
+            }
+
+            // Add to searches
+            allSearches.emplace_back(newData);
+
+            // Create title
+            QString title = "Kymmenen parasta joukkuetta; " + makeNormalTitle();
+            ui->listWidgetTehtHaut->addItem(title);
+            m_titles.emplace_back(title);
+
+            // Create header
+            std::vector<std::string> head({});
+            head.emplace_back(" Joukkue ");
+            head.emplace_back(" Keskiaika ");
+            m_headers.emplace_back(head);
+        }
+    }
 }
 
 
@@ -676,21 +674,27 @@ bool Finlandia::check_for_special_filters()
     if(ui->haeOsalMaarRP->isChecked()){
         return true;
     }
+
     if(ui->haeHitainRP->isChecked()){
         return true;
     }
+
     if( ui->haeNopeinRP->isChecked() ){
         return true;
     }
+
     if(ui->keskinopeusRP->isChecked()){
         return true;
     }
+
     if(ui->osall_lkm_maittainRP->isChecked()){
         return true;
     }
+
     if(ui->vuodenXparhaatRP->isChecked()){
         return true;
     }
+
     return false;
 }
 
@@ -705,54 +709,57 @@ bool Finlandia::check_for_order_filter()
 
         return true;
     }
-    if(ui->jarjestaAakkosRP->isChecked()){
+
+    if(ui->jarjestaAlkupRP->isChecked()){
         return true;
 
     }
+
     if(ui->jarjestaSijoitusRP->isChecked()){
         return true;
     }
+
     return false;
 }
 
 std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filter_NS,
                                                                   QString> filter)
 {
-    if(ui->jarjestaAakkosRP->isChecked()){
-
-        if(ui->jarjestaSeuranNimiRP->isChecked()){
-            std::vector<std::vector<std::string>> ordered_data =
-                    m_DataHandler->getDataWithFilter(filter,
-                                                     InternetExplorers::Constants::
-                                                     Filter::OrderFilters::ALPH_TEAM);
-            return ordered_data;
-        }
-        if(ui->jarjestaKotimaaRP->isChecked()){
-            std::vector<std::vector<std::string>> ordered_data =
-                    m_DataHandler->getDataWithFilter
-                    (filter, InternetExplorers::Constants::Filter::
-                     OrderFilters::ALPH_NATIONALITY);
-
-            return ordered_data;
-        }
-        if(ui->nimi_jarkkaRP->isChecked()){
-            std::vector<std::vector<std::string>> ordered_data =
-                    m_DataHandler->getDataWithFilter
-                    (filter, InternetExplorers::Constants::Filter::
-                     OrderFilters::ALPH_NAME);
-
-            return ordered_data;
-        }
-        if(ui->jarjestaSeuranNimiRP->isChecked()){
-            std::vector<std::vector<std::string>> ordered_data =
-                    m_DataHandler->getDataWithFilter
-                    (filter, InternetExplorers::Constants::Filter::
-                     OrderFilters::ALPH_TEAM);
-
-            return ordered_data;
-        }
-
+    if(ui->jarjestaSeuranNimiRP->isChecked()){
+        std::vector<std::vector<std::string>> ordered_data =
+                m_DataHandler->getDataWithFilter(filter,
+                                                 InternetExplorers::Constants::
+                                                 Filter::OrderFilters::ALPH_TEAM);
+        return ordered_data;
     }
+
+    if(ui->jarjestaKotimaaRP->isChecked()){
+        std::vector<std::vector<std::string>> ordered_data =
+                m_DataHandler->getDataWithFilter
+                (filter, InternetExplorers::Constants::Filter::
+                 OrderFilters::ALPH_NATIONALITY);
+
+        return ordered_data;
+    }
+
+    if(ui->nimi_jarkkaRP->isChecked()){
+        std::vector<std::vector<std::string>> ordered_data =
+                m_DataHandler->getDataWithFilter
+                (filter, InternetExplorers::Constants::Filter::
+                 OrderFilters::ALPH_NAME);
+
+        return ordered_data;
+    }
+
+    if(ui->jarjestaSeuranNimiRP->isChecked()){
+        std::vector<std::vector<std::string>> ordered_data =
+                m_DataHandler->getDataWithFilter
+                (filter, InternetExplorers::Constants::Filter::
+                 OrderFilters::ALPH_TEAM);
+
+        return ordered_data;
+    }
+
     if(ui->jarjestaMatkaRP->isChecked()){
         std::vector<std::vector<std::string>> ordered_data =
                 m_DataHandler->getDataWithFilter
@@ -761,6 +768,7 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
 
         return ordered_data;
     }
+
     if(ui->jarjestaVuosiRP->isChecked()){
         std::vector<std::vector<std::string>> ordered_data =
                 m_DataHandler->getDataWithFilter
@@ -769,6 +777,7 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
 
         return ordered_data;
     }
+
     if(ui->jarjestaSijoitusRP->isChecked()){
         std::vector<std::vector<std::string>> ordered_data =
                 m_DataHandler->getDataWithFilter
@@ -777,11 +786,11 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
 
         return ordered_data;
     }
+
     if(ui->jarjestaVainParasRP->isChecked()){
 
-
-        //return ordered_data;
     }
+
     return {};
 }
 
@@ -804,69 +813,6 @@ void Finlandia::save_chart()
     }
 }
 
-void Finlandia::make_listviweLabel()
-{
-    QString label = "Esitetään:";
-    QString jarjestys = "Järjestetään:";
-
-    if(ui->haeHitainRP->isChecked()){
-        label = label + " Hitain,";
-    }
-    if(ui->haeKaikkiRP->isChecked()){
-        label = "Esitetään: Kaikki tulokset,";
-    }
-    if(ui->haeNopeinRP->isChecked()){
-        label = label + " Nopein,";
-    }
-    if(ui->KotimaaRP->isChecked()){
-        label = label + " Kotimaa,";
-    }
-    if(ui->haeJoukkueRP->isChecked()){
-        label = label + " Joukkue,";
-    }
-    if(ui->aikaRP->isChecked()){
-        label = label + " Aika,";
-    }
-    if(ui->keskinopeusRP->isChecked()){
-        label = label + " Keskinopeus,";
-    }
-    if(ui->hiihtajanNimiRP->isChecked()){
-        label = label + " Nimi,";
-    }
-
-    if(ui->vuodenXparhaatRP->isChecked()){
-        label = label + " Vuoden '" + ui->comboBoxVuosi->currentText() +
-                "' parhaat tulokset, ";
-    }
-
-    if(ui->haeOsalMaarRP->isChecked()){
-        label = label + " Osallistujien määrä,";
-    }
-
-    if(ui->osall_lkm_maittainRP->isChecked()){
-        label = label + " Osallistujien määrä maittain,";
-    }
-
-    //JÄRJESTYS-ASETUKET
-    if(ui->jarjestaAakkosRP->isChecked()){
-        jarjestys = jarjestys + " Aakkosjärjestys,";
-    }
-
-
-    if(ui->jarjestaSeuranNimiRP->isChecked()){
-        jarjestys = jarjestys + " Seuran nimen mukaan,";
-    }
-
-    //Remove the last comma
-    label = label.mid(0, label.length()-1);
-    //Remove the last comma
-    jarjestys = jarjestys.mid(0, jarjestys.length()-1);
-
-    ui->ListViewesityslabel->setText(label);
-    ui->jarjestyslabel->setText(jarjestys);
-
-}
-
 std::vector<int> Finlandia::select_attributes()
 {
     std::vector<int>atr_vec;
@@ -876,7 +822,7 @@ std::vector<int> Finlandia::select_attributes()
                    Atributes::place, Atributes::place_men, Atributes::place_wm,
                    Atributes::sex, Atributes::name, Atributes::town,
                    Atributes::nationality, Atributes::birth_yr, Atributes::team};
-        qDebug()<< "atr_vec";
+
         if(!check_for_special_filters()){
             return atr_vec;
         }
@@ -920,49 +866,54 @@ std::vector<int> Finlandia::select_attributes()
 
 void Finlandia::on_pushButtoLisaaHaku_clicked()
 {
-
-    std::vector<std::vector<std::string>> newData;
-
     //Also makes curr_series_title
     std::map<Filter_NS, QString> filter = makefilter();
 
+    // Special search
     if(check_for_special_filters()){
+
+        // Handle data fetch, headers and titles
         apply_special_filters(filter);
-        qDebug() << "Applying special filters";
     }
-    try {
-        if(check_for_order_filter())
-        {
-            newData = get_ordered_data(filter);
-            qDebug() << "ordered filtering";
+
+    // Normal search
+    else {
+        std::vector<std::vector<std::string>> newData = {};
+
+        try {
+            if(check_for_order_filter())
+            {
+                newData = get_ordered_data(filter);
+            }
+            else
+            {
+                newData = m_DataHandler->getDataWithFilter(filter);
+            }
         }
-        else
-        {
-            newData = m_DataHandler->getDataWithFilter(filter);
-            qDebug() << "Normal filtering";
-
+        catch (InternetExplorers::FilterException &e) {
+            qDebug() << e.what();
         }
-    }
-    catch (InternetExplorers::FilterException &e) {
-        qDebug() << e.what();
-    }
 
-    unsigned long int size = newData.size();
-    qDebug() << "Koko" << size;
+        unsigned long long size = newData.size();
 
-    if(size > 0){
-        allSearches.push_back(newData);
+        if(size > 0){
+            // Add the new data
+            allSearches.push_back(newData);
 
-        m_datalump.insert( m_datalump.end(), newData.begin(), newData.end());
+            // Create the header
+            createNormalHeader();
 
-        //m_all_searches.at(curr_series_title) = newData;
-        ui->listWidgetTehtHaut->addItem(curr_series_title);
-        all_titles.push_back(curr_series_title);
-    }
-    else{
-        QMessageBox msgBox;
-        msgBox.setText("Hakuehdot eivät tuottaneet yhtäkään tulosta");
-        msgBox.exec();
+            // Create the title
+            m_titles.emplace_back(makeNormalTitle());
+
+            // Add the title to the list
+            ui->listWidgetTehtHaut->addItem(m_titles.back());
+        }
+        else{
+            QMessageBox msgBox;
+            msgBox.setText("Hakuehdot eivät tuottaneet yhtäkään tulosta");
+            msgBox.exec();
+        }
     }
 }
 
@@ -970,10 +921,7 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
 void Finlandia::on_pushButton_clicked()
 {
-
     make_listview();
-    make_listviweLabel();
-
 }
 
 void Finlandia::encryptionSettingsOpened()
@@ -1038,6 +986,253 @@ void Finlandia::on_spinBoxSijoitusAla_valueChanged(int newValue)
             ui->spinBoxSijoitusYla->setValue(newValue);
         }
     }
+}
+
+void Finlandia::createNormalHeader()
+{
+    std::vector<std::string> head({});
+
+    if(ui->haeKaikkiRP->isChecked()){
+        head.emplace_back(" Vuosi ");
+        head.emplace_back(" Matka ");
+        head.emplace_back(" Aika ");
+        head.emplace_back(" Sija ");
+        head.emplace_back(" Sija (miehet) ");
+        head.emplace_back(" Sija (naiset) ");
+        head.emplace_back(" Sukupuoli ");
+        head.emplace_back(" Nimi ");
+        head.emplace_back(" Kaupunki ");
+        head.emplace_back(" Maa ");
+        head.emplace_back(" Syntymävuosi ");
+        head.emplace_back(" Joukkue ");
+    }
+    else {
+        if(ui->hiihtajanNimiRP->isChecked()){
+            head.emplace_back(" Nimi ");
+        }
+        if(ui->aikaRP->isChecked()){
+            head.emplace_back(" Aika ");
+        }
+        if(ui->KotimaaRP->isChecked()){
+            head.emplace_back(" Maa ");
+        }
+        if(ui->haeJoukkueRP->isChecked()){
+            head.emplace_back(" Joukkue ");
+        }
+    }
+
+    m_headers.emplace_back(head);
+}
+
+void Finlandia::addTableWidget(const std::vector<std::vector<std::string> > &rows,
+                               const std::vector<std::string> &header,
+                               const std::string& title)
+{
+    QTableWidget *w = new QTableWidget(ui->scrollWidget);
+
+    w->setEditTriggers(QAbstractItemView::EditTriggers(nullptr));
+
+    w->setRowCount(static_cast<int>(rows.size()) + 1);
+    w->setColumnCount(static_cast<int>(header.size()));
+
+    w->setSpan(0, 0, 1 , static_cast<int>(header.size()));
+
+    // Add header
+    int i = 0;
+    for (const auto& col : header) {
+        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(col));
+        w->setHorizontalHeaderItem(i, newItem);
+        ++i;
+    }
+
+    // Add rows
+    int r = 1;
+    for (const auto& row : rows) {
+        int c = 0;
+        for (const auto& col : row) {
+            QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(col));
+            w->setItem(r, c, newItem);
+            ++c;
+        }
+        ++r;
+    }
+
+    w->resizeColumnsToContents();
+
+    // Add title, needs to be after column resize!
+    QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(title));
+    w->setItem(0, 0, newItem);
+
+    w->resizeRowToContents(0);
+
+    int sum = 100;
+    for (int i = 0; i < w->columnCount(); ++i) {
+        sum += w->columnWidth(i);
+    }
+
+    w->setMinimumWidth((sum > 500) ? 500 : sum);
+
+    m_scrollLayout->addWidget(w);
+}
+
+QString Finlandia::makeNormalTitle()
+{
+    //The title for the search is made at the same time
+    QString title = "";
+
+    //Only one year is selected
+    if (ui->comboBoxVuosi->currentIndex() != 0 &&
+            ui->vuosivaliBox->currentIndex() == 0) {
+
+        if (title.length() > 0) {
+            title = title + ", Vuosi: " + ui->comboBoxVuosi->currentText();
+        }
+        else {
+            title += "Vuosi: " + ui->comboBoxVuosi->currentText();
+        }
+    }
+
+    else if (ui->comboBoxVuosi->currentIndex() != 0 &&
+            ui->vuosivaliBox->currentIndex() != 0) {
+
+        if (title.length() > 0) {
+            title = title + ", Vuosiväli: " + ui->comboBoxVuosi->currentText() +
+                    "-" +ui->vuosivaliBox->currentText();
+        }
+        else {
+            title = "Vuosiväli: " + ui->comboBoxVuosi->currentText() + "-" +
+                    ui->vuosivaliBox->currentText();
+        }
+    }
+
+    if (ui->textEditUrheilija->toPlainText() != "") {
+        if (title.length() > 0) {
+            title = title + ", Nimi: " + ui->textEditUrheilija->toPlainText();
+        }
+        else {
+            title = "Nimi: " + ui->textEditUrheilija->toPlainText();
+        }
+    }
+
+    if (ui->comboBoxMatka->currentIndex() != 0) {
+
+        if (title.length() > 0) {
+            title = title + ", Matka: " + ui->comboBoxMatka->currentText();
+        }
+        else {
+            title = "Matka: " + ui->comboBoxMatka->currentText();
+        }
+    }
+
+    if (ui->timeEditLower->time().toString() != "00:00:00" ||
+            ui->timeEditUpper->time().toString() != "00:00:00") {
+
+        if (title.length() > 0) {
+            title = title + ", Suoritusaikaväli: " + ui->timeEditLower->time().toString()
+                    + "-" + ui->timeEditUpper->time().toString();
+        }
+        else {
+            title = "Suoritusaikaväli: " + ui->timeEditLower->time().toString()
+                    + "-" + ui->timeEditUpper->time().toString();
+        }
+    }
+
+    if (ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentIndex() == 0) { // PLACE has lower limit, no gender assigned
+
+        if(ui->spinBoxSijoitusYla->value() == 0) { // PLACE does not have upper limit
+
+            if (title.length() > 0  ) {
+                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+            else {
+                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+        }
+        else { // PLACE has upper limit
+            if (title.length() > 0 ) {
+
+                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
+                                                                     value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+            else {
+                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
+                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+        }
+
+    }
+
+    if (ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentText() == "N") { // PLACE has lower limit, gender is N
+
+        if (ui->spinBoxSijoitusYla->value() == 0) { // PLACE does not have upper limit
+
+            if (title.length() > 0 ) {
+                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+            else {
+                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+        }
+        else { // PLACE has upper limit
+            if (title.length() > 0 ) {
+
+                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
+                                                                     value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+            else {
+                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
+                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+        }
+    }
+
+    if(ui->spinBoxSijoitusAla->value() != 0 &&
+            ui->sukupuoliCB->currentText() == "M") { // PLACE has lower limit, gender is M
+
+        if(ui->spinBoxSijoitusYla->value() == 0) { // PLACE does not have upper limit
+
+            if (title.length() > 0 ) {
+                title = title + ", Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+            else {
+                title = "Sijoitus: " + QString::number(ui->spinBoxSijoitusAla->value());
+            }
+        }
+        else { // PLACE has upper limit
+            if (title.length() > 0 ) {
+                title = title + ", Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->
+                                                                     value()) + "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+            else {
+                title = "Sijoitusväli: " + QString::number(ui->spinBoxSijoitusAla->value())+
+                        "-" + QString::number(ui->spinBoxSijoitusYla->value());
+            }
+        }
+    }
+
+    if(ui->sukupuoliCB->currentIndex() != 0) { // No gender assigned
+
+        if (title.length() > 0) {
+            title = title + ", Sukupuoli:" + ui->sukupuoliCB->currentText();
+        }
+        else {
+            title = "Sukupuoli:" + ui->sukupuoliCB->currentText();
+        }
+    }
+
+    if (ui->textEditHome->toPlainText() != "") {
+
+        if (title.length() > 0) {
+            title = title + ", Kotimaa: " + ui->textEditHome->toPlainText();
+        }
+        else {
+            title = "Kotimaa: " + ui->textEditHome->toPlainText();
+        }
+    }
+
+    return title;
 }
 
 

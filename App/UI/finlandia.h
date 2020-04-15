@@ -52,13 +52,6 @@ public:
      */
     void make_listview();
 
-
-    /**
-     * @brief make_listviweLabel checks what choises the user has made in the
-     * UI and creates a label based on that
-     */
-    void make_listviweLabel();
-
     /**
      * @brief select_attributes
      * @return vector of integers pointing out what
@@ -182,6 +175,13 @@ private slots:
     void on_spinBoxSijoitusAla_valueChanged(int newValue);
 
 private:
+
+    void createNormalHeader();
+    void addTableWidget(const std::vector<std::vector<std::string>>& rows,
+                        const std::vector<std::string>& header,
+                        const std::string& title);
+    QString makeNormalTitle();
+
     Ui::Finlandia *ui;
 
     InternetExplorers::DataHandler *m_DataHandler;
@@ -190,8 +190,17 @@ private:
     std::vector<std::vector<std::string>> m_datalump;
 
     QChart *m_chart;
-    QString curr_series_title;
+
     std::vector<QString> all_titles;
+
+    // Layout for tables
+    QHBoxLayout *m_scrollLayout;
+
+    // Headers for each individual search
+    std::vector<std::vector<std::string>> m_headers;
+
+    // Titles for each individual search
+    std::vector<QString> m_titles;
 
     //this is used for getting the corresponing string with the enum index
     std::vector<std::string> attribute_enum = {"YEAR", "DISTANCE", "TIME",
@@ -217,21 +226,6 @@ private:
 
     // Predicter window is stored here
     std::unique_ptr<PredicterWindow> m_predicter;
-
-
-    //Place for storing all results of special searches
-    //<year, nmr>
-    std::map<std::string, int> m_nmbr_of_parts;
-    //<year, row>
-    std::map<std::string, std::vector<std::string>> m_fastest;
-    // < year, row >
-    std::map<std::string, std::vector<std::string>> m_slowest;
-    // <year, time>
-    std::map<std::string, std::string> m_avrg_time;
-    //<nation, nmr>
-    std::map<std::string, int> m_nmbr_of_parts_nationvice;
-    //< team, average time >
-    std::vector<std::pair<std::string, std::string>> m_best_of_year_X;
 
     // Game window is stored here
     std::unique_ptr<QMainWindow> m_gameWindow;
