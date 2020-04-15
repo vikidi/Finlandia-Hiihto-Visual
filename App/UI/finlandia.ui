@@ -258,7 +258,7 @@
                  <property name="text">
                   <string>Keskiaika</string>
                  </property>
-				 <property name="autoExclusive">
+                 <property name="autoExclusive">
                   <bool>false</bool>
                  </property>
                 </widget>
@@ -1216,16 +1216,6 @@
             <layout class="QHBoxLayout" name="horizontalLayout_14">
              <item>
               <layout class="QGridLayout" name="gridLayout_3">
-               <item row="5" column="0">
-                <widget class="QRadioButton" name="jarjestaVainParasRP">
-                 <property name="text">
-                  <string>Näytä vain paras</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
                <item row="1" column="0">
                 <widget class="QRadioButton" name="jarjestaKotimaaRP">
                  <property name="text">
@@ -1297,7 +1287,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="6" column="0">
+               <item row="3" column="3">
+                <widget class="Line" name="line_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0">
                 <widget class="QRadioButton" name="jarjestaSijoitusRP">
                  <property name="text">
                   <string>Sijoituksen mukaan</string>
@@ -1307,14 +1304,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="3" column="3">
-                <widget class="Line" name="line_2">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item row="7" column="0" colspan="2">
+               <item row="6" column="0">
                 <widget class="QRadioButton" name="jarjestaAlkupRP">
                  <property name="text">
                   <string>Alkuperäinen järjestys</string>

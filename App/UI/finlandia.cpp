@@ -112,7 +112,6 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->jarjestaVuosiRP->setChecked(false);
     ui->jarjestaKotimaaRP->setChecked(false);
     ui->jarjestaSijoitusRP->setChecked(false);
-    ui->jarjestaVainParasRP->setChecked(false);
     ui->jarjestaSeuranNimiRP->setChecked(false);
     ui->jarjestaAlkupRP->setChecked(true);
 
@@ -273,117 +272,6 @@ void Finlandia::make_listview()
         addTableWidget(data, m_headers.at(i), m_titles.at(i).toStdString());
         ++i;
     }
-}
-
-void Finlandia::print_special_result(std::vector<int> atr_vec)
-{
-    /*for (int k : atr_vec){
-        if(k == Atributes::nmbr_of_parts)
-        {
-            ui->listWidgetResult->addItem("Osallistujien määrä vuosittain");
-
-            for(auto thing : m_nmbr_of_parts){
-                QString disp = "";
-                disp += "Vuosi: ";
-                disp += QString::fromStdString(thing.first) + " ";
-                disp += "Osallistujien määrä: ";
-                disp += QString::number(thing.second);
-
-                ui->listWidgetResult->addItem(disp);
-            }
-            ui->listWidgetResult->addItem("\n");
-
-        }
-
-        if(k == Atributes::fastest)
-        {
-            ui->listWidgetResult->addItem("Joka vuoden nopein");
-            for(auto thing : m_fastest)
-            {
-                QString disp = "";
-                disp += "Vuosi: ";
-
-                if(thing.second.size() < 1){
-                    disp += QString::fromStdString(thing.first) + " ";
-                    disp += "Ei tuloksia";
-                }
-
-                for(auto element : thing.second)
-                {
-                    // Showcasing a result:
-                    disp += QString::fromStdString(element + " ");
-                }
-                ui->listWidgetResult->addItem(disp);
-            }
-            ui->listWidgetResult->addItem("\n");
-        }
-        if(k == Atributes::slowest){
-            ui->listWidgetResult->addItem("Joka vuoden hitain");
-            for(auto thing : m_slowest)
-            {
-                QString disp = "";
-                disp += "Vuosi: ";
-
-                if(thing.second.size() < 1){
-                    disp += QString::fromStdString(thing.first) + " ";
-                    disp += "Ei tuloksia";
-                }
-
-                for(auto element : thing.second)
-                {
-                    // Showcasing a result:
-                    disp += QString::fromStdString(element + " ");
-                }
-                ui->listWidgetResult->addItem(disp);
-            }
-            ui->listWidgetResult->addItem("\n");
-        }
-        if(k == Atributes::avrg_speed)
-        {
-            ui->listWidgetResult->addItem("Aikojen keskiarvot");
-
-            for(auto thing : m_avrg_time){
-                QString disp = "";
-                disp += "Vuosi: ";
-                disp += QString::fromStdString(thing.first) + " ";
-                disp += "Suoritusaikojen keskiarvo: ";
-                disp += QString::fromStdString(thing.second);
-
-                ui->listWidgetResult->addItem(disp);
-            }
-            ui->listWidgetResult->addItem("\n");
-        }
-        if(k == Atributes::nmbr_of_parts_nationvice){
-            ui->listWidgetResult->addItem("Osallistujat maittain");
-
-            for(auto thing : m_nmbr_of_parts_nationvice){
-                QString disp = "";
-                disp += "Maa: ";
-                disp += QString::fromStdString(thing.first) + " ";
-                disp += "Urheilijoiden määrä : ";
-                disp += QString::number(thing.second);
-
-                ui->listWidgetResult->addItem(disp);
-            }
-            ui->listWidgetResult->addItem("\n");
-        }
-        if(k == Atributes::bestofx){
-            ui->listWidgetResult->addItem("Vuoden TOP10");
-            int i = 1;
-
-            for(auto thing : m_best_of_year_X){
-                QString disp = "";
-                disp += QString::number(i) + ". " + "Joukkue: ";
-                disp += QString::fromStdString(thing.first) + " ";
-                disp += "Suoritusaikojen keskiarvo: ";
-                disp += QString::fromStdString(thing.second);
-
-                ui->listWidgetResult->addItem(disp);
-                ++i;
-            }
-            ui->listWidgetResult->addItem("\n");
-        }
-    }*/
 }
 
 void Finlandia::make_chart()
@@ -765,10 +653,6 @@ bool Finlandia::check_for_order_filter()
         return true;
     }
 
-    if(ui->jarjestaVainParasRP->isChecked()) {
-        return true;
-    }
-
     if(ui->jarjestaSeuranNimiRP->isChecked()) {
         return true;
     }
@@ -844,10 +728,6 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
                  OrderFilters::PLACEMENT);
 
         return ordered_data;
-    }
-
-    if(ui->jarjestaVainParasRP->isChecked()){
-        // TODO: Unuseful
     }
 
     return {};
@@ -963,7 +843,7 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
             createNormalHeader();
 
             // Create the title
-            m_titles.emplace_back(makeNormalTitle());
+            m_titles.emplace_back(makeNormalTitle() + makeOrderTitle());
 
             // Add the title to the list
             ui->listWidgetTehtHaut->addItem(m_titles.back());
@@ -975,8 +855,6 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
         }
     }
 }
-
-
 
 void Finlandia::on_pushButton_clicked()
 {
@@ -1292,6 +1170,41 @@ QString Finlandia::makeNormalTitle()
     }
 
     return title;
+}
+
+QString Finlandia::makeOrderTitle()
+{
+    if (ui->jarjestaAlkupRP->isChecked()) {
+        return "";
+    }
+
+    QString order = "; Järjestys: ";
+
+    if (ui->jarjestaMatkaRP->isChecked()) {
+        return order + "matkan mukaan";
+    }
+
+    if (ui->jarjestaVuosiRP->isChecked()) {
+        return order + "vuoden mukaan";
+    }
+
+    if (ui->jarjestaKotimaaRP->isChecked()) {
+        return order + "kotimaan mukaan";
+    }
+
+    if (ui->jarjestaSijoitusRP->isChecked()) {
+        return order + "sijoituksen mukaan";
+    }
+
+    if (ui->jarjestaSeuranNimiRP->isChecked()) {
+        return order + "joukkueen mukaan";
+    }
+
+    if (ui->nimi_jarkkaRP->isChecked()) {
+        return order + "nimen mukaan";
+    }
+
+    return "";
 }
 
 

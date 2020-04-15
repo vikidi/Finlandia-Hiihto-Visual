@@ -103,13 +103,6 @@ public:
     std::vector<std::vector<std::string>> get_ordered_data(std::map<Filter_NS,
                                                            QString> filter);
 
-    /**
-     * @brief print_special_result is used to show thing like average times
-     * in the listview
-     * @param atr_vec pointing out what special filters were used
-     */
-    void print_special_result(std::vector<int> atr_vec);
-
 private slots:
 
     /**
@@ -181,6 +174,7 @@ private:
                         const std::vector<std::string>& header,
                         const std::string& title);
     QString makeNormalTitle();
+    QString makeOrderTitle();
 
     Ui::Finlandia *ui;
 
