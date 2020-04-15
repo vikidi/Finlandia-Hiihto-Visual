@@ -105,6 +105,7 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->haeJoukkueRP->setChecked(false);
     ui->aikaRP->setChecked(false);
     ui->keskinopeusRP->setChecked(false);
+    ui->keskiaikaRP->setChecked(false);
     ui->hiihtajanNimiRP->setChecked(false);
 
     ui->jarjestaMatkaRP->setChecked(false);
@@ -542,7 +543,7 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
 
         if (data.size() > 0) {
 
-
+            // Change data to row format
             std::vector<std::vector<std::string>> newData = {};
             for (const auto& row : data) {
                 std::vector<std::string> newRow = {};
@@ -573,11 +574,44 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
     if(ui->keskinopeusRP->isChecked()){
         // Needs to have at least DISTANCE filter
         // < year, average time >
+        std::map<std::string, std::string> data = m_DataHandler->getAverageSpeeds(filters);
+
+        if (data.size() > 0) {
+
+            // Change data to row format
+            std::vector<std::vector<std::string>> newData = {};
+            for (const auto& row : data) {
+                std::vector<std::string> newRow = {};
+                newRow.emplace_back(row.first); // Add year
+                newRow.emplace_back(row.second + " km/h"); // Add speed
+
+                newData.emplace_back(newRow);
+            }
+
+            // Add to searches
+            allSearches.emplace_back(newData);
+
+            // Create title
+            QString title = "Keskinopeus; " + makeNormalTitle();
+            ui->listWidgetTehtHaut->addItem(title);
+            m_titles.emplace_back(title);
+
+            // Create header
+            std::vector<std::string> head({});
+            head.emplace_back(" Vuosi ");
+            head.emplace_back(" Keskinopeus ");
+            m_headers.emplace_back(head);
+        }
+    }
+
+    if(ui->keskiaikaRP->isChecked()){
+        // Needs to have at least DISTANCE filter
+        // < year, average time >
         std::map<std::string, std::string> data = m_DataHandler->getAverageTimes(filters);
 
         if (data.size() > 0) {
 
-
+            // Change data to row format
             std::vector<std::vector<std::string>> newData = {};
             for (const auto& row : data) {
                 std::vector<std::string> newRow = {};
@@ -598,7 +632,7 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
             // Create header
             std::vector<std::string> head({});
             head.emplace_back(" Vuosi ");
-            head.emplace_back(" Keskinopeus ");
+            head.emplace_back(" Keskiaika ");
             m_headers.emplace_back(head);
         }
     }
@@ -609,7 +643,7 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
 
         if (data.size() > 0) {
 
-
+            // Change data to row format
             std::vector<std::vector<std::string>> newData = {};
             for (const auto& row : data) {
                 std::vector<std::string> newRow = {};
@@ -642,6 +676,8 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
         std::vector<std::pair<std::string, std::string>> data = m_DataHandler->getBestTenTeams(filters);
 
         if (data.size() > 0) {
+
+            // Change data to row format
             std::vector<std::vector<std::string>> newData = {};
             for (const auto& row : data) {
                 std::vector<std::string> newRow = {};
@@ -671,27 +707,31 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
 
 bool Finlandia::check_for_special_filters()
 {
-    if(ui->haeOsalMaarRP->isChecked()){
+    if(ui->haeOsalMaarRP->isChecked()) {
         return true;
     }
 
-    if(ui->haeHitainRP->isChecked()){
+    if(ui->haeHitainRP->isChecked()) {
         return true;
     }
 
-    if( ui->haeNopeinRP->isChecked() ){
+    if( ui->haeNopeinRP->isChecked() ) {
         return true;
     }
 
-    if(ui->keskinopeusRP->isChecked()){
+    if(ui->keskinopeusRP->isChecked()) {
         return true;
     }
 
-    if(ui->osall_lkm_maittainRP->isChecked()){
+    if(ui->osall_lkm_maittainRP->isChecked()) {
         return true;
     }
 
-    if(ui->vuodenXparhaatRP->isChecked()){
+    if(ui->vuodenXparhaatRP->isChecked()) {
+        return true;
+    }
+
+    if(ui->keskiaikaRP->isChecked()) {
         return true;
     }
 
@@ -700,22 +740,36 @@ bool Finlandia::check_for_special_filters()
 
 bool Finlandia::check_for_order_filter()
 {
-    if(ui->jarjestaMatkaRP->isChecked()){
+    if (ui->jarjestaAlkupRP->isChecked()) {
+        // No need to order
+        return false;
+    }
 
+    if(ui->jarjestaMatkaRP->isChecked()) {
         return true;
     }
 
-    if(ui->jarjestaVuosiRP->isChecked()){
-
+    if(ui->jarjestaVuosiRP->isChecked()) {
         return true;
     }
 
-    if(ui->jarjestaAlkupRP->isChecked()){
+    if(ui->jarjestaAlkupRP->isChecked()) {
         return true;
-
     }
 
-    if(ui->jarjestaSijoitusRP->isChecked()){
+    if(ui->jarjestaSijoitusRP->isChecked()) {
+        return true;
+    }
+
+    if(ui->jarjestaKotimaaRP->isChecked()) {
+        return true;
+    }
+
+    if(ui->jarjestaVainParasRP->isChecked()) {
+        return true;
+    }
+
+    if(ui->jarjestaSeuranNimiRP->isChecked()) {
         return true;
     }
 
@@ -725,6 +779,11 @@ bool Finlandia::check_for_order_filter()
 std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filter_NS,
                                                                   QString> filter)
 {
+    if (ui->jarjestaAlkupRP->isChecked()) {
+        // No need to order
+        return {};
+    }
+
     if(ui->jarjestaSeuranNimiRP->isChecked()){
         std::vector<std::vector<std::string>> ordered_data =
                 m_DataHandler->getDataWithFilter(filter,
@@ -788,7 +847,7 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
     }
 
     if(ui->jarjestaVainParasRP->isChecked()){
-
+        // TODO: Unuseful
     }
 
     return {};
