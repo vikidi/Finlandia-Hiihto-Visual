@@ -41,7 +41,8 @@ SOURCES += \
     APIs/localdataloader.cpp \
     logger.cpp \
     dataorderer.cpp \
-    UI/predicterwindow.cpp
+    UI/predicterwindow.cpp \
+    helper.cpp
 
 HEADERS += \
     UI/encryptionsettingswindow.h \
@@ -59,7 +60,8 @@ HEADERS += \
     logger.h \
     constants.h \
     dataorderer.h \
-    UI/predicterwindow.h
+    UI/predicterwindow.h \
+    helper.h
 
 FORMS += \
     UI/encryptionsettingswindow.ui \

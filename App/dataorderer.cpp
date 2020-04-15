@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <functional>
 #include <QTime>
+#include <limits>
 
 InternetExplorers::DataOrderer::DataOrderer()
 {
@@ -31,7 +32,7 @@ void InternetExplorers::DataOrderer::orderData(std::vector<std::vector<std::stri
         sortByIndexNum(data, Constants::DataIndex::IndexInData::YEAR);
         break;
     case OrderFilters::DISTANCE_ORDER:
-        sortByIndexNum(data, Constants::DataIndex::IndexInData::DISTANCE);
+        sortByIndex(data, Constants::DataIndex::IndexInData::DISTANCE);
         break;
     case OrderFilters::ALPH_NATIONALITY:
         sortByIndex(data, Constants::DataIndex::IndexInData::NATIONALITY);
@@ -58,7 +59,20 @@ void InternetExplorers::DataOrderer::sortByIndexNum(std::vector<std::vector<std:
 {
     // Sort with custom lambda expression
     std::sort(data.begin(), data.end(), [index](std::vector<std::string> a, std::vector<std::string> b) {
-        return a[index] < b[index];
+
+        int f, s;
+        try {
+            f = std::stoi(a[index]);
+        } catch (std::exception) {
+            f = INT_MAX;
+        }
+        try {
+            s = std::stoi(b[index]);
+        } catch (std::exception) {
+            s = INT_MAX;
+        }
+
+        return f < s;
     });
 }
 

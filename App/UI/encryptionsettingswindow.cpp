@@ -24,13 +24,13 @@ EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
                 if(lineCopy.size() == 0) continue;
                 if(lineCopy == "ShowHashes")
                 {
-                    if(line.back() == '1')
+                    if(line.at(line.size() - 1) == '1')
                     {
                         ui->checkBoxShowNamesAsHashes->setChecked(true);
                     }
                 } else if(lineCopy == "LocalDataHashed")
                 {
-                    if(line.back() == '1')
+                    if(line.at(line.size() - 1) == '1')
                     {
                         ui->checkBoxHashStoredData->setChecked(true);
                         ui->checkBoxShowNamesAsHashes->setChecked(true);
@@ -42,7 +42,7 @@ EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
                     }
                 } else if(line == "LocalDataEncrypted")
                 {
-                    if(line.back() == '1')
+                    if(line.at(line.size() - 1) == '1')
                     {
                         ui->checkBoxEncryptStoredData->setChecked(true);
                     }
