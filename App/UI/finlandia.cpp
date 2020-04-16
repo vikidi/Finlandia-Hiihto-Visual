@@ -1011,6 +1011,22 @@ void Finlandia::onAttributeRPClicked()
         ui->keskinopeusRP->setChecked(false);
         ui->keskiaikaRP->setChecked(false);
     }
+
+    // All attribute choices off -> set RB all on
+    if (!(ui->naytaSPRP->isChecked()
+        || ui->naytaSVRP->isChecked()
+        || ui->naytaMaaRP->isChecked()
+        || ui->naytaAikaRP->isChecked()
+        || ui->naytaNimiRP->isChecked()
+        || ui->naytaSijaRP->isChecked()
+        || ui->naytaMatkaRP->isChecked()
+        || ui->naytaSijaMRP->isChecked()
+        || ui->naytaSijaNRP->isChecked()
+        || ui->naytaVuosiRP->isChecked()
+        || ui->naytaJoukkueRP->isChecked()
+        || ui->naytaKaupunkiRP->isChecked())) {
+        ui->haeKaikkiRP->setChecked(true);
+    }
 }
 
 void Finlandia::onAllAttributesRPClicked()
