@@ -401,27 +401,192 @@ void Finlandia::make_chart()
 
 void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
 {
-    //QBarSeries* series = new QBarSeries();
-    ////series->setName(curr_series_title);
-    //
-    //// Going through individual results in a search:
-    //for(std::vector<std::string> result : data){
-    //    QBarSet *set = new QBarSet(QString::fromStdString(result.at(x)));
-    //
-    //    if(y == 2){
-    //        int secs = QTime(0, 0, 0).secsTo(QTime::fromString
-    //                                         (QString::fromStdString(
-    //                                              result.at(y)), "h:mm:ss"));
-    //        *set << secs;
-    //
-    //    }
-    //    series->append(set);
-    //
-    //}
-    ////Adding the series to m_chart
-    //m_chart->addSeries(series);
-    //
-    //m_chart->createDefaultAxes();
+    // Headers need to be numerical
+    std::vector<QString> allowedHeaders = {
+        " Vuosi ",
+        " Matka ",
+        " Aika ",
+        " Sija ",
+        " Sija (miehet) ",
+        " Sija (naiset) ",
+        " Syntymävuosi ",
+        " Keskiaika ",
+        " Osallistujamäärä ",
+        " Keskinopeus "
+    };
+
+    // Check that y header is numerical
+    std::vector<QString>::iterator it_y;
+    it_y = std::find(allowedHeaders.begin(), allowedHeaders.end(), yHeader);
+    if (it_y == allowedHeaders.end()) {
+        // Not allowed
+        QMessageBox msgBox;
+        msgBox.setText("Kuvaajan y akselin täytyy olla numeerinen!");
+        msgBox.exec();
+
+        return;
+    }
+
+    // Go through searches, make each of them own series
+
+    // Range for the axis
+    double yMaxValue = INT_MIN;
+    double yMinValue = INT_MAX;
+
+    unsigned long long i = 0; // Index of the current search
+    std::vector<QString> allValues = {}; // All x axis values
+    std::vector<std::vector<QString>> setValues = {}; // All sets and their x values
+    std::vector<QBarSet*> sets = {}; // All sets
+    for (auto search : allSearches) {
+
+        // Init new set
+        QBarSet* set = new QBarSet(m_titles.at(i));
+        std::vector<QString> setV = allValues;
+
+        // Init set with empty values
+        for (std::size_t k = 0; k < allValues.size(); ++k) {
+            set->append(0.0);
+        }
+
+        // Get the indexes where data is for this serie data
+        std::size_t xIndex = getHeadersIndex(xHeader.toStdString(), m_headers.at(i));
+        std::size_t yIndex = getHeadersIndex(yHeader.toStdString(), m_headers.at(i));
+
+        // Go through data
+        for (auto row : search) {
+
+            // Something went wrong :/
+            if (xIndex > row.size() - 1
+                    || yIndex > row.size() - 1) {
+                continue;
+            }
+
+            // Get the data as string
+            std::string xString = row[xIndex];
+            std::string yString = row[yIndex];
+
+            // Parse y data to double
+            double y;
+            if (yHeader == " Aika " || yHeader == " Keskiaika ") {
+                // TODO: Error checking
+                long t = InternetExplorers::Helper::timeToMSecs(yString);
+                y = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
+            }
+            else if (yHeader == " Matka ") {
+                // TODO: Error checking
+                y = InternetExplorers::Helper::parseKMFromDistance(yString);
+            }
+            else {
+                try {
+                    y = std::stod(yString);
+                } catch (std::exception) {
+                    continue;
+                }
+            }
+
+            // Add data to set
+            std::vector<QString>::iterator it;
+            it = std::find(allValues.begin(), allValues.end(), QString::fromStdString(xString));
+            if (it != allValues.end()) {
+                // X value already declared before, add to correct index
+                int ind = static_cast<int>(std::distance(allValues.begin(), it));
+                set->replace(ind, y);
+            }
+            else {
+                // New x value, add to back
+                allValues.emplace_back(QString::fromStdString(xString));
+                setV.emplace_back(QString::fromStdString(xString));
+                set->append(y);
+            }
+
+            // Check axis boundaries
+            if (y < yMinValue) {
+                yMinValue = y;
+            }
+            else if (y > yMaxValue) {
+                yMaxValue = y;
+            }
+        }
+
+        // Add set to containers
+        setValues.emplace_back(setV);
+        sets.emplace_back(set);
+
+        ++i;
+    }
+
+    // Fill 0 to places missing in sets
+    std::size_t s = 0; // Set index
+    for (auto& set : sets) {
+        std::vector<QString>& sv = setValues.at(s);
+
+        // Go through supposed x values
+        for (std::size_t d = 0; d < allValues.size(); ++d) {
+
+            // Set already in the end, rest is to just add
+            if (d > sv.size() - 1) {
+                set->append(0.0);
+                sv.emplace_back(allValues.at(d));
+            }
+
+            // X value is not found from the set
+            else if (sv.at(d) != allValues.at(d)) {
+                // Add the value
+                set->insert(static_cast<int>(d), 0.0);
+                sv.insert(sv.begin() + static_cast<int>(d), allValues.at(d));
+            }
+        }
+
+        ++s;
+    }
+
+    // Add sets to the serie
+    QBarSeries* serie = new QBarSeries();
+    for (auto& set : sets) {
+        serie->append(set);
+    }
+
+    //Adding the series to m_chart
+    m_chart->addSeries(serie);
+
+    // Create y axis
+    QStringList categories = {};
+    for (auto& val : allValues) {
+        categories.append(val);
+    }
+
+    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+    axisX->append(categories);
+    m_chart->addAxis(axisX, Qt::AlignBottom);
+
+    // Create x axis
+    QValueAxis *axisY = new QValueAxis;
+
+    // Get rounded ranges
+    int yLowRange = InternetExplorers::Helper::getLowerFullTen(static_cast<int>(yMinValue));
+    int yUpRange = InternetExplorers::Helper::getUpperFullTen(static_cast<int>(yMaxValue));
+
+    // Set ranges
+    axisY->setRange(yLowRange, yUpRange);
+
+    // Set main grid
+    axisY->setTickCount(5);
+
+    // Set minor grid
+    axisY->setMinorTickCount(4);
+
+    // Set numbers to be nice
+    axisY->applyNiceNumbers();
+
+    // Set axis to the chart
+    m_chart->addAxis(axisY, Qt::AlignLeft);
+
+    // Set axis to all series
+    QList<QAbstractSeries*> series = m_chart->series();
+    for (auto& serie : series) {
+        serie->attachAxis(axisX);
+        serie->attachAxis(axisY);
+    }
 }
 
 void Finlandia::make_line_chart(QString xHeader, QString yHeader)
@@ -434,7 +599,10 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
         " Sija ",
         " Sija (miehet) ",
         " Sija (naiset) ",
-        " Syntymävuosi "
+        " Syntymävuosi ",
+        " Keskiaika ",
+        " Osallistujamäärä ",
+        " Keskinopeus "
     };
 
     // Check that headers are numerical
@@ -455,9 +623,9 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
 
     // Range for the axis
     double xMaxValue = INT_MIN;
-    double xMinValue = UINT64_MAX;
+    double xMinValue = INT_MAX;
     double yMaxValue = INT_MIN;
-    double yMinValue = UINT64_MAX;
+    double yMinValue = INT_MAX;
 
     unsigned long long i = 0; // Index of the current search
     for (auto search : allSearches) {
@@ -484,7 +652,7 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
             double x, y;
 
             // Parse x
-            if (xHeader == " Aika ") {
+            if (xHeader == " Aika " || xHeader == " Keskiaika ") {
                 long t = InternetExplorers::Helper::timeToMSecs(xString);
                 x = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
             }
@@ -500,7 +668,7 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
             }
 
             // Parse y
-            if (yHeader == " Aika ") {
+            if (yHeader == " Aika " || yHeader == " Keskiaika ") {
                 // TODO: Error checking
                 long t = InternetExplorers::Helper::timeToMSecs(yString);
                 y = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
@@ -616,7 +784,7 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
             // Create header
             std::vector<std::string> head({});
             head.emplace_back(" Vuosi ");
-            head.emplace_back(" Osallisujamäärä ");
+            head.emplace_back(" Osallistujamäärä ");
             m_headers.emplace_back(head);
         }
     }
