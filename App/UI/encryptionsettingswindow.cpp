@@ -4,13 +4,14 @@
 #include <QFile>
 #include <QDir>
 #include "constants.h"
+#include "APIs/localapi.h"
 
 EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::EncryptionSettingsWindow)
 {
     ui->setupUi(this);
-
+    this->show();
     if (QFile::exists("encryptionStatus.ini")) {
         QFile file("encryptionStatus.ini");
         if (file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -40,7 +41,7 @@ EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
                         ui->checkBoxShowNamesAsHashes->setEnabled(false);
                         break;
                     }
-                } else if(line == "LocalDataEncrypted")
+                } else if(lineCopy == "LocalDataEncrypted")
                 {
                     if(line.at(line.size() - 1) == '1')
                     {
@@ -95,6 +96,9 @@ void EncryptionSettingsWindow::on_checkBoxHashStoredData_clicked()
         }
         m_crypter.hashLocalNames();
         editSetting("LocalDataHashed", "1");
+        // Regenerate MD5 checksum file
+        InternetExplorers::LocalAPI localapi;
+        localapi.createMD5File();
     } else
     {
         ui->checkBoxHashStoredData->setChecked(false);
@@ -117,6 +121,9 @@ void EncryptionSettingsWindow::on_checkBoxEncryptStoredData_stateChanged(int new
         // Mark data as unencrypted
         editSetting("LocalDataEncrypted", "0");
     }
+    // Regenerate MD5 checksum file
+    InternetExplorers::LocalAPI localapi;
+    localapi.createMD5File();
 }
 
 void EncryptionSettingsWindow::on_checkBoxShowNamesAsHashes_stateChanged(int newState)

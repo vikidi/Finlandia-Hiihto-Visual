@@ -58,6 +58,12 @@ public:
      */
     std::map<QString, QString> readMetaDataFile();
 
+    /*!
+     * \brief
+     * Creates file having all the MD5 check sum metadatas
+     */
+    void createMD5File();
+
 signals:
 
     /*!
@@ -140,12 +146,6 @@ private:
      * Creates general metadata file for the data load
      */
     void createGeneralMetaDataFile();
-
-    /*!
-     * \brief
-     * Creates file having all the MD5 check sum metadatas
-     */
-    void createMD5File();
 
     /*!
      * \brief
