@@ -182,6 +182,9 @@ private:
     QString makeNormalTitle();
     QString makeOrderTitle();
     void parseColumns(std::vector<std::vector<std::string>>& data, const std::vector<int>& columns);
+    std::vector<std::string> getCommonHeaders();
+    void setGraphAxisCB(const std::vector<std::string>& values);
+    int getHeadersIndex(const std::string& header, const std::vector<std::string>& headers) const;
 
     Ui::Finlandia *ui;
 

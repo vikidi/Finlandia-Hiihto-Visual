@@ -27,7 +27,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <property name="minimumSize">
@@ -1110,7 +1110,7 @@
              <property name="checked">
               <bool>true</bool>
              </property>
-			 <property name="autoExclusive">
+             <property name="autoExclusive">
               <bool>false</bool>
              </property>
             </widget>
@@ -1122,7 +1122,7 @@
                <property name="text">
                 <string>Matka</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1132,7 +1132,7 @@
                <property name="text">
                 <string>Sija</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1142,7 +1142,7 @@
                <property name="text">
                 <string>Sija (miehet)</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1152,7 +1152,7 @@
                <property name="text">
                 <string>Vuosi</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1162,7 +1162,7 @@
                <property name="text">
                 <string>Aika</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1172,7 +1172,7 @@
                <property name="text">
                 <string>Sukupuoli</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1182,7 +1182,7 @@
                <property name="text">
                 <string>Kaupunki</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1192,7 +1192,7 @@
                <property name="text">
                 <string>Syntymävuosi</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1202,7 +1202,7 @@
                <property name="text">
                 <string>Sija (naiset)</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1212,7 +1212,7 @@
                <property name="text">
                 <string>Nimi</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1222,7 +1222,7 @@
                <property name="text">
                 <string>Kansallisuus</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1232,7 +1232,7 @@
                <property name="text">
                 <string>Joukkue</string>
                </property>
-			   <property name="autoExclusive">
+               <property name="autoExclusive">
                 <bool>false</bool>
                </property>
               </widget>
@@ -1633,66 +1633,6 @@
                  <height>16777215</height>
                 </size>
                </property>
-               <item>
-                <property name="text">
-                 <string>YEAR</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>DISTANCE</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>TIME</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>PLACE</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>PLACE_MEN</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>PLACE_WOMEN</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>SEX</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>NAME</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>CITY</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>NATIONALITY</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>BIRTH_YEAR</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>TEAM</string>
-                </property>
-               </item>
               </widget>
              </item>
              <item row="2" column="2">
@@ -1709,66 +1649,6 @@
                  <height>16777215</height>
                 </size>
                </property>
-               <item>
-                <property name="text">
-                 <string>YEAR</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>DISTANCE </string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>TIME</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>PLACE</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>PLACE_MEN</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>PLACE_WOMEN</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>SEX</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>NAME</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>CITY</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>NATIONALITY </string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>BIRTH_YEAR</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>TEAM  </string>
-                </property>
-               </item>
               </widget>
              </item>
              <item row="2" column="0">
@@ -2020,11 +1900,4 @@
  </customwidgets>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="HaettavaTietoButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
- </buttongroups>
 </ui>

@@ -163,6 +163,10 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->jarjestaSeuranNimiRP->setChecked(false);
     ui->nimi_jarkkaRP->setChecked(false);
 
+    // Clear graph axis comboboxes
+    ui->x_akseliCB->clear();
+    ui->y_akseliCB->clear();
+
     // DEPR
     m_datalump.clear();
     all_titles.clear();
@@ -324,25 +328,33 @@ void Finlandia::make_listview()
 
 void Finlandia::make_chart()
 {
-    int x = ui->x_akseliCB->currentIndex();
-    ui->x_axisTitle->setText(ui->x_akseliCB->currentText());
+    // Get the chosen axis
+    QString xAxis = ui->x_akseliCB->currentText();
+    QString yAxis = ui->y_akseliCB->currentText();
 
-    int y = ui->y_akseliCB->currentIndex();
-    ui->y_axisTitle->setText(ui->y_akseliCB->currentText());
+    // Get chosen graph type
+    // 0 = bar, 1 = line
+    int type = ui->kuvaajatyyppiCB->currentIndex();
 
-
-    if(ui->kuvaajatyyppiCB->currentIndex() == 1){
-
-        if(std::isdigit(*m_datalump.at(1).at(y).c_str()) &&
-                std::isdigit(*m_datalump.at(1).at(y).c_str())){
-            make_line_chart(x, y);
-        }
-
-    }else if(ui->kuvaajatyyppiCB->currentIndex() == 0){
-        if(std::isdigit(*m_datalump.at(1).at(y).c_str())){
-            make_bar_chart(x, y);
-        }
-    }
+    //int x = ui->x_akseliCB->currentIndex();
+    //ui->x_axisTitle->setText(ui->x_akseliCB->currentText());
+    //
+    //int y = ui->y_akseliCB->currentIndex();
+    //ui->y_axisTitle->setText(ui->y_akseliCB->currentText());
+    //
+    //
+    //if(ui->kuvaajatyyppiCB->currentIndex() == 1){
+    //
+    //    if(std::isdigit(*m_datalump.at(1).at(y).c_str()) &&
+    //            std::isdigit(*m_datalump.at(1).at(y).c_str())){
+    //        make_line_chart(x, y);
+    //    }
+    //
+    //}else if(ui->kuvaajatyyppiCB->currentIndex() == 0){
+    //    if(std::isdigit(*m_datalump.at(1).at(y).c_str())){
+    //        make_bar_chart(x, y);
+    //    }
+    //}
 }
 
 
@@ -599,7 +611,7 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
 
             // Create header
             std::vector<std::string> head({});
-            head.emplace_back(" Maa ");
+            head.emplace_back(" Kansalaisuus ");
             head.emplace_back(" Osallistujamäärä ");
             m_headers.emplace_back(head);
         }
@@ -639,7 +651,6 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
         }
     }
 }
-
 
 bool Finlandia::check_for_special_filters()
 {
@@ -930,7 +941,12 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
 void Finlandia::on_pushButton_clicked()
 {
+    // Create the tables
     make_listview();
+
+    // Create graph things
+    std::vector<std::string> headers = getCommonHeaders();
+    setGraphAxisCB(headers);
 }
 
 void Finlandia::encryptionSettingsOpened()
@@ -1163,11 +1179,13 @@ void Finlandia::addTableWidget(const std::vector<std::vector<std::string> > &row
 {
     QTableWidget *w = new QTableWidget(ui->scrollWidget);
 
+    // Make table not editable
     w->setEditTriggers(QAbstractItemView::EditTriggers(nullptr));
 
     w->setRowCount(static_cast<int>(rows.size()) + 1);
     w->setColumnCount(static_cast<int>(header.size()));
 
+    // Set the first ("title") row to be full width
     w->setSpan(0, 0, 1 , static_cast<int>(header.size()));
 
     // Add header
@@ -1190,14 +1208,17 @@ void Finlandia::addTableWidget(const std::vector<std::vector<std::string> > &row
         ++r;
     }
 
+    // Resize data rows
     w->resizeColumnsToContents();
 
-    // Add title, needs to be after column resize!
+    // Add title row, needs to be after column resize!
     QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(title));
     w->setItem(0, 0, newItem);
 
+    // Resize title row
     w->resizeRowToContents(0);
 
+    // Calculate table width
     int sum = 100;
     for (int i = 0; i < w->columnCount(); ++i) {
         sum += w->columnWidth(i);
@@ -1430,4 +1451,63 @@ void Finlandia::parseColumns(std::vector<std::vector<std::string> > &data, const
     }
 }
 
+std::vector<std::string> Finlandia::getCommonHeaders()
+{
+    // No searches made
+    if (m_headers.size() == 0) return {};
 
+    // Take the first one as reference
+    std::vector<std::string> com = m_headers.at(0);
+
+    // Only header
+    if (m_headers.size() == 1) return com;
+
+    std::vector<std::string>::iterator it_c;
+
+    // Go through other headers
+    auto it_h = ++m_headers.begin();
+    while (it_h != m_headers.end()) {
+
+        // Check headers in the first header
+        auto it = com.begin();
+        while (it != com.end()) {
+
+            // Try to find the header
+            it_c = std::find((*it_h).begin(), (*it_h).end(), (*it));
+            if (it_c != (*it_h).end()) {
+                // Don't remove
+                ++it;
+            }
+            else {
+                // Remove
+                it = com.erase(it);
+            }
+        }
+
+        ++it_h;
+    }
+
+    return com;
+}
+
+void Finlandia::setGraphAxisCB(const std::vector<std::string> &values)
+{
+    for (const auto& value : values) {
+        ui->x_akseliCB->addItem(QString::fromStdString(value));
+        ui->y_akseliCB->addItem(QString::fromStdString(value));
+    }
+}
+
+int Finlandia::getHeadersIndex(const std::string &header, const std::vector<std::string> &headers) const
+{
+    // Try to find the header
+    std::vector<std::string>::const_iterator it = std::find(headers.begin(), headers.end(), header);
+    if (it != headers.end()) {
+        // Get index of element from iterator
+        return static_cast<int>(std::distance(headers.begin(), it));
+    }
+    // Not found
+    else {
+        return -1;
+    }
+}
