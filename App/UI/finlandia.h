@@ -214,6 +214,11 @@ private:
     // Game window is stored here
     std::unique_ptr<QMainWindow> m_gameWindow;
 
+    // Are names supposed to be shown for user
+    bool m_showHashes;
+
+    // Does data need decryption before use
+    bool m_encrypted;
 
 };
 

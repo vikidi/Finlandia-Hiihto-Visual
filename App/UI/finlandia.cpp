@@ -18,7 +18,9 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     ui(new Ui::Finlandia),
     m_DataHandler(dh),
     allSearches{},
-    m_chart(new QChart())
+    m_chart(new QChart()),
+    m_showHashes(false),
+    m_encrypted(false)
 {
     ui->setupUi(this);
 
@@ -88,6 +90,45 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     m_chart->setAnimationOptions(QChart::AnimationOption::SeriesAnimations);
     m_chart->setAnimationDuration(1500); // 1,5s
     ui->graafiWiev->setRenderHint(QPainter::Antialiasing, true);
+
+    if (QFile::exists("encryptionStatus.ini")) {
+        QFile file("encryptionStatus.ini");
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            for(auto line : file.readAll().split('\n'))
+            {
+                // "Chopped" would be better than chop but
+                // it is not supported on remote desktops qt version
+                auto lineCopy{line};
+                lineCopy.chop(2);
+                if(lineCopy.size() == 0) continue;
+                if(lineCopy == "ShowHashes")
+                {
+                    if(line.at(line.size() - 1) == '1')
+                    {
+                        m_showHashes = true;
+                    }
+                } else if(lineCopy == "LocalDataHashed")
+                {
+                    if(line.at(line.size() - 1) == '1')
+                    {
+                        m_showHashes = true;
+                        break;
+                    }
+                } else if(lineCopy == "LocalDataEncrypted")
+                {
+                    if(line.at(line.size() - 1) == '1')
+                    {
+                        m_encrypted = true;
+                    }
+                }
+            }
+        }
+    } else
+    { // File not found
+        m_showHashes = false;
+        m_encrypted = false;
+    }
 }
 
 Finlandia::~Finlandia()

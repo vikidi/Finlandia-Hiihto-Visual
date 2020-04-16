@@ -58,6 +58,15 @@
       </spacer>
      </item>
      <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Changes will be
+applied after restart
+of the application</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButtonClose">
        <property name="text">
         <string>Close</string>
