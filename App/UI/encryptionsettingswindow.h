@@ -36,6 +36,8 @@ private:
     InternetExplorers::Crypter m_crypter;
 
     void editSetting(QString setting, QString value);
+
+    bool programStarted;
 };
 
 #endif // ENCRYPTIONSETTINGSWINDOW_HH

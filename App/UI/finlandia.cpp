@@ -20,7 +20,7 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     allSearches{},
     m_chart(new QChart()),
     m_showHashes(false),
-    m_encrypted(false)
+    m_localDataHashed(false)
 {
     ui->setupUi(this);
 
@@ -113,13 +113,8 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
                     if(line.at(line.size() - 1) == '1')
                     {
                         m_showHashes = true;
+                        m_localDataHashed = true;
                         break;
-                    }
-                } else if(lineCopy == "LocalDataEncrypted")
-                {
-                    if(line.at(line.size() - 1) == '1')
-                    {
-                        m_encrypted = true;
                     }
                 }
             }
@@ -127,7 +122,7 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     } else
     { // File not found
         m_showHashes = false;
-        m_encrypted = false;
+        m_localDataHashed = false;
     }
 }
 
@@ -251,7 +246,9 @@ std::map<Filter_NS, QString> Finlandia::makefilter()
 
         std::pair<Filter_NS, QString> name_pair(
                     InternetExplorers::Constants::Filter::NAME,
-                    ui->textEditUrheilija->toPlainText());
+                    m_localDataHashed ?
+                        m_crypter.hashName(ui->textEditUrheilija->toPlainText()) :
+                        ui->textEditUrheilija->toPlainText());
 
         filter.insert(name_pair);
     }
@@ -1455,10 +1452,10 @@ QString Finlandia::makeNormalTitle()
 
     if (ui->textEditUrheilija->toPlainText() != "") {
         if (title.length() > 0) {
-            title = title + ", Nimi: " + ui->textEditUrheilija->toPlainText();
+            title = title + ", Nimi: " + (m_showHashes ? m_crypter.hashName(ui->textEditUrheilija->toPlainText()) : ui->textEditUrheilija->toPlainText());
         }
         else {
-            title = "Nimi: " + ui->textEditUrheilija->toPlainText();
+            title = "Nimi: " + (m_showHashes ? m_crypter.hashName(ui->textEditUrheilija->toPlainText()) : ui->textEditUrheilija->toPlainText());
         }
     }
 

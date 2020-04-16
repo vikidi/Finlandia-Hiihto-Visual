@@ -12,6 +12,7 @@
 #include "encryptionsettingswindow.h"
 #include "predicterwindow.h"
 #include "../helper.h"
+#include "crypter.h"
 
 // Alias to make things easier
 #ifndef FILTER_NS
@@ -214,11 +215,14 @@ private:
     // Game window is stored here
     std::unique_ptr<QMainWindow> m_gameWindow;
 
+    // Crypter does GDPR related things
+    InternetExplorers::Crypter m_crypter;
+
     // Are names supposed to be shown for user
     bool m_showHashes;
 
-    // Does data need decryption before use
-    bool m_encrypted;
+    // Does backend have hashed names
+    bool m_localDataHashed;
 
 };
 

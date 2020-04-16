@@ -39,6 +39,9 @@ signals:
 private:
 
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> m_data;
+
+    // Does data need decryption before use
+    bool m_encrypted;
 };
 
 }

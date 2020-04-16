@@ -8,7 +8,8 @@
 
 EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::EncryptionSettingsWindow)
+    ui(new Ui::EncryptionSettingsWindow),
+    programStarted(false)
 {
     ui->setupUi(this);
     this->show();
@@ -61,6 +62,7 @@ EncryptionSettingsWindow::EncryptionSettingsWindow(QWidget *parent) :
         }
         file.close();
     }
+    programStarted = true;
 }
 
 EncryptionSettingsWindow::~EncryptionSettingsWindow()
@@ -70,6 +72,8 @@ EncryptionSettingsWindow::~EncryptionSettingsWindow()
 
 void EncryptionSettingsWindow::on_checkBoxHashStoredData_clicked()
 {
+    if(!programStarted) return;
+
     QMessageBox areYouSure;
 
     areYouSure.setWindowTitle("Are you sure?");
@@ -107,6 +111,8 @@ void EncryptionSettingsWindow::on_checkBoxHashStoredData_clicked()
 
 void EncryptionSettingsWindow::on_checkBoxEncryptStoredData_stateChanged(int newState)
 {
+    if(!programStarted) return;
+
     if(newState)
     {
         m_crypter.encryptLocalNames();
@@ -128,6 +134,8 @@ void EncryptionSettingsWindow::on_checkBoxEncryptStoredData_stateChanged(int new
 
 void EncryptionSettingsWindow::on_checkBoxShowNamesAsHashes_stateChanged(int newState)
 {
+    if(!programStarted) return;
+
     if(newState)
     {
         editSetting("ShowHashes", "1");

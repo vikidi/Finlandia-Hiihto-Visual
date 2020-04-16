@@ -5,7 +5,6 @@
 #include <QList>
 #include <QDirIterator>
 #include "libraries/simplecrypt.h"
-
 #include "constants.h"
 
 InternetExplorers::Crypter::Crypter()
@@ -42,6 +41,15 @@ void InternetExplorers::Crypter::hashNames(std::vector<std::vector<std::string>>
 
     msg = QString("Done function hashNames()");
     InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+}
+
+QString InternetExplorers::Crypter::hashName(QString name, QCryptographicHash::Algorithm algorithm)
+{
+    QCryptographicHash hash(algorithm);
+    hash.addData(name.toStdString().c_str(), name.length());
+    QString result(hash.result().toHex());
+    result.truncate(6);
+    return result;
 }
 
 void InternetExplorers::Crypter::hashLocalNames(QCryptographicHash::Algorithm algorithm)
@@ -151,6 +159,7 @@ void InternetExplorers::Crypter::decryptNames(std::vector<std::vector<std::strin
     {
         row[Constants::DataIndex::IndexInData::NAME]
                 = crypt.decryptToString(QString::fromStdString(row[Constants::DataIndex::IndexInData::NAME])).toStdString();
+
     }
 }
 
