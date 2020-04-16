@@ -52,3 +52,33 @@ double InternetExplorers::Helper::mSecsToH(const unsigned long long time)
 {
     return (time / static_cast<double>(1000 * 60 * 60));
 }
+
+int InternetExplorers::Helper::getLowerFullTen(const int num)
+{
+    return num - (num % 10);
+}
+
+int InternetExplorers::Helper::getUpperFullTen(const int num)
+{
+    return num + (10 - (num % 10));
+}
+
+int InternetExplorers::Helper::parseKMFromDistance(const std::string distance)
+{
+    std::string nums = "0123456789";
+    std::string tmp = "";
+    for(auto c : distance) {
+        if (nums.find(c) != nums.npos) {
+            tmp += c;
+        }
+    }
+
+    int d;
+    try {
+        d = std::stoi(tmp);
+    } catch (std::exception) {
+        return 0;
+    }
+
+    return d;
+}

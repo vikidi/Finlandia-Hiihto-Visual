@@ -33,6 +33,11 @@ public:
 
     static double mSecsToH(const unsigned long long time);
 
+    static int getLowerFullTen(const int num);
+    static int getUpperFullTen(const int num);
+
+    static int parseKMFromDistance(const std::string distance);
+
 private:
     Helper() {}
 };

@@ -79,6 +79,15 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     connect(ui->vuodenXparhaatRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
     connect(ui->keskinopeusRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
     connect(ui->keskiaikaRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
+
+    // Set chart to the graph view
+    ui->graafiWiev->setChart(m_chart);
+
+    // Set chart styles to be cool
+    m_chart->setTheme(QChart::ChartThemeBlueCerulean);
+    m_chart->setAnimationOptions(QChart::AnimationOption::SeriesAnimations);
+    m_chart->setAnimationDuration(1500); // 1,5s
+    ui->graafiWiev->setRenderHint(QPainter::Antialiasing, true);
 }
 
 Finlandia::~Finlandia()
@@ -100,9 +109,6 @@ Finlandia::~Finlandia()
 
 void Finlandia::on_pushButtonNollaKaikki_clicked()
 {
-    // Clear charts
-    m_chart -> removeAllSeries();
-
     // Clear result tables
     QLayoutItem* item;
     while ( (item = m_scrollLayout->takeAt( 0 )) != nullptr ) {
@@ -163,14 +169,15 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     ui->jarjestaSeuranNimiRP->setChecked(false);
     ui->nimi_jarkkaRP->setChecked(false);
 
+    // Clear charts
+    remove_cart();
+
     // Clear graph axis comboboxes
     ui->x_akseliCB->clear();
     ui->y_akseliCB->clear();
 
-    // DEPR
-    m_datalump.clear();
-    all_titles.clear();
-    // /DEPR
+    // Set graph create button to disabled until searches are done
+    ui->add_graphButton->setEnabled(false);
 }
 
 std::map<Filter_NS, QString> Finlandia::makefilter()
@@ -336,82 +343,204 @@ void Finlandia::make_chart()
     // 0 = bar, 1 = line
     int type = ui->kuvaajatyyppiCB->currentIndex();
 
-    //int x = ui->x_akseliCB->currentIndex();
-    //ui->x_axisTitle->setText(ui->x_akseliCB->currentText());
+    // Set graph labels
+    ui->x_axisTitle->setText(ui->x_akseliCB->currentText());
+    ui->y_axisTitle->setText(ui->y_akseliCB->currentText());
+
+    // Create line chart
+    if (type == 1) {
+        make_line_chart(xAxis, yAxis);
+    }
+    // Create diagram chart
+    else if (type == 0) {
+        make_bar_chart(xAxis, yAxis);
+    }
+}
+
+
+void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
+{
+    //QBarSeries* series = new QBarSeries();
+    ////series->setName(curr_series_title);
     //
-    //int y = ui->y_akseliCB->currentIndex();
-    //ui->y_axisTitle->setText(ui->y_akseliCB->currentText());
+    //// Going through individual results in a search:
+    //for(std::vector<std::string> result : data){
+    //    QBarSet *set = new QBarSet(QString::fromStdString(result.at(x)));
     //
+    //    if(y == 2){
+    //        int secs = QTime(0, 0, 0).secsTo(QTime::fromString
+    //                                         (QString::fromStdString(
+    //                                              result.at(y)), "h:mm:ss"));
+    //        *set << secs;
     //
-    //if(ui->kuvaajatyyppiCB->currentIndex() == 1){
-    //
-    //    if(std::isdigit(*m_datalump.at(1).at(y).c_str()) &&
-    //            std::isdigit(*m_datalump.at(1).at(y).c_str())){
-    //        make_line_chart(x, y);
     //    }
+    //    series->append(set);
     //
-    //}else if(ui->kuvaajatyyppiCB->currentIndex() == 0){
-    //    if(std::isdigit(*m_datalump.at(1).at(y).c_str())){
-    //        make_bar_chart(x, y);
-    //    }
     //}
+    ////Adding the series to m_chart
+    //m_chart->addSeries(series);
+    //
+    //m_chart->createDefaultAxes();
 }
 
-
-void Finlandia::make_bar_chart(int x, int y)
+void Finlandia::make_line_chart(QString xHeader, QString yHeader)
 {
-    QBarSeries* series = new QBarSeries();
-    //series->setName(curr_series_title);
+    // Headers need to be numerical
+    std::vector<QString> allowedHeaders = {
+        " Vuosi ",
+        " Matka ",
+        " Aika ",
+        " Sija ",
+        " Sija (miehet) ",
+        " Sija (naiset) ",
+        " Syntymävuosi "
+    };
 
-    //adding the data from only last search: TODO add later searches too
-    std::vector<std::vector<std::string>> data = m_datalump;
+    // Check that headers are numerical
+    std::vector<QString>::iterator it_x, it_y;
+    it_x = std::find(allowedHeaders.begin(), allowedHeaders.end(), xHeader);
+    it_y = std::find(allowedHeaders.begin(), allowedHeaders.end(), yHeader);
+    if (it_x == allowedHeaders.end()
+            || it_y == allowedHeaders.end()) {
+        // Not allowed
+        QMessageBox msgBox;
+        msgBox.setText("Kuvaajan akseleiden täytyy olla numeeriset!");
+        msgBox.exec();
 
-    // Going through individual results in a search:
-    for(std::vector<std::string> result : data){
-        QBarSet *set = new QBarSet(QString::fromStdString(result.at(x)));
-
-        if(y == 2){
-            int secs = QTime(0, 0, 0).secsTo(QTime::fromString
-                                             (QString::fromStdString(
-                                                  result.at(y)), "h:mm:ss"));
-            *set << secs;
-
-        }
-        series->append(set);
-
+        return;
     }
-    //Adding the series to m_chart
-    m_chart->addSeries(series);
 
-    m_chart->createDefaultAxes();
-    ui->graafiWiev->setChart(m_chart);
+    // Go through searches, make each of them own series
 
-}
+    // Range for the axis
+    double xMaxValue = INT_MIN;
+    double xMinValue = UINT64_MAX;
+    double yMaxValue = INT_MIN;
+    double yMinValue = UINT64_MAX;
 
-void Finlandia::make_line_chart(int x, int y)
-{
-    QLineSeries *series = new QLineSeries();
-    //series->setName(curr_series_title);
+    unsigned long long i = 0; // Index of the current search
+    for (auto search : allSearches) {
+        QLineSeries *serie = new QLineSeries();
 
-    //adding the data from only last search: TODO add later searches too
-    std::vector<std::vector<std::string>> data = m_datalump;
+        // Get the indexes where data is for this serie data
+        std::size_t xIndex = getHeadersIndex(xHeader.toStdString(), m_headers.at(i));
+        std::size_t yIndex = getHeadersIndex(yHeader.toStdString(), m_headers.at(i));
 
-    // Going through individual results in a search:
-    for(std::vector<std::string> result : data){
-        if(y == 2){
-            int secs = QTime(0, 0, 0).secsTo(QTime::fromString
-                                             (QString::fromStdString(
-                                                  result.at(y)), "h:mm:ss"));
-            series->append(QPoint(stoi(result.at(x)),secs));
+        // Go through data
+        for (auto row : search) {
+
+            // Something went wrong :/
+            if (xIndex > row.size() - 1
+                    || yIndex > row.size() - 1) {
+                continue;
+            }
+
+            // Get the data as string
+            std::string xString = row[xIndex];
+            std::string yString = row[yIndex];
+
+            // Parse data to double
+            double x, y;
+
+            // Parse x
+            if (xHeader == " Aika ") {
+                long t = InternetExplorers::Helper::timeToMSecs(xString);
+                x = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
+            }
+            else if (xHeader == " Matka ") {
+                x = InternetExplorers::Helper::parseKMFromDistance(xString);
+            }
+            else {
+                try {
+                    x = std::stod(xString);
+                } catch (std::exception) {
+                    continue;
+                }
+            }
+
+            // Parse y
+            if (yHeader == " Aika ") {
+                // TODO: Error checking
+                long t = InternetExplorers::Helper::timeToMSecs(yString);
+                y = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
+            }
+            else if (yHeader == " Matka ") {
+                // TODO: Error checking
+                y = InternetExplorers::Helper::parseKMFromDistance(yString);
+            }
+            else {
+                try {
+                    y = std::stod(yString);
+                } catch (std::exception) {
+                    continue;
+                }
+            }
+
+            // Add data to serie
+            serie->append(x, y);
+
+            // Check axis boundaries
+            if (x < xMinValue) {
+                xMinValue = x;
+            }
+            else if (x > xMaxValue) {
+                xMaxValue = x;
+            }
+
+            if (y < yMinValue) {
+                yMinValue = y;
+            }
+            else if (y > yMaxValue) {
+                yMaxValue = y;
+            }
         }
-        else{
 
-            series->append(QPoint(stoi(result.at(x)),stoi(result.at(y))));
-        }
+        // Add title to the serie
+        serie->setName(m_titles.at(i));
+
+        //Adding the series to m_chart
+        m_chart->addSeries(serie);
+
+        ++i;
     }
-    //Adding the series to m_chart
-    m_chart->addSeries(series);
 
+    // Create axis
+    QValueAxis *axisX = new QValueAxis;
+    QValueAxis *axisY = new QValueAxis;
+
+    // Get rounded ranges
+    int xLowRange = InternetExplorers::Helper::getLowerFullTen(static_cast<int>(xMinValue));
+    int xUpRange = InternetExplorers::Helper::getUpperFullTen(static_cast<int>(xMaxValue));
+
+    int yLowRange = InternetExplorers::Helper::getLowerFullTen(static_cast<int>(yMinValue));
+    int yUpRange = InternetExplorers::Helper::getUpperFullTen(static_cast<int>(yMaxValue));
+
+    // Set ranges
+    axisX->setRange(xLowRange, xUpRange);
+    axisY->setRange(yLowRange, yUpRange);
+
+    // Set main grid
+    axisX->setTickCount(5);
+    axisY->setTickCount(5);
+
+    // Set minor grid
+    axisX->setMinorTickCount(4);
+    axisY->setMinorTickCount(4);
+
+    // Set numbers to be nice
+    axisX->applyNiceNumbers();
+    axisY->applyNiceNumbers();
+
+    // Set axis to the chart
+    m_chart->addAxis(axisX, Qt::AlignBottom);
+    m_chart->addAxis(axisY, Qt::AlignLeft);
+
+    // Set axis to all series
+    QList<QAbstractSeries*> series = m_chart->series();
+    for (auto& serie : series) {
+        serie->attachAxis(axisX);
+        serie->attachAxis(axisY);
+    }
 }
 
 void Finlandia::apply_special_filters(std::map<Filter_NS,
@@ -795,7 +924,18 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
 
 void Finlandia::remove_cart()
 {
+    // Set default axis titles
+    ui->x_axisTitle->setText("X-Axis Title");
+    ui->y_axisTitle->setText("Y-Axis Title");
+
+    // Clear charts
     m_chart->removeAllSeries();
+
+    // Clear axis
+    QList<QAbstractAxis*> axes = m_chart->axes();
+    for (auto axis : axes) {
+        m_chart->removeAxis(axis);
+    }
 }
 
 void Finlandia::save_chart()
@@ -944,9 +1084,22 @@ void Finlandia::on_pushButton_clicked()
     // Create the tables
     make_listview();
 
-    // Create graph things
+    // Create graph things if enough headers
     std::vector<std::string> headers = getCommonHeaders();
-    setGraphAxisCB(headers);
+    if (headers.size() > 1) {
+        setGraphAxisCB(headers);
+
+        // Allow graphs
+        ui->add_graphButton->setEnabled(true);
+    }
+    else {
+        // Don't allow graphs to be made
+        ui->add_graphButton->setEnabled(false);
+
+        QMessageBox msgBox;
+        msgBox.setText("Hauissa liian vähän yhteisiä tietueita kuvaajia varten");
+        msgBox.exec();
+    }
 }
 
 void Finlandia::encryptionSettingsOpened()
@@ -1498,16 +1651,16 @@ void Finlandia::setGraphAxisCB(const std::vector<std::string> &values)
     }
 }
 
-int Finlandia::getHeadersIndex(const std::string &header, const std::vector<std::string> &headers) const
+std::size_t Finlandia::getHeadersIndex(const std::string &header, const std::vector<std::string> &headers) const
 {
     // Try to find the header
     std::vector<std::string>::const_iterator it = std::find(headers.begin(), headers.end(), header);
     if (it != headers.end()) {
         // Get index of element from iterator
-        return static_cast<int>(std::distance(headers.begin(), it));
+        return static_cast<std::size_t>(std::distance(headers.begin(), it));
     }
     // Not found
     else {
-        return -1;
+        return UINT64_MAX;
     }
 }

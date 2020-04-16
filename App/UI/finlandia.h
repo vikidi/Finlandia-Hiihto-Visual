@@ -65,14 +65,14 @@ public:
      * @param x indicates the attribute wanted on the x axis
      * @param y indicates the attribute wanted on y axis
      */
-    void make_bar_chart(int x, int y);
+    void make_bar_chart(QString xHeader, QString yHeader);
 
     /**
      * @brief make_line_chart
      * @param x indicates the attribute wanted on the x axis
      * @param y indicates the attribute wanted on y axis
      */
-    void make_line_chart(int x, int y);
+    void make_line_chart(QString xHeader, QString yHeader);
 
     /**
      * @brief apply_special_filters does filtering for "Lisäehdot" -part
@@ -184,7 +184,7 @@ private:
     void parseColumns(std::vector<std::vector<std::string>>& data, const std::vector<int>& columns);
     std::vector<std::string> getCommonHeaders();
     void setGraphAxisCB(const std::vector<std::string>& values);
-    int getHeadersIndex(const std::string& header, const std::vector<std::string>& headers) const;
+    std::size_t getHeadersIndex(const std::string& header, const std::vector<std::string>& headers) const;
 
     Ui::Finlandia *ui;
 
@@ -192,13 +192,7 @@ private:
 
     std::vector<std::vector<std::vector<std::string>>> allSearches;
 
-    // DEPR
-    std::vector<std::vector<std::string>> m_datalump;
-
     QChart *m_chart;
-
-    // DEPR
-    std::vector<QString> all_titles;
 
     // Layout for tables
     QHBoxLayout *m_scrollLayout;
