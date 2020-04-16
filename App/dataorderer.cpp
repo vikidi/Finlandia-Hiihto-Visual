@@ -63,12 +63,12 @@ void InternetExplorers::DataOrderer::sortByIndexNum(std::vector<std::vector<std:
         int f, s;
         try {
             f = std::stoi(a[index]);
-        } catch (std::exception) {
+        } catch (std::exception &e) {
             f = INT_MAX;
         }
         try {
             s = std::stoi(b[index]);
-        } catch (std::exception) {
+        } catch (std::exception &e) {
             s = INT_MAX;
         }
 

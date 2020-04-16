@@ -529,7 +529,7 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageSpe
     int distance;
     try {
         distance = std::stoi(tmp);
-    } catch (std::exception) {
+    } catch (std::exception &e) {
         return {};
     }
 

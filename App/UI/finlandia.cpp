@@ -453,7 +453,7 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
             else {
                 try {
                     x = std::stod(xString);
-                } catch (std::exception) {
+                } catch (std::exception &e) {
                     continue;
                 }
             }
@@ -471,7 +471,7 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
             else {
                 try {
                     y = std::stod(yString);
-                } catch (std::exception) {
+                } catch (std::exception &e) {
                     continue;
                 }
             }
