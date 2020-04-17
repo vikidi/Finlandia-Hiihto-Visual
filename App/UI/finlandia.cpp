@@ -82,6 +82,9 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     connect(ui->keskinopeusRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
     connect(ui->keskiaikaRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
 
+    // Table emptying button
+    connect(ui->btn_emptyTables, &QPushButton::clicked, this, &Finlandia::on_btn_emptyTable_clicked);
+
     // Set chart to the graph view
     ui->graafiWiev->setChart(m_chart);
 
@@ -146,11 +149,7 @@ Finlandia::~Finlandia()
 void Finlandia::on_pushButtonNollaKaikki_clicked()
 {
     // Clear result tables
-    QLayoutItem* item;
-    while ( (item = m_scrollLayout->takeAt( 0 )) != nullptr ) {
-        delete item->widget();
-        delete item;
-    }
+    on_btn_emptyTable_clicked();
 
     // Clear search listing
     ui->listWidgetTehtHaut->clear();
@@ -1289,6 +1288,10 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
 void Finlandia::on_pushButton_clicked()
 {
+    // First empty previous tables and charts
+    on_btn_emptyTable_clicked();
+    remove_cart();
+
     // Create the tables
     make_listview();
 
@@ -1460,6 +1463,15 @@ void Finlandia::onOrderRPClicked()
         ui->vuodenXparhaatRP->setChecked(false);
         ui->keskinopeusRP->setChecked(false);
         ui->keskiaikaRP->setChecked(false);
+    }
+}
+
+void Finlandia::on_btn_emptyTable_clicked()
+{
+    QLayoutItem* item;
+    while ( (item = m_scrollLayout->takeAt( 0 )) != nullptr ) {
+        delete item->widget();
+        delete item;
     }
 }
 
