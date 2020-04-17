@@ -169,6 +169,10 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     // Singular search remove button
     ui->btn_removeSearch->setEnabled(false);
 
+    // Further filtering option
+    ui->cb_furtherFilter->setEnabled(false);
+    ui->cb_furtherFilter->setChecked(false);
+
     // Clear UI options
     ui->comboBoxVuosi->setCurrentIndex(0);
     ui->vuosivaliBox->setCurrentIndex(0);
@@ -1241,8 +1245,15 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
     //Also makes curr_series_title
     std::map<Filter_NS, QString> filter = makefilter();
 
+    // Further filter
+    if (ui->cb_furtherFilter->isChecked()) {
+
+        // Further filter the chosen data
+        furtherFilter(filter);
+    }
+
     // Special search
-    if(check_for_special_filters()){
+    else if(check_for_special_filters()){
 
         // Handle data fetch, headers and titles
         apply_special_filters(filter);
@@ -1488,6 +1499,7 @@ void Finlandia::onEmptyTableClicked()
 void Finlandia::listItemActivated()
 {
     ui->btn_removeSearch->setEnabled(true);
+    ui->cb_furtherFilter->setEnabled(true);
 }
 
 void Finlandia::removeListItem()
@@ -1509,9 +1521,11 @@ void Finlandia::removeListItem()
     m_titles.erase(m_titles.begin() + row);
     m_headers.erase(m_headers.begin() + row);
 
-    // If it was last, disable remove button (handle btn here)
+    // If it was last, disable remove button and possibility to further filter
     if (ui->listWidgetTehtHaut->count() == 0) {
         ui->btn_removeSearch->setEnabled(false);
+        ui->cb_furtherFilter->setEnabled(false);
+        ui->cb_furtherFilter->setChecked(false);
     }
 }
 
@@ -1923,4 +1937,51 @@ std::size_t Finlandia::getHeadersIndex(const std::string &header, const std::vec
     else {
         return UINT64_MAX;
     }
+}
+
+void Finlandia::furtherFilter(std::map<Filter_NS, QString> filter)
+{
+    // Get the item
+    QListWidgetItem* item = ui->listWidgetTehtHaut->currentItem();
+    int row = ui->listWidgetTehtHaut->row(item);
+
+    if (row > static_cast<int>(allSearches.size())) {
+        // Do something
+        return;
+    }
+
+    // TODO: Should order be taken in account
+    // TODO: Add all kinds of restricts and checkings
+
+    // Allow only normal searches with all rows to be further filtered ATM
+    if (m_headers.at(static_cast<std::size_t>(row)).size() != InternetExplorers::Constants::DataIndex::ROW_SIZE) {
+        QMessageBox msgBox;
+        msgBox.setText("Vain normaaleja hakuja, joissa on kaikki kolumnit, voidaan jatkofilteröidä");
+        msgBox.exec();
+
+        return;
+    }
+
+    std::vector<std::vector<std::string>> data = allSearches.at(static_cast<std::size_t>(row));
+    data = m_DataHandler->applyFilterToData(filter, data);
+
+    // No data gotten
+    if (data.size() == 0) {
+        QMessageBox msgBox;
+        msgBox.setText("Jatkohaulla ei löydy dataa");
+        msgBox.exec();
+
+        return;
+    }
+
+    // Update header (need to take common headers from old and new)
+    // This need those checkings above
+
+    // Update title
+    QString newTitle = m_titles.at(static_cast<std::size_t>(row)) + "; Jatkohaku: " + makeNormalTitle();
+    m_titles.at(static_cast<std::size_t>(row)) = newTitle;
+    item->setText(newTitle);
+
+    // Update data
+    allSearches.at(static_cast<std::size_t>(row)) = data;
 }

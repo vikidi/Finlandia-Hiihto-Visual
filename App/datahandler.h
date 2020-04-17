@@ -112,7 +112,7 @@ public:
      * \attention
      * The filter must be validated with InterfaceFilter before calling
      */
-    void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
+    std::vector<std::vector<std::string> > applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
 
     /*!
@@ -127,7 +127,7 @@ public:
      * Filter used in sorting,
      * refers to InternetExplorers::Constants::Filters::OrderFilters
      */
-    void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
+    std::vector<std::vector<std::string> > applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data,
                            Constants::Filter::OrderFilters order);
 

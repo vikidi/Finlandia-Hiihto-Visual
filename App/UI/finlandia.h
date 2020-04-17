@@ -191,6 +191,7 @@ private:
     std::vector<std::string> getCommonHeaders();
     void setGraphAxisCB(const std::vector<std::string>& values);
     std::size_t getHeadersIndex(const std::string& header, const std::vector<std::string>& headers) const;
+    void furtherFilter(std::map<Filter_NS, QString> filter);
 
     Ui::Finlandia *ui;
 

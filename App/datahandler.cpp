@@ -212,7 +212,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     return data;
 }
 
-void InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
 {
     // Check filter validity
     try {
@@ -220,17 +220,17 @@ void InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filte
             auto msg(QString("Filter did not pass validation"));
             auto msgSender(QString("DataHandler"));
             InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
-            return;
+            return {};
         }
     } catch (InternetExplorers::FilterException& e) {
         auto msg(QString(e.what()));
         auto msgSender(QString("DataHandler"));
         InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, msgSender);
-        return;
+        return {};
     }
 
     if (filters.size() == 0 || data.size() == 0) {
-        return;
+        return {};
     }
 
     // Do the filtering
@@ -244,15 +244,14 @@ void InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filte
         }
     }
 
-    data = resultData;
-
-    return;
+    return resultData;
 }
 
-void InternetExplorers::DataHandler::applyFilterToData(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data, InternetExplorers::Constants::Filter::OrderFilters order)
+std::vector<std::vector<std::string> > InternetExplorers::DataHandler::applyFilterToData(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data, InternetExplorers::Constants::Filter::OrderFilters order)
 {
-    applyFilterToData(filters, data);
-    m_orderer->orderData(data, order);
+    std::vector<std::vector<std::string> > d = applyFilterToData(filters, data);
+    m_orderer->orderData(d, order);
+    return d;
 }
 
 std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler::getRacesWithParticipants()
