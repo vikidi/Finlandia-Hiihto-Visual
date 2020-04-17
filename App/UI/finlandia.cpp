@@ -88,6 +88,9 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     // Set chart to the graph view
     ui->graafiWiev->setChart(m_chart);
 
+    // Set zoom to chart
+    ui->graafiWiev->setRubberBand( QChartView::RectangleRubberBand );
+
     // Set chart styles to be cool
     m_chart->setTheme(QChart::ChartThemeBlueCerulean);
     m_chart->setAnimationOptions(QChart::AnimationOption::SeriesAnimations);
