@@ -603,8 +603,6 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
 
     // Connect axis to check min values
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
-
-    // Set up scroll bars
 }
 
 void Finlandia::make_line_chart(QString xHeader, QString yHeader)
@@ -778,13 +776,6 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
     // Connect axis to check min values
     connect(axisX, &QValueAxis::rangeChanged, this, &Finlandia::xAxisChanged);
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
-
-    // Set up scroll bars
-    // x bar
-    ui->horizontalGraphScroll->setRange(0, 0);
-
-    // y bar
-    ui->verticalGraphScroll->setRange(0, 0);
 }
 
 void Finlandia::apply_special_filters(std::map<Filter_NS,
@@ -2050,19 +2041,6 @@ void Finlandia::yAxisChanged(double min, double max)
     if (min < 0.0) {
         ax->setMin(0.0);
     }
-
-    ui->horizontalGraphScroll->setRange(m_xRange.first, m_xRange.second);
-    ui->horizontalGraphScroll->setValue(min);
-}
-
-void Finlandia::yGraphScrollChange(int value)
-{
-
-}
-
-void Finlandia::xGraphScrollChange(int value)
-{
-
 }
 
 void Finlandia::resetZoom()

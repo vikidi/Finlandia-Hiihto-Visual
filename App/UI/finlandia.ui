@@ -1909,14 +1909,14 @@
                 <widget class="QChartView" name="graafiWiev">
                  <property name="minimumSize">
                   <size>
-                   <width>860</width>
-                   <height>660</height>
+                   <width>880</width>
+                   <height>680</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>860</width>
-                   <height>660</height>
+                   <width>880</width>
+                   <height>680</height>
                   </size>
                  </property>
                  <property name="layoutDirection">
@@ -1927,13 +1927,6 @@
                  </property>
                  <property name="transformationAnchor">
                   <enum>QGraphicsView::AnchorViewCenter</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QScrollBar" name="verticalGraphScroll">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
                  </property>
                 </widget>
                </item>
@@ -1951,25 +1944,6 @@
                 </spacer>
                </item>
               </layout>
-             </item>
-             <item>
-              <widget class="QScrollBar" name="horizontalGraphScroll">
-               <property name="minimumSize">
-                <size>
-                 <width>860</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>860</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
              </item>
             </layout>
            </item>

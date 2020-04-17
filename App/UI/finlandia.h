@@ -182,9 +182,6 @@ private slots:
     void xAxisChanged(double min, double max);
     void yAxisChanged(double min, double max);
 
-    void yGraphScrollChange(int value);
-    void xGraphScrollChange(int value);
-
     void resetZoom();
 
 private:
