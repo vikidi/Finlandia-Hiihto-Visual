@@ -174,7 +174,7 @@ private slots:
     void onSpecialRPClicked();
     void onOrderRPClicked();
 
-    void on_btn_emptyTable_clicked();
+    void onEmptyTableClicked();
 
 private:
 

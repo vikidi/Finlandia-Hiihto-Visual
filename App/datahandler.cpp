@@ -366,22 +366,6 @@ std::map<std::string, int> InternetExplorers::DataHandler::getAmountOfParticipan
 
 std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler::getSlowest(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
 {
-    if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
-
-    // Create the filter to fetch data
-    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
-        if (it->first == Constants::Filter::ValueFilters::DISTANCE
-            || it->first == Constants::Filter::ValueFilters::YEAR
-            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE) {
-            // Accept filter
-            ++it;
-        }
-        else {
-            // Remove filter
-            filters.erase(it++);
-        }
-    }
-
     // Get rows that pass filter
     std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
 
@@ -410,22 +394,6 @@ std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler:
 
 std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler::getFastest(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
 {
-    if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
-
-    // Create the filter to fetch data
-    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
-        if (it->first == Constants::Filter::ValueFilters::DISTANCE
-            || it->first == Constants::Filter::ValueFilters::YEAR
-            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE) {
-            // Accept filter
-            ++it;
-        }
-        else {
-            // Remove filter
-            filters.erase(it++);
-        }
-    }
-
     // Get rows that pass filter
     std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
 
@@ -454,26 +422,6 @@ std::map<std::string, std::vector<std::string> > InternetExplorers::DataHandler:
 
 std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTimes(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
 {
-    // Distance filter required
-    if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
-
-    // Create the filter to fetch data
-    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
-        if (it->first == Constants::Filter::ValueFilters::DISTANCE
-            || it->first == Constants::Filter::ValueFilters::YEAR
-            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE
-            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE
-            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_MEN
-            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_WOMEN) {
-            // Accept filter
-            ++it;
-        }
-        else {
-            // Remove filter
-            filters.erase(it++);
-        }
-    }
-
     // Get rows that pass filter
     std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
 
@@ -512,51 +460,13 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageTim
 
 std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageSpeeds(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
 {
-    // Distance filter required
-    if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
-
-    // Parse distance in kilometers
-    std::string dist = filters[Constants::Filter::ValueFilters::DISTANCE].toStdString();
-
-    std::string nums = "0123456789";
-    std::string tmp = "";
-    for(auto c : dist) {
-        if (nums.find(c) != nums.npos) {
-            tmp += c;
-        }
-    }
-
-    int distance;
-    try {
-        distance = std::stoi(tmp);
-    } catch (std::exception &e) {
-        return {};
-    }
-
-    // Create the filter to fetch data
-    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
-        if (it->first == Constants::Filter::ValueFilters::DISTANCE
-            || it->first == Constants::Filter::ValueFilters::YEAR
-            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE
-            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE
-            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_MEN
-            || it->first == Constants::Filter::ValueFilters::PLACE_RANGE_WOMEN) {
-            // Accept filter
-            ++it;
-        }
-        else {
-            // Remove filter
-            filters.erase(it++);
-        }
-    }
-
     // Get rows that pass filter
     std::vector<std::vector<std::string>> data = getDataWithFilter(filters);
 
     if (data.size() == 0) return {};
 
     // < year, value >
-    std::map<std::string, unsigned long long> times = {}; // In milliseconds
+    std::map<std::string, double> times = {}; // In milliseconds
     std::map<std::string, int> counts = {};
 
     for (auto& row : data) {
@@ -569,7 +479,11 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageSpe
 
         if (itime == -1) continue; // Invalid time
 
-        times[year] += static_cast<unsigned long long>(itime);
+        // Turn time to km/h
+        double hours = Helper::mSecsToH(static_cast<unsigned long long>(itime));
+        int dist = Helper::parseKMFromDistance(row[Constants::DataIndex::IndexInData::DISTANCE]);
+
+        times[year] += dist/hours;
 
         // Add count
         ++counts[year];
@@ -578,8 +492,7 @@ std::map<std::string, std::string> InternetExplorers::DataHandler::getAverageSpe
     // Calculate averages
     std::map<std::string, std::string> results = {};
     for (auto& time : times) {
-        unsigned long long aveMSecs = (time.second/static_cast<unsigned long long>(counts[time.first]));
-        QString st = QString::number(distance/Helper::mSecsToH(aveMSecs));
+        QString st = QString::number(time.second/static_cast<double>(counts[time.first]));
 
         results.insert({time.first, st.toStdString()});
     }
@@ -685,20 +598,6 @@ std::map<std::string, int> InternetExplorers::DataHandler::getParticipantsByCoun
 std::vector<std::pair<std::string, std::string> > InternetExplorers::DataHandler::getBestTenTeams(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters)
 {
     if (filters.find(Constants::Filter::ValueFilters::DISTANCE) == filters.end()) return {};
-
-    // Create the filter to fetch data
-    for (auto it = filters.cbegin(); it != filters.cend(); /* no increment */) {
-        if (it->first == Constants::Filter::ValueFilters::DISTANCE
-            || it->first == Constants::Filter::ValueFilters::YEAR
-            || it->first == Constants::Filter::ValueFilters::YEAR_RANGE) {
-            // Accept filter
-            ++it;
-        }
-        else {
-            // Remove filter
-            filters.erase(it++);
-        }
-    }
 
     // Get rows that pass filter
     std::vector<std::vector<std::string>> data = getDataWithFilter(filters);

@@ -83,7 +83,7 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     connect(ui->keskiaikaRP, &QRadioButton::clicked, this, &Finlandia::onSpecialRPClicked);
 
     // Table emptying button
-    connect(ui->btn_emptyTables, &QPushButton::clicked, this, &Finlandia::on_btn_emptyTable_clicked);
+    connect(ui->btn_emptyTables, &QPushButton::clicked, this, &Finlandia::onEmptyTableClicked);
 
     // Set chart to the graph view
     ui->graafiWiev->setChart(m_chart);
@@ -149,7 +149,7 @@ Finlandia::~Finlandia()
 void Finlandia::on_pushButtonNollaKaikki_clicked()
 {
     // Clear result tables
-    on_btn_emptyTable_clicked();
+    onEmptyTableClicked();
 
     // Clear search listing
     ui->listWidgetTehtHaut->clear();
@@ -1289,7 +1289,7 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 void Finlandia::on_pushButton_clicked()
 {
     // First empty previous tables and charts
-    on_btn_emptyTable_clicked();
+    onEmptyTableClicked();
     remove_cart();
 
     // Create the tables
@@ -1466,7 +1466,7 @@ void Finlandia::onOrderRPClicked()
     }
 }
 
-void Finlandia::on_btn_emptyTable_clicked()
+void Finlandia::onEmptyTableClicked()
 {
     QLayoutItem* item;
     while ( (item = m_scrollLayout->takeAt( 0 )) != nullptr ) {
