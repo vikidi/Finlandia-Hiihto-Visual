@@ -211,6 +211,8 @@ private:
     std::pair<double, double> m_xRange;
     std::pair<double, double> m_yRange;
 
+    std::pair<QString, QString> m_xRangeBar;
+
     // Layout for tables
     QHBoxLayout *m_scrollLayout;
 

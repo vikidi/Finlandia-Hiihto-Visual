@@ -603,6 +603,7 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
 
     // Save original ranges
     m_yRange = std::pair<double, double>(yLowRange, yUpRange);
+    m_xRangeBar = std::pair<QString, QString>(categories.at(0), categories.at(categories.size() - 1));
 
     // Connect axis to check min values
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
@@ -1178,6 +1179,8 @@ void Finlandia::remove_cart()
     // Clear axis original ranges
     m_xRange = std::pair<double, double>(0, 0);
     m_yRange = std::pair<double, double>(0, 0);
+
+    m_xRangeBar = std::pair<QString, QString>("", "");
 
     ui->btn_resetZoom->setEnabled(false);
 }
@@ -2056,7 +2059,15 @@ void Finlandia::resetZoom()
     QAbstractAxis *xAxis = m_chart->axes(Qt::Horizontal)[0];
 
     yAxis->setRange(m_yRange.first, m_yRange.second);
-    xAxis->setRange(m_xRange.first, m_xRange.second);
+
+    if (m_xRange.first == 0 && m_xRange.second == 0) {
+        // Bar chart
+        xAxis->setRange(m_xRangeBar.first, m_xRangeBar.second);
+    }
+    else {
+        // Line chart
+        xAxis->setRange(m_xRange.first, m_xRange.second);
+    }
 
     ui->btn_resetZoom->setEnabled(false);
 }
