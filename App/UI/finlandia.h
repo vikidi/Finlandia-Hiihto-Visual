@@ -13,6 +13,8 @@
 #include "predicterwindow.h"
 #include "../helper.h"
 #include "crypter.h"
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 // Alias to make things easier
 #ifndef FILTER_NS
@@ -104,6 +106,8 @@ public:
      */
     std::vector<std::vector<std::string>> get_ordered_data(std::map<Filter_NS,
                                                            QString> filter);
+public slots:
+    void toggleMusic(int state);
 
 private slots:
 
@@ -241,6 +245,10 @@ private:
 
     // Does backend have hashed names
     bool m_localDataHashed;
+
+    // Sounds
+    QMediaPlayer m_musicPlayer;
+    QMediaPlaylist m_musicPlaylist;
 
 };
 

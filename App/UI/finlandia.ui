@@ -126,17 +126,17 @@
            <property name="spacing">
             <number>0</number>
            </property>
-           <item row="1" column="2">
-            <layout class="QHBoxLayout" name="horizontalLayout">
+           <item row="5" column="2">
+            <layout class="QHBoxLayout" name="athleteLayout">
              <item>
-              <widget class="QLabel" name="labelUrheilija">
+              <widget class="QLabel" name="labelSukupuoli">
                <property name="text">
-                <string>Nimi</string>
+                <string>Sukupuoli</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QTextEdit" name="textEditUrheilija">
+              <widget class="QComboBox" name="sukupuoliCB">
                <property name="minimumSize">
                 <size>
                  <width>275</width>
@@ -146,14 +146,67 @@
                <property name="maximumSize">
                 <size>
                  <width>200</width>
-                 <height>27</height>
+                 <height>16777215</height>
                 </size>
                </property>
-               <property name="acceptDrops">
-                <bool>true</bool>
-               </property>
-               <property name="verticalScrollBarPolicy">
-                <enum>Qt::ScrollBarAlwaysOff</enum>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>M</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>N</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="26" column="2">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>400</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="18" column="2">
+            <widget class="QLabel" name="labelHae">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Lisävaihtoehdot:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="2">
+            <widget class="Line" name="line_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="Line" name="line">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
               </widget>
              </item>
@@ -890,19 +943,6 @@
              </item>
             </layout>
            </item>
-           <item row="26" column="2">
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>400</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="20" column="2">
             <layout class="QHBoxLayout" name="horizontalLayout_21">
              <item>
@@ -981,6 +1021,9 @@
              </item>
             </layout>
            </item>
+           <item row="13" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+           </item>
            <item row="2" column="2">
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
@@ -1015,48 +1058,6 @@
              </item>
             </layout>
            </item>
-           <item row="5" column="2">
-            <layout class="QHBoxLayout" name="athleteLayout">
-             <item>
-              <widget class="QLabel" name="labelSukupuoli">
-               <property name="text">
-                <string>Sukupuoli</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="sukupuoliCB">
-               <property name="minimumSize">
-                <size>
-                 <width>275</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <item>
-                <property name="text">
-                 <string/>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>M</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>N</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </item>
            <item row="0" column="2">
             <widget class="QLabel" name="label_5">
              <property name="font">
@@ -1070,42 +1071,41 @@
              </property>
             </widget>
            </item>
-           <item row="13" column="2">
-            <layout class="QHBoxLayout" name="horizontalLayout_4"/>
-           </item>
-           <item row="24" column="2">
-            <layout class="QHBoxLayout" name="horizontalLayout_6"/>
-           </item>
-           <item row="15" column="2">
-            <widget class="Line" name="line_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="2">
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item row="1" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
-              <widget class="Line" name="line">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+              <widget class="QLabel" name="labelUrheilija">
+               <property name="text">
+                <string>Nimi</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTextEdit" name="textEditUrheilija">
+               <property name="minimumSize">
+                <size>
+                 <width>275</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>27</height>
+                </size>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="verticalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
                </property>
               </widget>
              </item>
             </layout>
            </item>
-           <item row="18" column="2">
-            <widget class="QLabel" name="labelHae">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Lisävaihtoehdot:</string>
-             </property>
-            </widget>
+           <item row="24" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_6"/>
            </item>
            <item row="25" column="2">
             <layout class="QVBoxLayout" name="verticalLayout">
@@ -1140,6 +1140,16 @@
               </widget>
              </item>
             </layout>
+           </item>
+           <item row="27" column="2">
+            <widget class="QCheckBox" name="MusicCheckbox">
+             <property name="text">
+              <string>Soita musiikkia</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

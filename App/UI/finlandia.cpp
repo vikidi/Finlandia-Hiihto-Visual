@@ -104,6 +104,16 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     connect(ui->listWidgetTehtHaut, &QListWidget::itemClicked, this, &Finlandia::listItemActivated);
     connect(ui->btn_removeSearch, &QPushButton::clicked, this, &Finlandia::removeListItem);
 
+    // Sounds
+    m_musicPlaylist.addMedia(QUrl("qrc:/music/hiihtaa.mp3"));
+    //m_musicPlaylist.addMedia(QUrl("qrc:/music/hiihtaa.mp3"));
+    m_musicPlaylist.setPlaybackMode(QMediaPlaylist::Loop);
+    m_musicPlayer.setPlaylist(&m_musicPlaylist);
+    m_musicPlayer.play();
+
+    connect(ui->MusicCheckbox, &QCheckBox::stateChanged, this, &Finlandia::toggleMusic);
+
+    // Encryptions
     if (QFile::exists("encryptionStatus.ini")) {
         QFile file("encryptionStatus.ini");
         if (file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -1158,6 +1168,14 @@ std::vector<std::vector<std::string>> Finlandia::get_ordered_data(std::map<Filte
     }
 
     return {};
+}
+
+void Finlandia::toggleMusic(int state)
+{
+    state ? m_musicPlayer.play() : m_musicPlayer.pause();
+    if (state != ui->MusicCheckbox->isChecked()) {
+        ui->MusicCheckbox->setChecked(state);
+    }
 }
 
 

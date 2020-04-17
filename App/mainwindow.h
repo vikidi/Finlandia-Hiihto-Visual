@@ -8,8 +8,6 @@
 #include <QMainWindow>
 #include <QProgressBar>
 #include <QGraphicsView>
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
 
 namespace Ui {
 class MainWindow;
@@ -83,10 +81,6 @@ private:
 
     // Scene for the custom progress bar
     InternetExplorers::GameScene* m_scene;
-
-    // Sounds
-    QMediaPlayer m_musicPlayer;
-    QMediaPlaylist m_musicPlaylist;
 
     Ui::MainWindow *ui;
 };
