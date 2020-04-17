@@ -140,7 +140,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
-            applyFilterToData(filters, data);
+            data = applyFilterToData(filters, data);
         }
         return data;
     }
@@ -154,7 +154,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
-            applyFilterToData(filters, data);
+            data = applyFilterToData(filters, data);
         }
         return data;
     }
@@ -168,7 +168,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
-            applyFilterToData(filters, data);
+            data = applyFilterToData(filters, data);
         }
         return data;
     }
@@ -182,7 +182,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
 
         // Apply rest of filters
         if (filters.size() != 0 && data.size() != 0) {
-            applyFilterToData(filters, data);
+            data = applyFilterToData(filters, data);
         }
         return data;
     }
