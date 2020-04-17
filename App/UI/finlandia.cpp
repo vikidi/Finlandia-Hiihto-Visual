@@ -465,13 +465,13 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
             // Parse y data to double
             double y;
             if (yHeader == " Aika " || yHeader == " Keskiaika ") {
-                // TODO: Error checking
                 long t = InternetExplorers::Helper::timeToMSecs(yString);
+                if (t == -1) continue; // Time wrong format
                 y = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
             }
             else if (yHeader == " Matka ") {
-                // TODO: Error checking
                 y = InternetExplorers::Helper::parseKMFromDistance(yString);
+                if (y == -1) continue; // Distance wrong format
             }
             else {
                 try {
@@ -651,33 +651,35 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
             // Parse x
             if (xHeader == " Aika " || xHeader == " Keskiaika ") {
                 long t = InternetExplorers::Helper::timeToMSecs(xString);
+                if (t == -1) continue; // Time wrong format
                 x = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
             }
             else if (xHeader == " Matka ") {
                 x = InternetExplorers::Helper::parseKMFromDistance(xString);
+                if (x == -1) continue; // Distance wrong format
             }
             else {
                 try {
                     x = std::stod(xString);
-                } catch (std::exception &e) {
+                } catch (std::exception) {
                     continue;
                 }
             }
 
             // Parse y
             if (yHeader == " Aika " || yHeader == " Keskiaika ") {
-                // TODO: Error checking
                 long t = InternetExplorers::Helper::timeToMSecs(yString);
+                if (t == -1) continue; // Time wrong format
                 y = InternetExplorers::Helper::mSecsToH(static_cast<unsigned long long>(t));
             }
             else if (yHeader == " Matka ") {
-                // TODO: Error checking
                 y = InternetExplorers::Helper::parseKMFromDistance(yString);
+                if (y == -1) continue; // Distance wrong format
             }
             else {
                 try {
                     y = std::stod(yString);
-                } catch (std::exception &e) {
+                } catch (std::exception) {
                     continue;
                 }
             }
