@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>music/hiihtaa.mp3</file>
+        <file>music/hyppaaja.mp3</file>
+    </qresource>
+</RCC>

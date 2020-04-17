@@ -105,8 +105,10 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     connect(ui->btn_removeSearch, &QPushButton::clicked, this, &Finlandia::removeListItem);
 
     // Sounds
+    QResource::registerResource("music.qrb");
+
+    m_musicPlaylist.addMedia(QUrl("qrc:/music/hyppaaja.mp3"));
     m_musicPlaylist.addMedia(QUrl("qrc:/music/hiihtaa.mp3"));
-    //m_musicPlaylist.addMedia(QUrl("qrc:/music/hiihtaa.mp3"));
     m_musicPlaylist.setPlaybackMode(QMediaPlaylist::Loop);
     m_musicPlayer.setPlaylist(&m_musicPlaylist);
     m_musicPlayer.play();

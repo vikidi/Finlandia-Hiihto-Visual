@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>GraphicalResources/skier.gif</file>
-        <file>music/hiihtaa.mp3</file>
     </qresource>
 </RCC>
