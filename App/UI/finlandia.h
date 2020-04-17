@@ -179,6 +179,14 @@ private slots:
     void listItemActivated();
     void removeListItem();
 
+    void xAxisChanged(double min, double max);
+    void yAxisChanged(double min, double max);
+
+    void yGraphScrollChange(int value);
+    void xGraphScrollChange(int value);
+
+    void resetZoom();
+
 private:
 
     void createNormalHeader();
@@ -192,9 +200,7 @@ private:
     void setGraphAxisCB(const std::vector<std::string>& values);
     std::size_t getHeadersIndex(const std::string& header, const std::vector<std::string>& headers) const;
     void furtherFilter(std::map<Filter_NS, QString> filter);
-
-    void xAxisChanged(double min, double max);
-    void yAxisChanged(double min, double max);
+    double getAxisCenter(const QValueAxis *axis);
 
     Ui::Finlandia *ui;
 
@@ -203,6 +209,10 @@ private:
     std::vector<std::vector<std::vector<std::string>>> allSearches;
 
     QChart *m_chart;
+
+    // Axis original ranges, might come to use
+    std::pair<double, double> m_xRange;
+    std::pair<double, double> m_yRange;
 
     // Layout for tables
     QHBoxLayout *m_scrollLayout;

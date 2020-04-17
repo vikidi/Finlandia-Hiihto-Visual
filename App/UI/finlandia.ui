@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1302</width>
+    <width>1280</width>
     <height>827</height>
    </rect>
   </property>
@@ -27,7 +27,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="searchTab">
        <property name="minimumSize">
@@ -1528,6 +1528,9 @@
          <property name="leftMargin">
           <number>10</number>
          </property>
+         <property name="rightMargin">
+          <number>10</number>
+         </property>
          <item row="3" column="0">
           <widget class="QScrollArea" name="scrollArea">
            <property name="horizontalScrollBarPolicy">
@@ -1541,7 +1544,7 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>1248</width>
+              <width>1239</width>
               <height>666</height>
              </rect>
             </property>
@@ -1602,8 +1605,8 @@
          <rect>
           <x>1</x>
           <y>1</y>
-          <width>2001</width>
-          <height>722</height>
+          <width>1251</width>
+          <height>741</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -1846,6 +1849,28 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="btn_resetZoom">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Nollaa zoomaus</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="verticalSpacer_4">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1877,20 +1902,76 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
-            <widget class="QChartView" name="graafiWiev">
-             <property name="minimumSize">
-              <size>
-               <width>950</width>
-               <height>680</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>1000</width>
-               <height>700</height>
-              </size>
-             </property>
-            </widget>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <item>
+                <widget class="QChartView" name="graafiWiev">
+                 <property name="minimumSize">
+                  <size>
+                   <width>860</width>
+                   <height>660</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>860</width>
+                   <height>660</height>
+                  </size>
+                 </property>
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="transformationAnchor">
+                  <enum>QGraphicsView::AnchorViewCenter</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QScrollBar" name="verticalGraphScroll">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QScrollBar" name="horizontalGraphScroll">
+               <property name="minimumSize">
+                <size>
+                 <width>860</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>860</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -1956,7 +2037,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1302</width>
+     <width>1280</width>
      <height>21</height>
     </rect>
    </property>

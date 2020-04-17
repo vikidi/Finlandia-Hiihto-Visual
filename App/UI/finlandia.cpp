@@ -91,6 +91,9 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     // Set zoom to chart
     ui->graafiWiev->setRubberBand( QChartView::RectangleRubberBand );
 
+    // Graph zoom reset
+    connect(ui->btn_resetZoom, &QPushButton::clicked, this, &Finlandia::resetZoom);
+
     // Set chart styles to be cool
     m_chart->setTheme(QChart::ChartThemeBlueCerulean);
     m_chart->setAnimationOptions(QChart::AnimationOption::SeriesAnimations);
@@ -598,8 +601,10 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
         serie->attachAxis(axisY);
     }
 
-    // Connect axis
+    // Connect axis to check min values
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
+
+    // Set up scroll bars
 }
 
 void Finlandia::make_line_chart(QString xHeader, QString yHeader)
@@ -766,9 +771,20 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
         serie->attachAxis(axisY);
     }
 
-    // Connect axis
+    // Save original ranges
+    m_xRange = std::pair<double, double>(xLowRange, xUpRange);
+    m_yRange = std::pair<double, double>(yLowRange, yUpRange);
+
+    // Connect axis to check min values
     connect(axisX, &QValueAxis::rangeChanged, this, &Finlandia::xAxisChanged);
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
+
+    // Set up scroll bars
+    // x bar
+    ui->horizontalGraphScroll->setRange(0, 0);
+
+    // y bar
+    ui->verticalGraphScroll->setRange(0, 0);
 }
 
 void Finlandia::apply_special_filters(std::map<Filter_NS,
@@ -1164,6 +1180,12 @@ void Finlandia::remove_cart()
     for (auto axis : axes) {
         m_chart->removeAxis(axis);
     }
+
+    // Clear axis original ranges
+    m_xRange = std::pair<double, double>(0, 0);
+    m_yRange = std::pair<double, double>(0, 0);
+
+    ui->btn_resetZoom->setEnabled(false);
 }
 
 void Finlandia::save_chart()
@@ -1993,20 +2015,63 @@ void Finlandia::furtherFilter(std::map<Filter_NS, QString> filter)
     allSearches.at(static_cast<std::size_t>(row)) = data;
 }
 
+double Finlandia::getAxisCenter(const QValueAxis *axis)
+{
+    double min = axis->min();
+    double max = axis->max();
+    return ((max - min) / 2.0);
+}
+
 void Finlandia::xAxisChanged(double min, double max)
 {
-    Q_UNUSED(max);
+    QAbstractAxis *ax = m_chart->axes(Qt::Horizontal)[0];
+
+    ui->btn_resetZoom->setEnabled(true);
+
+    if (max > m_xRange.second) {
+        ax->setMax(m_xRange.second);
+    }
+
     if (min < 0.0) {
-        QAbstractAxis *ax = m_chart->axes(Qt::Horizontal)[0];
         ax->setMin(0.0);
     }
 }
 
 void Finlandia::yAxisChanged(double min, double max)
 {
-    Q_UNUSED(max);
+    QAbstractAxis *ax = m_chart->axes(Qt::Vertical)[0];
+
+    ui->btn_resetZoom->setEnabled(true);
+
+    if (max > m_yRange.second) {
+        ax->setMax(m_yRange.second);
+    }
+
     if (min < 0.0) {
-        QAbstractAxis *ax = m_chart->axes(Qt::Vertical)[0];
         ax->setMin(0.0);
     }
+
+    ui->horizontalGraphScroll->setRange(m_xRange.first, m_xRange.second);
+    ui->horizontalGraphScroll->setValue(min);
+}
+
+void Finlandia::yGraphScrollChange(int value)
+{
+
+}
+
+void Finlandia::xGraphScrollChange(int value)
+{
+
+}
+
+void Finlandia::resetZoom()
+{
+    QAbstractAxis *yAxis = m_chart->axes(Qt::Vertical)[0];
+    QAbstractAxis *xAxis = m_chart->axes(Qt::Horizontal)[0];
+
+    yAxis->setRange(m_yRange.first, m_yRange.second);
+    xAxis->setRange(m_xRange.first, m_xRange.second);
+
+    ui->btn_resetZoom->setEnabled(false);
 }
