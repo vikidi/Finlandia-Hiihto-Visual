@@ -1375,7 +1375,11 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
             createNormalHeader();
 
             // Create the title
-            m_titles.emplace_back(makeNormalTitle() + makeOrderTitle());
+            QString title = makeNormalTitle() + makeOrderTitle();
+            if (title == "") {
+                title = "Kaikki data;";
+            }
+            m_titles.emplace_back(title);
 
             // Add the title to the list
             ui->listWidgetTehtHaut->addItem(m_titles.back());
