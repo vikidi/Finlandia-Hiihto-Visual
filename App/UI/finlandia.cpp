@@ -97,6 +97,10 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     m_chart->setAnimationDuration(1500); // 1,5s
     ui->graafiWiev->setRenderHint(QPainter::Antialiasing, true);
 
+    // Search list connects
+    connect(ui->listWidgetTehtHaut, &QListWidget::itemClicked, this, &Finlandia::listItemActivated);
+    connect(ui->btn_removeSearch, &QPushButton::clicked, this, &Finlandia::removeListItem);
+
     if (QFile::exists("encryptionStatus.ini")) {
         QFile file("encryptionStatus.ini");
         if (file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -161,6 +165,9 @@ void Finlandia::on_pushButtonNollaKaikki_clicked()
     allSearches.clear();
     m_titles.clear();
     m_headers.clear();
+
+    // Singular search remove button
+    ui->btn_removeSearch->setEnabled(false);
 
     // Clear UI options
     ui->comboBoxVuosi->setCurrentIndex(0);
@@ -1475,6 +1482,36 @@ void Finlandia::onEmptyTableClicked()
     while ( (item = m_scrollLayout->takeAt( 0 )) != nullptr ) {
         delete item->widget();
         delete item;
+    }
+}
+
+void Finlandia::listItemActivated()
+{
+    ui->btn_removeSearch->setEnabled(true);
+}
+
+void Finlandia::removeListItem()
+{
+    // Get the item
+    QListWidgetItem* item = ui->listWidgetTehtHaut->currentItem();
+    int row = ui->listWidgetTehtHaut->row(item);
+
+    if (row > static_cast<int>(allSearches.size())) {
+        // Do something
+        return;
+    }
+
+    // Remove from list
+    delete item;
+
+    // Remove from containers
+    allSearches.erase(allSearches.begin() + row);
+    m_titles.erase(m_titles.begin() + row);
+    m_headers.erase(m_headers.begin() + row);
+
+    // If it was last, disable remove button (handle btn here)
+    if (ui->listWidgetTehtHaut->count() == 0) {
+        ui->btn_removeSearch->setEnabled(false);
     }
 }
 

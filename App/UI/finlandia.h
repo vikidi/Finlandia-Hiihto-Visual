@@ -176,6 +176,9 @@ private slots:
 
     void onEmptyTableClicked();
 
+    void listItemActivated();
+    void removeListItem();
+
 private:
 
     void createNormalHeader();
