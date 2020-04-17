@@ -597,6 +597,9 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
         serie->attachAxis(axisX);
         serie->attachAxis(axisY);
     }
+
+    // Connect axis
+    connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
 }
 
 void Finlandia::make_line_chart(QString xHeader, QString yHeader)
@@ -762,6 +765,10 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
         serie->attachAxis(axisX);
         serie->attachAxis(axisY);
     }
+
+    // Connect axis
+    connect(axisX, &QValueAxis::rangeChanged, this, &Finlandia::xAxisChanged);
+    connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
 }
 
 void Finlandia::apply_special_filters(std::map<Filter_NS,
@@ -1984,4 +1991,22 @@ void Finlandia::furtherFilter(std::map<Filter_NS, QString> filter)
 
     // Update data
     allSearches.at(static_cast<std::size_t>(row)) = data;
+}
+
+void Finlandia::xAxisChanged(double min, double max)
+{
+    Q_UNUSED(max);
+    if (min < 0.0) {
+        QAbstractAxis *ax = m_chart->axes(Qt::Horizontal)[0];
+        ax->setMin(0.0);
+    }
+}
+
+void Finlandia::yAxisChanged(double min, double max)
+{
+    Q_UNUSED(max);
+    if (min < 0.0) {
+        QAbstractAxis *ax = m_chart->axes(Qt::Vertical)[0];
+        ax->setMin(0.0);
+    }
 }

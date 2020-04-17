@@ -193,6 +193,9 @@ private:
     std::size_t getHeadersIndex(const std::string& header, const std::vector<std::string>& headers) const;
     void furtherFilter(std::map<Filter_NS, QString> filter);
 
+    void xAxisChanged(double min, double max);
+    void yAxisChanged(double min, double max);
+
     Ui::Finlandia *ui;
 
     InternetExplorers::DataHandler *m_DataHandler;
