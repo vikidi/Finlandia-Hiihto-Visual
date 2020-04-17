@@ -1000,7 +1000,7 @@
                <item row="3" column="0">
                 <widget class="QRadioButton" name="vuodenXparhaatRP">
                  <property name="text">
-                  <string>Vuoden X parhaat joukkueet</string>
+                  <string>Parhaat joukkueet</string>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>
