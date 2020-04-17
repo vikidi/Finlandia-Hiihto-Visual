@@ -1107,6 +1107,16 @@
            <item row="24" column="2">
             <layout class="QHBoxLayout" name="horizontalLayout_6"/>
            </item>
+           <item row="27" column="2">
+            <widget class="QCheckBox" name="MusicCheckbox">
+             <property name="text">
+              <string>Soita musiikkia</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
            <item row="25" column="2">
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
@@ -1141,15 +1151,36 @@
              </item>
             </layout>
            </item>
-           <item row="27" column="2">
-            <widget class="QCheckBox" name="MusicCheckbox">
-             <property name="text">
-              <string>Soita musiikkia</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
+           <item row="28" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QPushButton" name="btn_prevSong">
+               <property name="text">
+                <string>Edellinen kappale</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_nextSong">
+               <property name="text">
+                <string>Seuraava kappale</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>

@@ -114,6 +114,12 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     m_musicPlayer.play();
 
     connect(ui->MusicCheckbox, &QCheckBox::stateChanged, this, &Finlandia::toggleMusic);
+    connect(ui->btn_nextSong, &QPushButton::clicked, [&](){
+        m_musicPlaylist.next();
+    });
+    connect(ui->btn_prevSong, &QPushButton::clicked, [&](){
+        m_musicPlaylist.previous();
+    });
 
     // Encryptions
     if (QFile::exists("encryptionStatus.ini")) {
