@@ -1336,6 +1336,10 @@ void Finlandia::on_pushButton_clicked()
     onEmptyTableClicked();
     remove_cart();
 
+    // Clear graph axis comboboxes
+    ui->x_akseliCB->clear();
+    ui->y_akseliCB->clear();
+
     // Create the tables
     make_listview();
 
