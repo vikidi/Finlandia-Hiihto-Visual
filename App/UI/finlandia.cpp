@@ -107,6 +107,9 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     // Sounds
     QResource::registerResource("music.qrb");
 
+    /*
+     * COMMENT THESE IF NO MUSIC PLAYER AVAILABLE ->
+     */
     m_musicPlaylist.addMedia(QUrl("qrc:/music/hiihdan.mp3"));
     m_musicPlaylist.addMedia(QUrl("qrc:/music/hyppaaja.mp3"));
     m_musicPlaylist.addMedia(QUrl("qrc:/music/hiihtaa.mp3"));
@@ -114,6 +117,9 @@ Finlandia::Finlandia(InternetExplorers::DataHandler* dh,
     m_musicPlaylist.addMedia(QUrl("qrc:/music/hiihtourheilu.mp3"));
     m_musicPlaylist.addMedia(QUrl("qrc:/music/poljapaiva.mp3"));
     m_musicPlaylist.addMedia(QUrl("qrc:/music/sukset.mp3"));
+    /*
+     * <- COMMENT THESE IF NO MUSIC PLAYER AVAILABLE
+     */
 
     m_musicPlaylist.setPlaybackMode(QMediaPlaylist::Loop);
     m_musicPlayer.setPlaylist(&m_musicPlaylist);
