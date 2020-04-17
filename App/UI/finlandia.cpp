@@ -601,6 +601,9 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
         serie->attachAxis(axisY);
     }
 
+    // Save original ranges
+    m_yRange = std::pair<double, double>(yLowRange, yUpRange);
+
     // Connect axis to check min values
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
 }
