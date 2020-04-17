@@ -42,6 +42,14 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     m_view->horizontalScrollBar()->setVisible(false);
     m_view->setFixedSize(m_scene->width()+30,m_scene->height()+30);
 
+    // Sounds
+    m_musicPlaylist.addMedia(QUrl("https://vignette.wikia.nocookie.net/2007scape/images/6/64/Winter_Funfair.ogg"));
+    m_musicPlaylist.setPlaybackMode(QMediaPlaylist::Loop);
+    m_musicPlayer.setPlaylist(&m_musicPlaylist);
+    m_musicPlayer.play();
+    connect(ui->MusicCheckbox, &QCheckBox::stateChanged, [&](int state)
+    {state ? m_musicPlayer.play() : m_musicPlayer.pause();});
+
     QString msg("Luokan rakentaja on valmis.");
     InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::INFO, m_name);
 
@@ -79,5 +87,6 @@ void MainWindow::appendInfo(const QString text)
 void MainWindow::on_haunAloitusNappi_clicked()
 {
     m_finlandiaUI->show();
+    m_musicPlayer.stop();
     this->close();
 }
