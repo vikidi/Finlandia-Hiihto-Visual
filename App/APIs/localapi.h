@@ -15,7 +15,7 @@ namespace InternetExplorers
 
 /*!
  * \brief
- * Provides an public interface to the local
+ * Provides a public interface to the local
  * data on disk.
  */
 class LocalAPI : public QObject

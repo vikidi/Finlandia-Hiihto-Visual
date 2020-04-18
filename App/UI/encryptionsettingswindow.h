@@ -9,6 +9,10 @@ namespace Ui {
 class EncryptionSettingsWindow;
 }
 
+/*!
+ * \brief
+ * Handles GDBR reasoned data encryptions and decryptions.
+ */
 class EncryptionSettingsWindow : public QWidget
 {
     Q_OBJECT
@@ -18,6 +22,10 @@ public:
     ~EncryptionSettingsWindow();
 
 signals:
+    /*!
+     * \brief
+     * Closes this window
+     */
     void closeProgram();
 
 private slots:

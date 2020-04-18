@@ -107,6 +107,12 @@ public:
     std::vector<std::vector<std::string>> get_ordered_data(std::map<Filter_NS,
                                                            QString> filter);
 public slots:
+    /*!
+     * \brief toggleMusic
+     * Switches the music on and off
+     * \param state
+     *
+     */
     void toggleMusic(int state);
 
 private slots:

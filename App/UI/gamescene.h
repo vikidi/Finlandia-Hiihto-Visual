@@ -14,6 +14,10 @@
 
 namespace InternetExplorers {
 
+/*!
+ * \brief
+ * This class provides the jumping game.
+ */
 class GameScene : public QGraphicsScene
 {
     Q_OBJECT

@@ -8,6 +8,10 @@ namespace Ui {
 class PredicterWindow;
 }
 
+/*!
+ * \brief The PredicterWindow class
+ * provides window to the ml5.js based machine learning result predicter.
+ */
 class PredicterWindow : public QWidget
 {
     Q_OBJECT
