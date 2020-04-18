@@ -189,11 +189,11 @@ std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadD
                 if(isTooMuchData(data))
                 {
                     // Divide data to smaller parts
-                    qDebug() << "Received too much data";
+                    //qDebug() << "Received too much data";
 
                     if(search.trip == "kaikki")
                     {
-                        qDebug() << "Dividing to trips";
+                        //qDebug() << "Dividing to trips";
                         // Divide years to trips
                         for(std::string trip : Constants::DISTANCES)
                         {
@@ -205,7 +205,7 @@ std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadD
 
                     } else if(search.firstName == "")
                     {
-                        qDebug() << "Dividing to names";
+                        //qDebug() << "Dividing to names";
                         // Divide trips to names
                         QString alphabet("abcdefghijklmnopqrstuvwxyzåäö");
                           for( auto c : alphabet) {
@@ -216,8 +216,8 @@ std::vector<std::vector<std::string> > InternetExplorers::FinlandiaCaller::loadD
                           }
                     } else
                     {
-                        qDebug() << "Dividing too much!";
-                        // Implement even more accureate searches
+                        //qDebug() << "Dividing too much!";
+                        // Implement even more accurate searches
                     }
 
                     return {};

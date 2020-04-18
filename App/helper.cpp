@@ -76,7 +76,7 @@ int InternetExplorers::Helper::parseKMFromDistance(const std::string distance)
     int d;
     try {
         d = std::stoi(tmp);
-    } catch (std::exception) {
+    } catch (std::exception &e) {
         return -1;
     }
 

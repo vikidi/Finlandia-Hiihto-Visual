@@ -3,10 +3,8 @@
 #include "logger.h"
 #include "constants.h"
 #include <thread>
-#include <QDebug>
 
 InternetExplorers::FinlandiaAPI::FinlandiaAPI():
-    m_ready(0),
     m_runners(0),
     m_totalCalls(0),
     m_finishedCalls(0),
@@ -28,28 +26,26 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
     emit appendInfo(msg);
     InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
-    m_ready = 0;
     m_runners = 0;
     m_finishedCalls = 0;
     m_currentProgress = 0;
-    m_totalCalls = 229; // Precalculated value
+    m_totalCalls = 114+1; // Precalculated value. With +1, 100% is reached only at the end
 
     emit progressChanged(0);
 
     int optimalAmountOfThreads(std::thread::hardware_concurrency());
-    qDebug() << optimalAmountOfThreads << " concurrent threads are supported";
 
     if(optimalAmountOfThreads < 1)
     {
-        qDebug() << "Number of concurrent threads is not well defined.\n"
-                     "Setting it to 4";
+        QString msgThreads(QString("Number of concurrent threads is not well defined. Setting it to 4"));
+        InternetExplorers::Logger::getInstance().log(msgThreads, Constants::Logger::Severity::WARNING, m_name);
         optimalAmountOfThreads = 4;
     }
 
     std::vector<std::thread> threads;
 
     auto searchVector = std::make_shared<std::vector<FinlandiaAPI::Parameters>>();
-    searchVector->reserve(220); // Educated guess
+    searchVector->reserve(120); // Educated guess
 
     threads.reserve(optimalAmountOfThreads);
 
@@ -89,7 +85,6 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
 
 void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>> searchVector)
 {
-    qDebug() << "Thread started";
     FinlandiaCaller caller;
 
     bool thisRunnerIsDone(false);
@@ -104,8 +99,9 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
                 thisRunnerIsDone = false;
             }
             m_finishedCalls++;
-            if(int progress(static_cast<int>(100*m_finishedCalls/m_totalCalls)); (progress != m_currentProgress))
-            {
+            appendData(data);
+            if(int progress(static_cast<int>((100*m_finishedCalls)/m_totalCalls)); (progress != m_currentProgress))
+            { // Update progress bar
                 if((progress < 0) || (progress > 100))
                 {
                     // More calls than expected were added. Increasing m_totalCalls somewhat compensates it
@@ -120,7 +116,6 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
                     emit progressChanged(m_currentProgress);
                 }
             }
-            appendData(data);
         } else
         {
             if(!thisRunnerIsDone && (searchVector->size() == 0))
@@ -131,7 +126,6 @@ void InternetExplorers::FinlandiaAPI::loadInThread(std::shared_ptr<std::vector<F
             }
         }
     }
-    qDebug() << "Thread ended";
 }
 
 void InternetExplorers::FinlandiaAPI::appendData(std::vector<std::vector<std::string>> data)

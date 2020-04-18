@@ -36,8 +36,6 @@ public:
      */
     std::vector<std::vector<std::string>> loadData(std::shared_ptr<std::vector<InternetExplorers::FinlandiaAPI::Parameters>> parameters);
 
-signals:
-
 private:
 
     bool isTooMuchData(const std::string&);

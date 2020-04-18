@@ -1339,16 +1339,6 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
     // Further filter
     if (ui->cb_furtherFilter->isChecked()) {
 
-        if(m_showHashes)
-        { // Hash names if they are not supposed to be shown
-            if(!m_localDataHashed)
-            { // Names were not alredy hashed
-                if(auto it = filter.find(Filter_NS::NAME); it != filter.end())
-                {
-                    it->second = m_crypter.hashName(it->second);
-                }
-            }
-        }
         // Further filter the chosen data
         furtherFilter(filter);
     }
@@ -1381,14 +1371,6 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
         unsigned long long size = newData.size();
 
         if (size > 0) {
-
-            if(m_showHashes)
-            { // Hash names if they are not supposed to be shown
-                if(!m_localDataHashed)
-                { // Names were not alredy hashed
-                    m_crypter.hashNames(newData);
-                }
-            }
 
             // Parse away some columns
             if (!ui->haeKaikkiRP->isChecked()) {

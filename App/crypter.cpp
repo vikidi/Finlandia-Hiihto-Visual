@@ -46,7 +46,7 @@ void InternetExplorers::Crypter::hashNames(std::vector<std::vector<std::string>>
 QString InternetExplorers::Crypter::hashName(QString name, QCryptographicHash::Algorithm algorithm)
 {
     QCryptographicHash hash(algorithm);
-    hash.addData(name.toStdString().c_str(), name.length());
+    hash.addData(name.toStdString().c_str(), name.toStdString().length());
     QString result(hash.result().toHex());
     result.truncate(6);
     return result;
@@ -183,7 +183,8 @@ void InternetExplorers::Crypter::hashLocalNamesInFile(QString filename, QCryptog
         QList<QByteArray> splitRow(line.split(';'));
 
         QCryptographicHash hash(algorithm);
-        hash.addData(splitRow.at(IndexInData::NAME));
+        hash.addData(splitRow.at(IndexInData::NAME).toStdString().c_str(),
+                     splitRow.at(IndexInData::NAME).toStdString().length());
         splitRow[IndexInData::NAME]
                 = hash.result().toHex();
         splitRow[IndexInData::NAME].truncate(6);
