@@ -645,6 +645,9 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
 
     // Connect axis to check min values
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
+
+    // Don't let another graph to be plotted over
+    ui->add_graphButton->setEnabled(false);
 }
 
 void Finlandia::make_line_chart(QString xHeader, QString yHeader)
@@ -818,6 +821,9 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
     // Connect axis to check min values
     connect(axisX, &QValueAxis::rangeChanged, this, &Finlandia::xAxisChanged);
     connect(axisY, &QValueAxis::rangeChanged, this, &Finlandia::yAxisChanged);
+
+    // Don't let another graph to be plotted over
+    ui->add_graphButton->setEnabled(false);
 }
 
 void Finlandia::apply_special_filters(std::map<Filter_NS,
@@ -1239,6 +1245,9 @@ void Finlandia::remove_cart()
     m_xRangeBar = std::pair<QString, QString>("", "");
 
     ui->btn_resetZoom->setEnabled(false);
+
+    // Allow graph creation
+    ui->add_graphButton->setEnabled(true);
 }
 
 void Finlandia::save_chart()
@@ -2133,7 +2142,7 @@ void Finlandia::yAxisChanged(double min, double max)
 
 void Finlandia::resetZoom()
 {
-    QAbstractAxis *yAxis = m_chart->axes(Qt::Vertical)[0];
+    QValueAxis *yAxis = static_cast<QValueAxis*>(m_chart->axes(Qt::Vertical)[0]);
     QAbstractAxis *xAxis = m_chart->axes(Qt::Horizontal)[0];
 
     yAxis->setRange(m_yRange.first, m_yRange.second);
@@ -2145,7 +2154,11 @@ void Finlandia::resetZoom()
     else {
         // Line chart
         xAxis->setRange(m_xRange.first, m_xRange.second);
+
+        static_cast<QValueAxis*>(xAxis)->applyNiceNumbers();
     }
+
+    yAxis->applyNiceNumbers();
 
     ui->btn_resetZoom->setEnabled(false);
 }
