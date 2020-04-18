@@ -7,7 +7,7 @@
 QT += core gui network charts webenginewidgets multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = firstTest
+TARGET = InternetExplorers
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -87,3 +87,8 @@ asset_builder.CONFIG += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += asset_builder
 
 OTHER_FILES += $$RCC_BINARY_SOURCES
+
+# Extra optimization
+CONFIG(release, debug|release) {
+    CONFIG += optimize_full
+}
