@@ -337,8 +337,6 @@ enum ValueFilters {
 /*!
  * \brief
  * All of the sorting/ordering related filter options
- * \todo
- * These sorting options are not implemented yet
  */
 enum OrderFilters {
     PLACEMENT = 0,      /*!< Sort by placement */
