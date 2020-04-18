@@ -12,9 +12,7 @@ The first time you run the program it might take a while as all of the data is b
 
 **Operating instructions**
 
-You add searches to your searched list. The search engine does the requested searches and the results can be viewed on the 'results' -tab.
-
-You can deduct searches from your searched list.
+Operating_manual can be accessed in Documentation folder .
 
 
 **Environment**
@@ -23,11 +21,22 @@ The program requires the same packages and QT version as the remote desktop QT. 
 
 The program requires a screen with a resolution greater than 1280 * 720. 
 
+It is advisable to not use the remote desktop due to the lack of multimedia support on that platform.
+
+
+**Documentation**
+
+Main documentation of the program can be accessed from the Documentation/ Folder. There is the main document and a UML-graph of the current version of the program.
+
 
 **Doxygen documentation**
 
-Doxygen documentation can be read by opening html/index.html in browser.
+Doxygen documentation can be read by opening https://internetexplorers-doxygen.herokuapp.com/.
 
+
+**Winner predicter**
+
+Winner predicter can be accessed by opening http://finlandia-hiihto-predicter.herokuapp.com/.
 
 **Contact information**
 
