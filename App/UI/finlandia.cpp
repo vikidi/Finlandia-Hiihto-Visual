@@ -488,7 +488,13 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
     std::vector<std::vector<QString>> setValues = {}; // All sets and their x values
     std::vector<QBarSet*> sets = {}; // All sets
     for (auto search : allSearches) {
-
+        if(m_showHashes)
+        {
+            if(!m_localDataHashed)
+            { // Do not hash if names are already hashed
+                m_crypter.hashNames(search);
+            }
+        }
         // Init new set
         QBarSet* set = new QBarSet(m_titles.at(i));
         std::vector<QString> setV = allValues;
