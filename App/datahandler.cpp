@@ -87,7 +87,7 @@ void InternetExplorers::DataHandler::Initialize()
     }
 }
 
-std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters)
+std::vector<std::vector<std::string>> InternetExplorers::DataHandler::getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters)
 {
     std::vector<std::vector<std::string>> data = {};
 
@@ -205,14 +205,14 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWi
     return data;
 }
 
-std::vector<std::vector<std::string> > InternetExplorers::DataHandler::getDataWithFilter(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, InternetExplorers::Constants::Filter::OrderFilters order)
+std::vector<std::vector<std::string>> InternetExplorers::DataHandler::getDataWithFilter(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, InternetExplorers::Constants::Filter::OrderFilters order)
 {
     std::vector<std::vector<std::string> > data = getDataWithFilter(filters);
     m_orderer->orderData(data, order);
     return data;
 }
 
-std::vector<std::vector<std::string> > InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
+std::vector<std::vector<std::string>> InternetExplorers::DataHandler::applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data)
 {
     // Check filter validity
     try {
@@ -247,7 +247,7 @@ std::vector<std::vector<std::string> > InternetExplorers::DataHandler::applyFilt
     return resultData;
 }
 
-std::vector<std::vector<std::string> > InternetExplorers::DataHandler::applyFilterToData(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data, InternetExplorers::Constants::Filter::OrderFilters order)
+std::vector<std::vector<std::string>> InternetExplorers::DataHandler::applyFilterToData(std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filters, std::vector<std::vector<std::string> > &data, InternetExplorers::Constants::Filter::OrderFilters order)
 {
     std::vector<std::vector<std::string> > d = applyFilterToData(filters, data);
     m_orderer->orderData(d, order);

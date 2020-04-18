@@ -27,6 +27,10 @@ namespace Ui {
 class Finlandia;
 }
 
+/*!
+ * \brief The Finlandia class
+ * Holds and handles the main UI
+ */
 class Finlandia : public QMainWindow
 {
     Q_OBJECT
@@ -34,7 +38,9 @@ class Finlandia : public QMainWindow
 public:
     /**
      * @brief Finlandia
-     * @param datahandler
+     * Constructor
+     * @param dh
+     * Interface to the data
      * @param parent
      */
     explicit Finlandia(InternetExplorers::DataHandler* dh,
@@ -51,13 +57,13 @@ public:
     std::map<Filter_NS, QString> makefilter();
 
     /**
-     * @brief make_listview adds all search results to the listview
-     *
+     * @brief make_listview adds all search results to the result tables
      */
     void make_listview();
 
     /**
      * @brief select_attributes
+     * Gets the wanted attributes
      * @return vector of integers pointing out what
      * attributes (year, distance, name etc.) the listView should show
      */
@@ -65,15 +71,17 @@ public:
 
     /**
      * @brief make_bar_chart
-     * @param x indicates the attribute wanted on the x axis
-     * @param y indicates the attribute wanted on y axis
+     * Creates bar chart
+     * @param xHeader indicates the attribute wanted on the x axis
+     * @param yHeader indicates the attribute wanted on y axis
      */
     void make_bar_chart(QString xHeader, QString yHeader);
 
     /**
      * @brief make_line_chart
-     * @param x indicates the attribute wanted on the x axis
-     * @param y indicates the attribute wanted on y axis
+     * Creates line chart
+     * @param xHeader indicates the attribute wanted on the x axis
+     * @param yHeader indicates the attribute wanted on y axis
      */
     void make_line_chart(QString xHeader, QString yHeader);
 
@@ -81,6 +89,7 @@ public:
      * @brief apply_special_filters does filtering for "Lisäehdot" -part
      * and stores the wanted information in the private section
      * @param filters
+     * Filter to use for data fetch
      */
     void apply_special_filters(std::map<Filter_NS, QString> filters);
 
@@ -88,6 +97,7 @@ public:
      * @brief check_for_special_filters returns 1 if special filters are
      * wanted, else 0
      * @return bool
+     * True if special filters are in use
      */
     bool check_for_special_filters();
 
@@ -95,6 +105,7 @@ public:
      * @brief check_for_order_filter returns 1 if the user wants the data
      * in a specific order,else 0
      * @return  bool
+     * True if order filters are in use
      */
     bool check_for_order_filter();
 
@@ -102,6 +113,7 @@ public:
      * @brief get_ordered_data is called by on_pushButtoLisaaHaku_clicked()
      * if check_for_special_filters returns 1.
      * @param filter
+     * Filter to use for data fetch
      * @return ordered and filtered data
      */
     std::vector<std::vector<std::string>> get_ordered_data(std::map<Filter_NS,
@@ -111,7 +123,7 @@ public slots:
      * \brief toggleMusic
      * Switches the music on and off
      * \param state
-     *
+     * State of the music, on/off
      */
     void toggleMusic(int state);
 
