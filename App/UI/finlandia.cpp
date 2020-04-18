@@ -292,7 +292,9 @@ std::map<Filter_NS, QString> Finlandia::makefilter()
 
         std::pair<Filter_NS, QString> name_pair(
                     InternetExplorers::Constants::Filter::NAME,
-                    ui->textEditUrheilija->toPlainText());
+                    (m_localDataHashed ?
+                         m_crypter.hashName(ui->textEditUrheilija->toPlainText())
+                       : ui->textEditUrheilija->toPlainText()));
 
         filter.insert(name_pair);
     }
@@ -412,7 +414,10 @@ void Finlandia::make_listview()
     for(auto data : allSearches){
         if(m_showHashes)
         { // Hash names if they are not supposed to be shown
-            m_crypter.hashNames(data);
+            if(!m_localDataHashed)
+            { // Names were not alredy hashed
+                m_crypter.hashNames(data);
+            }
         }
         addTableWidget(data, m_headers.at(i), m_titles.at(i).toStdString());
         ++i;
@@ -524,7 +529,7 @@ void Finlandia::make_bar_chart(QString xHeader, QString yHeader)
             else {
                 try {
                     y = std::stod(yString);
-                } catch (std::exception) {
+                } catch (std::exception &e) {
                     continue;
                 }
             }
@@ -717,7 +722,7 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
             else {
                 try {
                     x = std::stod(xString);
-                } catch (std::exception) {
+                } catch (std::exception &e) {
                     continue;
                 }
             }
@@ -735,7 +740,7 @@ void Finlandia::make_line_chart(QString xHeader, QString yHeader)
             else {
                 try {
                     y = std::stod(yString);
-                } catch (std::exception) {
+                } catch (std::exception &e) {
                     continue;
                 }
             }
@@ -866,8 +871,9 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
                 std::vector<std::string> newRow = {};
                 newRow.emplace_back(row.first); // Add year
                 newRow.emplace_back(m_showHashes ?
-                                         m_crypter.hashName(QString::fromStdString(
-                                                                row.second[IndexInData::NAME])).toStdString():
+                                         (m_localDataHashed ? row.second[IndexInData::NAME]
+                                      : m_crypter.hashName(QString::fromStdString(
+                                                  row.second[IndexInData::NAME])).toStdString()):
                                     row.second[IndexInData::NAME]); // Add name
                 newRow.emplace_back(row.second[IndexInData::TIME]); // Add time
 
@@ -903,10 +909,11 @@ void Finlandia::apply_special_filters(std::map<Filter_NS,
                 std::vector<std::string> newRow = {};
                 newRow.emplace_back(row.first); // Add year
                 newRow.emplace_back(m_showHashes ?
-                                         m_crypter.hashName(QString::fromStdString(
-                                                                row.second[IndexInData::NAME])).toStdString():
+                                        (m_localDataHashed ? row.second[IndexInData::NAME]
+                                         : m_crypter.hashName(QString::fromStdString(
+                                                     row.second[IndexInData::NAME])).toStdString()):
                                     row.second[IndexInData::NAME]); // Add name
-                newRow.emplace_back(row.second[InternetExplorers::Constants::DataIndex::IndexInData::TIME]); // Add time
+                newRow.emplace_back(row.second[IndexInData::TIME]); // Add time
 
                 newData.emplace_back(newRow);
             }
@@ -1325,9 +1332,12 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
         if(m_showHashes)
         { // Hash names if they are not supposed to be shown
-            if(auto it = filter.find(Filter_NS::NAME); it != filter.end())
-            {
-                it->second = m_crypter.hashName(it->second);
+            if(!m_localDataHashed)
+            { // Names were not alredy hashed
+                if(auto it = filter.find(Filter_NS::NAME); it != filter.end())
+                {
+                    it->second = m_crypter.hashName(it->second);
+                }
             }
         }
         // Further filter the chosen data
@@ -1365,7 +1375,10 @@ void Finlandia::on_pushButtoLisaaHaku_clicked()
 
             if(m_showHashes)
             { // Hash names if they are not supposed to be shown
-                m_crypter.hashNames(newData);
+                if(!m_localDataHashed)
+                { // Names were not alredy hashed
+                    m_crypter.hashNames(newData);
+                }
             }
 
             // Parse away some columns

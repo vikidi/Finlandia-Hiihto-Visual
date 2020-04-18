@@ -1052,6 +1052,9 @@
                  <property name="acceptDrops">
                   <bool>true</bool>
                  </property>
+                 <property name="verticalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOff</enum>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -1581,7 +1584,7 @@
               <x>0</x>
               <y>0</y>
               <width>1239</width>
-              <height>666</height>
+              <height>663</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -2048,7 +2051,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

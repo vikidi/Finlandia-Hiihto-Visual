@@ -165,12 +165,14 @@ void InternetExplorers::Crypter::decryptNames(std::vector<std::vector<std::strin
 
 void InternetExplorers::Crypter::hashLocalNamesInFile(QString filename, QCryptographicHash::Algorithm algorithm)
 {
+    using namespace InternetExplorers::Constants::DataIndex;
+
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         auto msg(QString("No local data found"));
         auto msgSender(QString("Crypter"));
-        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
+        InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::CRITICAL, msgSender);
         return;
     }
 
@@ -181,10 +183,10 @@ void InternetExplorers::Crypter::hashLocalNamesInFile(QString filename, QCryptog
         QList<QByteArray> splitRow(line.split(';'));
 
         QCryptographicHash hash(algorithm);
-        hash.addData(splitRow.at(Constants::DataIndex::IndexInData::NAME).toHex());
-        splitRow[Constants::DataIndex::IndexInData::NAME]
+        hash.addData(splitRow.at(IndexInData::NAME));
+        splitRow[IndexInData::NAME]
                 = hash.result().toHex();
-        splitRow[Constants::DataIndex::IndexInData::NAME].truncate(6);
+        splitRow[IndexInData::NAME].truncate(6);
         result.append(splitRow.join(';'));
     }
 
@@ -193,7 +195,7 @@ void InternetExplorers::Crypter::hashLocalNamesInFile(QString filename, QCryptog
     {
         auto msg(QString("Local file write failed"));
         auto msgSender(QString("Crypter"));
-        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, msgSender);
+        InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::CRITICAL, msgSender);
         return;
     }
 
