@@ -15,7 +15,7 @@ namespace InternetExplorers
 
 /*!
  * \brief
- * Provides an public interface to the local
+ * Provides a public interface to the local
  * data on disk.
  */
 class LocalAPI : public QObject
@@ -48,7 +48,7 @@ public:
      * \return
      * True, if the data needs to be loaded from web
      */
-    bool needsToBeLoadedFromWeb();
+    bool needsToBeLoadedFromWeb() const;
 
     /*!
      * \brief
@@ -58,6 +58,12 @@ public:
      */
     std::map<QString, QString> readMetaDataFile();
 
+    /*!
+     * \brief
+     * Creates file having all the MD5 check sum metadatas
+     */
+    void createMD5File();
+
 signals:
 
     /*!
@@ -66,7 +72,15 @@ signals:
      * \param progress
      * Current progress
      */
-    void progressChanged(const int progress);
+    void progressChanged(const int progress) const;
+
+    /*!
+     * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfo(const QString text) const;
 
 public slots:
 
@@ -77,10 +91,8 @@ public slots:
     void updateProgress();
 
 private:
-    const QString DATA_ROOT_NAME = "FinlandiaData";
-    const QString DATA_FILE_NAME = "Data.txt";
-    const QString MD5_DATA_FILE_NAME = "MD5_metadata.txt";
-    const QString META_DATA_FILE_NAME = "Metadata.txt";
+
+    const QString m_name = "LocalAPI";
 
     /*!
      * \brief
@@ -88,7 +100,7 @@ private:
      * \return
      * The amount of files
      */
-    int getAmountOfFiles();
+    int getAmountOfFiles() const;
 
     /*!
      * \brief
@@ -106,7 +118,7 @@ private:
      * \attention
      * Method is thread safe.
      */
-    void appendData(std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>>& data);
+    void appendData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>>& data);
 
     template<typename T> // Template for the method below
     /*!
@@ -127,7 +139,7 @@ private:
      * \return
      * Results < Path, MD5 checksum >
      */
-    std::vector<std::pair<QString, QString>> readMD5File();
+    std::map<QString, QString> readMD5File() const;
 
     /*!
      * \brief
@@ -137,19 +149,13 @@ private:
 
     /*!
      * \brief
-     * Creates file having all the MD5 check sum metadatas
-     */
-    void createMD5File();
-
-    /*!
-     * \brief
      * Gets the MD5 checksum for the given file
      * \param file
      * Path to the file
      * \return
      * MD5 check sum for the file, empty QByteArray if failure
      */
-    QByteArray getMD5CheckSum(const QString &file);
+    QByteArray getMD5CheckSum(const QString &file) const;
 
     /*!
      * \brief
@@ -157,7 +163,7 @@ private:
      * \return
      * True, if data on disk is corrupted.
      */
-    bool isDataCorrupted();
+    bool isDataCorrupted() const;
 
     /*!
      * \brief
@@ -165,7 +171,15 @@ private:
      * \return
      * True, if there is data
      */
-    bool isDataAvailable();
+    bool isDataAvailable() const;
+
+    /*!
+     * \brief
+     * Counts the amount of rows in data
+     * \return
+     * Amount of rows
+     */
+    int getAmountOfRows() const;
 
     int m_fileCount;
     int m_currentProgress;

@@ -2,13 +2,37 @@
 
 #include <QDirIterator>
 #include <QTextStream>
-
+#include "crypter.h"
 #include "../constants.h"
 
 InternetExplorers::LocalDataLoader::LocalDataLoader() :
-    m_data({})
+    m_data({}),
+    m_encrypted(false)
 {
-
+    if (QFile::exists("encryptionStatus.ini")) {
+        QFile file("encryptionStatus.ini");
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            for(auto line : file.readAll().split('\n'))
+            {
+                // "Chopped" would be better than chop but
+                // it is not supported on remote desktops qt version
+                auto lineCopy{line};
+                lineCopy.chop(2);
+                if(lineCopy.size() == 0) continue;
+                if(lineCopy == "LocalDataEncrypted")
+                {
+                    if(line.at(line.size() - 1) == '1')
+                    {
+                        m_encrypted = true;
+                    }
+                }
+            }
+        }
+    } else
+    { // File not found
+        m_encrypted = false;
+    }
 }
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> InternetExplorers::LocalDataLoader::loadData(std::shared_ptr<std::vector<std::string> > years)
@@ -69,6 +93,18 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> Inte
         f.close();
 
         emit progressChanged();
+    }
+
+    if(m_encrypted)
+    { // Decrypt names in the data
+        InternetExplorers::Crypter crypter;
+        for(auto& year : m_data)
+        {
+            for(auto& distance : year.second)
+            {
+                crypter.decryptNames(distance.second);
+            }
+        }
     }
 
     return m_data;

@@ -99,7 +99,6 @@ public:
     static bool validateFilter(std::map<Constants::Filter::ValueFilters, QString> filters);
 
 private:
-    // TODO: should these be public?
     static bool validateYear(QString filterValue);
     static bool validateYearRange(QString filterValue);
     static bool validateDistance(QString filterValue);
@@ -107,6 +106,8 @@ private:
     static bool validateTimeRange(QString filterValue);
     static bool validatePlace(QString filterValue);
     static bool validatePlaceRange(QString filterValue);
+    static bool validatePlaceRangeMen(QString filterValue);
+    static bool validatePlaceRangeWomen(QString filterValue);
     static bool validatePlaceMen(QString filterValue);
     static bool validatePlaceWomen(QString filterValue);
     static bool validateSex(QString filterValue);

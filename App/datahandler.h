@@ -6,6 +6,7 @@
 #include "APIs/finlandiaapi.h"
 #include "APIs/localapi.h"
 #include "interfacefilter.h"
+#include "dataorderer.h"
 #include <unordered_map>
 #include <QString>
 #include <QHash>
@@ -82,6 +83,22 @@ public:
 
     /*!
      * \brief
+     * Gets data using the value filter
+     * and return the results sorted by the given order filter
+     * \param filters
+     * Value filters, refers to InternetExplorers::Constants::Filters::ValueFilters
+     * \param order
+     * Order filter, refers to InternetExplorers::Constants::Filters::OrderFilters
+     * \attention
+     * The filter must be validated with InterfaceFilter before calling
+     * \return
+     * Ordered data that passed the filter
+     */
+    std::vector<std::vector<std::string>> getDataWithFilter(std::map<Constants::Filter::ValueFilters, QString> filters,
+                                                            Constants::Filter::OrderFilters order);
+
+    /*!
+     * \brief
      * Apply filter to data. The data itself will be filtered.
      * \details
      * If a filter parameter is left unused
@@ -94,9 +111,115 @@ public:
      * Data where the filter will be applied
      * \attention
      * The filter must be validated with InterfaceFilter before calling
+     * \return
+     * The data got with the filter
      */
-    void applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
+    std::vector<std::vector<std::string>> applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
                            std::vector<std::vector<std::string>>& data);
+
+    /*!
+     * \brief
+     * Apply filter to data and sort the result.
+     * \param filters
+     * Value filter to be applied,
+     * refers to InternetExplorers::Constants::Filters::ValueFilters
+     * \param data
+     * Data where the filters will be applied
+     * \param order
+     * Filter used in sorting,
+     * refers to InternetExplorers::Constants::Filters::OrderFilters
+     * \return
+     * The data got with the filter
+     */
+    std::vector<std::vector<std::string>> applyFilterToData(std::map<Constants::Filter::ValueFilters, QString> filters,
+                           std::vector<std::vector<std::string>>& data,
+                           Constants::Filter::OrderFilters order);
+
+    /* Special functions */
+
+    /*!
+     * \brief
+     * Gets the races that has had participants
+     * \return
+     * Results in format < year, distance >
+     */
+    std::vector<std::pair<std::string, std::string>> getRacesWithParticipants();
+
+    /*!
+     * \brief
+     * Gets the amount of participants per year
+     * \param filters
+     * Uses the filter to narrow down data to get participants from
+     * \attention
+     * Uses only YEAR or YEAR_RANGE and DISTANCE filters.
+     * \return
+     * Results in format < year, amount >
+     */
+    std::map<std::string, int> getAmountOfParticipants(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
+     * Gets the slowes result
+     * \param filters
+     * Uses the filter to narrow down data from where to get the slowest
+     * \return
+     * Results in format < year, row of the slowest >
+     */
+    std::map<std::string, std::vector<std::string>> getSlowest(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
+     * Gets the fastest result
+     * \param filters
+     * Uses the filter to narrow down data from where to get the fastest
+     * \return
+     * Results in format < year, row of the fastest >
+     */
+    std::map<std::string, std::vector<std::string>> getFastest(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
+     * Gets the average result time
+     * \param filters
+     * Uses the filter to narrow down data from where to get the average time
+     * \return
+     * Results in format < year, average time >
+     */
+    std::map<std::string, std::string> getAverageTimes(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
+     * Gets the average speed of skiers
+     * \param filters
+     * Uses the filter to narrow down data from where to get the average time
+     * \return
+     * Results in format < year, average speed (km/h) >
+     */
+    std::map<std::string, std::string> getAverageSpeeds(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
+     * Gets the amount of participants by country
+     * \param filters
+     * Uses the filter to narrow down data from where to get the participants
+     * \return
+     * Results in format < country, amount >
+     */
+    std::map<std::string, int > getParticipantsByCountry(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /*!
+     * \brief
+     * Gets the top ten best teams and their average result time.
+     * \param filters
+     * Uses the filter to narrow down data from where to get the participants
+     * \attention
+     * DISTANCE filter must be used!
+     * \return
+     * Results in format < team, average time of the four best participants from that team >
+     */
+    std::vector<std::pair<std::string, std::string>> getBestTenTeams(std::map<Constants::Filter::ValueFilters, QString> filters);
+
+    /* /Special functions */
 
     /* /PUBLIC INTERFACE */
 
@@ -110,6 +233,14 @@ private slots:
      */
     void progressChangedInApi(const int progress);
 
+    /*!
+     * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfoFromApi(const QString text);
+
 signals:
     /*!
      * \brief
@@ -121,11 +252,21 @@ signals:
 
     /*!
      * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfo(const QString text);
+
+    /*!
+     * \brief
      * Data has been loaded
      */
     void loadingReady();
 
 private:
+
+    const QString m_name = "DataHandler";
 
     /*!
      * \brief
@@ -207,6 +348,8 @@ private:
     bool filterByTimeRange(std::vector<std::string> row, QString filterValue);
     bool filterByPlace(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceRange(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceRangeMen(std::vector<std::string> row, QString filterValue);
+    bool filterByPlaceRangeWomen(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceMen(std::vector<std::string> row, QString filterValue);
     bool filterByPlaceWomen(std::vector<std::string> row, QString filterValue);
     bool filterBySex(std::vector<std::string> row, QString filterValue);
@@ -224,6 +367,8 @@ private:
 
     // API to the local data in folders
     InternetExplorers::LocalAPI *m_localAPI;
+
+    InternetExplorers::DataOrderer *m_orderer;
 
     // < Year, < Distance, Row< Column< Value > > > >
     std::map<QString, std::map<QString,

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>681</width>
-    <height>492</height>
+    <width>663</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="haunAloitusNappi">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>390</y>
+      <x>270</x>
+      <y>10</y>
       <width>89</width>
       <height>27</height>
      </rect>
@@ -31,12 +31,44 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>70</y>
+      <y>40</y>
       <width>641</width>
       <height>151</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
+   </widget>
+   <widget class="QTextEdit" name="txt_info">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>641</width>
+      <height>221</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="MusicCheckbox">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>10</y>
+      <width>171</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Soita musiikkia</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -44,7 +76,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>681</width>
+     <width>663</width>
      <height>23</height>
     </rect>
    </property>

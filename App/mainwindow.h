@@ -54,11 +54,11 @@ private slots:
 
     /*!
      * \brief
-     * Loading progress has been changed in backend. Connects to progress bar.
-     * * \param progress
-     * The current progress of the loading
+     * Appends text to info box
+     * \param text
+     * Text to append
      */
-    void progressChanged(const int progress);
+    void appendInfo(const QString text);
 
     /*!
      * \brief
@@ -68,14 +68,13 @@ private slots:
 
 private:
 
+    const QString m_name = "MainWindow";
+
     // Finlandia UI window
     Finlandia* m_finlandiaUI;
 
     // Backend data handler
     InternetExplorers::DataHandler *m_dataHandler;
-
-    // Main window progress bar
-    QProgressBar *m_progress;
 
     // View for custom progress bar
     QGraphicsView* m_view;

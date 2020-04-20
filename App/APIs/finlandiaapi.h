@@ -6,9 +6,10 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
-#include <iostream>
+#include <string>
 #include <mutex>
 #include <atomic>
+#include <QString>
 
 namespace InternetExplorers
 {
@@ -60,17 +61,34 @@ signals:
      */
     void progressChanged(const int progress);
 
+    /*!
+     * \brief
+     * Append text to main window info box
+     * \param text
+     * Text to be appended
+     */
+    void appendInfo(const QString text);
+
 private slots:
 
 private:
+    const QString m_name = "FinalndiaAPI";
+
     void loadInThread(std::shared_ptr<std::vector<FinlandiaAPI::Parameters>>);
     void appendData(std::vector<std::vector<std::string>>);
     void removePlankLines();
 
+    /*!
+     * \brief
+     * Counts the amount of rows in data
+     * \return
+     * Amount of rows
+     */
+    int getAmountOfRows() const;
+
     std::mutex m_mtx;
     std::map<QString, std::map<QString, std::vector<std::vector<std::string>>>> m_data;
 
-    int m_ready;
     std::atomic_int m_runners;
 
     std::atomic_int m_totalCalls;

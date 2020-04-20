@@ -7,16 +7,10 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>720</height>
+    <height>827</height>
    </rect>
   </property>
   <property name="minimumSize">
-   <size>
-    <width>1280</width>
-    <height>720</height>
-   </size>
-  </property>
-  <property name="maximumSize">
    <size>
     <width>1280</width>
     <height>720</height>
@@ -26,7 +20,7 @@
    <string>Finlandia</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_15">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="tabShape">
@@ -36,6 +30,18 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="searchTab">
+       <property name="minimumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
        <attribute name="title">
         <string>Haku</string>
        </attribute>
@@ -74,6 +80,33 @@
             </widget>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QPushButton" name="btn_removeSearch">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Poista valittu haku</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
             <widget class="QListWidget" name="listWidgetTehtHaut"/>
            </item>
           </layout>
@@ -93,7 +126,49 @@
            <property name="spacing">
             <number>0</number>
            </property>
-           <item row="25" column="3">
+           <item row="5" column="2">
+            <layout class="QHBoxLayout" name="athleteLayout">
+             <item>
+              <widget class="QLabel" name="labelSukupuoli">
+               <property name="text">
+                <string>Sukupuoli</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="sukupuoliCB">
+               <property name="minimumSize">
+                <size>
+                 <width>275</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>M</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>N</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="26" column="2">
             <spacer name="verticalSpacer_2">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -106,14 +181,27 @@
              </property>
             </spacer>
            </item>
-           <item row="15" column="3">
+           <item row="18" column="2">
+            <widget class="QLabel" name="labelHae">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Lisävaihtoehdot:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="2">
             <widget class="Line" name="line_5">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="11" column="3">
+           <item row="11" column="2">
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
               <widget class="Line" name="line">
@@ -124,60 +212,36 @@
              </item>
             </layout>
            </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="label_5">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Urheilija:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_7">
-               <item>
-                <widget class="QLabel" name="labelKotimaa">
-                 <property name="text">
-                  <string>Kotimaa</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QTextEdit" name="textEditHome">
-                 <property name="minimumSize">
-                  <size>
-                   <width>275</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>200</width>
-                   <height>27</height>
-                  </size>
-                 </property>
-                 <property name="acceptDrops">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-           <item row="13" column="3">
-            <layout class="QHBoxLayout" name="horizontalLayout_4"/>
-           </item>
-           <item row="14" column="3">
+           <item row="14" column="2">
             <layout class="QGridLayout" name="gridLayout_5">
-             <item row="4" column="3">
-              <widget class="QComboBox" name="ComboBoxSijoitus">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Kilpailu:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QTimeEdit" name="timeEditLower">
+               <property name="maximumSize">
+                <size>
+                 <width>130</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="displayFormat">
+                <string>HH:mm:ss</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QComboBox" name="comboBoxMatka">
                <property name="maximumSize">
                 <size>
                  <width>125</width>
@@ -186,40 +250,135 @@
                </property>
                <item>
                 <property name="text">
-                 <string/>
+                 <string>Kaikki Matkat</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>1.</string>
+                 <string>P50</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>2.</string>
+                 <string>V50</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>3.</string>
+                 <string>P100</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>4.</string>
+                 <string>P32</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>5.</string>
+                 <string>V20</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V32</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V20jun</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P42</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V42</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P20</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P30</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P44</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P60</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P62</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P25</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P35</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P45</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P52</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P53</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>P75</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V30</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V45</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V53</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>V75</string>
                 </property>
                </item>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="labelVuosi">
+             <item row="2" column="2">
+              <widget class="QLabel" name="label">
                <property name="text">
-                <string>Vuosi</string>
+                <string>-</string>
                </property>
               </widget>
              </item>
@@ -234,256 +393,6 @@
                <property name="displayFormat">
                 <string>HH:mm:ss</string>
                </property>
-              </widget>
-             </item>
-             <item row="2" column="3">
-              <widget class="QComboBox" name="vuosivaliBox">
-               <property name="maximumSize">
-                <size>
-                 <width>125</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <item>
-                <property name="text">
-                 <string>Vuosiväli</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1974</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1975</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1976</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1977</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1978</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1979</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1980</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1981</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1982</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1983</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1984</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1985</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1986</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1987</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1988</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1989</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1990</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1991</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1992</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1993</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1994</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1995</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1996</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1997</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1998</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>1999</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2000</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2001</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2002</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2003</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2004</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2005</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2006</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2007</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2008</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2009</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2010</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2011</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2012</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2013</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2014</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2015</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2016</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2017</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2018</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>2019</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string/>
-                </property>
-               </item>
               </widget>
              </item>
              <item row="2" column="1">
@@ -731,11 +640,256 @@
                </item>
               </widget>
              </item>
-             <item row="2" column="2">
-              <widget class="QLabel" name="label">
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_2">
                <property name="text">
                 <string>-</string>
                </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QComboBox" name="vuosivaliBox">
+               <property name="maximumSize">
+                <size>
+                 <width>125</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Vuosiväli</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1974</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1975</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1976</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1977</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1978</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1979</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1980</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1981</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1982</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1983</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1984</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1985</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1986</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1987</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1988</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1989</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1990</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1991</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1992</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1993</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1994</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1995</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1996</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1997</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1998</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1999</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2000</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2001</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2002</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2003</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2004</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2005</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2006</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2007</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2008</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2009</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2010</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2011</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2012</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2013</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2014</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2015</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2016</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2017</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2018</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2019</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item row="3" column="0">
@@ -745,156 +899,8 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="3">
-              <widget class="QComboBox" name="comboBoxMatka">
-               <property name="maximumSize">
-                <size>
-                 <width>125</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <item>
-                <property name="text">
-                 <string>Kaikki Matkat</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P50</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V50</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P100</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P32</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V20</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V32</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V20jun</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P42</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V42</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P20</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P30</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P44</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P60</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P62</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P25</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P35</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P45</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P52</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P53</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>P75</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V30</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V45</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V53</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>V75</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QTimeEdit" name="timeEditLower">
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="displayFormat">
-                <string>HH:mm:ss</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QLabel" name="label_2">
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_4">
                <property name="text">
                 <string>-</string>
                </property>
@@ -914,26 +920,54 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_3">
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelVuosi">
                <property name="text">
-                <string>Kilpailu:</string>
+                <string>Vuosi</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QSpinBox" name="spinBoxSijoitusAla">
+               <property name="maximum">
+                <number>1000</number>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
+              <widget class="QSpinBox" name="spinBoxSijoitusYla">
+               <property name="maximum">
+                <number>1000</number>
                </property>
               </widget>
              </item>
             </layout>
            </item>
-           <item row="20" column="3">
+           <item row="20" column="2">
             <layout class="QHBoxLayout" name="horizontalLayout_21">
              <item>
               <layout class="QGridLayout" name="gridLayout_4">
-               <item row="4" column="0">
+               <item row="2" column="0">
+                <widget class="QRadioButton" name="osall_lkm_maittainRP">
+                 <property name="text">
+                  <string>Urheilijoiden määrä maittain</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="keskinopeusRP">
+                 <property name="text">
+                  <string>Keskinopeus</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
                 <widget class="QRadioButton" name="haeHitainRP">
                  <property name="text">
                   <string>Hitain</string>
@@ -941,12 +975,9 @@
                  <property name="autoExclusive">
                   <bool>false</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
                 </widget>
                </item>
-               <item row="1" column="0">
+               <item row="0" column="1">
                 <widget class="QRadioButton" name="haeNopeinRP">
                  <property name="text">
                   <string>Nopein</string>
@@ -954,111 +985,84 @@
                  <property name="autoExclusive">
                   <bool>false</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QRadioButton" name="KotimaaRP">
-                 <property name="text">
-                  <string>Kotimaa</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QRadioButton" name="haeOsalMaarRP">
-                 <property name="text">
-                  <string>Osallistujen lukumäärä</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QRadioButton" name="haeKaikkiRP">
-                 <property name="text">
-                  <string>Kaikki tulokset</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QRadioButton" name="haeJoukkueRP">
+                <widget class="QRadioButton" name="keskiaikaRP">
                  <property name="text">
-                  <string>Joukkue</string>
+                  <string>Keskiaika</string>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">HaeButtons</string>
-                 </attribute>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QRadioButton" name="vuodenXparhaatRP">
+                 <property name="text">
+                  <string>Parhaat joukkueet</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QRadioButton" name="haeOsalMaarRP">
+                 <property name="text">
+                  <string>Osallistujien lukumäärä</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
                 </widget>
                </item>
               </layout>
              </item>
             </layout>
            </item>
-           <item row="24" column="3">
-            <layout class="QHBoxLayout" name="horizontalLayout_6"/>
+           <item row="13" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_4"/>
            </item>
-           <item row="5" column="3">
-            <layout class="QHBoxLayout" name="athleteLayout">
+           <item row="2" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
-              <widget class="QLabel" name="labelSukupuoli">
-               <property name="text">
-                <string>Sukupuoli</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="sukupuoliCB">
-               <property name="minimumSize">
-                <size>
-                 <width>275</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>16777215</height>
-                </size>
-               </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
                <item>
-                <property name="text">
-                 <string/>
-                </property>
+                <widget class="QLabel" name="labelKotimaa">
+                 <property name="text">
+                  <string>Kotimaa</string>
+                 </property>
+                </widget>
                </item>
                <item>
-                <property name="text">
-                 <string>M</string>
-                </property>
+                <widget class="QTextEdit" name="textEditHome">
+                 <property name="minimumSize">
+                  <size>
+                   <width>275</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>27</height>
+                  </size>
+                 </property>
+                 <property name="acceptDrops">
+                  <bool>true</bool>
+                 </property>
+                 <property name="verticalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOff</enum>
+                 </property>
+                </widget>
                </item>
-               <item>
-                <property name="text">
-                 <string>N</string>
-                </property>
-               </item>
-              </widget>
+              </layout>
              </item>
             </layout>
            </item>
-           <item row="18" column="3">
-            <widget class="QLabel" name="labelHae">
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_5">
              <property name="font">
               <font>
                <weight>75</weight>
@@ -1066,11 +1070,11 @@
               </font>
              </property>
              <property name="text">
-              <string>Hae:</string>
+              <string>Urheilija:</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="3">
+           <item row="1" column="2">
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
               <widget class="QLabel" name="labelUrheilija">
@@ -1103,54 +1107,88 @@
              </item>
             </layout>
            </item>
-          </layout>
-         </item>
-         <item row="1" column="3">
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QLabel" name="labelEsitys">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
+           <item row="24" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_6"/>
+           </item>
+           <item row="27" column="2">
+            <widget class="QCheckBox" name="MusicCheckbox">
              <property name="text">
-              <string>Esitys:</string>
+              <string>Soita musiikkia</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item row="25" column="2">
+            <layout class="QVBoxLayout" name="verticalLayout">
              <item>
-              <widget class="QRadioButton" name="esitysGraafinenRP">
-               <property name="text">
-                <string>Graafisesti </string>
+              <widget class="Line" name="line_11">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">EsitysButtons</string>
-               </attribute>
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="esitysListanaRP">
-               <property name="text">
-                <string>Listana</string>
+              <widget class="QLabel" name="label_11">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">EsitysButtons</string>
-               </attribute>
+               <property name="text">
+                <string>Jatkosuodata valittua hakua:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="cb_furtherFilter">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Jatkosuodata</string>
+               </property>
               </widget>
              </item>
             </layout>
            </item>
-           <item>
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
+           <item row="28" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QPushButton" name="btn_prevSong">
+               <property name="text">
+                <string>Edellinen kappale</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_nextSong">
+               <property name="text">
+                <string>Seuraava kappale</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
+          </layout>
+         </item>
+         <item row="1" column="3">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QLabel" name="labelHaettavaTieto">
              <property name="font">
@@ -1160,54 +1198,143 @@
               </font>
              </property>
              <property name="text">
-              <string>Haettava tieto:</string>
+              <string>Esitettävät tiedot:</string>
              </property>
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
-             <item>
-              <widget class="QRadioButton" name="aikaRP">
+            <widget class="QRadioButton" name="haeKaikkiRP">
+             <property name="text">
+              <string>Kaikki tulokset</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_9" columnstretch="0,0">
+             <item row="0" column="1">
+              <widget class="QRadioButton" name="naytaMatkaRP">
+               <property name="text">
+                <string>Matka</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QRadioButton" name="naytaSijaRP">
+               <property name="text">
+                <string>Sija</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QRadioButton" name="naytaSijaMRP">
+               <property name="text">
+                <string>Sija (miehet)</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="naytaVuosiRP">
+               <property name="text">
+                <string>Vuosi</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="naytaAikaRP">
                <property name="text">
                 <string>Aika</string>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
-             <item>
-              <widget class="QRadioButton" name="hiihtajanNimiRP">
+             <item row="3" column="0">
+              <widget class="QRadioButton" name="naytaSPRP">
                <property name="text">
-                <string>Hiihtäjän nimi</string>
+                <string>Sukupuoli</string>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="QRadioButton" name="keskinopeusRP">
+             <item row="4" column="0">
+              <widget class="QRadioButton" name="naytaKaupunkiRP">
                <property name="text">
-                <string>Keskinopeus</string>
+                <string>Kaupunki</string>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
-             <item>
-              <widget class="QRadioButton" name="tietoKaikkiRP">
+             <item row="5" column="0">
+              <widget class="QRadioButton" name="naytaSVRP">
                <property name="text">
-                <string>Kaikki tiedot</string>
+                <string>Syntymävuosi</string>
                </property>
-               <attribute name="buttonGroup">
-                <string notr="true">HaettavaTietoButtons</string>
-               </attribute>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QRadioButton" name="naytaSijaNRP">
+               <property name="text">
+                <string>Sija (naiset)</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QRadioButton" name="naytaNimiRP">
+               <property name="text">
+                <string>Nimi</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QRadioButton" name="naytaMaaRP">
+               <property name="text">
+                <string>Kansallisuus</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QRadioButton" name="naytaJoukkueRP">
+               <property name="text">
+                <string>Joukkue</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
             </layout>
@@ -1233,92 +1360,127 @@
             </widget>
            </item>
            <item>
+            <layout class="QGridLayout" name="gridLayout_7">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Aakkosjärjestykseen:</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_14">
              <item>
               <layout class="QGridLayout" name="gridLayout_3">
-               <item row="0" column="0">
-                <widget class="QRadioButton" name="jarjestaVuosiRP">
-                 <property name="text">
-                  <string>Vuoden mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QRadioButton" name="jarjestaSeuranNimiRP">
-                 <property name="text">
-                  <string>Seuran nimen mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QRadioButton" name="jarjestaSijoitusRP">
-                 <property name="text">
-                  <string>Sijoituksen mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QRadioButton" name="jarjestaMatkaRP">
-                 <property name="text">
-                  <string>Matkan mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
                <item row="1" column="0">
-                <widget class="QRadioButton" name="jarjestaVainParasRP">
-                 <property name="text">
-                  <string>Näytä vain paras</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="4" column="0">
-                <widget class="QRadioButton" name="jarjestaAinutLRP">
-                 <property name="text">
-                  <string>Ainutlaatuisten mukaan</string>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item row="2" column="0">
                 <widget class="QRadioButton" name="jarjestaKotimaaRP">
                  <property name="text">
                   <string>Kotimaan mukaan</string>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
+                 <property name="autoExclusive">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
-               <item row="2" column="1">
-                <widget class="QRadioButton" name="jarjestaAakkosRP">
-                 <property name="text">
-                  <string>Aakkosjärjestykseen</string>
+               <item row="3" column="1">
+                <widget class="Line" name="line_10">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
                  </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">JarjestaButtons</string>
-                 </attribute>
+                </widget>
+               </item>
+               <item row="5" column="1">
+                <widget class="QRadioButton" name="jarjestaMatkaRP">
+                 <property name="text">
+                  <string>Matkan mukaan</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="Line" name="line_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QRadioButton" name="nimi_jarkkaRP">
+                 <property name="text">
+                  <string>Nimen mukaan</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="jarjestaSeuranNimiRP">
+                 <property name="text">
+                  <string>Seuran nimen mukaan</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
+                <widget class="QRadioButton" name="jarjestaVuosiRP">
+                 <property name="text">
+                  <string>Vuoden mukaan</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2">
+                <widget class="Line" name="line_9">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="3">
+                <widget class="Line" name="line_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0">
+                <widget class="QRadioButton" name="jarjestaSijoitusRP">
+                 <property name="text">
+                  <string>Sijoituksen mukaan</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="0">
+                <widget class="QRadioButton" name="jarjestaAlkupRP">
+                 <property name="text">
+                  <string>Alkuperäinen järjestys</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
               </layout>
              </item>
             </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_8"/>
            </item>
            <item>
             <widget class="QPushButton" name="pushButtoLisaaHaku">
@@ -1377,6 +1539,18 @@
        </widget>
       </widget>
       <widget class="QWidget" name="resultsTab">
+       <property name="minimumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
        <attribute name="title">
         <string>Tulokset</string>
        </attribute>
@@ -1386,36 +1560,485 @@
           <x>-1</x>
           <y>9</y>
           <width>1261</width>
-          <height>601</height>
+          <height>701</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="0">
-          <widget class="QListWidget" name="listWidgetResult"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="ListViewesityslabel">
-           <property name="text">
-            <string>Esitetään:</string>
+         <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="rightMargin">
+          <number>10</number>
+         </property>
+         <item row="3" column="0">
+          <widget class="QScrollArea" name="scrollArea">
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
            </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollWidget">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>1239</width>
+              <height>663</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </widget>
+         </item>
+         <item row="0" column="0" rowspan="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QPushButton" name="btn_emptyTables">
+             <property name="text">
+              <string>Tyhjennä taulut</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="tab">
+       <property name="minimumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>1280</width>
+         <height>720</height>
+        </size>
+       </property>
        <attribute name="title">
         <string>Graafit</string>
        </attribute>
-       <widget class="QChartView" name="graafiWiev">
+       <widget class="QWidget" name="horizontalLayoutWidget_2">
         <property name="geometry">
          <rect>
-          <x>5</x>
-          <y>11</y>
-          <width>1241</width>
-          <height>581</height>
+          <x>1</x>
+          <y>1</y>
+          <width>1251</width>
+          <height>741</height>
          </rect>
         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetFixedSize</enum>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Kuvaajan asetukset:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_6">
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetFixedSize</enum>
+             </property>
+             <item row="3" column="2">
+              <widget class="QComboBox" name="kuvaajatyyppiCB">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Pylväsdiagrammi</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Jatkuva kuvaaja</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Kuvaajan tyyppi:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QComboBox" name="x_akseliCB">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QComboBox" name="y_akseliCB">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_7">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Y-akseli:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>X-akseli:</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Maximum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>240</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="add_graphButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Lisää kuvaaja</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="del_all_graphs">
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Poista kaikki</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="save_graph_pb">
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Tallenna kuvaaja</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_resetZoom">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>240</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Nollaa zoomaus</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="Line" name="line_7">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="y_axisTitle">
+           <property name="text">
+            <string>Y-Axis Title</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <item>
+                <widget class="QChartView" name="graafiWiev">
+                 <property name="minimumSize">
+                  <size>
+                   <width>880</width>
+                   <height>680</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>880</width>
+                   <height>680</height>
+                  </size>
+                 </property>
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="transformationAnchor">
+                  <enum>QGraphicsView::AnchorViewCenter</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="x_axisTitle">
+               <property name="text">
+                <string>X-Axis Title</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
@@ -1428,7 +2051,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
@@ -1452,18 +2075,4 @@
  </customwidgets>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="EsitysButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
-  <buttongroup name="HaeButtons">
-   <property name="exclusive">
-    <bool>false</bool>
-   </property>
-  </buttongroup>
-  <buttongroup name="JarjestaButtons"/>
-  <buttongroup name="HaettavaTietoButtons"/>
- </buttongroups>
 </ui>

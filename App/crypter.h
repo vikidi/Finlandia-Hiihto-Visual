@@ -35,6 +35,19 @@ public:
 
     /*!
      * \brief
+     * Hashes one single name to its short hash version
+     * \param name
+     * What to hash
+     * \param algorithm
+     * What hash algorithm to use
+     * \return
+     * Short version of the hashed name
+     */
+    QString hashName(QString name,
+                     QCryptographicHash::Algorithm algorithm = QCryptographicHash::Algorithm::Md5);
+
+    /*!
+     * \brief
      * Converts skier names in data in disk to their short hash version
      * \param algorithm
      * Algorithm what hash algorithm to use

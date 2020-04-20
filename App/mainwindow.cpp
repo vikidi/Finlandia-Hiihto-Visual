@@ -1,19 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-// DEBUG
 #include <QDebug>
 
 #include "interfacefilter.h"
 #include "constants.h"
+#include "logger.h"
 
 MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* dh, QWidget *parent) :
     QMainWindow(parent),
     m_finlandiaUI(finlandiaUI),
     m_dataHandler(dh),
-    m_progress(new QProgressBar(this)),
     m_view(new QGraphicsView),
-    m_scene(new InternetExplorers::GameScene),
+    m_scene(new InternetExplorers::GameScene(true)),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -21,10 +20,16 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     connect(m_dataHandler, &InternetExplorers::DataHandler::loadingReady, this, &MainWindow::dataReady);
     m_dataHandler->Initialize();
 
-    // For progress
-    connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged, this, &MainWindow::progressChanged);
+    // Connect for progress
     connect(m_dataHandler, &InternetExplorers::DataHandler::progressChanged,
             m_scene, &InternetExplorers::GameScene::updateProgress);
+
+    // Connect for info box
+    connect(m_dataHandler, &InternetExplorers::DataHandler::appendInfo,
+            this, &MainWindow::appendInfo);
+
+    // Music toggle
+    connect(ui->MusicCheckbox, &QCheckBox::stateChanged, m_finlandiaUI, &Finlandia::toggleMusic);
 
     // Remove toolbar
     QList<QToolBar *> allToolBars = this->findChildren<QToolBar *>();
@@ -39,10 +44,20 @@ MainWindow::MainWindow(Finlandia* finlandiaUI, InternetExplorers::DataHandler* d
     m_view->verticalScrollBar()->setVisible(false);
     m_view->horizontalScrollBar()->setVisible(false);
     m_view->setFixedSize(m_scene->width()+30,m_scene->height()+30);
+
+    QString msg("Luokan rakentaja on valmis.");
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::INFO, m_name);
+
+    msg = QString("Ohjelma on käynnistetty.");
+    appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::INFO, m_name);
 }
 
 MainWindow::~MainWindow()
 {
+    QString msg("Luokan tuhoaja on kutsuttu.");
+    InternetExplorers::Logger::getInstance().log(msg, InternetExplorers::Constants::Logger::Severity::INFO, m_name);
+
     delete m_scene;
     delete m_view;
     delete ui;
@@ -52,53 +67,16 @@ void MainWindow::dataReady()
 {
     ui->haunAloitusNappi->setDisabled(false);
 
-    std::vector<std::vector<std::string>> test;
-
-    // OK
-    std::map<InternetExplorers::Constants::Filter::ValueFilters, QString> filter = {
-        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "Kaikki vuodet"}
-    };
-
-    // CLOCKING
-    using namespace std::chrono;
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-    try {
-       test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, YEAR " << time_span.count() << " s" << std::endl;
-
-    // OK, Mursu vaan painaa
-    filter = {
-        {InternetExplorers::Constants::Filter::ValueFilters::YEAR, "2017"},
-        {InternetExplorers::Constants::Filter::ValueFilters::DISTANCE, "P100"},
-        {InternetExplorers::Constants::Filter::ValueFilters::NAME, "Mursu Esa"}
-    };
-
-    // CLOCKING
-    t1 = high_resolution_clock::now();
-
-    try {
-        test = m_dataHandler->getDataWithFilter(filter);
-    } catch (InternetExplorers::FilterException &e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    // CLOCKING
-    t2 = high_resolution_clock::now();
-    time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "Success, YEAR, DISTANCE, NAME " << time_span.count() << " s" << std::endl;
+    QString msg("Käynnistä päänäkymä painamalla \"Aloita haku\"-painiketta.");
+    appendInfo(msg);
 }
 
-void MainWindow::progressChanged(const int progress)
+void MainWindow::appendInfo(const QString text)
 {
-    m_progress->setValue(progress);
+    std::string now = QDateTime::currentDateTime().toString("hh:mm:ss.zzz").toStdString();
+    QString time = QString::fromStdString(now.substr(0, now.size() - 2));
+    QString msg = time + "  -  " + text;
+    ui->txt_info->append(msg);
 }
 
 void MainWindow::on_haunAloitusNappi_clicked()

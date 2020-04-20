@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>music/hiihtaa.mp3</file>
+        <file>music/hyppaaja.mp3</file>
+		<file>music/hiihtourheilu.mp3</file>
+		<file>music/lenna.mp3</file>
+		<file>music/poljapaiva.mp3</file>
+		<file>music/sukset.mp3</file>
+		<file>music/hiihdan.mp3</file>
+    </qresource>
+</RCC>

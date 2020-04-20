@@ -65,7 +65,7 @@ public:
      * \param severity
      * Severity of the message
      */
-    void log(QString& msg, InternetExplorers::Constants::Logger::Severity severity);
+    void log(const QString& msg, InternetExplorers::Constants::Logger::Severity severity);
 
     /*!
      * \brief
@@ -81,7 +81,7 @@ public:
      * \param sender
      * Sender of the message
      */
-    void log(QString& msg, InternetExplorers::Constants::Logger::Severity severity, QString& sender);
+    void log(const QString& msg, InternetExplorers::Constants::Logger::Severity severity, const QString& sender);
 
 private:
     /*!
@@ -104,7 +104,7 @@ private:
      * \return
      * Current time in format dd:mm:yyyy h:mm:ss.z
      */
-    QString getTime();
+    QString getTime() const;
 
     /*!
      * \brief
@@ -114,7 +114,7 @@ private:
      * \return
      * Severity as string
      */
-    QString getSeverity(InternetExplorers::Constants::Logger::Severity severity);
+    QString getSeverity(InternetExplorers::Constants::Logger::Severity severity) const;
 
     /*!
      * \brief Mutex for the file

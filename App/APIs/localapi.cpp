@@ -19,35 +19,41 @@ InternetExplorers::LocalAPI::LocalAPI() :
     m_maxProgress(getAmountOfFiles()),
     m_data({})
 {
-    auto msg(QString("Constructor ready"));
-    auto msgSender(QString("LocalAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+    auto msg(QString("Luokan rakentaja on valmis."));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 }
 
 InternetExplorers::LocalAPI::~LocalAPI()
 {
-    auto msg(QString("Destructor called"));
-    auto msgSender(QString("LocalAPI"));
-    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, msgSender);
+    auto msg(QString("Luokan tuhoaja on kutsuttu."));
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 }
 
 void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
 {
+    QString msg("Dataa tallennetaan paikalliselle levylle.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     // If old data is there, delete it
-    if(QDir(DATA_ROOT_NAME).exists()) {
-        qDebug() << "Poistetaan kansioita";
-        QDir(DATA_ROOT_NAME).removeRecursively();
+    if(QDir(Constants::DATA_ROOT_NAME).exists()) {
+
+        msg = QString("Poistetaan vanha data levyltä");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
+        QDir(Constants::DATA_ROOT_NAME).removeRecursively();
     }
 
     // Create the root folder
-    QDir().mkdir(DATA_ROOT_NAME);
+    QDir().mkdir(Constants::DATA_ROOT_NAME);
 
 
     // Go through years
     for(auto& year : data) {
 
         // Create the year folder
-        QString yfolder = DATA_ROOT_NAME + QString("/") + year.first;
+        QString yfolder = Constants::DATA_ROOT_NAME + QString("/") + year.first;
         QDir().mkdir(yfolder);
 
         //Go through distances
@@ -58,8 +64,8 @@ void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QStr
             QDir().mkdir(dfolder);
 
             // Create file with the rows
-            QFile file(dfolder + QString("/") + DATA_FILE_NAME);
-            if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
+            QFile file(dfolder + QString("/") + Constants::DATA_FILE_NAME);
+            if ( Q_LIKELY(file.open(QIODevice::WriteOnly | QIODevice::Text)) )
             {
                 QTextStream stream( &file );
                 stream.setCodec("UTF-8");
@@ -80,30 +86,53 @@ void InternetExplorers::LocalAPI::saveData(const std::map<QString, std::map<QStr
         }
     }
 
+    msg = QString("Luodaan MD5 metadata tiedostoa tallennetusta datasta.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     // Create MD5 checksum metadata file
     createMD5File();
 }
 
 std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > InternetExplorers::LocalAPI::loadData()
 {
+    QString msg("Aloitetaan datan lataus paikalliselta levyltä ohjelman muistiin.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     // Go throug data if it is there
-    if(!QDir(DATA_ROOT_NAME).exists()) {
-        qDebug() << "Data-folder was not found";
+    if(!QDir(Constants::DATA_ROOT_NAME).exists()) {
+
+        msg = QString("Data-kansiota ei löytynyt levyltä!");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::CRITICAL, m_name);
+
         return {};
     }
 
     size_t optimalAmountOfThreads(std::thread::hardware_concurrency());
 
+    if(optimalAmountOfThreads < 1)
+    {
+        qDebug() << "Number of concurrent threads is not well defined.\n"
+                     "Setting it to 4";
+        optimalAmountOfThreads = 4;
+    }
+
     // Create year vectors
     auto years = std::vector<std::string>();
-    for (int i = 1974; i < 2020; i++) {
+    for (int i = 1974; i < 2020; ++i) {
         years.emplace_back(std::to_string(i));
     }
     std::vector<std::shared_ptr<std::vector<std::string>>> yearVectors = SplitVector(years, optimalAmountOfThreads);
 
+    msg = QString("Ladataan data käyttäen " + QString::number(optimalAmountOfThreads) + " säiettä.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     std::vector<std::thread> threads;
     threads.reserve(optimalAmountOfThreads);
-    for(size_t i = 0; i < optimalAmountOfThreads; i++)
+    for(size_t i = 0; i < optimalAmountOfThreads; ++i)
     {
         threads.push_back(std::thread(&LocalAPI::loadDataInThread, this, yearVectors[i]));
     }
@@ -111,6 +140,10 @@ std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > I
     for (auto& th : threads) {
         th.join();
     }
+
+    msg = QString::number(getAmountOfRows()) + " riviä dataa haettu!";
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
     return m_data;
 }
@@ -140,7 +173,7 @@ std::vector<std::shared_ptr<std::vector<T>>> InternetExplorers::LocalAPI::SplitV
     return outVec;
 }
 
-bool InternetExplorers::LocalAPI::needsToBeLoadedFromWeb()
+bool InternetExplorers::LocalAPI::needsToBeLoadedFromWeb() const
 {
     return ((!isDataAvailable()) || isDataCorrupted());
 }
@@ -152,7 +185,7 @@ std::map<QString, QString> InternetExplorers::LocalAPI::readMetaDataFile()
 
 void InternetExplorers::LocalAPI::updateProgress()
 {
-    m_fileCount++;
+    ++m_fileCount;
 
     int progress = static_cast<int>(100 * (m_fileCount/static_cast<double>(m_maxProgress)));
 
@@ -162,13 +195,13 @@ void InternetExplorers::LocalAPI::updateProgress()
     }
 }
 
-int InternetExplorers::LocalAPI::getAmountOfFiles()
+int InternetExplorers::LocalAPI::getAmountOfFiles() const
 {
-    QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+    QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
     int count = 0;
     while (it.hasNext()){
         it.next();
-        count++;
+        ++count;
     }
     return count;
 }
@@ -181,16 +214,41 @@ void InternetExplorers::LocalAPI::loadDataInThread(std::shared_ptr<std::vector<s
     appendData(data);
 }
 
-void InternetExplorers::LocalAPI::appendData(std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
+void InternetExplorers::LocalAPI::appendData(const std::map<QString, std::map<QString, std::vector<std::vector<std::string> > > > &data)
 {
     std::lock_guard<std::mutex> lock(m_mtx);
 
     m_data.insert(data.begin(), data.end());
 }
 
-std::vector<std::pair<QString, QString> > InternetExplorers::LocalAPI::readMD5File()
+std::map<QString, QString> InternetExplorers::LocalAPI::readMD5File() const
 {
-    return {};
+    QString msg("Luetaan MD5 metadata tiedosto.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
+    std::map<QString, QString> sums = {};
+
+    QFile file(Constants::MD5_DATA_FILE_NAME);
+    if (Q_UNLIKELY(!file.open(QIODevice::ReadOnly | QIODevice::Text))) {
+
+        QString msg("MD5 metadata tiedostoa ei voitu avata!");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
+        return {};
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+
+        QStringList parts = line.split(";");
+
+        sums.insert({parts[0], parts[1]});
+    }
+
+    return sums;
 }
 
 void InternetExplorers::LocalAPI::createGeneralMetaDataFile()
@@ -200,16 +258,24 @@ void InternetExplorers::LocalAPI::createGeneralMetaDataFile()
 
 void InternetExplorers::LocalAPI::createMD5File()
 {
+    QString msg("Luodaan MD5 metadata tiedosto.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     // Check if MD5 metadata file already exists
-    if (QFile::exists(MD5_DATA_FILE_NAME)) {
+    if (QFile::exists(Constants::MD5_DATA_FILE_NAME)) {
+
+        QString msg("Poistetaan vanha MD5 metadata tiedosto.");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
 
         // Delete it if exists
-        QFile f(MD5_DATA_FILE_NAME);
+        QFile f(Constants::MD5_DATA_FILE_NAME);
         f.remove();
     }
 
     // Create file with the rows
-    QFile file(MD5_DATA_FILE_NAME);
+    QFile file(Constants::MD5_DATA_FILE_NAME);
     if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
     {
         QTextStream stream( &file );
@@ -217,7 +283,7 @@ void InternetExplorers::LocalAPI::createMD5File()
         stream.setGenerateByteOrderMark(true);
 
         // Go throug all files
-        QDirIterator it(DATA_ROOT_NAME, QStringList() << "Data.txt", QDir::NoFilter, QDirIterator::Subdirectories);
+        QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
         while (it.hasNext()) {
             QFile f(it.next());
 
@@ -233,31 +299,113 @@ void InternetExplorers::LocalAPI::createMD5File()
     }
 }
 
-QByteArray InternetExplorers::LocalAPI::getMD5CheckSum(const QString &file)
+QByteArray InternetExplorers::LocalAPI::getMD5CheckSum(const QString &file) const
 {
     QFile f(file);
-    if (f.open(QFile::ReadOnly)) {
+    if (Q_LIKELY(f.open(QFile::ReadOnly))) {
         QCryptographicHash hash(QCryptographicHash::Algorithm::Md5);
-        if (hash.addData(&f)) {
+        if (Q_LIKELY(hash.addData(&f))) {
             return hash.result();
         }
     }
     return QByteArray();
 }
 
-bool InternetExplorers::LocalAPI::isDataCorrupted()
+bool InternetExplorers::LocalAPI::isDataCorrupted() const
 {
+    QString msg("Tutkitaan, onko data korruptoitunut.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
+    // Check that MD5 metadata file exists
+    if (!QFile::exists(Constants::MD5_DATA_FILE_NAME)) {
+
+        QString msg("MD5 metadata tiedostoa ei löytynyt.");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
+        return true;
+    }
+
+    // Check that it has as many rows as there is files
+    // in FinlandiaData
+    int amount = 0;
+    QFile file(Constants::MD5_DATA_FILE_NAME);
+    if (Q_UNLIKELY(!file.open(QIODevice::ReadOnly | QIODevice::Text))) {
+
+        QString msg("MD5 datatiedostoa ei saatu avattua!");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
+        return true;
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (Q_LIKELY(line.trimmed() != "")) {
+            ++amount;
+        }
+    }
+
+    if (amount != m_maxProgress) {
+
+        QString msg("Datassa väärä määrä tiedostoja!");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
+        return true;
+    }
+
+    // Check that the sums match
+    std::map<QString, QString> sums = readMD5File();
+
+    // Go throug all files and check that the hash is same
+    QDirIterator it(Constants::DATA_ROOT_NAME, QStringList() << Constants::DATA_FILE_NAME, QDir::NoFilter, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        QFile f(it.next());
+
+        QString name = f.fileName();
+
+        QByteArray checkSum = getMD5CheckSum(name);
+
+        QString DataAsString = QString(checkSum.toHex());
+
+        if (sums.at(name) != DataAsString) {
+
+            QString msg(name + " tiedoston MD5 hash ei vastaa metadataa!");
+            emit appendInfo(msg);
+            InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
+            return true;
+        }
+    }
+
+    msg = QString("Data ei ole korruptoitunutta.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
+    // Data is not corrupted
     return false;
 }
 
-bool InternetExplorers::LocalAPI::isDataAvailable()
+bool InternetExplorers::LocalAPI::isDataAvailable() const
 {
-    if(!QDir(DATA_ROOT_NAME).exists()) {
+    QString msg("Tutkitaan, onko data saatavissa.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
+    if(!QDir(Constants::DATA_ROOT_NAME).exists()) {
+
+        QString msg("Datakansiota ei löytynyt!");
+        emit appendInfo(msg);
+        InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
         return false;
     }
 
     // Iterate year folders
-    QDirIterator it(DATA_ROOT_NAME, QDirIterator::NoIteratorFlags);
+    QDirIterator it(Constants::DATA_ROOT_NAME, QDirIterator::NoIteratorFlags);
     while (it.hasNext()) {
         it.next();
 
@@ -275,11 +423,34 @@ bool InternetExplorers::LocalAPI::isDataAvailable()
             }
 
             // Check that data file exists
-            if (!QFile::exists(it2.filePath() + QString("/") + DATA_FILE_NAME)) {
+            if (!QFile::exists(it2.filePath() + QString("/") + Constants::DATA_FILE_NAME)) {
+
+                QString msg("Datatiedostoa ei löytynyt polusta " + it2.filePath() + "/ !");
+                emit appendInfo(msg);
+                InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::WARNING, m_name);
+
                 return false;
             }
         }
     }
 
+    msg = QString("Data on saatavissa.");
+    emit appendInfo(msg);
+    InternetExplorers::Logger::getInstance().log(msg, Constants::Logger::Severity::INFO, m_name);
+
     return true;
+}
+
+int InternetExplorers::LocalAPI::getAmountOfRows() const
+{
+    if (m_data.size() == 0) return 0;
+
+    int count = 0;
+    for (auto& year : m_data) {
+        for (auto& dist : year.second) {
+            count += static_cast<int>(dist.second.size());
+        }
+    }
+
+    return count;
 }

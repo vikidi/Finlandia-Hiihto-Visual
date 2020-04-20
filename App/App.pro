@@ -4,10 +4,10 @@
 #
 #-------------------------------------------------
 
-QT += core gui network charts
+QT += core gui network charts webenginewidgets multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = firstTest
+TARGET = InternetExplorers
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -26,6 +26,7 @@ CONFIG += c++17
 CONFIG += openssl-linked
 
 SOURCES += \
+    UI/encryptionsettingswindow.cpp \
     UI/gamescene.cpp \
     crypter.cpp \
         main.cpp \
@@ -33,33 +34,40 @@ SOURCES += \
     APIs/finlandiaapi.cpp \
     APIs/localapi.cpp \
     datahandler.cpp \
-    APIs/ilmatiedeapi.cpp \
     APIs/finlandiacaller.cpp \
     UI/finlandia.cpp \
     interfacefilter.cpp \
     libraries/simplecrypt.cpp \
     APIs/localdataloader.cpp \
-    logger.cpp
+    logger.cpp \
+    dataorderer.cpp \
+    UI/predicterwindow.cpp \
+    helper.cpp
 
 HEADERS += \
+    UI/encryptionsettingswindow.h \
     UI/gamescene.h \
     crypter.h \
         mainwindow.h \
     APIs/finlandiaapi.h \
     APIs/localapi.h \
     datahandler.h \
-    APIs/ilmatiedeapi.h \
     APIs/finlandiacaller.h \
     UI/finlandia.h \
     interfacefilter.h \
     libraries/simplecrypt.h \
     APIs/localdataloader.h \
     logger.h \
-    constants.h
+    constants.h \
+    dataorderer.h \
+    UI/predicterwindow.h \
+    helper.h
 
 FORMS += \
+    UI/encryptionsettingswindow.ui \
         mainwindow.ui \
-    UI/finlandia.ui
+    UI/finlandia.ui \
+    UI/predicterwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -68,3 +76,19 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource.qrc
+
+RCC_BINARY_SOURCES += music.qrc
+
+asset_builder.commands = $$[QT_HOST_BINS]/rcc -binary ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT} -no-compress
+asset_builder.depend_command = $$[QT_HOST_BINS]/rcc -list $$QMAKE_RESOURCE_FLAGS ${QMAKE_FILE_IN}
+asset_builder.input = RCC_BINARY_SOURCES
+asset_builder.output = $$OUT_PWD/$$DESTDIR/${QMAKE_FILE_IN_BASE}.qrb
+asset_builder.CONFIG += no_link target_predeps
+QMAKE_EXTRA_COMPILERS += asset_builder
+
+OTHER_FILES += $$RCC_BINARY_SOURCES
+
+# Extra optimization
+CONFIG(release, debug|release) {
+    CONFIG += optimize_full
+}
